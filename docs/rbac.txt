@@ -1,0 +1,180 @@
+Authorization (aka Entitlements)
+Notes from https://tailscale.com/blog/rbac-like-it-was-meant-to-be/
+December 2, 2021
+
+
+I'd like to separate out the security policy (for example, "admins
+can edit all content") from business rules ("every user must have
+an email, and it must be case-insitively unique").
+
+I came across the Tailscale blog post when  reading up on Attribute-Based
+Access Control.  Specifically, I am looking for how to externalize
+row-based (or "horizontal") security.  For example, "User 10 can
+modify content they created as well as content in user group 123".
+
+	=========================================================================
+	Approach:
+	
+	* use site-wide groups: admin, member
+	* use tags for user-specific groups; e.g., user10-group1.
+	      a user can create as many groups as they like.
+	      for MVP, start with three groups.
+	      for MVP, let use add an alias to each group.
+	* policy engine generates (userID, contentID) entitlements table
+	* create views that join content table with entitlements table
+	* SQL adapters must add userID to where clause.
+	=========================================================================
+
+
+ DAC     Discretionary Access Control       Unix files (kind-of).
+         Resource owner can grant access.
+
+
+ MAC     Mandatory Access Control           a daemon binds to a port.
+         An admin grants access.            a mandatory file lock
+                                            true two-factor
+                                            (second factor cannot be shared)
+
+                                            Original idea: concentric circles.
+                                            DoD "multi-level security"
+
+                                            Now: flags or subgroups (SELinux)
+
+                                            "nightmarishly complicated to actually
+                                            use, unless you are the NSA (who wrote
+                                            SELinux).  And maybe even if you are."
+
+                                            "both too restrictive and too vague."
+
+ ABAC    Attribute-Based Access Control     Checks user role + attributes
+         A refinement of RBAC.              reCAPTCHA uses "logged in" attribute.
+         (Hu, Kuhn, and Ferraiolo, 2015)
+                                            "a slightly more convoluted RBAC"
+
+                                            attributes "mostly implemented
+                                            centrally in your identity provider"
+
+ RBAC    Role-Based Access Control          "You probably haven’t tried real RBAC."
+         A subset of MAC.
+         (Ferraiolo and Kuhn, 1992)         "Nowadays Linux also supports facls,
+                                            which are RBAC, but nobody knows how
+                                            to use facls, so they don’t count."
+
+The remainder of this note describes RBAC, as Tailscale has done it.
+First, some terms:
+
+     User           a person who acts on a resource.
+                    The "subject" in (ancient) RBAC terminology.
+
+     Role           a collection of users.
+                    An administrator sets roles on hire, promotion or transfer.
+                    The original sense of this term has business meaning; think
+                    think "Human Resources" not "report-reader".
+                    Also called a Group.
+
+     Resource       the "object" with restricted access.
+                    A "subject" acts on an "object".
+
+     Entitlement    a subject-action-object rule.
+                    More commmonly called a Permission.
+
+     ACL            a list of entitlements.
+                    Every resource has one ACL.
+
+     Tag            a resource attribute, with an admin-assigned owner.
+                    The resource owner may assign any tag or tags they own
+                    when they create a new resource.
+
+
+Other notes from "Network access controls (ACLs)"
+https://tailscale.com/kb/1018/acls/
+
+    "you can use tags to assign purpose-based identities to devices"
+
+    "server tagging could also be considered a form of attribute-based
+    access control"
+
+    "access rules you define for your network get distributed to
+    all the devices in your network"
+
+    "enforcement of the rules happens on each device directly"
+    
+    A sample policy file:
+    
+    {
+      "acls": [
+        // dave@tailscale.com can access everything on host vega (defined below)
+        {
+          "action": "accept",
+          "users": ["dave@tailscale.com"],
+          "ports": ["vega:*"],
+        },
+        // The security group can access all HTTPS servers, and everything on
+        // the corp network.
+        {
+          "action": "accept",
+          "users": ["group:security"],
+          "ports": [
+            "*:443",
+            "corp-network:*"
+          ],
+        },
+        // Both dave@tailscale.com and the security group can access lab devices.
+        {
+          "action": "accept",
+          "users": ["dave@tailscale.com", "group:security"],
+          "ports": ["tag:lab:*"],
+        },
+        // All lab devices can talk to each other, but nothing else.
+        {
+          "action": "accept",
+          "users": ["tag:lab"],
+          "ports": ["tag:lab:*"],
+        },
+      ],
+      // Readable shorthands for devices and networks.
+      "hosts": {
+        "vega": "100.3.4.5",
+        "corp-network": "10.0.0.0/8",
+        "critical-corp-server": "10.0.0.1",
+      },
+      // Role-based groups of users.
+      "groups": {
+        "group:security": [
+          "laura@tailscale.com",
+          "daniel@tailscale.com",
+        ],
+      },
+      "tests": [
+        // Security can always access HTTPS on vega, but not HTTP.
+        {
+          "user": "group:security",
+          "allow": ["vega:443"],
+          "deny": ["vega:80"],
+        },
+        // dave@tailscale.com can SSH into vega and the lab.
+        {
+          "user": "dave@tailscale.com",
+          "allow": ["vega:22", "tag:lab:22"],
+        },
+        // Lab devices can never access a critical corp service.
+        {
+          "user": "dave@tailscale.com",
+          "deny": ["critical-corp-server:80"],
+        },
+      ],
+      "tagOwners": {
+        "tag:lab": ["dave@tailscale.com"],
+        "tag:security": ["group:security"],
+      },
+      "derpMap": {
+        "regions": {
+          900: {
+            "regionID": 900,
+            "hostName": "custom-derp.example.com",
+          },
+        },
+      },
+      "disableIPv4": false,
+      "randomizeClientPort": false,
+    }
