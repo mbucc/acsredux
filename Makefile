@@ -1,29 +1,23 @@
 VER=1
+CP=testlib/*:classes/com.acsredux.auth:classes/com.acsredux.base
 
-jars: test
-	mkdir -p mlib
-	jar --create \
-		--file=mlib/com.acsredux.server@${VER}.jar \
-		--module-version ${VER} \
-		-C ./classes/com.acsredux.server/ \
-		.
-
-compile: fmt
-	javac -d ./classes --module-source-path src $$(find src -name '*.java')
 
 .PHONY: test
 test: compiletests
 	java -jar ./testlib/junit-platform-console-standalone-1.8.2.jar \
-		-cp "mlib/*:testlib/*:testclasses" \
+		-cp "${CP}:testclasses" \
 		--disable-banner \
 		--fail-if-no-tests \
 		--exclude-engine=junit-vintage \
-		--details=tree \
 		--scan-classpath
 
-compiletests: compile
-	javac -cp "testlib/*" -d testclasses $$(find tests -name '*.java')
+compile: fmt
+	javac -d ./classes --module-source-path src $$(find src -name '*.java')
 
+compiletests: compile
+	javac \
+		-cp "${CP}" \
+		-d testclasses $$(find tests -name '*.java')
 
 fmt:
 	npx prettier --write "**/*.java"
@@ -32,5 +26,4 @@ clean:
 	rm -rf mlib
 	rm -rf classes
 	rm -rf testclasses
-	rm -f test/*.out
 
