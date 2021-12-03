@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.acsredux.auth.CommandHandler;
 import com.acsredux.auth.Factory;
 import com.acsredux.auth.commands.SignUpCommand;
+import com.acsredux.base.Command;
 import com.acsredux.base.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class SignUpCommandTest {
 
@@ -20,15 +22,27 @@ class SignUpCommandTest {
     this.service = Factory.getCommandHandler();
   }
 
-  @Test
-  void emailIsRequired() {
-    // setup
-    var cmd = new SignUpCommand("first", "last", null, "pwd", "5A", "mark");
+  private static enum RequiredFieldsTestData {
+    EMAIL(new SignUpCommand("first", "last", null, "pass", "5A", "mark"));
 
+    Command cmd;
+
+    RequiredFieldsTestData(Command cmd) {
+      this.cmd = cmd;
+    }
+  }
+
+  @ParameterizedTest
+  @EnumSource
+  void requiredRecordFields(RequiredFieldsTestData x) {
     // execute
-    var e = assertThrows(ValidationException.class, () -> service.handle(cmd));
+    var e = assertThrows(
+      ValidationException.class,
+      () -> service.handle(x.cmd)
+    );
 
     // validate
-    assertEquals("email is required", e.getMessage());
+    String fld = x.name().toLowerCase().replace('_', ' ');
+    assertEquals(fld + " is required", e.getMessage());
   }
 }
