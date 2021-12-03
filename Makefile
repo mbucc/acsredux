@@ -20,7 +20,7 @@ compiletests: compile
 		-d testclasses $$(find tests -name '*.java')
 
 fmt:
-	npx prettier --write "**/*.java"
+	npx prettier --print-width 90 --write "**/*.java"
 
 clean:
 	rm -rf mlib

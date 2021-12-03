@@ -1,5 +1,7 @@
 package com.acsredux.auth.services;
 
+import static com.acsredux.base.Util.dieIfBlank;
+
 import com.acsredux.auth.CommandHandler;
 import com.acsredux.auth.commands.SignUpCommand;
 import com.acsredux.base.Command;
@@ -17,10 +19,15 @@ public final class CommandHandlerImpl implements CommandHandler {
     }
   }
 
+  void validateCommand(SignUpCommand x) {
+    dieIfBlank(x.firstName(), "first name");
+    dieIfBlank(x.lastName(), "last name");
+    dieIfBlank(x.email(), "email");
+    dieIfBlank(x.password(), "password");
+  }
+
   Event handleSignUpCommand(SignUpCommand x) {
-    if (x.email() == null || x.email().isBlank()) {
-      throw new ValidationException("email is required");
-    }
+    validateCommand(x);
     System.out.println("handling SignUpCommand");
     return null;
   }

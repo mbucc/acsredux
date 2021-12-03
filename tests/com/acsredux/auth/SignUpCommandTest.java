@@ -23,7 +23,10 @@ class SignUpCommandTest {
   }
 
   private static enum RequiredFieldsTestData {
-    EMAIL(new SignUpCommand("first", "last", null, "pass", "5A", "mark"));
+    EMAIL(new SignUpCommand("first", "last", null, "pass", null, null)),
+    FIRST_NAME(new SignUpCommand(null, "last", "t@t.com", "pass", null, null)),
+    LAST_NAME(new SignUpCommand("first", null, "t@t.com", "pass", null, null)),
+    PASSWORD(new SignUpCommand("first", "last", "t@t.com", null, null, null));
 
     Command cmd;
 
@@ -36,10 +39,7 @@ class SignUpCommandTest {
   @EnumSource
   void requiredRecordFields(RequiredFieldsTestData x) {
     // execute
-    var e = assertThrows(
-      ValidationException.class,
-      () -> service.handle(x.cmd)
-    );
+    var e = assertThrows(ValidationException.class, () -> service.handle(x.cmd));
 
     // validate
     String fld = x.name().toLowerCase().replace('_', ' ');
