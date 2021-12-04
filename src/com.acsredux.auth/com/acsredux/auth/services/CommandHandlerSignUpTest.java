@@ -1,25 +1,22 @@
-package com.acsredux.auth;
+package com.acsredux.auth.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.acsredux.auth.CommandHandler;
-import com.acsredux.auth.Factory;
 import com.acsredux.auth.commands.SignUpCommand;
-import com.acsredux.base.Command;
 import com.acsredux.base.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class SignUpCommandTest {
+class SignUpCommandHandlerSignUpTest {
 
-  private CommandHandler service;
+  private CommandHandlerImpl service;
 
   @BeforeEach
   void setup() {
-    this.service = Factory.getCommandHandler();
+    this.service = new CommandHandlerImpl();
   }
 
   private static enum RequiredFieldsTestData {
@@ -28,9 +25,9 @@ class SignUpCommandTest {
     LAST_NAME(new SignUpCommand("first", null, "t@t.com", "pass", null, null)),
     PASSWORD(new SignUpCommand("first", "last", "t@t.com", null, null, null));
 
-    Command cmd;
+    SignUpCommand cmd;
 
-    RequiredFieldsTestData(Command cmd) {
+    RequiredFieldsTestData(SignUpCommand cmd) {
       this.cmd = cmd;
     }
   }
@@ -39,7 +36,10 @@ class SignUpCommandTest {
   @EnumSource
   void requiredRecordFields(RequiredFieldsTestData x) {
     // execute
-    var e = assertThrows(ValidationException.class, () -> service.handle(x.cmd));
+    var e = assertThrows(
+      ValidationException.class,
+      () -> service.validateSignUpCommand(x.cmd)
+    );
 
     // validate
     String fld = x.name().toLowerCase().replace('_', ' ');

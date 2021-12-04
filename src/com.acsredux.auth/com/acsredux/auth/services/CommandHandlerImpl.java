@@ -19,7 +19,7 @@ public final class CommandHandlerImpl implements CommandHandler {
     }
   }
 
-  void validateCommand(SignUpCommand x) {
+  void validateSignUpCommand(SignUpCommand x) {
     dieIfBlank(x.firstName(), "first name");
     dieIfBlank(x.lastName(), "last name");
     dieIfBlank(x.email(), "email");
@@ -27,7 +27,7 @@ public final class CommandHandlerImpl implements CommandHandler {
   }
 
   Event handleSignUpCommand(SignUpCommand x) {
-    validateCommand(x);
+    validateSignUpCommand(x);
     System.out.println("handling SignUpCommand");
     return null;
   }
