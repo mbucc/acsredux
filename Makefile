@@ -1,4 +1,3 @@
-VER=1
 CP=testlib/*:classes/com.acsredux.auth:classes/com.acsredux.base
 
 
@@ -11,17 +10,26 @@ test: compiletests
 		--exclude-engine=junit-vintage \
 		--scan-classpath
 
-compile: fmt
-	javac -Xlint -d ./classes --module-source-path src $$(find src -name '*.java'|grep -v Test.java)
-
+.PHONY: compiletests
 compiletests: compile
 	javac \
+		-d testclasses \
 		-cp "${CP}" \
-		-d testclasses $$(find src -name '*.java'|grep Test.java)
+		$$(find src -name '*.java'|grep Test\.java)
 
+.PHONY: compile
+compile: fmt
+	javac \
+		-Xlint \
+		-d ./classes \
+		--module-source-path src \
+		$$(find src -name '*.java'|grep -v Test\.java)
+
+.PHONY: fmt
 fmt:
 	npx prettier --print-width 90 --write .
 
+.PHONY: clean
 clean:
 	rm -rf mlib
 	rm -rf classes
