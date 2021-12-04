@@ -1,6 +1,8 @@
 package com.acsredux.auth;
 
 import com.acsredux.auth.services.CommandHandlerImpl;
+import com.acsredux.auth.ports.Reader;
+import com.acsredux.auth.adapters.SQLiteReader;
 
 public final class Factory {
 
@@ -9,6 +11,10 @@ public final class Factory {
   }
 
   public static CommandHandler getCommandHandler() {
-    return new CommandHandlerImpl();
+  return getCommandHandler(new SQLiteReader());
+}
+
+static CommandHandler getCommandHandler(Reader db) {
+    return new CommandHandlerImpl(db);
   }
 }

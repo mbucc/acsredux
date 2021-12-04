@@ -1,0 +1,12 @@
+#! /bin/sh -e
+# Re-run tests when notified of a file change or addition.
+
+[ "$1" = "x" ] && ROWS=$1 || ROWS=10
+
+trap exit SIGINT
+SKIPFMT=1
+while :
+do
+  find src/ | entr -cd sh -c "make -s JUNIT_DETAILS=none 2>&1 | head -n $ROWS"
+  sleep 0.1
+done

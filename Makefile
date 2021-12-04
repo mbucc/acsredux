@@ -1,11 +1,15 @@
 CP=testlib/*:classes/com.acsredux.auth:classes/com.acsredux.base
+JUNIT_DETAILS=tree
 
 
+# 		-cp "${CP}:testclasses" \
+# 		-cp "$$(find testlib -name '*.jar')"
 .PHONY: test
 test: compiletests
 	java -jar ./testlib/junit-platform-console-standalone-1.8.2.jar \
-		-cp "${CP}:testclasses" \
+		-cp "testlib/mockito-core-4.1.0.jar:testlib/byte-buddy-1.12.3.jar:testlib/byte-buddy-agent-1.12.3.jar:testlib/objenesis-3.2.jar:classes/com.acsredux.auth:classes/com.acsredux.base:testclasses" \
 		--disable-banner \
+		--details=$(JUNIT_DETAILS) \
 		--fail-if-no-tests \
 		--exclude-engine=junit-vintage \
 		--scan-classpath
@@ -27,7 +31,9 @@ compile: fmt
 
 .PHONY: fmt
 fmt:
-	npx prettier --print-width 90 --write .
+	(: "${SKIPFMT}") 2>/dev/null \
+		&& printf "" \
+		|| npx prettier --print-width 90 --write .
 
 .PHONY: clean
 clean:
