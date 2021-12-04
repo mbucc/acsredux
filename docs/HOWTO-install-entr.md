@@ -6,7 +6,6 @@ Run tests in one terminal when you save changes in another.
 
 ## Background
 
-Prettier is an opinionated code formatter where you only decide two
 With fast tests, you can re-run the entire suite whenever a change is written
 to disk. This gives you quick feedback when developing, and also encourages
 you to keep the code compiling. :)
