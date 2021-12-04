@@ -12,7 +12,7 @@ test: compiletests
 		--scan-classpath
 
 compile: fmt
-	javac -d ./classes --module-source-path src $$(find src -name '*.java'|grep -v Test.java)
+	javac -Xlint -d ./classes --module-source-path src $$(find src -name '*.java'|grep -v Test.java)
 
 compiletests: compile
 	javac \
