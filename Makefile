@@ -12,12 +12,12 @@ test: compiletests
 		--scan-classpath
 
 compile: fmt
-	javac -d ./classes --module-source-path src $$(find src -name '*.java')
+	javac -d ./classes --module-source-path src $$(find src -name '*.java'|grep -v Test.java)
 
 compiletests: compile
 	javac \
 		-cp "${CP}" \
-		-d testclasses $$(find tests -name '*.java')
+		-d testclasses $$(find src -name '*.java'|grep Test.java)
 
 fmt:
 	npx prettier --print-width 90 --write .
