@@ -11,4 +11,10 @@ public class Util {
       throw new ValidationException(name + " is required");
     }
   }
+
+  public static void dieIfNull(Object x, String name) {
+    if (x == null) {
+      throw new ValidationException(name + " is required");
+    }
+  }
 }

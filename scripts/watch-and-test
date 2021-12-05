@@ -1,11 +1,11 @@
-#! /bin/sh -e
+#! /bin/sh
 # Re-run tests when notified of a file change or addition.
 
-[ "$1" = "x" ] && ROWS=$1 || ROWS=10
+[ "$1" = "x" ] && ROWS=$1 || ROWS=20
 
 trap exit SIGINT
-while :
+while sleep 0.1
 do
-  find src/ | entr -cd sh -c "make -s JUNIT_DETAILS=none SKIP_FMT=Y 2>&1 | head -n $ROWS"
-  sleep 0.1
+  find src/ \
+	| entr -cd sh -c "(make -s JUNIT_DETAILS=none SKIP_FMT=Y clean test 2>&1 && echo Tests all pass) | head -${ROWS}"
 done

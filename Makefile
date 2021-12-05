@@ -1,4 +1,4 @@
-CP=testlib/*:classes/com.acsredux.auth:classes/com.acsredux.base
+CP=testlib/*:classes/com.acsredux.user:classes/com.acsredux.base
 JUNIT_DETAILS=tree
 SKIP_FMT=N
 
@@ -8,7 +8,7 @@ SKIP_FMT=N
 .PHONY: test
 test: compiletests
 	java -jar ./testlib/junit-platform-console-standalone-1.8.2.jar \
-		-cp "testlib/mockito-core-4.1.0.jar:testlib/byte-buddy-1.12.3.jar:testlib/byte-buddy-agent-1.12.3.jar:testlib/objenesis-3.2.jar:classes/com.acsredux.auth:classes/com.acsredux.base:testclasses" \
+		-cp "testlib/mockito-core-4.1.0.jar:testlib/byte-buddy-1.12.3.jar:testlib/byte-buddy-agent-1.12.3.jar:testlib/objenesis-3.2.jar:classes/com.acsredux.user:classes/com.acsredux.base:testclasses" \
 		--disable-banner \
 		--details=$(JUNIT_DETAILS) \
 		--fail-if-no-tests \
