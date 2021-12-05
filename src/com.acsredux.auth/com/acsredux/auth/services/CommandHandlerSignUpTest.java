@@ -9,18 +9,18 @@ import static org.mockito.Mockito.mock;
 
 import com.acsredux.auth.commands.SignUpCommand;
 import com.acsredux.auth.ports.Reader;
+import com.acsredux.base.ValidationException;
 import com.acsredux.base.entities.User;
 import com.acsredux.base.values.Email;
-import com.acsredux.base.ValidationException;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import java.util.Optional;
 
 class SignUpCommandHandlerSignUpTest {
 
-public static final String TEST_EMAIL = "test@example.com";
+  public static final String TEST_EMAIL = "test@example.com";
 
   private CommandHandlerImpl service;
   private Reader db;
@@ -78,5 +78,4 @@ public static final String TEST_EMAIL = "test@example.com";
   Optional<User> testUser() {
     return Optional.of(new User(new Email(TEST_EMAIL)));
   }
-
 }

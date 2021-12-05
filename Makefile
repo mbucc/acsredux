@@ -1,9 +1,10 @@
 CP=testlib/*:classes/com.acsredux.auth:classes/com.acsredux.base
 JUNIT_DETAILS=tree
+SKIP_FMT=N
 
 
-# 		-cp "${CP}:testclasses" \
-# 		-cp "$$(find testlib -name '*.jar')"
+# The class path syntax for junit-platform-console-standalone-1.8.2.jar
+# is different than javac when including jars; you must list all the jars.
 .PHONY: test
 test: compiletests
 	java -jar ./testlib/junit-platform-console-standalone-1.8.2.jar \
@@ -31,9 +32,9 @@ compile: fmt
 
 .PHONY: fmt
 fmt:
-	(: "${SKIPFMT}") 2>/dev/null \
-		&& printf "" \
-		|| npx prettier --print-width 90 --write .
+	[ "$(SKIP_FMT)" = "N" ] \
+		&& npx prettier --print-width 90 --write . \
+		|| printf ""
 
 .PHONY: clean
 clean:
