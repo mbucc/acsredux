@@ -1,33 +1,20 @@
 December 4, 2021
 
-When I tried to use org.mockito.Mockito.mock, I got a runtime exception
-(see below).  Digging further (these notes), I need to add three more
-dependencies to use the mock functionality in Mockito.
-
-mockito-inline
-	experimental features like mocking final classes and methods, mocking static methods etc.
-	https://stackoverflow.com/a/66256832
-
-	mockito-inline is the Java 16 ready version of mockito-core.
-	It also support mocking of static methods and final classes.
-	https://www.vogella.com/tutorials/Mockito/article.html
-
-	Skip for now.
-
-mockito-core dependencies
-	https://search.maven.org/artifact/org.mockito/mockito-core/4.1.0/jar
-	scroll down to read dependencies section of the project object model.
+When I tried to use org.mockito.Mockito.mock, I got a runtime
+exception (see below).  Using Maven Central [1], I found I was
+missing three dependencies:
 
 	net.bytebuddy:byte-buddy:1.12.1 (compile scope)
 	net.bytebuddy:byte-buddy-agent:1.12.1 (compile scope)
 	org.objenesis:objenesis:3.2 (runtime scope)
 
-This is some crazy shit.
+[1] https://search.maven.org/artifact/org.mockito/mockito-core/4.1.0/jar
 
-	Byte Buddy creates and modifies Java classes during the runtime
-	of a Java application and without the help of a compiler.
+Which got me curious about what a package called Byte Buddy does.
 
-	For example:
+	Byte Buddy creates and modifies Java classes during the
+	runtime of a Java application and without the help of a
+	compiler.  For example:
 
 		Class<?> dynamicType = new ByteBuddy()
 		  .subclass(Object.class)
@@ -43,6 +30,22 @@ This is some crazy shit.
 	and the project is downloaded over 75 million times a year.
 
 	Who knew?
+
+
+While debugging, I came across some references to the mockito-inline
+package.  The notes I found were conflicting and my tests worked
+fine with the normal includes with Java 17, so I did not use this
+package.
+
+	experimental features like mocking final classes and methods,
+	mocking static methods etc.
+	-- StackOverflow, Feb 2021
+	-- https://stackoverflow.com/a/66256832
+
+	mockito-inline is the Java 16 ready version of mockito-core.
+	It also support mocking of static methods and final classes.
+	-- Vogella, Aug 2021
+	-- https://www.vogella.com/tutorials/Mockito/article.html
 
 
 
