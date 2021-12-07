@@ -1,4 +1,4 @@
-- 2021-12-06: clean up testlib mockito readme
+- 2021-12-06: Use value types for ports
 - 2021-12-05: SignUp: validate password, using (new) PasswordPolicy. See https://docs.oracle.com/cd/E19693-01/819-0995/fhkrj/index.html for a sample policy.
 - 2021-12-06: use sealed class for commands & new switch syntax in CommandHandler
 - 2021-12-06: use email as slug (if slug empty).  add genSlug to reader for form? use first name?
