@@ -63,7 +63,7 @@ class AddUserHandlerTest {
         new FirstName("first"),
         new LastName("last"),
         null,
-        new ClearTextPassword("pass"),
+        new ClearTextPassword("a3cDefg!"),
         null,
         null
       )
@@ -123,7 +123,7 @@ class AddUserHandlerTest {
       new FirstName("first"),
       new LastName("last"),
       new Email("email"),
-      new ClearTextPassword("pass"),
+      new ClearTextPassword("a3cDefg!"),
       new GrowingZone("zone"),
       new Slug("slug")
     );
