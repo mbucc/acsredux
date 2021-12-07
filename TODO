@@ -1,4 +1,3 @@
-- 2021-12-06: use sealed class for commands & new switch syntax in CommandHandler
 - 2021-12-07: create findUserByID query and handler
 - 2021-12-07: create com.acsredux.sqlite module and implement reader & writer ports
 - 2021-12-07: create com.acsredux.mailgun and implement notifier port

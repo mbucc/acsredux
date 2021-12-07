@@ -1,8 +1,8 @@
 package com.acsredux.user;
 
-import com.acsredux.base.Command;
 import com.acsredux.base.Event;
+import com.acsredux.user.commands.UserCommand;
 
 public interface CommandHandler {
-  public Event handle(Command x);
+  public Event handle(UserCommand x);
 }

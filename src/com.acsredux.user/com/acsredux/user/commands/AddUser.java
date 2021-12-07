@@ -14,4 +14,4 @@ public record AddUser(
   ClearTextPassword password,
   GrowingZone zone
 )
-  implements Command {}
+  implements UserCommand {}
