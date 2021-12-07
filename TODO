@@ -1,6 +1,9 @@
-- 2021-12-06: Use value types for ports
 - 2021-12-05: SignUp: validate password, using (new) PasswordPolicy. See https://docs.oracle.com/cd/E19693-01/819-0995/fhkrj/index.html for a sample policy.
 - 2021-12-06: use sealed class for commands & new switch syntax in CommandHandler
-- 2021-12-06: use email as slug (if slug empty).  add genSlug to reader for form? use first name?
+- 2021-12-06: calculate slug, don't bother user with this
+- 2021-12-07: create findUserByID query and handler
+- 2021-12-07: create com.acsredux.sqlite module and implement reader & writer ports
+- 2021-12-07: create com.acsredux.mailgun and implement notifier port
+- 2021-12-07: create com.acsredux.user-web for tinyjhttpd adapter for user commands \& queries
 
 - 2021-12-06: notifier adapter:: use MailGun API to verify email address

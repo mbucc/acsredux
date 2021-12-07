@@ -7,7 +7,10 @@ import com.acsredux.base.Command;
 import com.acsredux.base.Event;
 import com.acsredux.base.ValidationException;
 import com.acsredux.base.entities.User;
+import com.acsredux.base.values.CreatedOn;
 import com.acsredux.base.values.Email;
+import com.acsredux.base.values.UserID;
+import com.acsredux.base.values.VerificationToken;
 import com.acsredux.user.CommandHandler;
 import com.acsredux.user.commands.AddUser;
 import com.acsredux.user.events.UserAdded;
@@ -40,11 +43,11 @@ public final class AddUserHandler {
   Accum validateAddUser(AddUser x) {
     dieIfNull(x.email(), "email");
     dieIfNull(x.password(), "password");
-    checkEmailIsUnique(x.email().val());
-    return new Accum(x, this.clock.instant());
+    checkEmailIsUnique(x.email());
+    return new Accum(x, new CreatedOn(this.clock.instant()));
   }
 
-  void checkEmailIsUnique(String x) {
+  void checkEmailIsUnique(Email x) {
     if (reader.findByEmail(x).isPresent()) {
       throw new ValidationException("email already on file");
     }
@@ -72,11 +75,11 @@ public final class AddUserHandler {
   private static class Accum {
 
     AddUser cmd;
-    long newUserID;
-    String token;
-    Instant createdOn;
+    UserID newUserID;
+    VerificationToken token;
+    CreatedOn createdOn;
 
-    Accum(AddUser cmd, Instant createdOn) {
+    Accum(AddUser cmd, CreatedOn createdOn) {
       this.cmd = cmd;
       this.createdOn = createdOn;
     }

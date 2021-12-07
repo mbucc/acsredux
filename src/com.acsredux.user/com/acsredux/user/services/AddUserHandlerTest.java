@@ -13,11 +13,14 @@ import static org.mockito.Mockito.mock;
 import com.acsredux.base.ValidationException;
 import com.acsredux.base.entities.User;
 import com.acsredux.base.values.ClearTextPassword;
+import com.acsredux.base.values.CreatedOn;
 import com.acsredux.base.values.Email;
 import com.acsredux.base.values.FirstName;
 import com.acsredux.base.values.GrowingZone;
 import com.acsredux.base.values.LastName;
 import com.acsredux.base.values.Slug;
+import com.acsredux.base.values.UserID;
+import com.acsredux.base.values.VerificationToken;
 import com.acsredux.user.commands.AddUser;
 import com.acsredux.user.events.UserAdded;
 import com.acsredux.user.ports.Notifier;
@@ -35,21 +38,21 @@ import org.mockito.InOrder;
 
 class AddUserHandlerTest {
 
-  public static final String TEST_EMAIL = "test@example.com";
+  public static final Email TEST_EMAIL = new Email("test@example.com");
 
   private AddUserHandler service;
   private Reader reader;
   private Writer writer;
   private Notifier notifier;
   private InstantSource clock;
-  private Instant clockTime = Instant.now();
+  private CreatedOn clockTime = new CreatedOn(Instant.now());
 
   @BeforeEach
   void setup() {
     this.reader = mock(Reader.class);
     this.writer = mock(Writer.class);
     this.notifier = mock(Notifier.class);
-    this.clock = InstantSource.fixed(this.clockTime);
+    this.clock = InstantSource.fixed(this.clockTime.val());
     this.service =
       new AddUserHandler(this.reader, this.writer, this.notifier, this.clock);
   }
@@ -110,7 +113,7 @@ class AddUserHandlerTest {
   }
 
   Optional<User> testUser() {
-    return Optional.of(new User(new Email(TEST_EMAIL)));
+    return Optional.of(new User(TEST_EMAIL));
   }
 
   @Test
@@ -124,8 +127,8 @@ class AddUserHandlerTest {
       new GrowingZone("zone"),
       new Slug("slug")
     );
-    long newUserID = 123L;
-    String token = "test token";
+    UserID newUserID = new UserID(123L);
+    VerificationToken token = new VerificationToken("test token");
     UserAdded userAdded = new UserAdded(cmd, this.clockTime, token);
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
     given(writer.addUser(cmd, this.clockTime)).willReturn(newUserID);
@@ -135,7 +138,7 @@ class AddUserHandlerTest {
     UserAdded y = assertDoesNotThrow(() -> service.handle(cmd));
 
     // verify
-    then(reader).should().findByEmail("email");
+    then(reader).should().findByEmail(new Email("email"));
     then(writer).should().addUser(cmd, clockTime);
     then(writer).should().addAddUserToken(newUserID, clockTime);
     then(reader).shouldHaveNoMoreInteractions();
