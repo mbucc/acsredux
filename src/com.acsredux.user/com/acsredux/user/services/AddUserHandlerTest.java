@@ -18,7 +18,6 @@ import com.acsredux.base.values.Email;
 import com.acsredux.base.values.FirstName;
 import com.acsredux.base.values.GrowingZone;
 import com.acsredux.base.values.LastName;
-import com.acsredux.base.values.Slug;
 import com.acsredux.base.values.UserID;
 import com.acsredux.base.values.VerificationToken;
 import com.acsredux.user.commands.AddUser;
@@ -64,7 +63,6 @@ class AddUserHandlerTest {
         new LastName("last"),
         null,
         new ClearTextPassword("a3cDefg!"),
-        null,
         null
       )
     ),
@@ -73,7 +71,6 @@ class AddUserHandlerTest {
         new FirstName("first"),
         new LastName("last"),
         new Email("t@t.com"),
-        null,
         null,
         null
       )
@@ -124,8 +121,7 @@ class AddUserHandlerTest {
       new LastName("last"),
       new Email("email"),
       new ClearTextPassword("a3cDefg!"),
-      new GrowingZone("zone"),
-      new Slug("slug")
+      new GrowingZone("zone")
     );
     UserID newUserID = new UserID(123L);
     VerificationToken token = new VerificationToken("test token");
