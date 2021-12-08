@@ -1,5 +1,6 @@
-- 2021-12-07: create com.acsredux.sqlite module and implement reader & writer ports
-- 2021-12-07: create com.acsredux.mailgun and implement notifier port
-- 2021-12-07: create com.acsredux.user-web for tinyjhttpd adapter for user commands \& queries
-
-- 2021-12-06: notifier adapter:: use MailGun API to verify email address
+- 2021-12-08: create com.acsredux.adapter.dbstub
+- 2021-12-08: create com.acsredux.adapter.web
+- 2021-12-08: implement com.acsredux.adapter.server, and test web with dbstub
+- 2021-12-07: create com.acsredux.adapter.sqlite
+- 2021-12-07: create com.acsredux.adapter.mailgun
+- 2021-12-08: clarify where values go, base or user?  current code is confused ...
