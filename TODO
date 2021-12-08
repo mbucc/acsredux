@@ -4,3 +4,4 @@
 - 2021-12-07: create com.acsredux.adapter.sqlite
 - 2021-12-07: create com.acsredux.adapter.mailgun
 - 2021-12-08: clarify where values go, base or user?  current code is confused ...
+- 2021-08-08: Convert growing zone from a record to an enum

@@ -110,7 +110,15 @@ class AddUserHandlerTest {
   }
 
   Optional<User> testUser() {
-    return Optional.of(new User(TEST_EMAIL));
+    return Optional.of(
+      new User(
+        new UserID(1L),
+        TEST_EMAIL,
+        new FirstName("f"),
+        new LastName("l"),
+        new GrowingZone("5A")
+      )
+    );
   }
 
   @Test
