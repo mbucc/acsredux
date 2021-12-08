@@ -27,8 +27,6 @@ compile: fmt
 	javac \
 		-d ./classes \
 		-Xlint \
-		--enable-preview  \
-		--release 17  \
 		--module-source-path src \
 		$$(find src -name '*.java'|grep -v Test\.java)
 

@@ -5,7 +5,7 @@ import static com.acsredux.base.Util.dieIfBlank;
 import com.acsredux.base.Event;
 import com.acsredux.user.CommandHandler;
 import com.acsredux.user.commands.AddUser;
-import com.acsredux.user.commands.UserCommand;
+import com.acsredux.user.commands.BaseCommand;
 import com.acsredux.user.ports.Notifier;
 import com.acsredux.user.ports.Reader;
 import com.acsredux.user.ports.Writer;
@@ -20,9 +20,11 @@ public final class CommandHandlerImpl implements CommandHandler {
   }
 
   @Override
-  public Event handle(UserCommand x) {
-    return switch (x) {
-      case AddUser c -> addUserHandler.handle(c);
-    };
+  public Event handle(BaseCommand x) {
+    if (x instanceof AddUser c) {
+      return addUserHandler.handle(c);
+    } else {
+      throw new IllegalArgumentException("invalid command " + x);
+    }
   }
 }
