@@ -1,7 +1,9 @@
-- 2021-12-08: create com.acsredux.adapter.dbstub
 - 2021-12-08: create com.acsredux.adapter.web
 - 2021-12-08: implement com.acsredux.adapter.server, and test web with dbstub
 - 2021-12-07: create com.acsredux.adapter.sqlite
 - 2021-12-07: create com.acsredux.adapter.mailgun
 - 2021-12-08: clarify where values go, base or user?  current code is confused ...
 - 2021-08-08: Convert growing zone from a record to an enum
+- 2021-08-09: limit # of users during testing
+- 2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
+- 2021-08-09: add password to commands/AddUser
