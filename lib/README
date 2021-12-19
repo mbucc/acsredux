@@ -1,0 +1,19 @@
+Automatic Modules
+December 27, 2021
+
+An "automatic module" lets you use a non-modular jar in a modular application.
+For example, the com.acsredux.adapter.web module "requires com.github.mustachejava;".
+
+    module name		$ unzip -t lib/compiler-0.9.10.jar META-INF/MANIFEST.MF
+    			$ rep Automatic-Module-Name META-INF/MANIFEST.MF
+    			Automatic-Module-Name: com.github.mustachejava
+
+    			If not in jar manifest, name is the jar name.
+
+
+    add to class path	Don't use -cp!  Use -p.
+
+
+    suppress warning	-Xlint:-requires-automatic
+
+ref: https://www.logicbig.com/tutorials/core-java-tutorial/modules/automatic-modules.html

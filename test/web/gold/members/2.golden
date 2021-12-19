@@ -1,0 +1,16 @@
+200
+Content-Length: 206
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Member Dashboard</title>
+  </head>
+  <body>
+    <p><a href="/">home</a></p>
+    <h1>Member Dashboard</h1>
+    <p> has been a member since .</p>
+  </body>
+</html>

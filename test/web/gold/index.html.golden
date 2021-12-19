@@ -1,0 +1,15 @@
+200
+Content-Length: 189
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Garden Journal</title>
+  </head>
+  <body>
+    <h1>Garden Journal</h1>
+    <p><a href="/members/create">Become a member</a></p>
+  </body>
+</html>

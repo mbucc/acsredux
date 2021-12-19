@@ -6,15 +6,15 @@ public class Util {
     throw new UnsupportedOperationException("static only");
   }
 
-  public static void dieIfBlank(String x, String name) {
+  public static void dieIfBlank(String x, String msg) {
     if (x == null || x.isBlank()) {
-      throw new ValidationException(name + " is required");
+      throw new ValidationException(msg);
     }
   }
 
-  public static void dieIfNull(Object x, String name) {
+  public static void dieIfNull(Object x, String msg) {
     if (x == null) {
-      throw new ValidationException(name + " is required");
+      throw new ValidationException(msg);
     }
   }
 }
