@@ -1,5 +1,5 @@
 module com.acsredux.adapter.web {
-  requires com.acsredux.members;
+  requires com.acsredux.core.members;
   requires com.acsredux.adapter.stub;
   requires jdk.httpserver;
   requires com.github.mustachejava;

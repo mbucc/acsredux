@@ -1,24 +1,24 @@
 package com.acsredux.adapter.web;
 
-import com.acsredux.base.Event;
-import com.acsredux.members.CommandService;
-import com.acsredux.members.commands.BaseCommand;
-import com.acsredux.members.queries.FindMemberDashboard;
-import com.acsredux.members.values.MemberDashboard;
+import com.acsredux.core.base.Event;
+import com.acsredux.core.members.MemberService;
+import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.queries.FindDashboard;
+import com.acsredux.core.members.values.MemberDashboard;
 import java.util.Optional;
 
-class MockMemberService implements CommandService {
+class MockMemberService implements MemberService {
 
   private Event event;
   private MemberDashboard dashboard = null;
 
   @Override
-  public Event handle(BaseCommand x) {
+  public Event handle(MemberCommand x) {
     return this.event;
   }
 
   @Override
-  public Optional<MemberDashboard> handle(FindMemberDashboard x) {
+  public Optional<MemberDashboard> handle(FindDashboard x) {
     return Optional.ofNullable(this.dashboard);
   }
 

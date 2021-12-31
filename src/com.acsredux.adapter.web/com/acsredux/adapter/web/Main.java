@@ -3,8 +3,8 @@ package com.acsredux.adapter.web;
 import static java.lang.System.Logger.Level.INFO;
 
 import com.acsredux.adapter.stub.Stub;
-import com.acsredux.members.CommandService;
-import com.acsredux.members.ServiceFactory;
+import com.acsredux.core.members.MemberService;
+import com.acsredux.core.members.MemberServiceFactory;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,9 +31,16 @@ public class Main {
     server.setExecutor(Executors.newFixedThreadPool(xs.threads));
 
     server.createContext("/", new RootHandler(xs.documentRoot));
+
     Stub stub = Stub.provider();
     ZoneId tz = ZoneId.of("US/Eastern");
-    CommandService memberService = ServiceFactory.getCommandService(stub, stub, stub, tz);
+    MemberService memberService = MemberServiceFactory.getMemberService(
+      stub,
+      stub,
+      stub,
+      stub,
+      tz
+    );
     server.createContext("/members", new MembersHandler(xs.documentRoot, memberService));
 
     server.start();

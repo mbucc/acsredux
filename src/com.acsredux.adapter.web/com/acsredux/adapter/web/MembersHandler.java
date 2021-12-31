@@ -1,12 +1,12 @@
 package com.acsredux.adapter.web;
 
-import com.acsredux.base.Event;
-import com.acsredux.base.ValidationException;
-import com.acsredux.members.CommandService;
-import com.acsredux.members.commands.BaseCommand;
-import com.acsredux.members.events.MemberAdded;
-import com.acsredux.members.queries.FindMemberDashboard;
-import com.acsredux.members.values.*;
+import com.acsredux.core.base.Event;
+import com.acsredux.core.base.ValidationException;
+import com.acsredux.core.members.MemberService;
+import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.events.MemberAdded;
+import com.acsredux.core.members.queries.FindDashboard;
+import com.acsredux.core.members.values.*;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -25,11 +25,11 @@ import java.util.Optional;
 
 class MembersHandler implements HttpHandler {
 
-  private CommandService commandHandler;
+  private MemberService commandHandler;
   private Mustache createTemplate;
   private Mustache dashboardTemplate;
 
-  MembersHandler(String templateRoot, CommandService commandHandler) {
+  MembersHandler(String templateRoot, MemberService commandHandler) {
     MustacheFactory mf = new DefaultMustacheFactory(new File(templateRoot));
     this.commandHandler = commandHandler;
     this.createTemplate = mf.compile("members/create.html");
@@ -55,7 +55,7 @@ class MembersHandler implements HttpHandler {
         grabber.id = o;
         return o;
       })
-      .map(FindMemberDashboard::new)
+      .map(FindDashboard::new)
       .map(commandHandler::handle);
 
     if (result.isOk()) {
@@ -85,7 +85,7 @@ class MembersHandler implements HttpHandler {
         return o;
       })
       .map(Util::form2cmd)
-      .map(BaseCommand.class::cast)
+      .map(MemberCommand.class::cast)
       .map(commandHandler::handle);
 
     if (result.isOk()) {

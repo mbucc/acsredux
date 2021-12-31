@@ -1,0 +1,37 @@
+#! /bin/sh -e
+
+#
+#		Add ChaCha encryption key (if key file not found)
+#
+if [ ! -f ~/.acsredux ]; then
+	echo Creating encryption key and saving to ~/.acsredux
+	./crypt.sh -k > ~/.acsredux
+	chmod 600 ~/.acsredux
+else
+	echo Skipping encryption key, as ~/.acsredux exists.
+fi
+
+#
+#		Add environmental variables (if config file not found)
+#
+if [ ! -f ~/.acsreduxrc ]; then
+	VARS="
+	ACSREDUX_ACTIVATION_URL
+	SENDGRID_API_KEY
+	SENDGRID_WELCOME_TEMPLATE_ID
+	"
+	
+	for v in $VARS; do
+		printf "Enter ${v}: "
+		read y
+		printf "export %s=%s\n" $v $y >> ~/.acsreduxrc
+	done
+else
+	echo Skipping environmental variable setup as ~/.acsreduxrc exists.
+fi
+
+echo ""
+echo "If you haven't already, add the following line to your ~/.$(basename $SHELL)rc:"
+echo ""
+echo "source ~/.acsreduxrc"
+echo ""

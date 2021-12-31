@@ -1,8 +1,8 @@
 package com.acsredux.adapter.web;
 
-import com.acsredux.base.Command;
-import com.acsredux.members.commands.AddMember;
-import com.acsredux.members.values.*;
+import com.acsredux.core.base.Command;
+import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -62,8 +62,7 @@ class Util {
         null,
         new Email(x.get("email")),
         new ClearTextPassword(x.get("pwd1")),
-        new ClearTextPassword(x.get("pwd2")),
-        null
+        new ClearTextPassword(x.get("pwd2"))
       );
     };
   }

@@ -1,0 +1,24 @@
+#			global replace all
+X=User
+Y=Member
+find src -name "*.java" -exec grep "$X" {} +
+find src -name "*.java" -exec sed -i '' -- "s/$X/$Y/g" {} +
+find src -name "*${X}*java" |while read f; do f1=$(echo $f|sed "s/$X/$Y/"); git mv $f $f1; done
+
+#			sed word endings in osx
+mark@Marks-MBP acsredux % echo 'abc de def' |sed -e 's/[[:<:]]de[[:>:]]/ZZZ/'
+abc ZZZ def
+
+#			squash local work into one big commit to push
+git rebase -i origin/main
+
+#			Rename all test classes.
+#! /bin/sh -e
+FILES=$(find src -name '*Test.java')
+for f in $FILES; do
+	name0=$(basename $f)
+	name1=$(echo $name0|sed -e 's/Test\././' -e 's/^/Test/')
+	d=$(dirname $f)
+	mv $d/$name0 $d/$name1
+	find src -name "*.java" -exec sed -i '' -- "s/$name0/$name1/g" {} +
+done
