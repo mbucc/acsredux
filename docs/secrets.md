@@ -15,14 +15,10 @@ Run the service start script as root, and have it:
 
 While you can drop privileges using JNI, this seemed simpler.
 
-A developer on their local host you can just start the service.
-
-Notes
-
-In this case, the bootstrap secret is a ChaCha20 encrytion key.
+If you don't care to protect the bootstrap secret from a local exploit,
+you can just chmod 400 ~/.acsredux.
 
 Setup
 
-$ make
-
-$ ./scripts/setup-security
+    $ make
+    $ ./scripts/env-setup

@@ -2,7 +2,7 @@ package com.acsredux.adapter.web;
 
 import org.junit.jupiter.api.Test;
 
-class RootHandlerTest {
+class TestRootHandler {
 
   String expected(String url) {
     return "";

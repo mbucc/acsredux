@@ -11,7 +11,7 @@ import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
-class StubTest {
+class TestStub {
 
   @Test
   void testAddMember() {

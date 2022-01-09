@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class AddMemberHandlerTest {
+class TestAddMemberHandler {
 
   private AddMemberHandler service;
   private Reader reader;

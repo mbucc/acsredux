@@ -13,8 +13,6 @@ record Configuration(
   URI apiURI,
   char[] apiKey
 ) {
-  public static final int DEFAULT_TIMEOUT_IN_SECONDS = 5;
-
   static Configuration loadFromEnvironment() {
     Map<String, String> env = System.getenv();
     return new Configuration(

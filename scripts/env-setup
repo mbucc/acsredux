@@ -5,7 +5,7 @@
 #
 if [ ! -f ~/.acsredux ]; then
 	echo Creating encryption key and saving to ~/.acsredux
-	./crypt.sh -k > ~/.acsredux
+	./env.sh -k > ~/.acsredux
 	chmod 600 ~/.acsredux
 else
 	echo Skipping encryption key, as ~/.acsredux exists.
