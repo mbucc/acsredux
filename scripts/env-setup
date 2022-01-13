@@ -15,17 +15,21 @@ fi
 #		Add environmental variables (if config file not found)
 #
 if [ ! -f ~/.acsreduxrc ]; then
-	VARS="
-	ACSREDUX_ACTIVATION_URL
-	SENDGRID_API_KEY
-	SENDGRID_WELCOME_TEMPLATE_ID
-	"
-	
-	for v in $VARS; do
-		printf "Enter ${v}: "
+	rm -f t
+	while read v <&3; do
+		printf "Enter %s: " "$v"
 		read y
-		printf "export %s=%s\n" $v $y >> ~/.acsreduxrc
-	done
+			# Remove the " (encrypted)" suffix if present.
+		barevar=$(printf %s "$v"|cut -d ' ' -f 1)
+		# Avoid "inconsistent type for assignment" errors
+		# This can happen if the env var is currently set to an array
+		# on zsh (for example).
+		printf "unset %s\n" "$barevar" >> t
+		printf "export %s=\"%s\"\n" "$barevar" "$y" >> t
+	done 3<<EOF
+	$(./env.sh -l | grep -v '(default=')
+EOF
+	mv t ~/.acsreduxrc
 else
 	echo Skipping environmental variable setup as ~/.acsreduxrc exists.
 fi

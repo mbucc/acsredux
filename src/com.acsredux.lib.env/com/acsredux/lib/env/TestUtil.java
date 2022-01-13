@@ -16,12 +16,12 @@ class TestUtil {
   void testGetURISunny() throws URISyntaxException {
     // setup
     Map<String, String> env = Map.of(
-      Variable.SENDGRID_API_URL.name(),
+      Variable.MAILGUN_API_URL.name(),
       "https://example.com"
     );
 
     // execute
-    URI y = assertDoesNotThrow(() -> Util.getURI(Variable.SENDGRID_API_URL, env));
+    URI y = assertDoesNotThrow(() -> Util.getURI(Variable.MAILGUN_API_URL, env));
 
     // verify
     assertEquals(new URI("https://example.com"), y);
@@ -48,10 +48,10 @@ class TestUtil {
   @Test
   void getGetIntSunny() {
     // setup
-    Map<String, String> env = Map.of(Variable.SENDGRID_API_URL.name(), "1");
+    Map<String, String> env = Map.of(Variable.MAILGUN_API_URL.name(), "1");
 
     // execute
-    int y = assertDoesNotThrow(() -> Util.getInt(Variable.SENDGRID_API_URL, env));
+    int y = assertDoesNotThrow(() -> Util.getInt(Variable.MAILGUN_API_URL, env));
 
     // verify
     assertEquals(1, y);

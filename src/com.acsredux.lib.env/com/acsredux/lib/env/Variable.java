@@ -8,9 +8,8 @@ import static com.acsredux.lib.env.VariableType.URL;
 public enum Variable {
   ACSREDUX_ACTIVATION_URL(URL),
   ACSREDUX_SECRET_FILENAME(STRING, "~/.acsredux"),
-  SENDGRID_API_KEY(SECRET),
-  SENDGRID_API_URL(URL, "https://api.sendgrid.com/v3/mail/send"),
-  SENDGRID_WELCOME_TEMPLATE_ID(STRING),
+  MAILGUN_API_KEY(SECRET),
+  MAILGUN_API_URL(URL),
   NOTIFIER_SEND_TIMEOUT_IN_SECONDS(INT, "5");
 
   private final VariableType typ;
@@ -34,9 +33,13 @@ public enum Variable {
 
   @Override
   public String toString() {
-    if (getDefaultValue() == null) {
-      return this.name();
+    String y = this.name();
+    if (this.typ == SECRET) {
+      y += " (encrypted)";
     }
-    return this.name() + " (default=" + this.defaultValue + ")";
+    if (this.getDefaultValue() != null) {
+      y += " (default=" + this.defaultValue + ")";
+    }
+    return y;
   }
 }

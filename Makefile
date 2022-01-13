@@ -16,7 +16,7 @@ jars: mlib/com.acsredux.adapter.web@1.jar \
 	mlib/com.acsredux.core.members@1.jar \
 	mlib/com.acsredux.core.base@1.jar \
 	mlib/com.acsredux.adapter.stub@1.jar \
-	mlib/com.acsredux.adapter.sendgrid@1.jar \
+	mlib/com.acsredux.adapter.mailgun@1.jar \
 	mlib/com.acsredux.lib.env@1.jar \
 	mlib/compiler-0.9.10.jar \
 	mlib/result-flow-2.0.0.jar
@@ -91,7 +91,7 @@ compile: checkstyle
 #
 ###########################################################################
 
-TESTCP=classes/com.acsredux.core.admin:classes/com.acsredux.adapter.sendgrid:classes/com.acsredux.lib.env:classes/com.acsredux.adapter.web:classes/com.acsredux.core.members:classes/com.acsredux.core.base:classes/com.acsredux.adapter.stub:testlib/*:lib/*
+TESTCP=classes/com.acsredux.core.admin:classes/com.acsredux.adapter.mailgun:classes/com.acsredux.lib.env:classes/com.acsredux.adapter.web:classes/com.acsredux.core.members:classes/com.acsredux.core.base:classes/com.acsredux.adapter.stub:testlib/*:lib/*
 
 .PHONY: test
 test: compiletests
