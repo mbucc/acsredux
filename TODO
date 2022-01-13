@@ -1,5 +1,3 @@
-2022-01-09: setup sendgrid verified sender from acsredux.com domain.
-2022-01-05: finish sendmail adapter.
 2022-01-07: add zip code to member record
 2022-01-07: render all fields on memeber create record
 2022-01-07: default status to active (branch on admin flag)?
@@ -12,7 +10,6 @@
 2021-12-07: create com.acsredux.adapter.mailgun
 2021-12-27: deploy
 2021-12-27: add SSL
-2021-08-08: Convert growing zone from a record to an enum
 2021-08-09: limit # of users during testing
 2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
 2021-12-27: add admin pages
