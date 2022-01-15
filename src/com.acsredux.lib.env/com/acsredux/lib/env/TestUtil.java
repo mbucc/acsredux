@@ -73,4 +73,16 @@ class TestUtil {
     );
     assertEquals(exp, y);
   }
+  //  void testFormToAddMemberCommand() {
+  //    // setup
+  //    FormData x = new FormData();
+  //    x.add("email", TEST_EMAIL);
+  //    x.add("firstName", TEST_FIRST_NAME);
+  //    x.add("lastName", TEST_LAST_NAME);
+  //    x.add("zip", TEST_ZIP_CODE);
+  //    x.add("pwd1", TEST_CLEARTEXT_PASSWORD);
+  //    x.add("pwd2", TEST_CLEARTEXT_PASSWORD);
+  //    x.add("command", CREATE_MEMBER);
+  //
+  //    // execute
 }

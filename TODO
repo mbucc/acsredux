@@ -1,4 +1,8 @@
-2022-01-07: render all fields on memeber create record
+2022-01-15: after create form submit, go to "check inbox page"
+2022-01-15: Don't print passwords in FormData toString (check for pwd, password, or passwd)
+2022-01-15: adminMemberReader --> adminReader (global)
+2022-01-15: Writer -> MemberWriter, Notifier -> MemberNotifier
+2022-01-15: MemberStatus: AUTHORIZED -> ACTIVE
 2022-01-07: default status to active (branch on admin flag)?
 2022-01-01: prevent double-click on create membership form
 2022-01-01: test that mail timeout shows retry message to user

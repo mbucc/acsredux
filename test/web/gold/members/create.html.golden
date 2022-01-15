@@ -1,5 +1,5 @@
 200
-Content-Length: 1046
+Content-Length: 1412
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -20,6 +20,18 @@ Content-type: text/html; charset= UTF-8
           <td>
             <input type="email" name="email"
             required autofocus />
+          </td>
+        </tr>
+        <tr>
+          <th><label for="firstName">First name:</label></th>
+          <td>
+            <input type="firstName" name="firstName" required />
+          </td>
+        </tr>
+        <tr>
+          <th><label for="lastName">Last name:</label></th>
+          <td>
+            <input type="lastName" name="lastName" required />
           </td>
         </tr>
         <tr>

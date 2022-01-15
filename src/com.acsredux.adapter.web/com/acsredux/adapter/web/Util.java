@@ -58,8 +58,8 @@ class Util {
     }
     return switch (cmd) {
       case CREATE_MEMBER -> new AddMember(
-        null,
-        null,
+        new FirstName(x.get("firstName")),
+        new LastName(x.get("lastName")),
         new Email(x.get("email")),
         new ClearTextPassword(x.get("pwd1")),
         new ClearTextPassword(x.get("pwd2")),

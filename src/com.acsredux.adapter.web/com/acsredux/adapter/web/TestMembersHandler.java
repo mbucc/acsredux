@@ -60,7 +60,7 @@ class TestMembersHandler {
   void testCreatePostSunny() {
     // setup
     var body =
-      "email=t%40t.com&zip=12345&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!&command=create_member";
+      "email=t%40t.com&firstName=Bill&lastName=Russel&zip=12345&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!&command=create_member";
     var mock = new MockHttpExchange("/members/create.html", "POST", body);
     this.mockMemberService.setEvent(new MemberAdded(null, null, null, new MemberID(1L)));
 
@@ -74,7 +74,8 @@ class TestMembersHandler {
   @Test
   void testCreatePostError() {
     // setup
-    var body = "email=t%40t.com&command=create_member";
+    var body =
+      "email=t%40t.com&firstName=Bill&lastName=Russel&zip=12345&pwd2=aBcd3fgh!&command=create_member";
     var mock = new MockHttpExchange("/members/create.html.no_password", "POST", body);
 
     // execute
