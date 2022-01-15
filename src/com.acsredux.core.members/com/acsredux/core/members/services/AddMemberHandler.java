@@ -6,8 +6,8 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Reader;
 import com.acsredux.core.members.ports.Writer;
 import com.acsredux.core.members.values.CreatedOn;
 import com.acsredux.core.members.values.Email;
@@ -19,22 +19,22 @@ import java.util.ResourceBundle;
 
 public final class AddMemberHandler {
 
-  private final Reader reader;
-  private final AdminReader adminReader;
+  private final MemberReader reader;
+  private final AdminReader adminMemberReader;
   private final Writer writer;
   private final Notifier notifier;
   private final InstantSource clock;
   private final ResourceBundle msgs;
 
   public AddMemberHandler(
-    Reader reader,
-    AdminReader adminReader,
+    MemberReader reader,
+    AdminReader adminMemberReader,
     Writer writer,
     Notifier notifier,
     InstantSource clock
   ) {
     this.reader = reader;
-    this.adminReader = adminReader;
+    this.adminMemberReader = adminMemberReader;
     this.writer = writer;
     this.notifier = notifier;
     this.clock = clock;
@@ -73,7 +73,7 @@ public final class AddMemberHandler {
   }
 
   MemberAdded notify(MemberAdded x) {
-    notifier.memberAdded(x, adminReader.getSiteInfo());
+    notifier.memberAdded(x, adminMemberReader.getSiteInfo());
     return x;
   }
 

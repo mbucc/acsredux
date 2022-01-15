@@ -21,8 +21,8 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Reader;
 import com.acsredux.core.members.ports.Writer;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
@@ -37,8 +37,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 class TestAddMemberHandler {
 
   private AddMemberHandler service;
-  private Reader reader;
-  private AdminReader adminReader;
+  private MemberReader reader;
+  private AdminReader adminMemberReader;
   private Writer writer;
   private Notifier notifier;
   private InstantSource clock;
@@ -47,15 +47,15 @@ class TestAddMemberHandler {
 
   @BeforeEach
   void setup() {
-    this.reader = mock(Reader.class);
-    this.adminReader = mock(AdminReader.class);
+    this.reader = mock(MemberReader.class);
+    this.adminMemberReader = mock(AdminReader.class);
     this.writer = mock(Writer.class);
     this.notifier = mock(Notifier.class);
     this.clock = InstantSource.fixed(this.clockTime.val());
     this.service =
       new AddMemberHandler(
         this.reader,
-        this.adminReader,
+        this.adminMemberReader,
         this.writer,
         this.notifier,
         this.clock
@@ -138,7 +138,7 @@ class TestAddMemberHandler {
   void testSunnyPath() {
     // setup
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
-    given(adminReader.getSiteInfo()).willReturn(TEST_SITEINFO);
+    given(adminMemberReader.getSiteInfo()).willReturn(TEST_SITEINFO);
     given(writer.addMember(TEST_ADD_MEMBER_CMD, this.clockTime))
       .willReturn(TEST_MEMBER_ID);
     given(writer.addAddMemberToken(TEST_MEMBER_ID, this.clockTime))
@@ -158,8 +158,8 @@ class TestAddMemberHandler {
     then(reader).should().findByEmail(TEST_EMAIL);
     then(reader).shouldHaveNoMoreInteractions();
 
-    then(adminReader).should().getSiteInfo();
-    then(adminReader).shouldHaveNoMoreInteractions();
+    then(adminMemberReader).should().getSiteInfo();
+    then(adminMemberReader).shouldHaveNoMoreInteractions();
 
     then(writer).should().addMember(TEST_ADD_MEMBER_CMD, clockTime);
     then(writer).should().addAddMemberToken(TEST_MEMBER_ID, clockTime);

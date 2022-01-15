@@ -3,8 +3,8 @@ package com.acsredux.adapter.web;
 import com.acsredux.core.base.Event;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
-import com.acsredux.core.members.queries.FindDashboard;
 import com.acsredux.core.members.values.MemberDashboard;
+import com.acsredux.core.members.values.MemberID;
 import java.util.Optional;
 
 class MockMemberService implements MemberService {
@@ -18,8 +18,13 @@ class MockMemberService implements MemberService {
   }
 
   @Override
-  public Optional<MemberDashboard> handle(FindDashboard x) {
+  public Optional<MemberDashboard> findDashboard(MemberID x) {
     return Optional.ofNullable(this.dashboard);
+  }
+
+  @Override
+  public MemberDashboard getDashboard(MemberID x) {
+    return this.dashboard;
   }
 
   void setEvent(Event x) {

@@ -4,8 +4,8 @@ import com.acsredux.core.base.Event;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.queries.FindDashboard;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -21,17 +21,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.Map;
 
 class MembersHandler implements HttpHandler {
 
-  private MemberService commandHandler;
+  private MemberService service;
   private Mustache createTemplate;
   private Mustache dashboardTemplate;
 
-  MembersHandler(String templateRoot, MemberService commandHandler) {
+  MembersHandler(String templateRoot, MemberService service) {
     MustacheFactory mf = new DefaultMustacheFactory(new File(templateRoot));
-    this.commandHandler = commandHandler;
+    this.service = service;
     this.createTemplate = mf.compile("members/create.html");
     this.dashboardTemplate = mf.compile("members/dashboard.html");
   }
@@ -44,27 +44,23 @@ class MembersHandler implements HttpHandler {
   void displayDashboard(HttpExchange x) throws IOException, Exception {
     x.getRequestBody().transferTo(OutputStream.nullOutputStream());
 
-    var grabber = new Object() {
-      MemberID id;
-    };
-    Result<Optional<MemberDashboard>> result = Result
+    Result<MemberDashboard> result = Result
       .ok(x)
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
-      .map(o -> {
-        grabber.id = o;
-        return o;
-      })
-      .map(FindDashboard::new)
-      .map(commandHandler::handle);
+      .map(service::getDashboard);
 
     if (result.isOk()) {
-      if (result.getValue().isPresent()) {
-        Util.renderForm(this.dashboardTemplate, x, result.getValue());
-      } else {
-        System.out.println("MKB: memberID = " + grabber.id);
-        throw new FileNotFoundException("Member not found.");
-      }
+      Member y = result.getValue().member();
+      Map<String, Object> data = Map.of(
+        "firstName",
+        y.first().val(),
+        "lastName",
+        y.last().val(),
+        "memberSince",
+        y.memberSince()
+      );
+      Util.renderForm(this.dashboardTemplate, x, data);
     } else {
       throw result.getError();
     }
@@ -86,7 +82,7 @@ class MembersHandler implements HttpHandler {
       })
       .map(Util::form2cmd)
       .map(MemberCommand.class::cast)
-      .map(commandHandler::handle);
+      .map(service::handle);
 
     if (result.isOk()) {
       Headers ys = x.getResponseHeaders();

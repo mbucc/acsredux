@@ -5,24 +5,18 @@ import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Reader;
 import com.acsredux.core.members.ports.Writer;
-import com.acsredux.core.members.queries.FindDashboard;
-import com.acsredux.core.members.values.CreatedOn;
-import com.acsredux.core.members.values.Email;
-import com.acsredux.core.members.values.FirstName;
-import com.acsredux.core.members.values.LastName;
-import com.acsredux.core.members.values.MemberDashboard;
-import com.acsredux.core.members.values.MemberID;
-import com.acsredux.core.members.values.VerificationToken;
-import com.acsredux.core.members.values.ZipCode;
+import com.acsredux.core.members.values.*;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public final class Stub implements Reader, Writer, Notifier, AdminReader {
+public final class Stub implements MemberReader, Writer, Notifier, AdminReader {
 
   private static final Stub INSTANCE = new Stub();
 
@@ -36,7 +30,11 @@ public final class Stub implements Reader, Writer, Notifier, AdminReader {
         new Email("admin@example.com"),
         new FirstName("Bill"),
         new LastName("Russel"),
-        new ZipCode("02134")
+        new ZipCode("02134"),
+        MemberStatus.AUTHORIZED,
+        new EncryptedPassword("abc"),
+        new RegistrationDate(Instant.now()),
+        ZoneId.of("US/Eastern")
       )
     );
   }
@@ -60,13 +58,9 @@ public final class Stub implements Reader, Writer, Notifier, AdminReader {
   }
 
   @Override
-  public Optional<MemberDashboard> findMemberDashboard(FindDashboard x) {
+  public Optional<MemberDashboard> findMemberDashboard(MemberID x) {
     Function<Member, MemberDashboard> toDashboard = o -> new MemberDashboard(o);
-    return members
-      .stream()
-      .filter(o -> o.id().equals(x.memberID()))
-      .findFirst()
-      .map(toDashboard);
+    return members.stream().filter(o -> o.id().equals(x)).findFirst().map(toDashboard);
   }
 
   @Override
@@ -84,7 +78,17 @@ public final class Stub implements Reader, Writer, Notifier, AdminReader {
       .orElse(1);
     MemberID newID = new MemberID(maxID + 1);
     members.add(
-      new Member(newID, cmd.email(), cmd.firstName(), cmd.lastName(), cmd.zipCode())
+      new Member(
+        newID,
+        cmd.email(),
+        cmd.firstName(),
+        cmd.lastName(),
+        cmd.zipCode(),
+        MemberStatus.AUTHORIZED,
+        new EncryptedPassword("abc"),
+        new RegistrationDate(Instant.now()),
+        ZoneId.of("US/Eastern")
+      )
     );
     return newID;
   }

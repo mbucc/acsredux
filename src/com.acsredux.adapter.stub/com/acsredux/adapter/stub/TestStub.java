@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.acsredux.core.members.queries.FindDashboard;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,7 @@ class TestStub {
     // setup
     var stub = Stub.provider();
     var now = new CreatedOn(Instant.now());
-    var query = new FindDashboard(TEST_MEMBER_ID);
-    var dash = stub.findMemberDashboard(query);
+    var dash = stub.findMemberDashboard(TEST_MEMBER_ID);
     assertFalse(dash.isPresent());
 
     // execute
@@ -27,8 +25,7 @@ class TestStub {
 
     // verify
     assertEquals(2L, newMemberID.val());
-    query = new FindDashboard(newMemberID);
-    dash = stub.findMemberDashboard(query);
+    dash = stub.findMemberDashboard(newMemberID);
     assertTrue(dash.isPresent());
   }
 }
