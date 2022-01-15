@@ -16,6 +16,7 @@ import com.acsredux.core.members.values.LastName;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.VerificationToken;
+import com.acsredux.core.members.values.ZipCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,8 @@ public final class Stub implements Reader, Writer, Notifier, AdminReader {
         new MemberID(1L),
         new Email("admin@example.com"),
         new FirstName("Bill"),
-        new LastName("Russel")
+        new LastName("Russel"),
+        new ZipCode("02134")
       )
     );
   }
@@ -81,7 +83,9 @@ public final class Stub implements Reader, Writer, Notifier, AdminReader {
       .max()
       .orElse(1);
     MemberID newID = new MemberID(maxID + 1);
-    members.add(new Member(newID, cmd.email(), cmd.firstName(), cmd.lastName()));
+    members.add(
+      new Member(newID, cmd.email(), cmd.firstName(), cmd.lastName(), cmd.zipCode())
+    );
     return newID;
   }
 

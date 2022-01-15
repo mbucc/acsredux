@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,7 +59,8 @@ class TestMembersHandler {
   @Test
   void testCreatePostSunny() {
     // setup
-    var body = "email=t%40t.com&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!&command=create_member";
+    var body =
+      "email=t%40t.com&zip=12345&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!&command=create_member";
     var mock = new MockHttpExchange("/members/create.html", "POST", body);
     this.mockMemberService.setEvent(new MemberAdded(null, null, null, new MemberID(1L)));
 
@@ -86,16 +88,7 @@ class TestMembersHandler {
   void testGetDashboard() {
     // setup
     var mock = new MockHttpExchange("/members/2", "GET");
-    this.mockMemberService.setDashboard(
-        new MemberDashboard(
-          new Member(
-            new MemberID(2L),
-            new Email("t@t.com"),
-            new FirstName("first"),
-            new LastName("last")
-          )
-        )
-      );
+    this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
 
     // execute
     this.handler.handle(mock);

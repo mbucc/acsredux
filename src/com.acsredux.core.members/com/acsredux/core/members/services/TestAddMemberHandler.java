@@ -9,6 +9,7 @@ import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_PASSWORD;
 import static com.acsredux.lib.testutil.TestData.TEST_SITEINFO;
 import static com.acsredux.lib.testutil.TestData.TEST_TOKEN;
+import static com.acsredux.lib.testutil.TestData.TEST_ZIP_CODE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -63,15 +64,36 @@ class TestAddMemberHandler {
 
   private static enum RequiredFieldsTestData {
     EMAIL(
-      new AddMember(TEST_FIRST_NAME, TEST_LAST_NAME, null, TEST_PASSWORD, TEST_PASSWORD),
+      new AddMember(
+        TEST_FIRST_NAME,
+        TEST_LAST_NAME,
+        null,
+        TEST_PASSWORD,
+        TEST_PASSWORD,
+        TEST_ZIP_CODE
+      ),
       msgs.getString("email_missing")
     ),
     PASSWORD1(
-      new AddMember(TEST_FIRST_NAME, TEST_LAST_NAME, TEST_EMAIL, null, TEST_PASSWORD),
+      new AddMember(
+        TEST_FIRST_NAME,
+        TEST_LAST_NAME,
+        TEST_EMAIL,
+        null,
+        TEST_PASSWORD,
+        TEST_ZIP_CODE
+      ),
       msgs.getString("password1_missing")
     ),
     PASSWORD2(
-      new AddMember(TEST_FIRST_NAME, TEST_LAST_NAME, TEST_EMAIL, TEST_PASSWORD, null),
+      new AddMember(
+        TEST_FIRST_NAME,
+        TEST_LAST_NAME,
+        TEST_EMAIL,
+        TEST_PASSWORD,
+        null,
+        TEST_ZIP_CODE
+      ),
       msgs.getString("password2_missing")
     );
 

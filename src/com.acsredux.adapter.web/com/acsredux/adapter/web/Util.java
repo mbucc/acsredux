@@ -62,7 +62,8 @@ class Util {
         null,
         new Email(x.get("email")),
         new ClearTextPassword(x.get("pwd1")),
-        new ClearTextPassword(x.get("pwd2"))
+        new ClearTextPassword(x.get("pwd2")),
+        new ZipCode(x.get("zip"))
       );
     };
   }

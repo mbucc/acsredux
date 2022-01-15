@@ -1,4 +1,3 @@
-2022-01-07: add zip code to member record
 2022-01-07: render all fields on memeber create record
 2022-01-07: default status to active (branch on admin flag)?
 2022-01-01: prevent double-click on create membership form

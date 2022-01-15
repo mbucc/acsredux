@@ -1,5 +1,5 @@
 200
-Content-Length: 880
+Content-Length: 1046
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -20,6 +20,12 @@ Content-type: text/html; charset= UTF-8
           <td>
             <input type="email" name="email"
             required autofocus />
+          </td>
+        </tr>
+        <tr>
+          <th><label for="zip">Zip code:</label></th>
+          <td>
+            <input type="text" name="zip" required />
           </td>
         </tr>
         <tr>

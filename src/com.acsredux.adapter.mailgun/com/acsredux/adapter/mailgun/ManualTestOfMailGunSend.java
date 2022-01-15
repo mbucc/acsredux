@@ -21,7 +21,8 @@ class ManualTestOfMailGunSend {
       new LastName("Russell"),
       new Email("mkbucc@gmail.com"),
       new ClearTextPassword("aBcd3f123!"),
-      new ClearTextPassword("aBcd3f123!")
+      new ClearTextPassword("aBcd3f123!"),
+      new ZipCode("12345")
     );
     MemberAdded event = new MemberAdded(
       cmd,
