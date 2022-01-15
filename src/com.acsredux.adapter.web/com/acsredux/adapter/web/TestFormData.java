@@ -10,39 +10,41 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class TestFormData {
 
-  FormData x;
+  FormData formData;
 
   @BeforeEach
   void setup() {
-    this.x = new FormData();
+    this.formData = new FormData();
   }
 
   @Test
   void testOneValue() {
     // execute
-    x.add("test", "value");
+    formData.add("test", "value");
 
     // verify
-    assertEquals("value", x.get("test"));
+    assertEquals("value", formData.get("test"));
   }
 
   @Test
   void testNoValue() {
     // verify
-    assertNull(x.get("test"));
+    assertNull(formData.get("test"));
   }
 
   @Test
   void testTwoValues() {
     // execute
-    x.add("test", "a");
-    x.add("test", "b");
+    formData.add("test", "a");
+    formData.add("test", "b");
 
     // verify
-    List<String> ys = x.getAll("test");
+    List<String> ys = formData.getAll("test");
     assertEquals(2, ys.size());
     assertEquals("a", ys.get(0));
     assertEquals("b", ys.get(1));
@@ -51,10 +53,10 @@ class TestFormData {
   @Test
   void testKeysAreCaseInsensitive() {
     // setup
-    x.add("AbC", "dEf");
+    formData.add("AbC", "dEf");
 
     // execute
-    String y = x.get("abc");
+    String y = formData.get("abc");
 
     // validate
     assertNotNull(y);
@@ -64,12 +66,12 @@ class TestFormData {
   @Test
   void testAsMap() {
     // setup
-    x.add("value", "1");
-    x.add("list", "a");
-    x.add("list", "b");
+    formData.add("value", "1");
+    formData.add("list", "a");
+    formData.add("list", "b");
 
     // execute
-    Map<String, Object> ys = x.asMap();
+    Map<String, Object> ys = formData.asMap();
 
     // verify
     assertNotNull(ys);
@@ -81,5 +83,28 @@ class TestFormData {
     List<String> ys1 = (ArrayList<String>) ys.get("list");
     assertEquals("a", ys1.get(0));
     assertEquals("b", ys1.get(1));
+  }
+
+  private static enum PASSWORD_KEY {
+    PWD1,
+    PWD2,
+    PASSWORD,
+    PASSWD,
+  }
+
+  @ParameterizedTest
+  @EnumSource
+  void noPasswordsInToString(PASSWORD_KEY x) {
+    // setup
+    String key = x.name().toLowerCase();
+    formData.add(key, "abc");
+    formData.add("z", "def");
+
+    // execute
+    String y = formData.toString();
+
+    // validate
+    String exp = String.format("<FormData: %s=********, z=def>", key);
+    assertEquals(exp, y);
   }
 }

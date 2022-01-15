@@ -1,7 +1,7 @@
 #			global replace all
 X=User
 Y=Member
-find src -name "*.java" -exec grep "$X" {} +
+find src -name "*.java" -exec grep -h "$X" {} +
 find src -name "*.java" -exec sed -i '' -- "s/$X/$Y/g" {} +
 find src -name "*${X}*java" |while read f; do f1=$(echo $f|sed "s/$X/$Y/"); git mv $f $f1; done
 

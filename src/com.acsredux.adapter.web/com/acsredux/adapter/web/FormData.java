@@ -36,17 +36,40 @@ class FormData {
   Map<String, Object> asMap() {
     Map<String, Object> ys = new HashMap<>(this.data.size());
     for (Map.Entry<String, List<String>> kv : this.data.entrySet()) {
-      if (kv.getValue().size() == 1) {
-        ys.put(kv.getKey(), kv.getValue().get(0));
-      } else {
-        ys.put(kv.getKey(), kv.getValue());
-      }
+      ys.put(kv.getKey(), firstOrList(kv));
     }
     return ys;
   }
 
+  private Object firstOrList(Map.Entry<String, List<String>> x) {
+    if (x.getValue().size() == 1) {
+      return x.getValue().get(0);
+    } else {
+      return x.getValue();
+    }
+  }
+
   @Override
   public String toString() {
-    return "<FormData: " + this.data.toString() + ">";
+    String[] patterns = { "pwd", "password", "passwd" };
+    StringBuffer buf = new StringBuffer();
+    buf.append("<FormData: ");
+    for (Map.Entry<String, List<String>> kv : this.data.entrySet()) {
+      buf.append(kv.getKey());
+      buf.append("=");
+      String y = firstOrList(kv).toString();
+      for (String pattern : patterns) {
+        if (kv.getKey().toLowerCase().contains(pattern)) {
+          y = "********";
+          break;
+        }
+      }
+      buf.append(y);
+      buf.append(", ");
+    }
+    buf.deleteCharAt(buf.length() - 1);
+    buf.deleteCharAt(buf.length() - 1);
+    buf.append(">");
+    return buf.toString();
   }
 }

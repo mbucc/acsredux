@@ -6,9 +6,9 @@ import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.commands.MemberCommand;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
-import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Writer;
+import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
 import java.time.InstantSource;
@@ -18,18 +18,18 @@ public final class MemberProvider implements MemberService {
 
   private final AddMemberHandler addMemberHandler;
   private final MemberReader reader;
-  private final AdminReader adminMemberReader;
+  private final AdminReader adminReader;
 
   public MemberProvider(
     MemberReader r,
-    Writer w,
-    Notifier notifier,
+    MemberWriter w,
+    MemberNotifier notifier,
     InstantSource clock,
-    AdminReader adminMemberReader
+    AdminReader adminReader
   ) {
-    addMemberHandler = new AddMemberHandler(r, adminMemberReader, w, notifier, clock);
+    addMemberHandler = new AddMemberHandler(r, adminReader, w, notifier, clock);
     this.reader = r;
-    this.adminMemberReader = adminMemberReader;
+    this.adminReader = adminReader;
   }
 
   @Override

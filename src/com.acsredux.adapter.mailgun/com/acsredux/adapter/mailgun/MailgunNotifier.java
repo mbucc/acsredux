@@ -5,7 +5,7 @@ import static java.net.http.HttpResponse.BodyHandlers;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.ports.Notifier;
+import com.acsredux.core.members.ports.MemberNotifier;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.function.BiConsumer;
 
-public final class MailgunNotifier implements Notifier {
+public final class MailgunNotifier implements MemberNotifier {
 
   private final Configuration conf;
   private final HttpClient http;

@@ -6,9 +6,9 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
-import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Writer;
+import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.CreatedOn;
 import com.acsredux.core.members.values.Email;
 import com.acsredux.core.members.values.MemberID;
@@ -20,21 +20,21 @@ import java.util.ResourceBundle;
 public final class AddMemberHandler {
 
   private final MemberReader reader;
-  private final AdminReader adminMemberReader;
-  private final Writer writer;
-  private final Notifier notifier;
+  private final AdminReader adminReader;
+  private final MemberWriter writer;
+  private final MemberNotifier notifier;
   private final InstantSource clock;
   private final ResourceBundle msgs;
 
   public AddMemberHandler(
     MemberReader reader,
-    AdminReader adminMemberReader,
-    Writer writer,
-    Notifier notifier,
+    AdminReader adminReader,
+    MemberWriter writer,
+    MemberNotifier notifier,
     InstantSource clock
   ) {
     this.reader = reader;
-    this.adminMemberReader = adminMemberReader;
+    this.adminReader = adminReader;
     this.writer = writer;
     this.notifier = notifier;
     this.clock = clock;
@@ -73,7 +73,7 @@ public final class AddMemberHandler {
   }
 
   MemberAdded notify(MemberAdded x) {
-    notifier.memberAdded(x, adminMemberReader.getSiteInfo());
+    notifier.memberAdded(x, adminReader.getSiteInfo());
     return x;
   }
 

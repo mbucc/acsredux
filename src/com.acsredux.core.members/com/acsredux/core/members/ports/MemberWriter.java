@@ -5,7 +5,7 @@ import com.acsredux.core.members.values.CreatedOn;
 import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.VerificationToken;
 
-public interface Writer {
+public interface MemberWriter {
   MemberID addMember(AddMember cmd, CreatedOn now);
   VerificationToken addAddMemberToken(MemberID memberID, CreatedOn now);
 }

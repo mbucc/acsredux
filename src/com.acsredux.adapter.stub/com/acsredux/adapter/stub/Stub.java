@@ -5,9 +5,9 @@ import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
-import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Writer;
+import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public final class Stub implements MemberReader, Writer, Notifier, AdminReader {
+public final class Stub
+  implements MemberReader, MemberWriter, MemberNotifier, AdminReader {
 
   private static final Stub INSTANCE = new Stub();
 
@@ -31,7 +32,7 @@ public final class Stub implements MemberReader, Writer, Notifier, AdminReader {
         new FirstName("Bill"),
         new LastName("Russel"),
         new ZipCode("02134"),
-        MemberStatus.AUTHORIZED,
+        MemberStatus.ACTIVE,
         new EncryptedPassword("abc"),
         new RegistrationDate(Instant.now()),
         ZoneId.of("US/Eastern")
@@ -84,7 +85,7 @@ public final class Stub implements MemberReader, Writer, Notifier, AdminReader {
         cmd.firstName(),
         cmd.lastName(),
         cmd.zipCode(),
-        MemberStatus.AUTHORIZED,
+        MemberStatus.ACTIVE,
         new EncryptedPassword("abc"),
         new RegistrationDate(Instant.now()),
         ZoneId.of("US/Eastern")

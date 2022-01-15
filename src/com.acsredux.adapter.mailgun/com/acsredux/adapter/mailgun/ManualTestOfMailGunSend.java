@@ -4,14 +4,14 @@ import static com.acsredux.lib.testutil.TestData.TEST_SITEINFO;
 
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.ports.Notifier;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 class ManualTestOfMailGunSend {
 
-  Notifier notifier = new MailgunNotifier();
+  MemberNotifier notifier = new MailgunNotifier();
 
   @Test
   void testNotifyOfMemberAddedSunny() {

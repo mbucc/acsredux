@@ -1,9 +1,9 @@
 package com.acsredux.core.members;
 
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
-import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Writer;
+import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.services.MemberProvider;
 import java.time.Clock;
 import java.time.InstantSource;
@@ -17,21 +17,21 @@ public final class MemberServiceFactory {
 
   public static MemberService getMemberService(
     MemberReader r,
-    Writer w,
-    Notifier notifier,
-    AdminReader adminMemberReader,
+    MemberWriter w,
+    MemberNotifier notifier,
+    AdminReader adminReader,
     ZoneId tz
   ) {
-    return getMemberService(r, w, notifier, adminMemberReader, Clock.system(tz));
+    return getMemberService(r, w, notifier, adminReader, Clock.system(tz));
   }
 
   static MemberService getMemberService(
     MemberReader r,
-    Writer w,
-    Notifier notifier,
-    AdminReader adminMemberReader,
+    MemberWriter w,
+    MemberNotifier notifier,
+    AdminReader adminReader,
     InstantSource clock
   ) {
-    return new MemberProvider(r, w, notifier, clock, adminMemberReader);
+    return new MemberProvider(r, w, notifier, clock, adminReader);
   }
 }

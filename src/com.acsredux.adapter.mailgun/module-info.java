@@ -4,6 +4,6 @@ module com.acsredux.adapter.mailgun {
   requires com.acsredux.lib.env;
   requires java.net.http;
   exports com.acsredux.adapter.mailgun ;
-  provides com.acsredux.core.members.ports.Notifier
+  provides com.acsredux.core.members.ports.MemberNotifier
     with com.acsredux.adapter.mailgun.MailgunNotifier;
 }

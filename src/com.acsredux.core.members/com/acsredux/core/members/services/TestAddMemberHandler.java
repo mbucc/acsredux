@@ -21,9 +21,9 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
-import com.acsredux.core.members.ports.Notifier;
-import com.acsredux.core.members.ports.Writer;
+import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import java.time.InstantSource;
@@ -38,9 +38,9 @@ class TestAddMemberHandler {
 
   private AddMemberHandler service;
   private MemberReader reader;
-  private AdminReader adminMemberReader;
-  private Writer writer;
-  private Notifier notifier;
+  private AdminReader adminReader;
+  private MemberWriter writer;
+  private MemberNotifier notifier;
   private InstantSource clock;
   private CreatedOn clockTime = new CreatedOn(Instant.now());
   private static ResourceBundle msgs = ResourceBundle.getBundle("MemberErrorMessages");
@@ -48,14 +48,14 @@ class TestAddMemberHandler {
   @BeforeEach
   void setup() {
     this.reader = mock(MemberReader.class);
-    this.adminMemberReader = mock(AdminReader.class);
-    this.writer = mock(Writer.class);
-    this.notifier = mock(Notifier.class);
+    this.adminReader = mock(AdminReader.class);
+    this.writer = mock(MemberWriter.class);
+    this.notifier = mock(MemberNotifier.class);
     this.clock = InstantSource.fixed(this.clockTime.val());
     this.service =
       new AddMemberHandler(
         this.reader,
-        this.adminMemberReader,
+        this.adminReader,
         this.writer,
         this.notifier,
         this.clock
@@ -138,7 +138,7 @@ class TestAddMemberHandler {
   void testSunnyPath() {
     // setup
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
-    given(adminMemberReader.getSiteInfo()).willReturn(TEST_SITEINFO);
+    given(adminReader.getSiteInfo()).willReturn(TEST_SITEINFO);
     given(writer.addMember(TEST_ADD_MEMBER_CMD, this.clockTime))
       .willReturn(TEST_MEMBER_ID);
     given(writer.addAddMemberToken(TEST_MEMBER_ID, this.clockTime))
@@ -158,8 +158,8 @@ class TestAddMemberHandler {
     then(reader).should().findByEmail(TEST_EMAIL);
     then(reader).shouldHaveNoMoreInteractions();
 
-    then(adminMemberReader).should().getSiteInfo();
-    then(adminMemberReader).shouldHaveNoMoreInteractions();
+    then(adminReader).should().getSiteInfo();
+    then(adminReader).shouldHaveNoMoreInteractions();
 
     then(writer).should().addMember(TEST_ADD_MEMBER_CMD, clockTime);
     then(writer).should().addAddMemberToken(TEST_MEMBER_ID, clockTime);

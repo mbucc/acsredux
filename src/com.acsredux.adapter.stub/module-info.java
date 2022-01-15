@@ -4,6 +4,8 @@ module com.acsredux.adapter.stub {
   exports com.acsredux.adapter.stub ;
   provides com.acsredux.core.members.ports.MemberReader
     with com.acsredux.adapter.stub.Stub;
-  provides com.acsredux.core.members.ports.Writer with com.acsredux.adapter.stub.Stub;
-  provides com.acsredux.core.members.ports.Notifier with com.acsredux.adapter.stub.Stub;
+  provides com.acsredux.core.members.ports.MemberWriter
+    with com.acsredux.adapter.stub.Stub;
+  provides com.acsredux.core.members.ports.MemberNotifier
+    with com.acsredux.adapter.stub.Stub;
 }

@@ -16,7 +16,7 @@ public class TestData {
   public static final VerificationToken TEST_TOKEN = new VerificationToken("test token");
   public static final ZipCode TEST_ZIP_CODE = new ZipCode("02134");
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
-  public static final MemberStatus TEST_MEMBER_STATUS = MemberStatus.AUTHORIZED;
+  public static final MemberStatus TEST_MEMBER_STATUS = MemberStatus.ACTIVE;
   public static final EncryptedPassword TEST_ENCRYPTED_PASSWORD = new EncryptedPassword(
     "abc"
   );
