@@ -12,4 +12,4 @@ cp -r src/ $D
 find $D -type f | egrep '(/Test|/Mock|/ManualTest)' | xargs rm
 rm -rf $D/com.acsredux.lib.testutil
 
-javadoc -quiet -Xdoclint:none  -p lib:testlib -d web/javadoc --module-source-path $D $(find $D -name '*.java')
+javadoc -quiet -Xdoclint:none  -p lib:testlib -d docs --module-source-path $D $(find $D -name '*.java')
