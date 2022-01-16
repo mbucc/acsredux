@@ -1,3 +1,6 @@
+/**
+    The Web adapter renders an HTML interface to the core business objects.
+ */
 module com.acsredux.adapter.web {
   requires com.acsredux.core.members;
   requires com.acsredux.adapter.stub;

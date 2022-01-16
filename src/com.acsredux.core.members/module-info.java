@@ -1,3 +1,6 @@
+/**
+    The Member core defines the services, data types, and ports for site members.
+ */
 module com.acsredux.core.members {
   requires transitive com.acsredux.core.admin;
   requires transitive com.acsredux.core.base;
