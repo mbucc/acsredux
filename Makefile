@@ -155,7 +155,7 @@ checkstyle: fmt
 .PHONY: fmt
 fmt:
 	if [ "$(SKIP_FMT)" = "N" ]; then \
-		npx prettier --print-width 90 --write . ; \
+		npx prettier --print-width 90 --write src web/template ; \
 	fi
 
 
@@ -169,8 +169,13 @@ fmt:
 ###########################################################################
 
 .PHONY: clean
+.PHONY: javadoc
+javadoc:
+	./scripts/javadoc.sh
+
 clean:
 	rm -rf mlib
 	rm -rf classes
 	rm -rf testclasses
+	rm -rf tmp
 	find ./test -name '*.actual' | xargs rm

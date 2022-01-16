@@ -1,3 +1,6 @@
+/**
+    The MailGun adapter sends member email notifications using <a href="https://www.mailgun.com">https://www.mailgun.com</a>.
+ */
 module com.acsredux.adapter.mailgun {
   requires transitive com.acsredux.core.members;
   requires com.acsredux.core.base;
