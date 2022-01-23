@@ -135,6 +135,21 @@ class TestAddMemberHandler {
   }
 
   @Test
+  void testCheckNameUnique() {
+    // setup
+    given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.of(TEST_MEMBER));
+
+    // execute
+    var e = assertThrows(
+      ValidationException.class,
+      () -> service.checkNameIsUnique(TEST_EMAIL)
+    );
+
+    // verify
+    assertEquals(msgs.getString("name_taken"), e.getMessage());
+  }
+
+  @Test
   void testSunnyPath() {
     // setup
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
