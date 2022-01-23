@@ -21,7 +21,7 @@ class TestUtil {
     );
 
     // execute
-    URI y = assertDoesNotThrow(() -> Util.getURI(Variable.MAILGUN_API_URL, env));
+    URI y = assertDoesNotThrow(() -> VariableUtil.getURI(Variable.MAILGUN_API_URL, env));
 
     // verify
     assertEquals(new URI("https://example.com"), y);
@@ -35,7 +35,7 @@ class TestUtil {
     // execute
     Exception y = assertThrows(
       IllegalStateException.class,
-      () -> Util.getURI(Variable.ACSREDUX_ACTIVATION_URL, env)
+      () -> VariableUtil.getURI(Variable.ACSREDUX_ACTIVATION_URL, env)
     );
 
     // verify
@@ -51,7 +51,7 @@ class TestUtil {
     Map<String, String> env = Map.of(Variable.MAILGUN_API_URL.name(), "1");
 
     // execute
-    int y = assertDoesNotThrow(() -> Util.getInt(Variable.MAILGUN_API_URL, env));
+    int y = assertDoesNotThrow(() -> VariableUtil.getInt(Variable.MAILGUN_API_URL, env));
 
     // verify
     assertEquals(1, y);
@@ -64,7 +64,7 @@ class TestUtil {
 
     // execute
     int y = assertDoesNotThrow(() ->
-      Util.getInt(Variable.NOTIFIER_SEND_TIMEOUT_IN_SECONDS, env)
+      VariableUtil.getInt(Variable.NOTIFIER_SEND_TIMEOUT_IN_SECONDS, env)
     );
 
     // verify
