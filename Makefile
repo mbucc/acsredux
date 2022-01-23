@@ -159,6 +159,10 @@ fmt:
 		npx prettier --print-width 90 --write src web/template ; \
 	fi
 
+.PHONY: javadoc
+javadoc:
+	./scripts/javadoc.sh
+
 
 
 ###########################################################################
@@ -170,10 +174,6 @@ fmt:
 ###########################################################################
 
 .PHONY: clean
-.PHONY: javadoc
-javadoc:
-	./scripts/javadoc.sh
-
 clean:
 	rm -rf mlib
 	rm -rf classes
