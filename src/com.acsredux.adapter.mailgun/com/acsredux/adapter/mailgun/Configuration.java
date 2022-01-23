@@ -1,6 +1,6 @@
 package com.acsredux.adapter.mailgun;
 
-import static com.acsredux.lib.env.Util.*;
+import static com.acsredux.lib.env.VariableUtil.*;
 import static com.acsredux.lib.env.Variable.*;
 
 import java.net.URI;

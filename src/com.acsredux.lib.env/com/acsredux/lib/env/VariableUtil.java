@@ -6,9 +6,9 @@ import static com.acsredux.lib.env.SecretFile.readSecretFromBase64;
 import java.net.URI;
 import java.util.Map;
 
-public class Util {
+public class VariableUtil {
 
-  private Util() {
+  private VariableUtil() {
     throw new UnsupportedOperationException("static only");
   }
 
