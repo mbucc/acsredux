@@ -23,7 +23,7 @@ class TestUtil {
     x.add("command", FormCommand.CREATE_MEMBER.name());
 
     // execute
-    Command y = Util.form2cmd(x);
+    Command y = WebUtil.form2cmd(x);
 
     // verify
     if (y instanceof AddMember y1) {

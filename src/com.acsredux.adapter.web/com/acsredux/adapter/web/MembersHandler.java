@@ -38,7 +38,7 @@ class MembersHandler implements HttpHandler {
 
   void displayCreateForm(HttpExchange x) throws IOException {
     x.getRequestBody().transferTo(OutputStream.nullOutputStream());
-    Util.renderForm(this.createTemplate, x, Collections.emptyMap());
+    WebUtil.renderForm(this.createTemplate, x, Collections.emptyMap());
   }
 
   void displayDashboard(HttpExchange x) throws IOException, Exception {
@@ -60,7 +60,7 @@ class MembersHandler implements HttpHandler {
         "memberSince",
         y.memberSince()
       );
-      Util.renderForm(this.dashboardTemplate, x, data);
+      WebUtil.renderForm(this.dashboardTemplate, x, data);
     } else {
       throw result.getError();
     }
@@ -74,13 +74,13 @@ class MembersHandler implements HttpHandler {
       .ok(x)
       .map(HttpExchange::getRequestBody)
       .map(Result.uncheck(InputStream::readAllBytes))
-      .map(Util::toUTF8String)
-      .map(Util::parseFormData)
+      .map(WebUtil::toUTF8String)
+      .map(WebUtil::parseFormData)
       .map(o -> {
         grabber.fd = o;
         return o;
       })
-      .map(Util::form2cmd)
+      .map(WebUtil::form2cmd)
       .map(MemberCommand.class::cast)
       .map(service::handle);
 
@@ -93,7 +93,7 @@ class MembersHandler implements HttpHandler {
       Exception e = result.getError();
       if (e instanceof ValidationException iae) {
         grabber.fd.add("error", iae.getMessage());
-        Util.renderForm(this.createTemplate, x, grabber.fd.asMap());
+        WebUtil.renderForm(this.createTemplate, x, grabber.fd.asMap());
       } else {
         throw e;
       }

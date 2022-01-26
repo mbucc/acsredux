@@ -12,7 +12,7 @@ class ParseTestData {
     var formdata = "email=t%40t.com&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!";
 
     // execute
-    FormData y = Util.parseFormData(formdata);
+    FormData y = WebUtil.parseFormData(formdata);
 
     // verify
     assertEquals("t@t.com", y.get("email"));

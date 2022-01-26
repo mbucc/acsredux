@@ -13,9 +13,9 @@ import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
-class Util {
+class WebUtil {
 
-  private Util() {
+  private WebUtil() {
     throw new UnsupportedOperationException("static only");
   }
 
