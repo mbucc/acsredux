@@ -55,8 +55,8 @@ public final class Stub
     return members
       .stream()
       .filter(o ->
-        o.first().val().equalsIgnoreCase(x1.val()) &&
-        o.last().val().equalsIgnoreCase(x2.val())
+        o.firstName().val().equalsIgnoreCase(x1.val()) &&
+        o.lastName().val().equalsIgnoreCase(x2.val())
       )
       .findFirst();
   }

@@ -7,8 +7,8 @@ import java.time.ZoneId;
 public record Member(
   MemberID id,
   Email email,
-  FirstName first,
-  LastName last,
+  FirstName firstName,
+  LastName lastName,
   ZipCode zip,
   MemberStatus status,
   EncryptedPassword password,

@@ -54,9 +54,9 @@ class MembersHandler implements HttpHandler {
       Member y = result.getValue().member();
       Map<String, Object> data = Map.of(
         "firstName",
-        y.first().val(),
+        y.firstName().val(),
         "lastName",
-        y.last().val(),
+        y.lastName().val(),
         "memberSince",
         y.memberSince()
       );
