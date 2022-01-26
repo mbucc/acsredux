@@ -51,6 +51,17 @@ public final class Stub
   }
 
   @Override
+  public Optional<Member> findByName(FirstName x1, LastName x2) {
+    return members
+      .stream()
+      .filter(o ->
+        o.first().val().equalsIgnoreCase(x1.val()) &&
+        o.last().val().equalsIgnoreCase(x2.val())
+      )
+      .findFirst();
+  }
+
+  @Override
   public Optional<Member> findByEmail(Email x) {
     return members
       .stream()

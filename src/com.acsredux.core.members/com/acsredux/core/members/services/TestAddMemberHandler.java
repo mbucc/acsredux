@@ -137,12 +137,13 @@ class TestAddMemberHandler {
   @Test
   void testCheckNameUnique() {
     // setup
-    given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.of(TEST_MEMBER));
+    given(reader.findByName(TEST_FIRST_NAME, TEST_LAST_NAME))
+      .willReturn(Optional.of(TEST_MEMBER));
 
     // execute
     var e = assertThrows(
       ValidationException.class,
-      () -> service.checkNameIsUnique(TEST_EMAIL)
+      () -> service.checkNameIsUnique(TEST_FIRST_NAME, TEST_LAST_NAME)
     );
 
     // verify

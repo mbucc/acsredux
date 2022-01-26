@@ -8,6 +8,6 @@ public record LastName(String val) {
   public LastName(String val) {
     var errors = ResourceBundle.getBundle("MemberErrorMessages");
     dieIfBlank(val, errors.getString("lastname_missing"));
-    this.val = val;
+    this.val = val.trim();
   }
 }

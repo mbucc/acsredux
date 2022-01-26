@@ -12,7 +12,7 @@ SKIP_FMT=N
 #
 ###########################################################################
 
-jars: javadoc \
+jars: \
 	mlib/com.acsredux.adapter.web@1.jar \
 	mlib/com.acsredux.core.members@1.jar \
 	mlib/com.acsredux.core.admin@1.jar \

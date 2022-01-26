@@ -9,10 +9,7 @@ import com.acsredux.core.members.ports.AdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
-import com.acsredux.core.members.values.CreatedOn;
-import com.acsredux.core.members.values.Email;
-import com.acsredux.core.members.values.MemberID;
-import com.acsredux.core.members.values.VerificationToken;
+import com.acsredux.core.members.values.*;
 import java.time.InstantSource;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -55,6 +52,12 @@ public final class AddMemberHandler {
   void checkEmailIsUnique(Email x) {
     if (reader.findByEmail(x).isPresent()) {
       throw new ValidationException(msgs.getString("email_taken"));
+    }
+  }
+
+  void checkNameIsUnique(FirstName x1, LastName x2) {
+    if (reader.findByName(x1, x2).isPresent()) {
+      throw new ValidationException(msgs.getString("name_taken"));
     }
   }
 
