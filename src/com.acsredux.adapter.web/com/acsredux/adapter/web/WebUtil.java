@@ -12,6 +12,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 class WebUtil {
 
@@ -32,13 +34,31 @@ class WebUtil {
     os.write(body);
   }
 
+  static String readRequestBody(HttpExchange x) {
+    final byte[] y;
+    try {
+      y = x.getRequestBody().readAllBytes();
+    } catch (IOException e) {
+      throw new IllegalStateException("error reading request", e);
+    }
+    return toUTF8String(y);
+  }
+
   static FormData parseFormData(String encodedRequestBody) {
     FormData y = new FormData();
-    for (String pair : encodedRequestBody.split("&")) {
-      String[] pieces = pair.split("=");
-      String k = URLDecoder.decode(pieces[0], StandardCharsets.UTF_8);
-      String v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
-      y.add(k, v);
+    if (encodedRequestBody == null || encodedRequestBody.isBlank()) {
+      return y;
+    }
+    try {
+      for (String pair : encodedRequestBody.split("&")) {
+        String[] pieces = pair.split("=");
+        String k = URLDecoder.decode(pieces[0], StandardCharsets.UTF_8);
+        String v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
+        y.add(k, v);
+      }
+    } catch (Exception e) {
+      // Some form posted invalid form data
+      throw new IllegalStateException("invalid form post data: " + encodedRequestBody, e);
     }
     return y;
   }
@@ -66,5 +86,28 @@ class WebUtil {
         new ZipCode(x.get("zip"))
       );
     };
+  }
+
+  // Don't leak sensitive data.
+  static String safeDump(HttpExchange x) {
+    StringBuilder buf = new StringBuilder();
+    buf.append(x.getRequestMethod());
+    buf.append(" ");
+    buf.append(x.getRequestURI().toString());
+    buf.append("\n\n");
+    for (Map.Entry<String, List<String>> y : x.getRequestHeaders().entrySet()) {
+      buf.append(y.getKey());
+      buf.append(": ");
+      if (y.getValue() != null) {
+        if (y.getValue().size() == 1) {
+          buf.append(y.getValue().get(0));
+        } else {
+          buf.append(y.getValue().toString());
+        }
+      } else {
+        buf.append("null");
+      }
+    }
+    return buf.toString();
   }
 }

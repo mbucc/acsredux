@@ -1,6 +1,7 @@
 package com.acsredux.adapter.web;
 
 import static com.acsredux.lib.testutil.TestData.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -8,7 +9,7 @@ import com.acsredux.core.base.Command;
 import com.acsredux.core.members.commands.AddMember;
 import org.junit.jupiter.api.Test;
 
-class TestUtil {
+class TestWebUtil {
 
   @Test
   void testFormToAddMemberCommand() {
@@ -36,5 +37,10 @@ class TestUtil {
     } else {
       fail("wrong command returned");
     }
+  }
+
+  @Test
+  void testParseFormDataWorksWithEmptyString() {
+    FormData y = assertDoesNotThrow(() -> WebUtil.parseFormData(""));
   }
 }

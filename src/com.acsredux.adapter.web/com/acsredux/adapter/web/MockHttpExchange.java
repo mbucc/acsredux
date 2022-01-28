@@ -22,8 +22,8 @@ import java.util.List;
 
 class MockHttpExchange extends HttpExchange {
 
-  public static final String DEFAULT_BODY = "Hello world!";
-  public static final String DEFAULT_METHOD = "GET";
+  public static final String DEFAULT_REQUEST_BODY = "Hello world!";
+  public static final String DEFAULT_REQUEST_METHOD = "GET";
 
   final String url;
   final String requestMethod;
@@ -36,11 +36,11 @@ class MockHttpExchange extends HttpExchange {
   long responseLength;
 
   MockHttpExchange(String url) {
-    this(url, DEFAULT_METHOD, DEFAULT_BODY);
+    this(url, DEFAULT_REQUEST_METHOD, DEFAULT_REQUEST_BODY);
   }
 
   MockHttpExchange(String url, String requestMethod) {
-    this(url, requestMethod, DEFAULT_BODY);
+    this(url, requestMethod, DEFAULT_REQUEST_BODY);
   }
 
   MockHttpExchange(String url, String requestMethod, String body) {
