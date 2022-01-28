@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.acsredux.core.base.NotFoundException;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -71,6 +73,14 @@ class TestBaseHandler {
     setResponse(x1, buf.toString().getBytes());
   }
 
+  private void throws404(HttpExchange x1, FormData x2) {
+    throw new NotFoundException("foobar not found");
+  }
+
+  private void throws500(HttpExchange x1, FormData x2) {
+    throw new IllegalStateException("boom!");
+  }
+
   @Test
   void testHelloWorld() {
     // setup
@@ -97,7 +107,7 @@ class TestBaseHandler {
     addRoute(this::formPost);
     var mock = new MockHttpExchange("/", "POST", "firstname=foo");
 
-    // execute and verify
+    // execute
     handler.handle(mock);
 
     // verify
@@ -110,7 +120,48 @@ class TestBaseHandler {
       Form values posted:
       <FormData: firstname=foo>""";
     String actual = mock.actual();
-    //ssertEquals(expected.length(), actual.length());
+    assertEquals(expected, mock.actual());
+  }
+
+  @Test
+  void test404() {
+    // setup
+    addRoute(this::throws404);
+    var mock = new MockHttpExchange("/");
+    this.handler.setErr(new PrintStream(OutputStream.nullOutputStream()));
+
+    // execute
+    handler.handle(mock);
+
+    // verify
+    String expected =
+      """
+      404
+      Content-Length: 10
+      Content-type: text/html; charset= UTF-8
+      
+      Not found.""";
+    assertEquals(expected, mock.actual());
+  }
+
+  @Test
+  void test500() {
+    // setup
+    addRoute(this::throws500);
+    var mock = new MockHttpExchange("/");
+    this.handler.setErr(new PrintStream(OutputStream.nullOutputStream()));
+
+    // execute
+    handler.handle(mock);
+
+    // verify
+    String expected =
+      """
+      500
+      Content-Length: 15
+      Content-type: text/html; charset= UTF-8
+      
+      Internal error.""";
     assertEquals(expected, mock.actual());
   }
 }

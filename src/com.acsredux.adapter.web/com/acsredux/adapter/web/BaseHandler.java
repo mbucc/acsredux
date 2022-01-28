@@ -6,9 +6,12 @@ import static com.acsredux.adapter.web.WebUtil.safeDump;
 import static java.io.OutputStream.nullOutputStream;
 
 import com.acsredux.core.base.NotFoundException;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -21,6 +24,13 @@ abstract class BaseHandler implements HttpHandler {
   ) {}
 
   abstract List<Route> getRoutes();
+
+  private PrintStream err = System.err;
+
+  // For tests
+  void setErr(PrintStream x) {
+    this.err = x;
+  }
 
   // Parse request body to form data.
   // If the request is a query or a delete, the data is non-null and empty.
@@ -46,11 +56,37 @@ abstract class BaseHandler implements HttpHandler {
     };
   }
 
+  private void exceptionCatcher(Runnable x1, HttpExchange x2, PrintStream err) {
+    try {
+      x1.run();
+    } catch (Exception e) {
+      e.printStackTrace(this.err);
+      try {
+        Headers ys = x2.getResponseHeaders();
+        ys.set("Content-type", "text/html; charset= UTF-8");
+        byte[] body = "Internal error.".getBytes();
+        int status = 500;
+        if (e instanceof NotFoundException) {
+          body = "Not found.".getBytes();
+          status = 404;
+        }
+        x2.sendResponseHeaders(status, body.length);
+        OutputStream os = x2.getResponseBody();
+        os.write(body);
+      } catch (IOException ioe) {
+        System.err.println("could not send error" + ioe.getMessage());
+        e.printStackTrace(this.err);
+      }
+    } finally {
+      x2.close();
+    }
+  }
+
   @Override
   public void handle(HttpExchange x) {
     for (Route y : getRoutes()) {
       if (y.matcher.test(x)) {
-        y.handler.accept(x, read(x));
+        exceptionCatcher(() -> y.handler.accept(x, read(x)), x, System.err);
         return;
       }
     }
