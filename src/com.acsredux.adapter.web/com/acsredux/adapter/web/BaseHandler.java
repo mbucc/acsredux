@@ -56,7 +56,7 @@ abstract class BaseHandler implements HttpHandler {
     };
   }
 
-  private void exceptionCatcher(Runnable x1, HttpExchange x2, PrintStream err) {
+  private void exceptionCatcher(Runnable x1, HttpExchange x2) {
     try {
       x1.run();
     } catch (Exception e) {
@@ -86,7 +86,7 @@ abstract class BaseHandler implements HttpHandler {
   public void handle(HttpExchange x) {
     for (Route y : getRoutes()) {
       if (y.matcher.test(x)) {
-        exceptionCatcher(() -> y.handler.accept(x, read(x)), x, System.err);
+        exceptionCatcher(() -> y.handler.accept(x, read(x)), x);
         return;
       }
     }
