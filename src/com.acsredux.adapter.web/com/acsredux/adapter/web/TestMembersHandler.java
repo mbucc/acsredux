@@ -31,8 +31,8 @@ class TestMembersHandler {
 
   @Test
   void testIsDashboard() throws URISyntaxException {
-    assertTrue(handler.isDashboard(new URI("/members/2")));
-    assertFalse(handler.isDashboard(new URI("/members")));
+    assertTrue(handler.isDashboard(new MockHttpExchange("/members/2")));
+    assertFalse(handler.isDashboard(new MockHttpExchange("/members")));
   }
 
   @Test

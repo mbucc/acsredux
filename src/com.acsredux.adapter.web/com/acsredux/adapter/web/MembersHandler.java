@@ -1,10 +1,8 @@
 package com.acsredux.adapter.web;
 
-import com.acsredux.core.base.Event;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
-import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -12,18 +10,14 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import de.perschon.resultflow.Result;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-class MembersHandler implements HttpHandler {
+class MembersHandler extends BaseHandler {
 
   private MemberService service;
   private Mustache createTemplate;
@@ -36,72 +30,75 @@ class MembersHandler implements HttpHandler {
     this.dashboardTemplate = mf.compile("members/dashboard.html");
   }
 
-  void displayCreateForm(HttpExchange x) throws IOException {
-    x.getRequestBody().transferTo(OutputStream.nullOutputStream());
-    WebUtil.renderForm(this.createTemplate, x, Collections.emptyMap());
+  void displayCreateForm(HttpExchange x1, FormData x2) {
+    WebUtil.renderForm(this.createTemplate, x1, Collections.emptyMap());
   }
 
-  void displayDashboard(HttpExchange x) throws IOException, Exception {
-    x.getRequestBody().transferTo(OutputStream.nullOutputStream());
-
-    Result<MemberDashboard> result = Result
-      .ok(x)
+  void displayDashboard(HttpExchange x1, FormData x2) {
+    Result<Map<String, Object>> result = Result
+      .ok(x1)
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
-      .map(service::getDashboard);
+      .map(service::getDashboard)
+      .map(MemberDashboard::member)
+      .map(member ->
+        Map.of(
+          "firstName",
+          member.firstName().val(),
+          "lastName",
+          member.lastName().val(),
+          "memberSince",
+          member.memberSince()
+        )
+      );
 
     if (result.isOk()) {
-      Member y = result.getValue().member();
-      Map<String, Object> data = Map.of(
-        "firstName",
-        y.firstName().val(),
-        "lastName",
-        y.lastName().val(),
-        "memberSince",
-        y.memberSince()
-      );
-      WebUtil.renderForm(this.dashboardTemplate, x, data);
+      WebUtil.renderForm(this.dashboardTemplate, x1, result.getValue());
     } else {
-      throw result.getError();
+      throw new IllegalStateException(result.getError());
     }
   }
 
-  void handleCreateFormPost(HttpExchange x) throws Exception {
-    var grabber = new Object() {
-      FormData fd;
-    };
-    Result<Event> result = Result
-      .ok(x)
-      .map(HttpExchange::getRequestBody)
-      .map(Result.uncheck(InputStream::readAllBytes))
-      .map(WebUtil::toUTF8String)
-      .map(WebUtil::parseFormData)
-      .map(o -> {
-        grabber.fd = o;
-        return o;
-      })
+  void handleCreateFormPost(HttpExchange x1, FormData x2) {
+    Result<String> result = Result
+      .ok(x2)
       .map(WebUtil::form2cmd)
       .map(MemberCommand.class::cast)
-      .map(service::handle);
+      .map(service::handle)
+      .map(MemberAdded.class::cast)
+      .map(MemberAdded::memberID)
+      .map(MemberID::val)
+      .map(id -> "/members/" + id);
 
     if (result.isOk()) {
-      Headers ys = x.getResponseHeaders();
-      MemberAdded y1 = (MemberAdded) result.getValue();
-      ys.set("Location", "/members/" + y1.memberID().val());
-      x.sendResponseHeaders(302, -1);
+      Headers ys = x1.getResponseHeaders();
+      ys.set("Location", result.getValue());
+      try {
+        x1.sendResponseHeaders(302, -1);
+      } catch (Exception e) {
+        throw new IllegalStateException("can't set response headers", e);
+      }
     } else {
       Exception e = result.getError();
       if (e instanceof ValidationException iae) {
-        grabber.fd.add("error", iae.getMessage());
-        WebUtil.renderForm(this.createTemplate, x, grabber.fd.asMap());
+        x2.add("error", iae.getMessage());
+        WebUtil.renderForm(this.createTemplate, x1, x2.asMap());
       } else {
-        throw e;
+        throw new IllegalStateException(e);
       }
     }
   }
 
-  boolean isDashboard(URI x) {
-    return x.getPath().matches("^.*/\\d+$");
+  boolean isDashboard(HttpExchange x) {
+    return x.getRequestURI().getPath().matches("^.*/\\d+$");
+  }
+
+  boolean isGetForm(HttpExchange x) {
+    return x.getRequestMethod().equalsIgnoreCase("GET");
+  }
+
+  boolean isPostForm(HttpExchange x) {
+    return x.getRequestMethod().equalsIgnoreCase("POST");
   }
 
   MemberID memberID(URI x) {
@@ -114,48 +111,11 @@ class MembersHandler implements HttpHandler {
   }
 
   @Override
-  public void handle(HttpExchange x) {
-    try {
-      URI uri = x.getRequestURI();
-      String m = x.getRequestMethod();
-      if (isDashboard(uri)) {
-        displayDashboard(x);
-      } else {
-        switch (m) {
-          case "GET":
-            displayCreateForm(x);
-            break;
-          case "POST":
-            handleCreateFormPost(x);
-            break;
-          default:
-            throw new UnsupportedOperationException(m + " is not supported");
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      try {
-        if (e instanceof FileNotFoundException fnfe) {
-          Headers ys = x.getResponseHeaders();
-          ys.set("Content-type", "text/html; charset= UTF-8");
-          byte[] body = "Not found.".getBytes();
-          x.sendResponseHeaders(404, body.length);
-          OutputStream os = x.getResponseBody();
-          os.write(body);
-        } else {
-          Headers ys = x.getResponseHeaders();
-          ys.set("Content-type", "text/html; charset= UTF-8");
-          byte[] body = "Internal error.".getBytes();
-          x.sendResponseHeaders(500, body.length);
-          OutputStream os = x.getResponseBody();
-          os.write(body);
-        }
-      } catch (IOException ioe) {
-        System.err.println("could not send 500 response" + ioe.getMessage());
-        e.printStackTrace();
-      }
-    } finally {
-      x.close();
-    }
+  List<Route> getRoutes() {
+    return List.of(
+      new Route(this::isDashboard, this::displayDashboard),
+      new Route(this::isGetForm, this::displayCreateForm),
+      new Route(this::isPostForm, this::handleCreateFormPost)
+    );
   }
 }

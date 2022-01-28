@@ -21,17 +21,21 @@ class WebUtil {
     throw new UnsupportedOperationException("static only");
   }
 
-  static void renderForm(Mustache m, HttpExchange x, Object data) throws IOException {
-    Writer writer = new StringWriter();
-    m.execute(writer, data);
-    byte[] body = writer.toString().getBytes();
+  static void renderForm(Mustache m, HttpExchange x, Object data) {
+    try {
+      Writer writer = new StringWriter();
+      m.execute(writer, data);
+      byte[] body = writer.toString().getBytes();
 
-    Headers ys = x.getResponseHeaders();
-    ys.set("Content-type", "text/html; charset= UTF-8");
-    x.sendResponseHeaders(200, body.length);
+      Headers ys = x.getResponseHeaders();
+      ys.set("Content-type", "text/html; charset= UTF-8");
+      x.sendResponseHeaders(200, body.length);
 
-    OutputStream os = x.getResponseBody();
-    os.write(body);
+      OutputStream os = x.getResponseBody();
+      os.write(body);
+    } catch (Exception e) {
+      throw new IllegalStateException("can't render form with data=" + data, e);
+    }
   }
 
   static String readRequestBody(HttpExchange x) {
@@ -89,6 +93,18 @@ class WebUtil {
   }
 
   // Don't leak sensitive data.
+  static void writeResponse(HttpExchange x1, byte[] body) {
+    try {
+      Headers ys = x1.getResponseHeaders();
+      ys.set("Content-type", "text/html; charset= UTF-8");
+      x1.sendResponseHeaders(200, body.length);
+      OutputStream os = x1.getResponseBody();
+      os.write(body);
+    } catch (IOException e) {
+      throw new IllegalStateException("can't write response", e);
+    }
+  }
+
   static String safeDump(HttpExchange x) {
     StringBuilder buf = new StringBuilder();
     buf.append(x.getRequestMethod());

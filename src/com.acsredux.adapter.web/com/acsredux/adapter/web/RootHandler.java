@@ -1,18 +1,18 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.adapter.web.WebUtil.writeResponse;
+
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import java.io.File;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
+import java.util.List;
 
-class RootHandler implements HttpHandler {
+class RootHandler extends BaseHandler {
 
   private String templateRoot;
   private MustacheFactory mf;
@@ -23,25 +23,22 @@ class RootHandler implements HttpHandler {
   }
 
   @Override
-  public void handle(HttpExchange x) {
+  List<Route> getRoutes() {
+    return Collections.singletonList(new Route(x -> true, this::renderIndex));
+  }
+
+  private void renderIndex(HttpExchange x1, FormData x2) {
+    Mustache m = mf.compile("index.html");
+    Writer writer = new StringWriter();
     try {
-      x.getRequestBody().transferTo(OutputStream.nullOutputStream());
-
-      Mustache m = mf.compile("index.html");
-      Writer writer = new StringWriter();
       m.execute(writer, Collections.emptyMap()).flush();
-      byte[] body = writer.toString().getBytes();
-
-      Headers ys = x.getResponseHeaders();
-      ys.set("Content-type", "text/html; charset= UTF-8");
-      x.sendResponseHeaders(200, body.length);
-
-      OutputStream os = x.getResponseBody();
-      os.write(body);
     } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      x.close();
+      throw new IllegalStateException(
+        "error rendering template index.html with data " + Collections.emptyMap(),
+        e
+      );
     }
+    byte[] body = writer.toString().getBytes();
+    writeResponse(x1, body);
   }
 }
