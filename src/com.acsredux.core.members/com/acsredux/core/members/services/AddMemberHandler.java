@@ -63,7 +63,8 @@ public final class AddMemberHandler {
   }
 
   Accum addMember(Accum x) {
-    x.newMemberID = writer.addMember(x.cmd, MemberStatus.NEEDS_EMAIL_VERIFICATION, x.createdOn);
+    x.newMemberID =
+      writer.addMember(x.cmd, MemberStatus.NEEDS_EMAIL_VERIFICATION, x.createdOn);
     return x;
   }
 

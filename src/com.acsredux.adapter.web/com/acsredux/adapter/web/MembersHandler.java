@@ -3,6 +3,7 @@ package com.acsredux.adapter.web;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -34,6 +35,21 @@ class MembersHandler extends BaseHandler {
     WebUtil.renderForm(this.createTemplate, x1, Collections.emptyMap());
   }
 
+  Map<String, Object> dashboardView(Member x) {
+    return Map.of(
+      "firstName",
+      x.firstName().val(),
+      "lastName",
+      x.lastName().val(),
+      "memberSince",
+      x.memberSince(),
+      "isWaitingOnEmailVerification",
+      x.status() == MemberStatus.NEEDS_EMAIL_VERIFICATION,
+      "isInAlphaTesting",
+      true
+    );
+  }
+
   void displayDashboard(HttpExchange x1, FormData x2) {
     Result<Map<String, Object>> result = Result
       .ok(x1)
@@ -41,21 +57,11 @@ class MembersHandler extends BaseHandler {
       .map(this::memberID)
       .map(service::getDashboard)
       .map(MemberDashboard::member)
-      .map(member ->
-        Map.of(
-          "firstName",
-          member.firstName().val(),
-          "lastName",
-          member.lastName().val(),
-          "memberSince",
-          member.memberSince()
-        )
-      );
-
+      .map(this::dashboardView);
     if (result.isOk()) {
       WebUtil.renderForm(this.dashboardTemplate, x1, result.getValue());
     } else {
-      throw new IllegalStateException(result.getError());
+      throw result.getError();
     }
   }
 

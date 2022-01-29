@@ -1,5 +1,5 @@
 200
-Content-Length: 238
+Content-Length: 774
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -12,5 +12,18 @@ Content-type: text/html; charset= UTF-8
     <p><a href="/">home</a></p>
     <h1>Member Dashboard</h1>
     <p>小川 治兵衛 has been a member since January 15, 2022.</p>
+
+    <p>
+      We are currently alpha testing this site, which means we have spent been focussed on
+      getting things to work correctly and not so much on the appearance. Since you
+      volunteered to use this unfinished software (thank you!), you will always have
+      access to the site for free.
+    </p>
+
+    <p>
+      In return, we ask that you share any ideas you have for what would make this site
+      more useful to you! To enter a suggestion, click
+      <a href="https://garden-journal.kampsite.co">here.</a>.
+    </p>
   </body>
 </html>

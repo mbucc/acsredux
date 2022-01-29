@@ -155,7 +155,13 @@ class TestAddMemberHandler {
     // setup
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
     given(adminReader.getSiteInfo()).willReturn(TEST_SITEINFO);
-    given(writer.addMember(TEST_ADD_MEMBER_CMD, MemberStatus.NEEDS_EMAIL_VERIFICATION, this.clockTime))
+    given(
+      writer.addMember(
+        TEST_ADD_MEMBER_CMD,
+        MemberStatus.NEEDS_EMAIL_VERIFICATION,
+        this.clockTime
+      )
+    )
       .willReturn(TEST_MEMBER_ID);
     given(writer.addAddMemberToken(TEST_MEMBER_ID, this.clockTime))
       .willReturn(TEST_TOKEN);
@@ -178,7 +184,9 @@ class TestAddMemberHandler {
     then(adminReader).should().getSiteInfo();
     then(adminReader).shouldHaveNoMoreInteractions();
 
-    then(writer).should().addMember(TEST_ADD_MEMBER_CMD, MemberStatus.NEEDS_EMAIL_VERIFICATION, clockTime);
+    then(writer)
+      .should()
+      .addMember(TEST_ADD_MEMBER_CMD, MemberStatus.NEEDS_EMAIL_VERIFICATION, clockTime);
     then(writer).should().addAddMemberToken(TEST_MEMBER_ID, clockTime);
     then(writer).shouldHaveNoMoreInteractions();
 
