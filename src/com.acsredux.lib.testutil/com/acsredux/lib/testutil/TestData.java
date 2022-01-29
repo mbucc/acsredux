@@ -1,7 +1,7 @@
 package com.acsredux.lib.testutil;
 
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import java.time.Instant;
@@ -43,6 +43,7 @@ public class TestData {
     TEST_PASSWORD,
     TEST_ZIP_CODE
   );
+  public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(TEST_TOKEN);
   public static final SiteInfo TEST_SITEINFO = new SiteInfo(
     25, // limitOnAlphaCustomers
     50, // limitOnBetaCustomers,

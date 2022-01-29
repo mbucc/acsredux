@@ -1,6 +1,8 @@
+2022-01-29: Add endpoint to support token click.
+2022-01-29: Add logout.
+2022-01-29: Add login page.
+2022-01-29: Password reset.
 2022-01-29: Add admin data to MemberHandler for alpha tester limit, etc.
-2022-01-01: prevent double-click on create membership form
-2022-01-01: test that mail timeout shows retry message to user
 2021-12-27: add content data model and editing
 
 2021-12-07: create com.acsredux.adapter.sqlite

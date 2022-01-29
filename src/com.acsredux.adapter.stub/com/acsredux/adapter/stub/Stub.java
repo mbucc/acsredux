@@ -1,6 +1,7 @@
 package com.acsredux.adapter.stub;
 
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
@@ -12,7 +13,9 @@ import com.acsredux.core.members.values.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -22,8 +25,10 @@ public final class Stub
   private static final Stub INSTANCE = new Stub();
 
   private List<Member> members;
+  private Map<VerificationToken, MemberID> tokens;
 
   private Stub() {
+    tokens = new HashMap<>();
     members = new ArrayList<>();
     members.add(
       new Member(
@@ -125,5 +130,31 @@ public final class Stub
       "12345",
       "mkbucc@gmail.com"
     );
+  }
+
+  @Override
+  public MemberID getByToken(VerificationToken x) {
+    if (!tokens.containsKey(x)) {
+      throw new NotFoundException("invalid token " + x);
+    }
+    return tokens.get(x);
+  }
+
+  @Override
+  public Member getByID(MemberID x) {
+    return members
+      .stream()
+      .filter(o -> o.id().equals(x))
+      .findFirst()
+      .orElseThrow(() -> new NotFoundException("no member with ID " + x.val()));
+  }
+
+  @Override
+  public MemberID updateStatus(MemberID x1, MemberStatus x2) {
+    Member y = getByID(x1);
+    Member y1 = y.withStatus(x2);
+    members.remove(y);
+    members.add(y1);
+    return x1;
   }
 }

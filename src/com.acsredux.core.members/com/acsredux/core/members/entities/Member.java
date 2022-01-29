@@ -18,4 +18,18 @@ public record Member(
   public String memberSince() {
     return DateUtil.fullDate(registeredOn.val(), tz);
   }
+
+  public Member withStatus(MemberStatus newStatus) {
+    return new Member(
+      id,
+      email,
+      firstName,
+      lastName,
+      zip,
+      newStatus,
+      password,
+      registeredOn,
+      tz
+    );
+  }
 }

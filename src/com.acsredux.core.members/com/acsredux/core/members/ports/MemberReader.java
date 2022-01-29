@@ -20,4 +20,8 @@ public interface MemberReader {
     return findMemberDashboard(x)
       .orElseThrow(() -> new NotFoundException("dashboard not found"));
   }
+
+  MemberID getByToken(VerificationToken x);
+
+  Member getByID(MemberID x);
 }
