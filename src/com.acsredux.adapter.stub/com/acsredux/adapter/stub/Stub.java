@@ -81,7 +81,7 @@ public final class Stub
   }
 
   @Override
-  public MemberID addMember(AddMember cmd, CreatedOn now) {
+  public MemberID addMember(AddMember cmd, MemberStatus initialStatus, CreatedOn now) {
     Long maxID = members
       .stream()
       .map(Member::id)
@@ -96,7 +96,7 @@ public final class Stub
         cmd.firstName(),
         cmd.lastName(),
         cmd.zipCode(),
-        MemberStatus.ACTIVE,
+        initialStatus,
         new EncryptedPassword("abc"),
         new RegistrationDate(Instant.now()),
         ZoneId.of("US/Eastern")

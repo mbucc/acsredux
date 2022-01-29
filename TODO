@@ -1,6 +1,5 @@
 2022-01-28: Make changes to result-flow library (fix both issues).
 2022-01-15: after create form submit, go to "check inbox page"
-2022-01-07: default status to active (branch on admin flag)?
 2022-01-01: prevent double-click on create membership form
 2022-01-01: test that mail timeout shows retry message to user
 2021-12-27: add content data model and editing

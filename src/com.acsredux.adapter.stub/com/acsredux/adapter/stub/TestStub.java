@@ -21,7 +21,7 @@ class TestStub {
     assertFalse(dash.isPresent());
 
     // execute
-    var newMemberID = stub.addMember(TEST_ADD_MEMBER_CMD, now);
+    var newMemberID = stub.addMember(TEST_ADD_MEMBER_CMD, MemberStatus.NEEDS_EMAIL_VERIFICATION, now);
 
     // verify
     assertEquals(2L, newMemberID.val());

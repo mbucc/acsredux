@@ -46,6 +46,7 @@ public final class AddMemberHandler {
       throw new ValidationException(msgs.getString("password_mismatch"));
     }
     checkEmailIsUnique(x.email());
+    checkNameIsUnique(x.firstName(), x.lastName());
     return new Accum(x, new CreatedOn(this.clock.instant()));
   }
 
@@ -62,7 +63,7 @@ public final class AddMemberHandler {
   }
 
   Accum addMember(Accum x) {
-    x.newMemberID = writer.addMember(x.cmd, x.createdOn);
+    x.newMemberID = writer.addMember(x.cmd, MemberStatus.NEEDS_EMAIL_VERIFICATION, x.createdOn);
     return x;
   }
 
