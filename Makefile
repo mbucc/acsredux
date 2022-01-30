@@ -26,7 +26,7 @@ jars: \
 mlib/compiler-0.9.10.jar: lib/compiler-0.9.10.jar
 	cp $? $@
 
-mlib/result-flow-3.1.0.jar: lib/result-flow-3.0.0.jar
+mlib/result-flow-3.1.0.jar: lib/result-flow-3.1.0.jar
 	cp $? $@
 
 mlib/com.acsredux.adapter.web@1.jar: compile resourcebundles
