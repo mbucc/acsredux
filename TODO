@@ -1,7 +1,6 @@
 2022-01-29: Add endpoint to support token click.
 2022-01-29: Add logout.
 2022-01-29: Add login page.
-2022-01-29: Password reset.
 2022-01-29: Add admin data to MemberHandler for alpha tester limit, etc.
 2021-12-27: add content data model and editing
 

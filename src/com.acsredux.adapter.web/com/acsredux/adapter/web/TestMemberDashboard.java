@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acsredux.core.members.entities.*;
-import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,47 +44,6 @@ class TestMembersHandler {
   }
 
   @Test
-  void testGet() {
-    // setup
-    var mock = new MockHttpExchange("/members/create.html", "GET");
-
-    // execute
-    this.handler.handle(mock);
-
-    // verify
-    mock.assertResponseIsCorrect();
-  }
-
-  @Test
-  void testCreatePostSunny() {
-    // setup
-    var body =
-      "email=t%40t.com&firstName=Bill&lastName=Russel&zip=12345&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!&command=create_member";
-    var mock = new MockHttpExchange("/members/create.html", "POST", body);
-    this.mockMemberService.setEvent(new MemberAdded(null, null, null, new MemberID(1L)));
-
-    // execute
-    this.handler.handle(mock);
-
-    // verify
-    mock.assertResponseIsCorrect();
-  }
-
-  @Test
-  void testCreatePostError() {
-    // setup
-    var body =
-      "email=t%40t.com&firstName=Bill&lastName=Russel&zip=12345&pwd2=aBcd3fgh!&command=create_member";
-    var mock = new MockHttpExchange("/members/create.html.no_password", "POST", body);
-
-    // execute
-    this.handler.handle(mock);
-
-    // verify
-    mock.assertResponseIsCorrect();
-  }
-
-  @Test
   void testGetDashboard() {
     // setup
     var mock = new MockHttpExchange("/members/2", "GET");
@@ -95,6 +53,6 @@ class TestMembersHandler {
     this.handler.handle(mock);
 
     // verify
-    mock.assertResponseIsCorrect();
+    mock.goldTest();
   }
 }

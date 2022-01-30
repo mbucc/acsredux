@@ -18,6 +18,6 @@ class TestRootHandler {
     handler.handle(mock);
 
     // verify
-    mock.assertResponseIsCorrect();
+    mock.goldTest();
   }
 }

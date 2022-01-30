@@ -217,7 +217,7 @@ class MockHttpExchange extends HttpExchange {
     return FileSystems.getDefault().getPath(testDir, html() + ".golden");
   }
 
-  void assertResponseIsCorrect() {
+  void goldTest() {
     writeActual();
     if (!expected().equals(actual())) {
       System.out.println(diff());
