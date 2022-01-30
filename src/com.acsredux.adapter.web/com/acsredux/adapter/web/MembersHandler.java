@@ -3,6 +3,7 @@ package com.acsredux.adapter.web;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
@@ -14,9 +15,9 @@ import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
 import java.io.File;
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
 
@@ -32,7 +33,7 @@ class MembersHandler extends BaseHandler {
   }
 
   void displayCreateForm(HttpExchange x1, FormData x2) {
-    WebUtil.renderForm(this.createTemplate, x1, Collections.emptyMap());
+    WebUtil.renderForm(this.createTemplate, x1, x2.asMap());
   }
 
   Map<String, Object> dashboardView(Member x) {
@@ -46,23 +47,39 @@ class MembersHandler extends BaseHandler {
       "isWaitingOnEmailVerification",
       x.status() == MemberStatus.NEEDS_EMAIL_VERIFICATION,
       "isInAlphaTesting",
-      true
+      true,
+      "isEmailVerified",
+      x.status() == MemberStatus.ACTIVE
     );
   }
 
+  MemberID verifyToken(MemberID x1, FormData x2) {
+    if (x2.get("token") != null) {
+      VerifyEmail cmd = new VerifyEmail(new VerificationToken(x2.get("token")));
+      this.service.handle(cmd);
+    }
+    return x1;
+  }
+
   void displayDashboard(HttpExchange x1, FormData x2) {
-    Result<Map<String, Object>> result = Result
+    // Partials for data pipeline.
+    UnaryOperator<MemberID> processTokenIfPresent = id -> verifyToken(id, x2);
+    UnaryOperator<Map<String, Object>> toHTML = data -> {
+      WebUtil.renderForm(this.dashboardTemplate, x1, data);
+      return data;
+    };
+
+    // Data pipeline.
+    Result
       .ok(x1)
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
+      .map(processTokenIfPresent)
       .map(service::getDashboard)
       .map(MemberDashboard::member)
-      .map(this::dashboardView);
-    if (result.isOk()) {
-      WebUtil.renderForm(this.dashboardTemplate, x1, result.getValue());
-    } else {
-      throw result.getError();
-    }
+      .map(this::dashboardView)
+      .map(toHTML)
+      .get();
   }
 
   void handleCreateFormPost(HttpExchange x1, FormData x2) {
@@ -93,6 +110,10 @@ class MembersHandler extends BaseHandler {
         throw new IllegalStateException(e);
       }
     }
+  }
+
+  boolean isEmailVerify(HttpExchange x) {
+    return x.getRequestURI().getPath().matches("^.*/\\d+?token=");
   }
 
   boolean isDashboard(HttpExchange x) {

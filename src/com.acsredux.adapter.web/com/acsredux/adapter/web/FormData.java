@@ -1,5 +1,7 @@
 package com.acsredux.adapter.web;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,27 +12,23 @@ class FormData {
 
   private final Map<String, List<String>> data = new HashMap<>();
 
-  private String lc(String key) {
-    return key == null ? null : key.toLowerCase();
-  }
-
   void add(String key, String val) {
-    if (!data.containsKey(lc(key))) {
-      data.put(lc(key), new ArrayList<>(1));
+    if (!data.containsKey(key)) {
+      data.put(key, new ArrayList<>(1));
     }
-    List<String> xs = data.get(lc(key));
+    List<String> xs = data.get(key);
     xs.add(val);
   }
 
   String get(String key) {
-    if (data.containsKey(lc(key))) {
-      return data.get(lc(key)).get(0);
+    if (data.containsKey(key)) {
+      return data.get(key).get(0);
     }
     return null;
   }
 
   List<String> getAll(String key) {
-    return data.get(lc(key));
+    return data.get(key);
   }
 
   Map<String, Object> asMap() {
@@ -71,5 +69,24 @@ class FormData {
     buf.deleteCharAt(buf.length() - 1);
     buf.append(">");
     return buf.toString();
+  }
+
+  static FormData of(String encodedRequestBody) {
+    FormData y = new FormData();
+    if (encodedRequestBody == null || encodedRequestBody.isBlank()) {
+      return y;
+    }
+    try {
+      for (String pair : encodedRequestBody.split("&")) {
+        String[] pieces = pair.split("=");
+        String k = URLDecoder.decode(pieces[0], StandardCharsets.UTF_8);
+        String v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
+        y.add(k, v);
+      }
+    } catch (Exception e) {
+      // Some form posted invalid form data
+      throw new IllegalStateException("invalid form post data: " + encodedRequestBody, e);
+    }
+    return y;
   }
 }

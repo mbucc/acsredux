@@ -1,6 +1,5 @@
 package com.acsredux.adapter.web;
 
-import static com.acsredux.adapter.web.WebUtil.parseFormData;
 import static com.acsredux.adapter.web.WebUtil.readRequestBody;
 import static com.acsredux.adapter.web.WebUtil.safeDump;
 import static java.io.OutputStream.nullOutputStream;
@@ -32,26 +31,34 @@ abstract class BaseHandler implements HttpHandler {
     this.err = x;
   }
 
+  // Always read the request body to be sure we don't
+  // end up with an undrained buffer somewhere.
+  private void drainRequestBody(HttpExchange x) {
+    try {
+      x.getRequestBody().transferTo(nullOutputStream());
+    } catch (IOException e) {
+      throw new IllegalStateException(
+        "error reading request " + "body for " + safeDump(x),
+        e
+      );
+    }
+  }
+
   // Parse request body to form data.
   // If the request is a query or a delete, the data is non-null and empty.
   // It is spec-compliant to ignore the request body for GET or DELETE.
   //   For a good discussion of the GET method and request bodies, see
   // https://stackoverflow.com/a/983458/1789168.
   private FormData read(HttpExchange x) {
-    // Always read the request body to be sure we don't
-    // end up with an undrained buffer somewhere.
     return switch (x.getRequestMethod()) {
-      case "PUT", "PATCH", "POST" -> parseFormData(readRequestBody(x));
+      case "PUT", "PATCH", "POST" -> FormData.of(readRequestBody(x));
+      case "GET" -> {
+        drainRequestBody(x);
+        yield FormData.of(x.getRequestURI().getRawQuery());
+      }
       default -> {
-        try {
-          x.getRequestBody().transferTo(nullOutputStream());
-          yield new FormData();
-        } catch (IOException e) {
-          throw new IllegalStateException(
-            "error reading request " + "body for " + safeDump(x),
-            e
-          );
-        }
+        drainRequestBody(x);
+        yield new FormData();
       }
     };
   }

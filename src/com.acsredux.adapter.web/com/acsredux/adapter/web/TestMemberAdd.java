@@ -6,7 +6,7 @@ import com.acsredux.core.members.values.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestAddMember {
+class TestMemberAdd {
 
   String expected(String url) {
     return "";

@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestMembersHandler {
+class TestMemberDashboard {
 
   String expected(String url) {
     return "";

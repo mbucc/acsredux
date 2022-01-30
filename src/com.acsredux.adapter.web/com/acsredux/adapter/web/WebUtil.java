@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -46,25 +45,6 @@ class WebUtil {
       throw new IllegalStateException("error reading request", e);
     }
     return toUTF8String(y);
-  }
-
-  static FormData parseFormData(String encodedRequestBody) {
-    FormData y = new FormData();
-    if (encodedRequestBody == null || encodedRequestBody.isBlank()) {
-      return y;
-    }
-    try {
-      for (String pair : encodedRequestBody.split("&")) {
-        String[] pieces = pair.split("=");
-        String k = URLDecoder.decode(pieces[0], StandardCharsets.UTF_8);
-        String v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
-        y.add(k, v);
-      }
-    } catch (Exception e) {
-      // Some form posted invalid form data
-      throw new IllegalStateException("invalid form post data: " + encodedRequestBody, e);
-    }
-    return y;
   }
 
   static String toUTF8String(byte[] xs) {

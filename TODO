@@ -1,6 +1,7 @@
-2022-01-29: Add endpoint to support token click.
+2022-01-30: Render error on dashboard if invalid token.  Says not found now.
+2022-01-30: set session cookie when account created.
 2022-01-29: Add logout.
-2022-01-29: Add login page.
+2022-01-29: Add login.
 2022-01-29: Add admin data to MemberHandler for alpha tester limit, etc.
 2021-12-27: add content data model and editing
 
@@ -10,3 +11,5 @@
 2021-08-09: limit # of users during testing
 2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
 2021-12-27: add admin pages
+2022-01-30: add reset password link
+2022-01-30: rethink command handler / service interface.

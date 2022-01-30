@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -51,19 +52,6 @@ class TestFormData {
   }
 
   @Test
-  void testKeysAreCaseInsensitive() {
-    // setup
-    formData.add("AbC", "dEf");
-
-    // execute
-    String y = formData.get("abc");
-
-    // validate
-    assertNotNull(y);
-    assertEquals("dEf", y);
-  }
-
-  @Test
   void testAsMap() {
     // setup
     formData.add("value", "1");
@@ -106,5 +94,24 @@ class TestFormData {
     // validate
     String exp = String.format("<FormData: %s=********, z=def>", key);
     assertEquals(exp, y);
+  }
+
+  @Test
+  void testOfWorksWithEmptyString() {
+    FormData y = assertDoesNotThrow(() -> FormData.of(""));
+  }
+
+  @Test
+  void testThreeValues() {
+    // setup
+    var formdata = "email=t%40t.com&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!";
+
+    // execute
+    FormData y = FormData.of(formdata);
+
+    // verify
+    assertEquals("t@t.com", y.get("email"));
+    assertEquals("aBcd3fgh!", y.get("pwd1"));
+    assertEquals("aBcd3fgh!", y.get("pwd2"));
   }
 }

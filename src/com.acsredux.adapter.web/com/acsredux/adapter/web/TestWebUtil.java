@@ -1,7 +1,6 @@
 package com.acsredux.adapter.web;
 
 import static com.acsredux.lib.testutil.TestData.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -37,10 +36,5 @@ class TestWebUtil {
     } else {
       fail("wrong command returned");
     }
-  }
-
-  @Test
-  void testParseFormDataWorksWithEmptyString() {
-    FormData y = assertDoesNotThrow(() -> WebUtil.parseFormData(""));
   }
 }

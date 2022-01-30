@@ -5,6 +5,7 @@ import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.ports.AdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public final class MemberProvider implements MemberService {
 
   private final AddMemberHandler addMemberHandler;
+  private final VerifyEmailHandler verifyEmailHandler;
   private final MemberReader reader;
   private final AdminReader adminReader;
 
@@ -28,6 +30,7 @@ public final class MemberProvider implements MemberService {
     AdminReader adminReader
   ) {
     addMemberHandler = new AddMemberHandler(r, adminReader, w, notifier, clock);
+    verifyEmailHandler = new VerifyEmailHandler(r, w, clock);
     this.reader = r;
     this.adminReader = adminReader;
   }
@@ -36,6 +39,8 @@ public final class MemberProvider implements MemberService {
   public Event handle(MemberCommand x) {
     if (x instanceof AddMember c) {
       return addMemberHandler.handle(c);
+    } else if (x instanceof VerifyEmail c) {
+      return verifyEmailHandler.handle(c);
     } else {
       throw new IllegalArgumentException("invalid command " + x);
     }
