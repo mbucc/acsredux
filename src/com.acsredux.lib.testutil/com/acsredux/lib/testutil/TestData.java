@@ -1,6 +1,7 @@
 package com.acsredux.lib.testutil;
 
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
@@ -56,6 +57,7 @@ public class TestData {
   }
 
   public static final SiteInfo TEST_SITE_INFO = new SiteInfo(
+    SiteStatus.ALPHA,
     25, // limitOnAlphaCustomers
     50, // limitOnBetaCustomers,
     0, // currentAnnualSubscriptionFeeInCents,

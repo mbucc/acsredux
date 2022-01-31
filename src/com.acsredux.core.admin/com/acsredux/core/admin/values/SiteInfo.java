@@ -3,6 +3,7 @@ package com.acsredux.core.admin.values;
 import java.net.URI;
 
 public record SiteInfo(
+  SiteStatus siteStatus,
   int limitOnAlphaCustomers,
   int limitOnBetaCustomers,
   int currentAnnualSubscriptionFeeInCents,

@@ -9,7 +9,14 @@
 
     <h1>Create Membership</h1>
 
-    {{#error}}
+    {{#isInAlphaTesting}}
+    <p>
+      We are in alpha testing mode, which means things may break. Bug reports (submitted
+      <a href="{{suggestionBoxURL}}">here</a>) are appreciated. To limit the amount of
+      feedback, we cap membership at {{alphaTestMemberLimit}}; so far, {{memberCount}} of
+      those slots are used up.
+    </p>
+    {{/isInAlphaTesting}} {{#error}}
     <p style="color: red">{{{error}}}</p>
     {{/error}}
     <form action="/members/create" method="post">

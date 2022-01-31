@@ -59,4 +59,9 @@ public final class MemberProvider implements MemberService {
         new NotFoundException("Member ID " + x.val() + " is not on file.")
       );
   }
+
+  @Override
+  public int activeMembers() {
+    return reader.countActiveMembers();
+  }
 }

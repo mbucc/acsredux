@@ -1,8 +1,6 @@
-2022-01-30: Render error on dashboard if invalid token.  Says not found now.
 2022-01-30: set session cookie when account created.
 2022-01-29: Add logout.
 2022-01-29: Add login.
-2022-01-29: Add admin data to MemberHandler for alpha tester limit, etc.
 2021-12-27: add content data model and editing
 
 2021-12-07: create com.acsredux.adapter.sqlite

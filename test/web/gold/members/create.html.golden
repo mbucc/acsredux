@@ -1,5 +1,5 @@
 200
-Content-Length: 1412
+Content-Length: 1700
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -13,6 +13,12 @@ Content-type: text/html; charset= UTF-8
 
     <h1>Create Membership</h1>
 
+    <p>
+      We are in alpha testing mode, which means things may break. Bug reports (submitted
+      <a href="http://example.com/suggestions">here</a>) are appreciated. To limit the amount of
+      feedback, we cap membership at 25; so far, 1 of
+      those slots are used up.
+    </p>
     <form action="/members/create" method="post">
       <table>
         <tr>

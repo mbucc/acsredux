@@ -7,6 +7,9 @@
   <body>
     <p><a href="/">home</a></p>
     <h1>Member Dashboard</h1>
+    {{#error}}
+    <p style="color: red">{{{error}}}</p>
+    {{/error}}
     <p>{{firstName}} {{lastName}} has been a member since {{memberSince}}.</p>
 
     {{#isWaitingOnEmailVerification}}

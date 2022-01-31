@@ -1,3 +1,7 @@
 package com.acsredux.core.admin.ports;
 
-public interface AdminReader {}
+import com.acsredux.core.admin.values.SiteInfo;
+
+public interface AdminReader {
+  SiteInfo getSiteInfo();
+}

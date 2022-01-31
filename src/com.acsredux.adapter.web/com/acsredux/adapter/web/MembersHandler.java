@@ -19,6 +19,8 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
@@ -39,14 +41,24 @@ class MembersHandler extends BaseHandler {
     this.adminService = adminService;
     this.createTemplate = mf.compile("members/create.html");
     this.dashboardTemplate = mf.compile("members/dashboard.html");
-    this.siteInfo = adminService.getSiteInfo();
   }
 
   void displayCreateForm(HttpExchange x1, FormData x2) {
+    x2.add("isInAlphaTesting", adminService.getSiteInfo().siteStatus().name());
+    x2.add(
+      "alphaTestMemberLimit",
+      String.valueOf(adminService.getSiteInfo().limitOnAlphaCustomers())
+    );
+    x2.add("memberCount", String.valueOf(memberService.activeMembers()));
+    x2.add(
+      "suggestionBoxURL",
+      this.adminService.getSiteInfo().suggestionBoxURL().toString()
+    );
     WebUtil.renderForm(this.createTemplate, x1, x2.asMap());
   }
 
-  Map<String, Object> dashboardView(Member x) {
+  Map<String, Object> dashboardView(Member x, FormData x2) {
+    String error = Optional.ofNullable(x2).map(o -> o.get("error")).orElse("");
     return Map.of(
       "firstName",
       x.firstName().val(),
@@ -57,18 +69,28 @@ class MembersHandler extends BaseHandler {
       "isWaitingOnEmailVerification",
       x.status() == MemberStatus.NEEDS_EMAIL_VERIFICATION,
       "isInAlphaTesting",
-      true,
+      adminService.getSiteInfo().siteStatus(),
       "isEmailVerified",
       x.status() == MemberStatus.ACTIVE,
       "suggestionBoxURL",
-      this.siteInfo.suggestionBoxURL()
+      this.adminService.getSiteInfo().suggestionBoxURL(),
+      "alphaTestMemberLimit",
+      adminService.getSiteInfo().limitOnAlphaCustomers(),
+      "memberCount",
+      memberService.activeMembers(),
+      "error",
+      error
     );
   }
 
   MemberID verifyToken(MemberID x1, FormData x2) {
     if (x2.get("token") != null) {
       VerifyEmail cmd = new VerifyEmail(new VerificationToken(x2.get("token")));
-      this.memberService.handle(cmd);
+      try {
+        this.memberService.handle(cmd);
+      } catch (ValidationException e) {
+        x2.add("error", e.getMessage());
+      }
     }
     return x1;
   }
@@ -80,6 +102,7 @@ class MembersHandler extends BaseHandler {
       WebUtil.renderForm(this.dashboardTemplate, x1, data);
       return data;
     };
+    Function<Member, Map<String, Object>> toViewData = m -> dashboardView(m, x2);
 
     // Data pipeline.
     Result
@@ -89,7 +112,7 @@ class MembersHandler extends BaseHandler {
       .map(processTokenIfPresent)
       .map(memberService::getDashboard)
       .map(MemberDashboard::member)
-      .map(this::dashboardView)
+      .map(toViewData)
       .map(toHTML)
       .get();
   }

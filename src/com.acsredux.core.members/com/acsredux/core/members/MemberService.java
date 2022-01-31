@@ -12,4 +12,5 @@ public interface MemberService {
   // queries
   Optional<MemberDashboard> findDashboard(MemberID x);
   MemberDashboard getDashboard(MemberID x);
+  int activeMembers();
 }

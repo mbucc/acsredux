@@ -2,7 +2,9 @@ package com.acsredux.adapter.stub;
 
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.base.NotFoundException;
+import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
@@ -84,7 +86,12 @@ public final class Stub
 
   @Override
   public VerificationToken addAddMemberToken(MemberID memberID, CreatedOn now) {
-    return new VerificationToken("abc123");
+    // byte[] ys = new byte[7];
+    // new Random().nextBytes(ys);
+    // var y = new VerificationToken(Base64.getEncoder().encodeToString(ys));
+    var y = new VerificationToken("token" + memberID.val());
+    tokens.put(y, memberID);
+    return y;
   }
 
   @Override
@@ -127,6 +134,7 @@ public final class Stub
       throw new IllegalStateException(e);
     }
     return new SiteInfo(
+      SiteStatus.ALPHA,
       25, // limitOnAlphaCustomers
       100, // limitOnBetaCustomers
       0, // currentAnnualSubscriptionFeeInCents
@@ -144,7 +152,7 @@ public final class Stub
   @Override
   public MemberID getByToken(VerificationToken x) {
     if (!tokens.containsKey(x)) {
-      throw new NotFoundException("invalid token " + x);
+      throw new ValidationException("Expired login token " + x.val());
     }
     return tokens.get(x);
   }
@@ -165,5 +173,10 @@ public final class Stub
     members.remove(y);
     members.add(y1);
     return x1;
+  }
+
+  @Override
+  public int countActiveMembers() {
+    return members.size();
   }
 }

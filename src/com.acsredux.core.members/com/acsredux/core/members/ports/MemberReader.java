@@ -21,7 +21,8 @@ public interface MemberReader {
       .orElseThrow(() -> new NotFoundException("dashboard not found"));
   }
 
+  // Queries
   MemberID getByToken(VerificationToken x);
-
   Member getByID(MemberID x);
+  int countActiveMembers();
 }

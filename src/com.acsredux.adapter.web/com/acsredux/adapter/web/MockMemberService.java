@@ -27,6 +27,11 @@ class MockMemberService implements MemberService {
     return this.dashboard;
   }
 
+  @Override
+  public int activeMembers() {
+    return 1;
+  }
+
   void setEvent(Event x) {
     this.event = x;
   }
