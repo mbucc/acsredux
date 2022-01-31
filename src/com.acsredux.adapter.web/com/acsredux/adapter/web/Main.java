@@ -3,6 +3,8 @@ package com.acsredux.adapter.web;
 import static java.lang.System.Logger.Level.INFO;
 
 import com.acsredux.adapter.stub.Stub;
+import com.acsredux.core.admin.AdminService;
+import com.acsredux.core.admin.AdminServiceFactory;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
 import com.sun.net.httpserver.HttpServer;
@@ -41,7 +43,11 @@ public class Main {
       stub,
       tz
     );
-    server.createContext("/members", new MembersHandler(xs.documentRoot, memberService));
+    AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
+    server.createContext(
+      "/members",
+      new MembersHandler(xs.documentRoot, memberService, adminService)
+    );
 
     server.start();
   }

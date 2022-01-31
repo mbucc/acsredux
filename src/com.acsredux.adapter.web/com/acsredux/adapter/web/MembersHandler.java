@@ -1,5 +1,7 @@
 package com.acsredux.adapter.web;
 
+import com.acsredux.core.admin.AdminService;
+import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
@@ -21,15 +23,23 @@ import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
 
-  private MemberService service;
+  private MemberService memberService;
+  private AdminService adminService;
   private Mustache createTemplate;
   private Mustache dashboardTemplate;
+  private SiteInfo siteInfo;
 
-  MembersHandler(String templateRoot, MemberService service) {
+  MembersHandler(
+    String templateRoot,
+    MemberService memberService,
+    AdminService adminService
+  ) {
     MustacheFactory mf = new DefaultMustacheFactory(new File(templateRoot));
-    this.service = service;
+    this.memberService = memberService;
+    this.adminService = adminService;
     this.createTemplate = mf.compile("members/create.html");
     this.dashboardTemplate = mf.compile("members/dashboard.html");
+    this.siteInfo = adminService.getSiteInfo();
   }
 
   void displayCreateForm(HttpExchange x1, FormData x2) {
@@ -49,14 +59,16 @@ class MembersHandler extends BaseHandler {
       "isInAlphaTesting",
       true,
       "isEmailVerified",
-      x.status() == MemberStatus.ACTIVE
+      x.status() == MemberStatus.ACTIVE,
+      "suggestionBoxURL",
+      this.siteInfo.suggestionBoxURL()
     );
   }
 
   MemberID verifyToken(MemberID x1, FormData x2) {
     if (x2.get("token") != null) {
       VerifyEmail cmd = new VerifyEmail(new VerificationToken(x2.get("token")));
-      this.service.handle(cmd);
+      this.memberService.handle(cmd);
     }
     return x1;
   }
@@ -75,7 +87,7 @@ class MembersHandler extends BaseHandler {
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
       .map(processTokenIfPresent)
-      .map(service::getDashboard)
+      .map(memberService::getDashboard)
       .map(MemberDashboard::member)
       .map(this::dashboardView)
       .map(toHTML)
@@ -87,7 +99,7 @@ class MembersHandler extends BaseHandler {
       .ok(x2)
       .map(WebUtil::form2cmd)
       .map(MemberCommand.class::cast)
-      .map(service::handle)
+      .map(memberService::handle)
       .map(MemberAdded.class::cast)
       .map(MemberAdded::memberID)
       .map(MemberID::val)

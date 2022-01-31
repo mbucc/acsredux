@@ -6,7 +6,7 @@ import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.commands.MemberCommand;
 import com.acsredux.core.members.commands.VerifyEmail;
-import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
@@ -20,14 +20,14 @@ public final class MemberProvider implements MemberService {
   private final AddMemberHandler addMemberHandler;
   private final VerifyEmailHandler verifyEmailHandler;
   private final MemberReader reader;
-  private final AdminReader adminReader;
+  private final MemberAdminReader adminReader;
 
   public MemberProvider(
     MemberReader r,
     MemberWriter w,
     MemberNotifier notifier,
     InstantSource clock,
-    AdminReader adminReader
+    MemberAdminReader adminReader
   ) {
     addMemberHandler = new AddMemberHandler(r, adminReader, w, notifier, clock);
     verifyEmailHandler = new VerifyEmailHandler(r, w, clock);

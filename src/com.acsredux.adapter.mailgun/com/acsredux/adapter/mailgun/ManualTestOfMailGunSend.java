@@ -1,6 +1,6 @@
 package com.acsredux.adapter.mailgun;
 
-import static com.acsredux.lib.testutil.TestData.TEST_SITEINFO;
+import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
 
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
@@ -32,7 +32,7 @@ class ManualTestOfMailGunSend {
     );
 
     // execute
-    notifier.memberAdded(event, TEST_SITEINFO);
+    notifier.memberAdded(event, TEST_SITE_INFO);
     // verify: go check my inbox.
   }
 }

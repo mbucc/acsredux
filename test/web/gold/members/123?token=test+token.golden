@@ -1,5 +1,5 @@
 200
-Content-Length: 468
+Content-Length: 464
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ Content-type: text/html; charset= UTF-8
     <p>Your email has been verified and you are now an active member.</p>
     <p>
       Do you have ideas for how this site could be better? Use the
-      <a href="https://garden-journal.kampsite.co">suggestion box</a>.
+      <a href="http://example.com/suggestions">suggestion box</a>.
     </p>
   </body>
 </html>

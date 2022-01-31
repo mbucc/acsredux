@@ -1,5 +1,7 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
+
 import com.acsredux.core.members.entities.*;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
@@ -13,12 +15,16 @@ class TestMemberAdd {
   }
 
   MockMemberService mockMemberService;
+  MockAdminService mockAdminService;
   MembersHandler handler;
 
   @BeforeEach
   void setup() {
     this.mockMemberService = new MockMemberService();
-    this.handler = new MembersHandler("./web/template", mockMemberService);
+    this.mockAdminService = new MockAdminService();
+    this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
+    this.handler =
+      new MembersHandler("./web/template", mockMemberService, mockAdminService);
   }
 
   @Test

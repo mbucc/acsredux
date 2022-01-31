@@ -4,6 +4,7 @@ import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
+import java.net.URI;
 import java.time.Instant;
 import java.time.ZoneId;
 
@@ -44,7 +45,17 @@ public class TestData {
     TEST_ZIP_CODE
   );
   public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(TEST_TOKEN);
-  public static final SiteInfo TEST_SITEINFO = new SiteInfo(
+  static URI uri;
+
+  static {
+    try {
+      uri = new URI("http://example.com/suggestions");
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public static final SiteInfo TEST_SITE_INFO = new SiteInfo(
     25, // limitOnAlphaCustomers
     50, // limitOnBetaCustomers,
     0, // currentAnnualSubscriptionFeeInCents,
@@ -54,6 +65,7 @@ public class TestData {
     "Anyville",
     "MA",
     "12345",
-    "mkbucc@gmail.com"
+    "mkbucc@gmail.com",
+    uri
   );
 }

@@ -5,7 +5,7 @@ import static com.acsredux.core.base.Util.dieIfNull;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public final class AddMemberHandler {
 
   private final MemberReader reader;
-  private final AdminReader adminReader;
+  private final MemberAdminReader adminReader;
   private final MemberWriter writer;
   private final MemberNotifier notifier;
   private final InstantSource clock;
@@ -25,7 +25,7 @@ public final class AddMemberHandler {
 
   public AddMemberHandler(
     MemberReader reader,
-    AdminReader adminReader,
+    MemberAdminReader adminReader,
     MemberWriter writer,
     MemberNotifier notifier,
     InstantSource clock

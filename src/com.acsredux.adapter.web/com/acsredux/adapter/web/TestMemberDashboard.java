@@ -1,6 +1,7 @@
 package com.acsredux.adapter.web;
 
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
+import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,12 +21,16 @@ class TestMemberDashboard {
   }
 
   MockMemberService mockMemberService;
+  MockAdminService mockAdminService;
   MembersHandler handler;
 
   @BeforeEach
   void setup() {
     this.mockMemberService = new MockMemberService();
-    this.handler = new MembersHandler("./web/template", mockMemberService);
+    this.mockAdminService = new MockAdminService();
+    this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
+    this.handler =
+      new MembersHandler("./web/template", mockMemberService, mockAdminService);
   }
 
   @Test

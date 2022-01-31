@@ -1,5 +1,7 @@
 package com.acsredux.core.admin.values;
 
+import java.net.URI;
+
 public record SiteInfo(
   int limitOnAlphaCustomers,
   int limitOnBetaCustomers,
@@ -10,5 +12,6 @@ public record SiteInfo(
   String city,
   String stateAbbreviation,
   String zip,
-  String fromEmail
+  String fromEmail,
+  URI suggestionBoxURL
 ) {}

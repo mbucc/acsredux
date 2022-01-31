@@ -7,7 +7,7 @@ import static com.acsredux.lib.testutil.TestData.TEST_LAST_NAME;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_PASSWORD;
-import static com.acsredux.lib.testutil.TestData.TEST_SITEINFO;
+import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
 import static com.acsredux.lib.testutil.TestData.TEST_TOKEN;
 import static com.acsredux.lib.testutil.TestData.TEST_ZIP_CODE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
@@ -38,7 +38,7 @@ class TestAddMemberHandler {
 
   private AddMemberHandler service;
   private MemberReader reader;
-  private AdminReader adminReader;
+  private MemberAdminReader adminReader;
   private MemberWriter writer;
   private MemberNotifier notifier;
   private InstantSource clock;
@@ -48,7 +48,7 @@ class TestAddMemberHandler {
   @BeforeEach
   void setup() {
     this.reader = mock(MemberReader.class);
-    this.adminReader = mock(AdminReader.class);
+    this.adminReader = mock(MemberAdminReader.class);
     this.writer = mock(MemberWriter.class);
     this.notifier = mock(MemberNotifier.class);
     this.clock = InstantSource.fixed(this.clockTime.val());
@@ -154,7 +154,7 @@ class TestAddMemberHandler {
   void testSunnyPath() {
     // setup
     given(reader.findByEmail(TEST_EMAIL)).willReturn(Optional.empty());
-    given(adminReader.getSiteInfo()).willReturn(TEST_SITEINFO);
+    given(adminReader.getSiteInfo()).willReturn(TEST_SITE_INFO);
     given(
       writer.addMember(
         TEST_ADD_MEMBER_CMD,
@@ -190,7 +190,7 @@ class TestAddMemberHandler {
     then(writer).should().addAddMemberToken(TEST_MEMBER_ID, clockTime);
     then(writer).shouldHaveNoMoreInteractions();
 
-    then(notifier).should().memberAdded(memberAdded, TEST_SITEINFO);
+    then(notifier).should().memberAdded(memberAdded, TEST_SITE_INFO);
     then(notifier).shouldHaveNoMoreInteractions();
   }
 }

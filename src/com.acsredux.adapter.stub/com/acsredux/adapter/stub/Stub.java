@@ -1,15 +1,17 @@
 package com.acsredux.adapter.stub;
 
+import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
+import java.net.URI;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public final class Stub
-  implements MemberReader, MemberWriter, MemberNotifier, AdminReader {
+  implements MemberReader, MemberWriter, MemberNotifier, MemberAdminReader, AdminReader {
 
   private static final Stub INSTANCE = new Stub();
 
@@ -118,6 +120,12 @@ public final class Stub
 
   @Override
   public SiteInfo getSiteInfo() {
+    final URI uri;
+    try {
+      uri = new URI("http://example.com/suggestionbox.html");
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
     return new SiteInfo(
       25, // limitOnAlphaCustomers
       100, // limitOnBetaCustomers
@@ -128,7 +136,8 @@ public final class Stub
       "Anywhere",
       "MA",
       "12345",
-      "mkbucc@gmail.com"
+      "mkbucc@gmail.com",
+      uri
     );
   }
 

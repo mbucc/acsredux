@@ -1,6 +1,6 @@
 package com.acsredux.core.members;
 
-import com.acsredux.core.members.ports.AdminReader;
+import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
@@ -19,7 +19,7 @@ public final class MemberServiceFactory {
     MemberReader r,
     MemberWriter w,
     MemberNotifier notifier,
-    AdminReader adminReader,
+    MemberAdminReader adminReader,
     ZoneId tz
   ) {
     return getMemberService(r, w, notifier, adminReader, Clock.system(tz));
@@ -29,7 +29,7 @@ public final class MemberServiceFactory {
     MemberReader r,
     MemberWriter w,
     MemberNotifier notifier,
-    AdminReader adminReader,
+    MemberAdminReader adminReader,
     InstantSource clock
   ) {
     return new MemberProvider(r, w, notifier, clock, adminReader);
