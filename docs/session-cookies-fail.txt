@@ -1,0 +1,14 @@
+February 3, 20222
+
+Summary: Chrome and Firefox do not reliably remove session cookies.
+         So use persistent cookies so we can manage security.
+
+According to the two bug report links below, both Chrome and Firefox
+keep session cookies around.
+
+If this is true, we should stop using them and just handle things
+with persistent cookies.
+
+https://bugs.chromium.org/p/chromium/issues/detail?id=128513
+
+https://bugzilla.mozilla.org/buglist.cgi?bug_id=337551,345830,358042,362212,369289,375182,376605,377233,381940,395749,398827,399748,417711,431547,437911,441544,576845

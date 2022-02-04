@@ -1,6 +1,7 @@
 package com.acsredux.core.admin.values;
 
 import java.net.URI;
+import java.time.Duration;
 
 public record SiteInfo(
   SiteStatus siteStatus,
@@ -14,5 +15,6 @@ public record SiteInfo(
   String stateAbbreviation,
   String zip,
   String fromEmail,
-  URI suggestionBoxURL
+  URI suggestionBoxURL,
+  Duration cookieMaxAge
 ) {}

@@ -6,6 +6,7 @@ import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 
@@ -68,6 +69,7 @@ public class TestData {
     "MA",
     "12345",
     "mkbucc@gmail.com",
-    uri
+    uri,
+    Duration.ofDays(365)
   );
 }

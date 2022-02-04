@@ -131,8 +131,14 @@ class MockHttpExchange extends HttpExchange {
     buf.append("Content-Length: ");
     buf.append(this.responseLength);
     buf.append("\n");
-    this.responseHeaders.forEach((k, v) -> v.forEach(v1 -> buf.append(k + ": " + v1)));
-    buf.append("\n");
+    this.responseHeaders.forEach((k, v) ->
+        v.forEach(v1 -> {
+          buf.append(k);
+          buf.append(": ");
+          buf.append(v1);
+          buf.append("\n");
+        })
+      );
     buf.append("\n");
     buf.append(this.responseBody.toString(StandardCharsets.UTF_8));
     return buf.toString();

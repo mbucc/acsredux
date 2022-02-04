@@ -5,6 +5,7 @@ import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.MemberCommand;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.members.values.SessionID;
 import java.util.Optional;
 
 class MockMemberService implements MemberService {
@@ -30,6 +31,11 @@ class MockMemberService implements MemberService {
   @Override
   public int activeMembers() {
     return 1;
+  }
+
+  @Override
+  public SessionID createSessionID(MemberID x) {
+    return new SessionID("aSessionIDForMember" + x.val());
   }
 
   void setEvent(Event x) {

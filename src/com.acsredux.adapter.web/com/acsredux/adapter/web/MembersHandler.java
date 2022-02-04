@@ -16,6 +16,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
 
+  private static final String COOKIE_FMT =
+    "session_id=%s; max-age=%d; SameSite=Strict; Path=/; HttpOnly";
   private MemberService memberService;
   private AdminService adminService;
   private Mustache createTemplate;
@@ -117,32 +120,54 @@ class MembersHandler extends BaseHandler {
       .get();
   }
 
+  SessionID sendResponse(HttpExchange x1, SessionID x2) throws IOException {
+    x1.sendResponseHeaders(302, -1);
+    return x2;
+  }
+
   void handleCreateFormPost(HttpExchange x1, FormData x2) {
-    Result<String> result = Result
+    // Create partials for pipeline.
+    UnaryOperator<MemberID> addLocationHeader = id -> {
+      Headers ys = x1.getResponseHeaders();
+      ys.set("Location", "/members/" + id.val());
+      return id;
+    };
+    Function<MemberID, SessionID> getSessionID = id -> memberService.createSessionID(id);
+    UnaryOperator<SessionID> setCookie = id -> {
+      Headers ys = x1.getResponseHeaders();
+      // We will rely on Apache side-car proxy to set the Secure attribute on
+      // the cookie (and generally handle SSL).
+      ys.set(
+        "Set-cookie",
+        String.format(
+          COOKIE_FMT,
+          id.val(),
+          adminService.getSiteInfo().cookieMaxAge().toSeconds()
+        )
+      );
+      return id;
+    };
+
+    // Pipeline
+    Result<SessionID> result = Result
       .ok(x2)
       .map(WebUtil::form2cmd)
       .map(MemberCommand.class::cast)
       .map(memberService::handle)
       .map(MemberAdded.class::cast)
       .map(MemberAdded::memberID)
-      .map(MemberID::val)
-      .map(id -> "/members/" + id);
+      .map(addLocationHeader)
+      .map(getSessionID)
+      .map(setCookie)
+      .mapWrap(id -> sendResponse(x1, id));
 
-    if (result.isOk()) {
-      Headers ys = x1.getResponseHeaders();
-      ys.set("Location", result.getValue());
-      try {
-        x1.sendResponseHeaders(302, -1);
-      } catch (Exception e) {
-        throw new IllegalStateException("can't set response headers", e);
-      }
-    } else {
-      Exception e = result.getError();
-      if (e instanceof ValidationException iae) {
-        x2.add("error", iae.getMessage());
+    if (result.isErr()) {
+      RuntimeException e = result.getError();
+      if (e instanceof ValidationException e1) {
+        x2.add("error", e1.getMessage());
         WebUtil.renderForm(this.createTemplate, x1, x2.asMap());
       } else {
-        throw new IllegalStateException(e);
+        throw e;
       }
     }
   }

@@ -14,6 +14,7 @@ import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -30,9 +31,11 @@ public final class Stub
 
   private List<Member> members;
   private Map<VerificationToken, MemberID> tokens;
+  private Map<SessionID, MemberID> sessions;
 
   private Stub() {
     tokens = new HashMap<>();
+    sessions = new HashMap<>();
     members = new ArrayList<>();
     members.add(
       new Member(
@@ -86,9 +89,6 @@ public final class Stub
 
   @Override
   public VerificationToken addAddMemberToken(MemberID memberID, CreatedOn now) {
-    // byte[] ys = new byte[7];
-    // new Random().nextBytes(ys);
-    // var y = new VerificationToken(Base64.getEncoder().encodeToString(ys));
     var y = new VerificationToken("token" + memberID.val());
     tokens.put(y, memberID);
     return y;
@@ -145,7 +145,8 @@ public final class Stub
       "MA",
       "12345",
       "mkbucc@gmail.com",
-      uri
+      uri,
+      Duration.ofDays(365)
     );
   }
 
@@ -178,5 +179,10 @@ public final class Stub
   @Override
   public int countActiveMembers() {
     return members.size();
+  }
+
+  @Override
+  public void writeSessionID(MemberID x1, SessionID x2) {
+    sessions.put(x2, x1);
   }
 }

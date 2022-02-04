@@ -12,7 +12,10 @@ import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.members.values.SessionID;
+import java.security.SecureRandom;
 import java.time.InstantSource;
+import java.util.Base64;
 import java.util.Optional;
 
 public final class MemberProvider implements MemberService {
@@ -20,7 +23,11 @@ public final class MemberProvider implements MemberService {
   private final AddMemberHandler addMemberHandler;
   private final VerifyEmailHandler verifyEmailHandler;
   private final MemberReader reader;
+  private final MemberWriter writer;
   private final MemberAdminReader adminReader;
+  // SecureRandom self-seeds on the first call to nextBytes(), typically
+  // from /dev/random (or /dev/urandom) in Linux.
+  private final SecureRandom secureRandom = new SecureRandom();
 
   public MemberProvider(
     MemberReader r,
@@ -32,6 +39,7 @@ public final class MemberProvider implements MemberService {
     addMemberHandler = new AddMemberHandler(r, adminReader, w, notifier, clock);
     verifyEmailHandler = new VerifyEmailHandler(r, w, clock);
     this.reader = r;
+    this.writer = w;
     this.adminReader = adminReader;
   }
 
@@ -63,5 +71,18 @@ public final class MemberProvider implements MemberService {
   @Override
   public int activeMembers() {
     return reader.countActiveMembers();
+  }
+
+  @Override
+  public SessionID createSessionID(MemberID x) {
+    // OWASP recommends a session ID be at least 128 (16 bytes) long [1].
+    // https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
+    byte[] ys = new byte[128];
+
+    // This will block on first call as system provides entropy.
+    secureRandom.nextBytes(ys);
+    var y = new SessionID(Base64.getEncoder().encodeToString(ys));
+    writer.writeSessionID(x, y);
+    return y;
   }
 }

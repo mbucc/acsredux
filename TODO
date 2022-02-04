@@ -1,4 +1,4 @@
-2022-01-30: set session cookie when account created.
+2022-02-03: auto-login from cookie
 2022-01-29: Add logout.
 2022-01-29: Add login.
 2021-12-27: add content data model and editing
@@ -11,3 +11,4 @@
 2021-12-27: add admin pages
 2022-01-30: add reset password link
 2022-01-30: rethink command handler / service interface.
+2022-02-02: Use different message when token has already been verified.
