@@ -31,7 +31,7 @@ class RootHandler extends BaseHandler {
     Mustache m = mf.compile("index.html");
     Writer writer = new StringWriter();
     try {
-      m.execute(writer, Collections.emptyMap()).flush();
+      m.execute(writer, x2.asMap()).flush();
     } catch (Exception e) {
       throw new IllegalStateException(
         "error rendering template index.html with data " + Collections.emptyMap(),

@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web;
 
+import com.sun.net.httpserver.HttpExchange;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -18,6 +19,15 @@ class FormData {
     }
     List<String> xs = data.get(key);
     xs.add(val);
+  }
+
+  HttpExchange addPrincipal(HttpExchange x) {
+    if (x.getPrincipal() != null) {
+      add("principal", x.getPrincipal().getUsername());
+    } else {
+      add("principal", "Anonymous");
+    }
+    return x;
   }
 
   String get(String key) {
@@ -85,7 +95,7 @@ class FormData {
       }
     } catch (Exception e) {
       // Some form posted invalid form data
-      throw new IllegalStateException("invalid form post data: " + encodedRequestBody, e);
+      throw new IllegalStateException("invalid data: " + encodedRequestBody, e);
     }
     return y;
   }

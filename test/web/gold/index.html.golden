@@ -1,5 +1,5 @@
 200
-Content-Length: 189
+Content-Length: 210
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -9,6 +9,7 @@ Content-type: text/html; charset= UTF-8
     <title>Garden Journal</title>
   </head>
   <body>
+    <p>Test User</p>
     <h1>Garden Journal</h1>
     <p><a href="/members/create">Become a member</a></p>
   </body>

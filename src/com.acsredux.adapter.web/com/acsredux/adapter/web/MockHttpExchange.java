@@ -64,7 +64,7 @@ class MockHttpExchange extends HttpExchange {
   }
 
   public HttpPrincipal getPrincipal() {
-    return null;
+    return new HttpPrincipal("Test User", "/");
   }
 
   public String getProtocol() {

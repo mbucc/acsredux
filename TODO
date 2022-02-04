@@ -1,4 +1,15 @@
 2022-02-03: auto-login from cookie
+	- Associate Authenticator with each HttpContext
+	- Always return Authenticator.Success
+	  and set HttpPrincipal to either a user (cookie + service)
+	  or to the AnonymousPrincipal (new class)
+	- Eventually, we will query admin for policy data;
+		* method
+		* url
+		* query
+	  which will return an Authenticator.Failure with a 403
+	- eventual: to handle row-based security, use a filter.
+2022-02-04: Finish RBAC paper and document security approach.
 2022-01-29: Add logout.
 2022-01-29: Add login.
 2021-12-27: add content data model and editing

@@ -50,17 +50,20 @@ abstract class BaseHandler implements HttpHandler {
   //   For a good discussion of the GET method and request bodies, see
   // https://stackoverflow.com/a/983458/1789168.
   private FormData read(HttpExchange x) {
-    return switch (x.getRequestMethod()) {
-      case "PUT", "PATCH", "POST" -> FormData.of(readRequestBody(x));
-      case "GET" -> {
-        drainRequestBody(x);
-        yield FormData.of(x.getRequestURI().getRawQuery());
-      }
-      default -> {
-        drainRequestBody(x);
-        yield new FormData();
-      }
-    };
+    FormData y =
+      switch (x.getRequestMethod()) {
+        case "PUT", "PATCH", "POST" -> FormData.of(readRequestBody(x));
+        case "GET" -> {
+          drainRequestBody(x);
+          yield FormData.of(x.getRequestURI().getRawQuery());
+        }
+        default -> {
+          drainRequestBody(x);
+          yield new FormData();
+        }
+      };
+    y.addPrincipal(x);
+    return y;
   }
 
   private void exceptionCatcher(Runnable x1, HttpExchange x2) {
