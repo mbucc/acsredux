@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.NotFoundException;
+import com.acsredux.core.members.MemberService;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,6 +19,10 @@ class TestBaseHandler {
 
   static class TestHandler extends BaseHandler {
 
+    TestHandler(MemberService x) {
+      super(x);
+    }
+
     List<Route> routes = new ArrayList<>();
 
     List<BaseHandler.Route> getRoutes() {
@@ -26,10 +31,12 @@ class TestBaseHandler {
   }
 
   private TestHandler handler;
+  private MemberService memberService;
 
   @BeforeEach
   void setup() {
-    this.handler = new TestHandler();
+    this.memberService = new MockMemberService();
+    this.handler = new TestHandler(this.memberService);
   }
 
   @Test

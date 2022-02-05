@@ -28,7 +28,6 @@ import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
 
-  private MemberService memberService;
   private AdminService adminService;
   private Mustache createTemplate;
   private Mustache dashboardTemplate;
@@ -39,8 +38,8 @@ class MembersHandler extends BaseHandler {
     MemberService memberService,
     AdminService adminService
   ) {
+    super(memberService);
     MustacheFactory mf = new DefaultMustacheFactory(new File(templateRoot));
-    this.memberService = memberService;
     this.adminService = adminService;
     this.createTemplate = mf.compile("members/create.html");
     this.dashboardTemplate = mf.compile("members/dashboard.html");

@@ -1,7 +1,6 @@
 package com.acsredux.adapter.web.auth;
 
 import com.acsredux.core.members.MemberService;
-import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.SessionID;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.Headers;
@@ -39,14 +38,19 @@ public class CookieAuthenticator extends Authenticator {
       .findFirst();
   }
 
+  HttpPrincipal anonymousPrincipal() {
+    return new AnonymousPrincipal(memberService.getAnonymousUsername());
+  }
+
   public Authenticator.Result authenticate(HttpExchange x) {
-    String username = findAuthCookie(x.getRequestHeaders())
+    HttpPrincipal principal = findAuthCookie(x.getRequestHeaders())
       .map(HttpCookie::getValue)
       .map(SessionID::new)
       .map(memberService::findBySessionID)
       .flatMap(o -> o)
-      .map(Member::fullname)
-      .orElseGet(memberService::getAnonymousUsername);
-    return new Authenticator.Success(new HttpPrincipal(username, "/"));
+      .map(MemberPrincipal::new)
+      .map(HttpPrincipal.class::cast)
+      .orElseGet(this::anonymousPrincipal);
+    return new Authenticator.Success(principal);
   }
 }

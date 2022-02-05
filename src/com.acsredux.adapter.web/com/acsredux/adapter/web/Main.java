@@ -45,7 +45,10 @@ public class Main {
     );
     server.setExecutor(Executors.newFixedThreadPool(xs.threads));
 
-    HttpContext ctx = server.createContext("/", new RootHandler(xs.documentRoot));
+    HttpContext ctx = server.createContext(
+      "/",
+      new RootHandler(memberService, xs.documentRoot)
+    );
     ctx.setAuthenticator(cookieAuthenticator);
 
     AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);

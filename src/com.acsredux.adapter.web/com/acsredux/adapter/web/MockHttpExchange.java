@@ -2,6 +2,7 @@ package com.acsredux.adapter.web;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.acsredux.adapter.web.auth.AnonymousPrincipal;
 import com.github.difflib.text.DiffRowGenerator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
@@ -28,6 +29,8 @@ public class MockHttpExchange extends HttpExchange {
   final String url;
   final String requestMethod;
   final String requestBody;
+  HttpPrincipal principal = new AnonymousPrincipal("Test User");
+  String goldenSuffix = "";
   String testDir = "./test/web/gold";
   String webDir = "./web/template";
   Headers responseHeaders = new Headers();
@@ -65,7 +68,7 @@ public class MockHttpExchange extends HttpExchange {
   }
 
   public HttpPrincipal getPrincipal() {
-    return new HttpPrincipal("Test User", "/");
+    return this.principal;
   }
 
   public String getProtocol() {
@@ -213,6 +216,7 @@ public class MockHttpExchange extends HttpExchange {
     if (this.requestMethod.equals("POST")) {
       y += ".post";
     }
+    y += this.goldenSuffix;
     return y;
   }
 
@@ -230,5 +234,13 @@ public class MockHttpExchange extends HttpExchange {
       System.out.println(diff());
       fail("actual output did not match expected output");
     }
+  }
+
+  void setPrincipal(HttpPrincipal x) {
+    this.principal = x;
+  }
+
+  void setGoldenSuffix(String x) {
+    this.goldenSuffix = x;
   }
 }
