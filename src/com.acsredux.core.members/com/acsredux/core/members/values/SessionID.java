@@ -7,4 +7,8 @@ public record SessionID(String val) {
     dieIfNull(val, "session ID");
     this.val = val;
   }
+
+  public static SessionID of(String x) {
+    return x == null ? null : new SessionID(x);
+  }
 }

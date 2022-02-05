@@ -10,4 +10,8 @@ public record FirstName(String val) {
     dieIfBlank(val, errors.getString("firstname_missing"));
     this.val = val.trim();
   }
+
+  public static FirstName of(String x) {
+    return x == null ? null : new FirstName(x);
+  }
 }

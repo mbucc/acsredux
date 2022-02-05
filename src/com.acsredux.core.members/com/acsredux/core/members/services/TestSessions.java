@@ -1,20 +1,20 @@
 package com.acsredux.core.members.services;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.BDDMockito.given;
+import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
+import static com.acsredux.lib.testutil.TestData.TEST_SESSION_ID;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
 import com.acsredux.core.members.MemberService;
+import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
-import com.acsredux.core.members.values.MemberDashboard;
-import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.members.values.SessionID;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestMemberProvider {
+class TestSessions {
 
   private MemberService service;
   private MemberReader reader;
@@ -28,16 +28,20 @@ class TestMemberProvider {
   }
 
   @Test
-  void testSunnyPath() {
-    // setup
-    MemberID memberID = new MemberID(1L);
-    given(reader.findMemberDashboard(memberID)).willReturn(Optional.empty());
-
+  void testCreateSessionCallsPort() {
     // execute
-    Optional<MemberDashboard> y = assertDoesNotThrow(() -> service.findDashboard(memberID)
-    );
+    SessionID y = service.createSessionID(TEST_MEMBER_ID);
 
     // verify
-    then(reader).should().findMemberDashboard(memberID);
+    then(writer).should().writeSessionID(TEST_MEMBER_ID, y);
+  }
+
+  @Test
+  void testfindSessionCallsPort() {
+    // execute
+    Optional<Member> y = service.findBySessionID(TEST_SESSION_ID);
+
+    // verify
+    then(reader).should().findBySessionID(TEST_SESSION_ID);
   }
 }

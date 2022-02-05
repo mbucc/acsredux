@@ -6,6 +6,7 @@ import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.commands.MemberCommand;
 import com.acsredux.core.members.commands.VerifyEmail;
+import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
@@ -84,5 +85,10 @@ public final class MemberProvider implements MemberService {
     var y = new SessionID(Base64.getEncoder().encodeToString(ys));
     writer.writeSessionID(x, y);
     return y;
+  }
+
+  @Override
+  public Optional<Member> findBySessionID(SessionID x) {
+    return reader.findBySessionID(x);
   }
 }

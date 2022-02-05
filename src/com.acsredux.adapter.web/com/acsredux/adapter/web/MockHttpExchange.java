@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-class MockHttpExchange extends HttpExchange {
+public class MockHttpExchange extends HttpExchange {
 
   public static final String DEFAULT_REQUEST_BODY = "Hello world!";
   public static final String DEFAULT_REQUEST_METHOD = "GET";
@@ -31,19 +31,20 @@ class MockHttpExchange extends HttpExchange {
   String testDir = "./test/web/gold";
   String webDir = "./web/template";
   Headers responseHeaders = new Headers();
+  Headers requestHeaders = new Headers();
   ByteArrayOutputStream responseBody = new ByteArrayOutputStream();
   int responseCode;
   long responseLength;
 
-  MockHttpExchange(String url) {
+  public MockHttpExchange(String url) {
     this(url, DEFAULT_REQUEST_METHOD, DEFAULT_REQUEST_BODY);
   }
 
-  MockHttpExchange(String url, String requestMethod) {
+  public MockHttpExchange(String url, String requestMethod) {
     this(url, requestMethod, DEFAULT_REQUEST_BODY);
   }
 
-  MockHttpExchange(String url, String requestMethod, String body) {
+  public MockHttpExchange(String url, String requestMethod, String body) {
     this.url = url;
     this.requestMethod = requestMethod;
     this.requestBody = body;
@@ -80,7 +81,7 @@ class MockHttpExchange extends HttpExchange {
   }
 
   public Headers getRequestHeaders() {
-    return null;
+    return this.requestHeaders;
   }
 
   public String getRequestMethod() {

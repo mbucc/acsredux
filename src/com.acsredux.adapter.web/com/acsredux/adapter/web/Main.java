@@ -28,7 +28,16 @@ public class Main {
 
     LOGGER.log(INFO, "creating HttpServer on port {0}", xs.portAsString());
 
-    CookieAuthenticator cookieAuthenticator = new CookieAuthenticator();
+    Stub stub = Stub.provider();
+    ZoneId tz = ZoneId.of("US/Eastern");
+    MemberService memberService = MemberServiceFactory.getMemberService(
+      stub,
+      stub,
+      stub,
+      stub,
+      tz
+    );
+    CookieAuthenticator cookieAuthenticator = new CookieAuthenticator(memberService);
 
     HttpServer server = HttpServer.create(
       new InetSocketAddress(xs.host, xs.port),
@@ -39,15 +48,6 @@ public class Main {
     HttpContext ctx = server.createContext("/", new RootHandler(xs.documentRoot));
     ctx.setAuthenticator(cookieAuthenticator);
 
-    Stub stub = Stub.provider();
-    ZoneId tz = ZoneId.of("US/Eastern");
-    MemberService memberService = MemberServiceFactory.getMemberService(
-      stub,
-      stub,
-      stub,
-      stub,
-      tz
-    );
     AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
     ctx =
       server.createContext(

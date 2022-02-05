@@ -72,4 +72,6 @@ public class TestData {
     uri,
     Duration.ofDays(365)
   );
+
+  public static final SessionID TEST_SESSION_ID = SessionID.of("Test Session ID");
 }

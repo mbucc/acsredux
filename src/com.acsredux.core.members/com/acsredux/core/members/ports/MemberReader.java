@@ -25,4 +25,5 @@ public interface MemberReader {
   MemberID getByToken(VerificationToken x);
   Member getByID(MemberID x);
   int countActiveMembers();
+  Optional<Member> findBySessionID(SessionID x);
 }

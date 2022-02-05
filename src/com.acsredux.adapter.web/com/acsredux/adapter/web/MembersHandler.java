@@ -1,5 +1,7 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.adapter.web.auth.CookieAuthenticator.COOKIE_FMT;
+
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
@@ -26,8 +28,6 @@ import java.util.function.UnaryOperator;
 
 class MembersHandler extends BaseHandler {
 
-  private static final String COOKIE_FMT =
-    "session_id=%s; max-age=%d; SameSite=Strict; Path=/; HttpOnly";
   private MemberService memberService;
   private AdminService adminService;
   private Mustache createTemplate;
@@ -61,29 +61,26 @@ class MembersHandler extends BaseHandler {
   }
 
   Map<String, Object> dashboardView(Member x, FormData x2) {
-    String error = Optional.ofNullable(x2).map(o -> o.get("error")).orElse("");
-    return Map.of(
-      "firstName",
-      x.firstName().val(),
-      "lastName",
-      x.lastName().val(),
-      "memberSince",
-      x.memberSince(),
+    x2.add("firstName", x.firstName().val());
+    x2.add("lastName", x.lastName().val());
+    x2.add("memberSince", x.memberSince());
+    x2.add(
       "isWaitingOnEmailVerification",
-      x.status() == MemberStatus.NEEDS_EMAIL_VERIFICATION,
-      "isInAlphaTesting",
-      adminService.getSiteInfo().siteStatus(),
-      "isEmailVerified",
-      x.status() == MemberStatus.ACTIVE,
-      "suggestionBoxURL",
-      this.adminService.getSiteInfo().suggestionBoxURL(),
-      "alphaTestMemberLimit",
-      adminService.getSiteInfo().limitOnAlphaCustomers(),
-      "memberCount",
-      memberService.activeMembers(),
-      "error",
-      error
+      x.status() == MemberStatus.NEEDS_EMAIL_VERIFICATION ? "true" : ""
     );
+    x2.add("isInAlphaTesting", adminService.getSiteInfo().siteStatus().toString());
+    x2.add("isEmailVerified", x.status() == MemberStatus.ACTIVE ? "true" : "");
+    x2.add(
+      "suggestionBoxURL",
+      this.adminService.getSiteInfo().suggestionBoxURL().toString()
+    );
+    x2.add(
+      "alphaTestMemberLimit",
+      String.valueOf(adminService.getSiteInfo().limitOnAlphaCustomers())
+    );
+    x2.add("memberCount", String.valueOf(memberService.activeMembers()));
+    x2.add("error", Optional.ofNullable(x2).map(o -> o.get("error")).orElse(""));
+    return x2.asMap();
   }
 
   MemberID verifyToken(MemberID x1, FormData x2) {

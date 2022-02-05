@@ -1,14 +1,16 @@
-2022-02-03: auto-login from cookie
-	- Associate Authenticator with each HttpContext
-	- Always return Authenticator.Success
-	  and set HttpPrincipal to either a user (cookie + service)
-	  or to the AnonymousPrincipal (new class)
-	- Eventually, we will query admin for policy data;
-		* method
-		* url
-		* query
-	  which will return an Authenticator.Failure with a 403
-	- eventual: to handle row-based security, use a filter.
+2022-02-05: change idiom: create command uses .of, move req'd field validations
+            into command.
+ https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/package-summary.html:
+"This is made manageable through the use of consistent method prefixes.
+	of - static factory method
+	parse - static factory method focussed on parsing
+	get - gets the value of something
+	is - checks if something is true
+	with - the immutable equivalent of a setter
+	plus - adds an amount to an object
+	minus - subtracts an amount from an object
+	to - converts this object to another type
+	at - combines this object with another, such as date.atTime(time)"
 2022-02-04: Finish RBAC paper and document security approach.
 2022-01-29: Add logout.
 2022-01-29: Add login.

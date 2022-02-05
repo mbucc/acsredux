@@ -1,0 +1,58 @@
+February 5, 2022
+
+  * Use expires not max-age.
+    Release of first known support [1]:
+		Jan 2022	Firefox 96
+		Jan 2022	Chrome 98
+		Dec 2021	Safari 15.2
+		Dec 2021	Safari on iOS 15.3
+		Jan 2022	Android Browser, Chromium 97
+		Jan 2022	Firefox for Android 96
+		Dec 2022	Samsung Internet 16.0
+
+  * Browser can send multiple cookies in one header [2].
+    Example: Cookie: SID=31d4d96e407aad42; lang=en-US
+
+  * To delete a cookie, send expiration date in the past [2].
+    The delete is only guaranteed to work if domain and path are the same.
+
+  * To maximize compatability with browsers, server should encode
+    arbitrary cookie value data in Base 64 [2].
+
+  * Use four-digit years. [2]
+
+  * Do not sent multiple Set-cookie headers for the same cookie name [2].
+
+  * Some browsers treat a missing domain attribute as the current host [2].
+
+  * User agents will reject cookies with domain scope that does not include
+    current host [2].  For example,
+
+	origin server host = "foo.example.com", then
+	both "foo.example.com" and "example.com" cookie domains
+	are acceptable.
+
+	"bar.example.com" or "baz.foo.example.com" are not.
+
+  * The path attribute cannot be relied on for security [2].
+
+
+  * "An active network attacker can also inject cookies into the Cookie
+    header sent to https://example.com/ by impersonating a response from
+    http://example.com/ and injecting a Set-Cookie header.  The HTTPS
+    server at example.com will be unable to distinguish these cookies
+    from cookies that it set itself in an HTTPS response.  An active
+    network attacker might be able to leverage this ability to mount an
+    attack against example.com even if example.com uses HTTPS
+    exclusively" [2], Section 8.6 Weak Integrity.
+
+  * "Cookies rely upon the Domain Name System (DNS) for security.  If the
+    DNS is partially or fully compromised, the cookie protocol might fail
+    to provide the security properties required by applications." [2],
+    Section 8.7 Reliance on DNS.
+
+
+Sources
+
+[1] Can-I-Use, https://caniuse.com/
+[2] RFC6265 HTTP State Management Mechanism, https://datatracker.ietf.org/doc/html/rfc6265

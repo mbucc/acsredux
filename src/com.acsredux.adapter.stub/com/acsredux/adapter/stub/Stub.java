@@ -62,6 +62,10 @@ public final class Stub
     return Stub.INSTANCE;
   }
 
+  public Optional<Member> findByID(MemberID x) {
+    return members.stream().filter(o -> o.id().equals(x)).findFirst();
+  }
+
   @Override
   public Optional<Member> findByName(FirstName x1, LastName x2) {
     return members
@@ -184,5 +188,13 @@ public final class Stub
   @Override
   public void writeSessionID(MemberID x1, SessionID x2) {
     sessions.put(x2, x1);
+  }
+
+  @Override
+  public Optional<Member> findBySessionID(SessionID x) {
+    if (!sessions.containsKey(x)) {
+      return Optional.empty();
+    }
+    return findByID(sessions.get(x));
   }
 }

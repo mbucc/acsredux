@@ -19,6 +19,10 @@ public record Member(
     return DateUtil.fullDate(registeredOn.val(), tz);
   }
 
+  public String fullname() {
+    return firstName.val() + " " + lastName.val();
+  }
+
   public Member withStatus(MemberStatus newStatus) {
     return new Member(
       id,

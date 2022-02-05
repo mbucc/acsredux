@@ -1,6 +1,7 @@
 package com.acsredux.core.members.services;
 
 import static com.acsredux.core.base.Util.dieIfNull;
+import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
 
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
@@ -47,12 +48,20 @@ public final class AddMemberHandler {
     }
     checkEmailIsUnique(x.email());
     checkNameIsUnique(x.firstName(), x.lastName());
+    checkNameIsNotAnonymousUsername(x.firstName(), x.lastName());
     return new Accum(x, new CreatedOn(this.clock.instant()));
   }
 
   void checkEmailIsUnique(Email x) {
     if (reader.findByEmail(x).isPresent()) {
       throw new ValidationException(msgs.getString("email_taken"));
+    }
+  }
+
+  void checkNameIsNotAnonymousUsername(FirstName x1, LastName x2) {
+    String combined = x1.val().trim() + " " + x2.val().trim();
+    if (combined.equalsIgnoreCase(ANONYMOUS_USERNAME)) {
+      throw new ValidationException(msgs.getString("name_is_anonymous_username"));
     }
   }
 

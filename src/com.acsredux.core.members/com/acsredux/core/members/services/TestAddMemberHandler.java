@@ -1,5 +1,6 @@
 package com.acsredux.core.members.services;
 
+import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
 import static com.acsredux.lib.testutil.TestData.TEST_ADD_MEMBER_CMD;
 import static com.acsredux.lib.testutil.TestData.TEST_EMAIL;
 import static com.acsredux.lib.testutil.TestData.TEST_FIRST_NAME;
@@ -148,6 +149,24 @@ class TestAddMemberHandler {
 
     // verify
     assertEquals(msgs.getString("name_taken"), e.getMessage());
+  }
+
+  @Test
+  void testCheckNameNotAnonymousUsername() {
+    // setup
+    // Note that neither FirstName or LastName constructors accept a blank
+    // string, so this one test case is sufficient.
+    FirstName x1 = FirstName.of(ANONYMOUS_USERNAME.split(" ")[0].trim());
+    LastName x2 = LastName.of(ANONYMOUS_USERNAME.split(" ")[1].trim());
+
+    // execute
+    var e = assertThrows(
+      ValidationException.class,
+      () -> service.checkNameIsNotAnonymousUsername(x1, x2)
+    );
+
+    // verify
+    assertEquals(msgs.getString("name_is_anonymous_username"), e.getMessage());
   }
 
   @Test
