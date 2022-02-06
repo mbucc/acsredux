@@ -1,5 +1,21 @@
-2022-02-05: change idiom: create command uses .of, move req'd field validations
-            into command.
+2021-12-27: add content data model and editing
+2022-02-07: If user clicks token link after deleting cookie, add link to login page.
+2022-02-05: Externalize page titles (use data?)
+
+2021-12-07: create com.acsredux.adapter.sqlite
+2021-12-27: deploy
+2021-12-27: add Apache side car for SSL
+2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
+2021-08-09: limit # of users during testing
+2022-01-30: add reset password link
+2021-12-27: add admin pages
+2022-02-02: Use different message when token has already been verified.
+2022-02-08: implement exponential back off on login failures.
+2022-02-08: Document password hashing approach.
+  * https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
+    https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+2022-01-30: rethink command handler / service interface.
+2022-02-05: change idiom: create command uses .of, move req'd field validations into command.
  https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/package-summary.html:
 "This is made manageable through the use of consistent method prefixes.
 	of - static factory method
@@ -12,16 +28,3 @@
 	to - converts this object to another type
 	at - combines this object with another, such as date.atTime(time)"
 2022-02-04: Finish RBAC paper and document security approach.
-2022-01-29: Add logout.
-2022-01-29: Add login.
-2021-12-27: add content data model and editing
-
-2021-12-07: create com.acsredux.adapter.sqlite
-2021-12-27: deploy
-2021-12-27: add SSL
-2021-08-09: limit # of users during testing
-2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
-2021-12-27: add admin pages
-2022-01-30: add reset password link
-2022-01-30: rethink command handler / service interface.
-2022-02-02: Use different message when token has already been verified.

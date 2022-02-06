@@ -1,65 +1,48 @@
-<!DOCTYPE html>
-
-<html>
-  <head>
-    <title>Create Membership</title>
-  </head>
-  <body>
-    <p>{{ principal }}</p>
-    <p><a href="/">home</a></p>
-
-    <h1>Create Membership</h1>
-
-    {{#isInAlphaTesting}}
-    <p>
-      We are in alpha testing mode, which means things may break. Bug reports (submitted
-      <a href="{{suggestionBoxURL}}">here</a>) are appreciated. To limit the amount of
-      feedback, we cap membership at {{alphaTestMemberLimit}}; so far, {{memberCount}} of
-      those slots are used up.
-    </p>
-    {{/isInAlphaTesting}} {{#error}}
-    <p style="color: red">{{{error}}}</p>
-    {{/error}}
-    <form action="/members/create" method="post">
-      <table>
-        <tr>
-          <th><label for="email">Email:</label></th>
-          <td>
-            <input type="email" name="email"{{#email}} value="{{email}}"{{/email}}
-            required autofocus />
-          </td>
-        </tr>
-        <tr>
-          <th><label for="firstName">First name:</label></th>
-          <td>
-            <input type="firstName" name="firstName"{{#firstName}}
-            value="{{firstName}}"{{/firstName}} required />
-          </td>
-        </tr>
-        <tr>
-          <th><label for="lastName">Last name:</label></th>
-          <td>
-            <input type="lastName" name="lastName"{{#lastName}}
-            value="{{lastName}}"{{/lastName}} required />
-          </td>
-        </tr>
-        <tr>
-          <th><label for="zip">Zip code:</label></th>
-          <td>
-            <input type="text" name="zip"{{#zip}} value="{{zip}}"{{/zip}} required />
-          </td>
-        </tr>
-        <tr>
-          <th><label for="pwd1">Password:</label></th>
-          <td><input type="password" name="pwd1" required /></td>
-        </tr>
-        <tr>
-          <th><label for="pwd2">Password:</label></th>
-          <td><input type="password" name="pwd2" required /></td>
-        </tr>
-      </table>
-      <input type="hidden" name="command" value="create_member" />
-      <input type="submit" value="Submit membership request" />
-    </form>
-  </body>
-</html>
+{{> ../head}} {{#isInAlphaTesting}}
+<p>
+  We are in alpha testing mode, which means things may break. Bug reports (submitted
+  <a href="{{suggestionBoxURL}}">here</a>) are appreciated. To limit the amount of
+  feedback, we cap membership at {{alphaTestMemberLimit}}; so far, {{memberCount}} of
+  those slots are used up.
+</p>
+{{/isInAlphaTesting}} {{#error}}
+<p style="color: red">{{{error}}}</p>
+{{/error}}
+<form action="/members/create" method="post">
+  <table>
+    <tr>
+      <th><label for="email">Email:</label></th>
+      <td>
+        <input id="email" type="email" name="email"{{#email}} value="{{email}}"{{/email}} required autofocus />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="firstName">First name:</label></th>
+      <td>
+        <input id="firstName" type="text" name="firstName"{{#firstName}} value="{{firstName}}"{{/firstName}} required />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="lastName">Last name:</label></th>
+      <td>
+        <input id="lastName" type="text" name="lastName"{{#lastName}}
+        value="{{lastName}}"{{/lastName}} required />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="zip">Zip code:</label></th>
+      <td><input id="zip" type="text" name="zip"{{#zip}} value="{{zip}}"{{/zip}} required /></td>
+    </tr>
+    <tr>
+      <th><label for="pwd1">Password:</label></th>
+      <td><input id="pwd1" type="password" name="pwd1" required /></td>
+    </tr>
+    <tr>
+      <th><label for="pwd2">Password:</label></th>
+      <td><input id="pwd2" type="password" name="pwd2" required /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="command" value="create" />
+  <input type="submit" value="Submit membership request" />
+</form>
+{{> ../tail}}

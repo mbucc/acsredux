@@ -7,7 +7,8 @@ import static com.acsredux.lib.env.VariableType.URL;
 
 public enum Variable {
   ACSREDUX_ACTIVATION_URL(URL),
-  ACSREDUX_SECRET_FILENAME(STRING, "~/.acsredux"),
+  ACSREDUX_PASSWORD_SALT_FILENAME(STRING, "~/.acssalt"),
+  ACSREDUX_ENCRYPTION_KEY_FILENAME(STRING, "~/.acsredux"),
   MAILGUN_API_KEY(SECRET),
   MAILGUN_API_URL(URL),
   NOTIFIER_SEND_TIMEOUT_IN_SECONDS(INT, "5");

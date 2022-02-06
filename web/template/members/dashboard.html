@@ -1,26 +1,5 @@
-<!DOCTYPE html>
+{{> ../head}}
 
-<html>
-  <head>
-    <title>Member Dashboard</title>
-  </head>
-  <body>
-    <p>{{ principal }}</p>
-    <p><a href="/">home</a></p>
-    <h1>Member Dashboard</h1>
-    {{#error}}
-    <p style="color: red">{{{error}}}</p>
-    {{/error}}
     <p>{{firstName}} {{lastName}} has been a member since {{memberSince}}.</p>
 
-    {{#isWaitingOnEmailVerification}}
-    <p>Welcome! Please check your inbox and validate your email address.</p>
-    {{/isWaitingOnEmailVerification}} {{#isEmailVerified}}
-    <p>Your email has been verified and you are now an active member.</p>
-    {{/isEmailVerified}}
-    <p>
-      Do you have ideas for how this site could be better? Use the
-      <a href="{{suggestionBoxURL}}">suggestion box</a>.
-    </p>
-  </body>
-</html>
+{{> ../tail}}

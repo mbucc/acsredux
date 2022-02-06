@@ -1,5 +1,5 @@
 200
-Content-Length: 242
+Content-Length: 294
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -9,10 +9,17 @@ Content-type: text/html; charset= UTF-8
     <title>My New Website</title>
   </head>
   <body>
-    <p>小川 治兵衛</p>
-    <h1>My New Website</h1>
-    <p><a href="/members/123">Dashboard</a></p>
+    <p>
+     小川 治兵衛     (<a href="/members/logout">log out</a>)
+    </p>
 
-    <p>An on-line community.</p>
+    <h1>My New Website</h1>
+
+
+<p><a href="/members/123">Dashboard</a></p>
+
+<p>An on-line community.</p>
+
   </body>
 </html>
+

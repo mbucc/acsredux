@@ -1,0 +1,43 @@
+200
+Content-Length: 1013
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <p>
+     Anonymous     (<a href="/members/login">log in</a>)
+     <br /><a href="/">home</a>
+     <br /><a href="http://example.com/suggestions">suggestions</a>
+    </p>
+
+    <h1>Login</h1>
+
+<p>
+  We are in alpha testing mode, which means things may break. Bug reports (submitted
+  <a href="http://example.com/suggestions">here</a>) are appreciated. To limit the amount of
+  feedback, we cap membership at 25; so far, 1 of
+  those slots are used up.
+</p>
+<form action="/members/login" method="post">
+  <table>
+    <tr>
+      <th><label for="email">Email:</label></th>
+      <td><input id="email" type="email" name="email" required autofocus /></td>
+    </tr>
+    <tr>
+      <th><label for="pwd">Password:</label></th>
+      <td><input id="pwd" type="password" name="pwd" required /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="command" value="login" />
+  <input type="submit" value="Login" />
+</form>
+  </body>
+</html>
+
+

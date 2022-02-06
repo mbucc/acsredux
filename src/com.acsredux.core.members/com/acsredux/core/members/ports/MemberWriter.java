@@ -8,4 +8,5 @@ public interface MemberWriter {
   VerificationToken addAddMemberToken(MemberID memberID, CreatedOn now);
   MemberID updateStatus(MemberID x1, MemberStatus x2);
   void writeSessionID(MemberID x1, SessionID x2);
+  void setLastLogin(MemberID id, LoginTime now);
 }

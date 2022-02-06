@@ -4,6 +4,9 @@ module:com.acsredux.adapter.stub
 com.acsredux.adapter.stub
 module:com.acsredux.adapter.web
 com.acsredux.adapter.web
+com.acsredux.adapter.web.auth
+com.acsredux.adapter.web.common
+com.acsredux.adapter.web.members
 module:com.acsredux.core.admin
 com.acsredux.core.admin
 com.acsredux.core.admin.ports

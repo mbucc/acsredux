@@ -4,6 +4,7 @@ import static java.lang.System.Logger.Level.INFO;
 
 import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
+import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
 import com.acsredux.core.members.MemberService;
@@ -40,6 +41,7 @@ public class Main {
       tz
     );
     AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
+    MemberService.passwordSaltOrDie();
 
     //
     //			Create server

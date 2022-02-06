@@ -1,5 +1,0 @@
-302
-Content-Length: -1
-Location: /members/1
-Set-cookie: session_id=aSessionIDForMember1; max-age=31536000; SameSite=Strict; Path=/; HttpOnly
-

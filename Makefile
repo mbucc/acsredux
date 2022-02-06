@@ -1,6 +1,8 @@
 JUNIT_DETAILS=tree
 SKIP_FMT=N
 
+JAVAC=javac --enable-preview --release 17
+JAVA=java --enable-preview
 
 
 
@@ -55,8 +57,6 @@ mlib/%@1.jar: compile resourcebundles
 		-C classes/$$(echo "$@"|cut -d/ -f2|cut -d@ -f1) \
 		.
 
-
-
 ###########################################################################
 #
 #
@@ -74,7 +74,7 @@ classes/%Messages.properties: src/%Messages.properties
 
 .PHONY: compile
 compile: checkstyle
-	javac \
+	${JAVAC} \
 		-p lib \
 		-d classes \
 		-Xlint \
@@ -93,12 +93,12 @@ compile: checkstyle
 #
 ###########################################################################
 
-TESTCP=classes/com.acsredux.core.admin:classes/com.acsredux.adapter.mailgun:classes/com.acsredux.lib.env:classes/com.acsredux.adapter.web:classes/com.acsredux.core.members:classes/com.acsredux.core.base:classes/com.acsredux.adapter.stub:testlib/*:lib/*
-
 .PHONY: test
 test: compiletests
-	java \
-		-cp testclasses:${TESTCP} \
+	ACSREDUX_SALT_FILENAME=./test/salt \
+	ACSREDUX_SECRET_FILENAME=./test/encryption-key \
+	${JAVA} \
+		-cp "lib/*:testclasses:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		org.junit.platform.console.ConsoleLauncher \
 		--disable-banner \
 		--details=$(JUNIT_DETAILS) \
@@ -109,10 +109,10 @@ test: compiletests
 # Manual tests are not run as part of the normal "make test" target.
 # For example, a notifier test that actually sends an email.
 # Manual tests have class names that start with "ManualTest".
-.PHONY: test
+.PHONY: manualtest
 manualtest: compiletests
-	java \
-		-cp testclasses:${TESTCP} \
+	${JAVA} \
+		-cp "testclasses:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		org.junit.platform.console.ConsoleLauncher \
 		--disable-banner \
 		--details=$(JUNIT_DETAILS) \
@@ -125,15 +125,26 @@ manualtest: compiletests
 # Keeps test files out of modules.
 # Let's us use testutil without putting it in module-infos.
 .PHONY: compiletests
-compiletests: compile resourcebundles
-	javac \
+compiletests: compile resourcebundles testlib/com.acsredux.testlib.jar
+	${JAVAC} \
 		-d testclasses \
-		-cp "${TESTCP}" \
-		$$(find src/com.acsredux.lib.testutil -name '*.java')
-	javac \
-		-d testclasses \
-		-cp "${TESTCP}" \
+		-cp "testlib/*:$$(echo classes/*|tr ' ' :)" \
 		$$(find src -name '*.java'|egrep '(/Test|/Mock|/ManualTest)')
+
+
+testlib/com.acsredux.testlib.jar: \
+		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockProxy.java \
+		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/TestData.java \
+		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockAdminReader.java \
+		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockMemberService.java \
+		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockAdminService.java
+	${JAVAC} \
+		-d testclasses \
+		-cp "testlib/*:$$(echo classes/*|tr ' ' :)" \
+		$$(find src/com.acsredux.lib.testutil -name '*.java')
+	jar --create \
+		--file=$@ \
+		$$(find testclasses/com/acsredux/lib/testutil -name '*.class')
 
 
 ###########################################################################
@@ -147,7 +158,7 @@ compiletests: compile resourcebundles
 .PHONY: checkstyle
 checkstyle: fmt
 	if [ "$(SKIP_FMT)" = "N" ]; then \
-		java \
+		${JAVA} \
 			-jar testlib/checkstyle-9.2.1-all.jar \
 			-c test/checkstyle.xml \
 			$$(find src -name '*.java'|grep -v module-info) ; \
@@ -156,7 +167,7 @@ checkstyle: fmt
 .PHONY: fmt
 fmt:
 	if [ "$(SKIP_FMT)" = "N" ]; then \
-		npx prettier --print-width 90 --write src web/template ; \
+		npx prettier --print-width 90 --write src ; \
 	fi
 
 .PHONY: javadoc

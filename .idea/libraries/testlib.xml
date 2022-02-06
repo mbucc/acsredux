@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="testlib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/testlib/junit-platform-console-standalone-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/testlib/checkstyle-9.2.1-all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/testlib/java-diff-utils-4.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/junit-platform-console-standalone-1.8.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

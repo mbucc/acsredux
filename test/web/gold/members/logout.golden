@@ -1,0 +1,5 @@
+302
+Content-Length: 0
+Location: /
+Set-cookie: session_id=deleted; max-age=0; SameSite=Strict; Path=/; HttpOnly
+

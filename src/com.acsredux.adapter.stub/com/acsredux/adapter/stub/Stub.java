@@ -1,5 +1,7 @@
 package com.acsredux.adapter.stub;
 
+import static com.acsredux.core.members.MemberService.hashpw;
+
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
@@ -29,9 +31,9 @@ public final class Stub
 
   private static final Stub INSTANCE = new Stub();
 
-  private List<Member> members;
-  private Map<VerificationToken, MemberID> tokens;
-  private Map<SessionID, MemberID> sessions;
+  private final List<Member> members;
+  private final Map<VerificationToken, MemberID> tokens;
+  private final Map<SessionID, MemberID> sessions;
 
   private Stub() {
     tokens = new HashMap<>();
@@ -45,9 +47,11 @@ public final class Stub
         new LastName("Russel"),
         new ZipCode("02134"),
         MemberStatus.ACTIVE,
-        new EncryptedPassword("abc"),
+        hashpw(new ClearTextPassword("aabb33DD#".toCharArray())),
         new RegistrationDate(Instant.now()),
-        ZoneId.of("US/Eastern")
+        ZoneId.of("US/Eastern"),
+        LoginTime.of(Instant.now()),
+        LoginTime.of(null)
       )
     );
   }
@@ -87,7 +91,7 @@ public final class Stub
 
   @Override
   public Optional<MemberDashboard> findMemberDashboard(MemberID x) {
-    Function<Member, MemberDashboard> toDashboard = o -> new MemberDashboard(o);
+    Function<Member, MemberDashboard> toDashboard = MemberDashboard::new;
     return members.stream().filter(o -> o.id().equals(x)).findFirst().map(toDashboard);
   }
 
@@ -100,7 +104,7 @@ public final class Stub
 
   @Override
   public MemberID addMember(AddMember cmd, MemberStatus initialStatus, CreatedOn now) {
-    Long maxID = members
+    long maxID = members
       .stream()
       .map(Member::id)
       .mapToLong(MemberID::val)
@@ -115,9 +119,11 @@ public final class Stub
         cmd.lastName(),
         cmd.zipCode(),
         initialStatus,
-        new EncryptedPassword("abc"),
+        hashpw(cmd.password1()),
         new RegistrationDate(Instant.now()),
-        ZoneId.of("US/Eastern")
+        ZoneId.of("US/Eastern"),
+        LoginTime.of(Instant.now()),
+        LoginTime.of(null)
       )
     );
     return newID;
@@ -126,7 +132,6 @@ public final class Stub
   @Override
   public void memberAdded(MemberAdded event, SiteInfo siteInfo) {
     System.out.println(event);
-    return;
   }
 
   @Override
@@ -188,6 +193,26 @@ public final class Stub
   @Override
   public void writeSessionID(MemberID x1, SessionID x2) {
     sessions.put(x2, x1);
+  }
+
+  @Override
+  public void setLastLogin(MemberID x1, LoginTime x2) {
+    Member y = getByID(x1);
+    Member y1 = new Member(
+      y.id(),
+      y.email(),
+      y.firstName(),
+      y.lastName(),
+      y.zip(),
+      y.status(),
+      y.password(),
+      y.registeredOn(),
+      y.tz(),
+      x2,
+      y.lastLogin()
+    );
+    members.remove(y);
+    members.add(y1);
   }
 
   @Override

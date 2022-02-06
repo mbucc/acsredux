@@ -21,7 +21,7 @@ class CommandLineArguments {
   }
 
   private static void usage() {
-    System.err.printf(
+    System.err.print(
       "valid arguments: " +
       "-h <host> " +
       "-p <port> " +
@@ -42,7 +42,7 @@ class CommandLineArguments {
         case "-b" -> y.backlog = Integer.parseInt(args[i + 1]);
         case "-t" -> y.threads = Integer.parseInt(args[i + 1]);
         default -> {
-          System.err.printf("unknown argument '" + args[i] + "'");
+          System.err.printf("unknown argument '%s'", args[i]);
           usage();
           System.exit(1);
         }

@@ -8,7 +8,8 @@ import java.util.ResourceBundle;
 public record ZipCode(String val) {
   public static final int MIN_LENGTH = 5;
   public static final int MAX_LENGTH = 10;
-  public ZipCode(String val) {
+
+  public ZipCode {
     var errors = ResourceBundle.getBundle("MemberErrorMessages");
     dieIfBlank(val, errors.getString("zipcode_missing"));
     if (val.length() < MIN_LENGTH) {
@@ -33,6 +34,5 @@ public record ZipCode(String val) {
         }
       }
     }
-    this.val = val;
   }
 }

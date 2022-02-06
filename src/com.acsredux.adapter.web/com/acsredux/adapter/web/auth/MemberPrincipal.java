@@ -8,7 +8,7 @@ public class MemberPrincipal extends HttpPrincipal {
   private final Member member;
 
   public MemberPrincipal(Member x) {
-    super(x.fullname(), "/");
+    super(x.fullName(), "/");
     this.member = x;
   }
 

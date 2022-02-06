@@ -1,6 +1,7 @@
 February 5, 2022
 
-  * Use expires not max-age.
+  * TEST THIS, max-age is much simpler.
+    Use expires not max-age.
     Release of first known support [1]:
 		Jan 2022	Firefox 96
 		Jan 2022	Chrome 98
@@ -14,6 +15,7 @@ February 5, 2022
     Example: Cookie: SID=31d4d96e407aad42; lang=en-US
 
   * To delete a cookie, send expiration date in the past [2].
+    Or, set max-age to zero [2], Section 5.2.2.
     The delete is only guaranteed to work if domain and path are the same.
 
   * To maximize compatability with browsers, server should encode
@@ -23,14 +25,21 @@ February 5, 2022
 
   * Do not sent multiple Set-cookie headers for the same cookie name [2].
 
-  * Some browsers treat a missing domain attribute as the current host [2].
+  * Browsers treat a missing domain attribute as the current host [2].
+
+    "However, in most browsers there is a difference between a
+    cookie set from foo.com without a domain, and a cookie set with
+    the foo.com domain. In the former case, the cookie will only
+    be sent for requests to foo.com, also known as a host-only
+    cookie. In the latter case, all subdomains are also included
+    (for example, docs.foo.com)." [3]
 
   * User agents will reject cookies with domain scope that does not include
     current host [2].  For example,
 
-	origin server host = "foo.example.com", then
-	both "foo.example.com" and "example.com" cookie domains
-	are acceptable.
+	origin server host = "foo.example.com"
+
+	"foo.example.com" and "example.com" are accepted
 
 	"bar.example.com" or "baz.foo.example.com" are not.
 
@@ -56,3 +65,4 @@ Sources
 
 [1] Can-I-Use, https://caniuse.com/
 [2] RFC6265 HTTP State Management Mechanism, https://datatracker.ietf.org/doc/html/rfc6265
+[3] https://en.wikipedia.org/wiki/HTTP_cookie#Domain_and_Path

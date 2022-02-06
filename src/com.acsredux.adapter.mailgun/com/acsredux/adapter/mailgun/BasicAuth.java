@@ -5,7 +5,7 @@ import java.net.PasswordAuthentication;
 
 class BasicAuth extends Authenticator {
 
-  private Configuration conf;
+  private final Configuration conf;
 
   public BasicAuth(Configuration conf) {
     this.conf = conf;

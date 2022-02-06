@@ -1,8 +1,9 @@
 package com.acsredux.adapter.web;
 
-import static com.acsredux.adapter.web.WebUtil.writeResponse;
+import static com.acsredux.adapter.web.common.WebUtil.writeResponse;
 
-import com.acsredux.adapter.web.auth.MemberPrincipal;
+import com.acsredux.adapter.web.common.BaseHandler;
+import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.MemberService;
@@ -19,19 +20,17 @@ import java.util.Map;
 
 class RootHandler extends BaseHandler {
 
-  private String templateRoot;
-  private MustacheFactory mf;
-  private AdminService adminService;
+  private final MustacheFactory mf;
+  private final AdminService adminService;
 
   RootHandler(MemberService x1, AdminService x2, String templateRoot) {
     super(x1);
     this.adminService = x2;
-    this.templateRoot = templateRoot;
-    this.mf = new DefaultMustacheFactory(new File(this.templateRoot));
+    this.mf = new DefaultMustacheFactory(new File(templateRoot));
   }
 
   @Override
-  List<Route> getRoutes() {
+  public List<Route> getRoutes() {
     return Collections.singletonList(new Route(x -> true, this::renderIndex));
   }
 
@@ -39,11 +38,8 @@ class RootHandler extends BaseHandler {
     Mustache m = mf.compile("index.html");
     Writer writer = new StringWriter();
     Map<String, Object> view = x2.asMap();
-    if (x1.getPrincipal() instanceof MemberPrincipal y1) {
-      view.put("memberID", y1.getMember().id().val());
-    }
     SiteInfo siteInfo = adminService.getSiteInfo();
-    view.put("siteTitle", siteInfo.name());
+    view.put("pageTitle", siteInfo.name());
     view.put("siteDescription", siteInfo.description());
     try {
       m.execute(writer, view).flush();

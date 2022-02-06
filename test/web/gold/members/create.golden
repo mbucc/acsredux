@@ -1,0 +1,63 @@
+200
+Content-Length: 1691
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Create Membership</title>
+  </head>
+  <body>
+    <p>
+     Test User     (<a href="/members/login">log in</a>)
+     <br /><a href="/">home</a>
+     <br /><a href="http://example.com/suggestions">suggestions</a>
+    </p>
+
+    <h1>Create Membership</h1>
+<p>
+  We are in alpha testing mode, which means things may break. Bug reports (submitted
+  <a href="http://example.com/suggestions">here</a>) are appreciated. To limit the amount of
+  feedback, we cap membership at 25; so far, 1 of
+  those slots are used up.
+</p>
+<form action="/members/create" method="post">
+  <table>
+    <tr>
+      <th><label for="email">Email:</label></th>
+      <td>
+        <input id="email" type="email" name="email" required autofocus />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="firstName">First name:</label></th>
+      <td>
+        <input id="firstName" type="text" name="firstName" required />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="lastName">Last name:</label></th>
+      <td>
+        <input id="lastName" type="text" name="lastName" required />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="zip">Zip code:</label></th>
+      <td><input id="zip" type="text" name="zip" required /></td>
+    </tr>
+    <tr>
+      <th><label for="pwd1">Password:</label></th>
+      <td><input id="pwd1" type="password" name="pwd1" required /></td>
+    </tr>
+    <tr>
+      <th><label for="pwd2">Password:</label></th>
+      <td><input id="pwd2" type="password" name="pwd2" required /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="command" value="create" />
+  <input type="submit" value="Submit membership request" />
+</form>
+  </body>
+</html>
+

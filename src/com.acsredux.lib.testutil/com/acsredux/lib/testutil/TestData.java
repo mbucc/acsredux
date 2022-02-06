@@ -1,5 +1,7 @@
 package com.acsredux.lib.testutil;
 
+import static com.acsredux.core.members.services.PasswordUtil.hashpw;
+
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.members.commands.*;
@@ -15,18 +17,29 @@ public class TestData {
   public static final Email TEST_EMAIL = new Email("test@example.com");
   public static final FirstName TEST_FIRST_NAME = new FirstName("小川");
   public static final LastName TEST_LAST_NAME = new LastName("治兵衛");
-  public static final ClearTextPassword TEST_PASSWORD = new ClearTextPassword("a3cDefg!");
-  public static final VerificationToken TEST_TOKEN = new VerificationToken("test token");
+
+  public static final Email TEST_EMAIL2 = new Email("test2@example.com");
+  public static final FirstName TEST_FIRST_NAME2 = new FirstName("Bill");
+  public static final LastName TEST_LAST_NAME2 = new LastName("Walton");
+
+  public static final ClearTextPassword TEST_CLEAR_TEXT_PASSWORD = ClearTextPassword.of(
+    "a3cDefg!"
+  );
+  public static final VerificationToken TEST_VERIFICATION_TOKEN = new VerificationToken(
+    "test token"
+  );
   public static final ZipCode TEST_ZIP_CODE = new ZipCode("02134");
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
   public static final MemberStatus TEST_MEMBER_STATUS = MemberStatus.ACTIVE;
-  public static final EncryptedPassword TEST_ENCRYPTED_PASSWORD = new EncryptedPassword(
-    "abc"
+  public static final HashedPassword TEST_HASHED_PASSWORD = hashpw(
+    TEST_CLEAR_TEXT_PASSWORD
   );
   public static final RegistrationDate TEST_REGISTRATION_DATE = new RegistrationDate(
     Instant.ofEpochSecond(1642250459)
   );
   public static final ZoneId TEST_TIME_ZONE = ZoneId.of("US/Eastern");
+  public static final LoginTime TEST_LOGIN_TIME = new LoginTime(Instant.now());
+  public static final LoginTime TEST_SECOND_LOGIN_TIME = null;
   public static final Member TEST_MEMBER = new Member(
     TEST_MEMBER_ID,
     TEST_EMAIL,
@@ -34,24 +47,45 @@ public class TestData {
     TEST_LAST_NAME,
     TEST_ZIP_CODE,
     TEST_MEMBER_STATUS,
-    TEST_ENCRYPTED_PASSWORD,
+    TEST_HASHED_PASSWORD,
     TEST_REGISTRATION_DATE,
-    TEST_TIME_ZONE
+    TEST_TIME_ZONE,
+    TEST_LOGIN_TIME,
+    TEST_SECOND_LOGIN_TIME
+  );
+  public static final MemberDashboard TEST_MEMBER_DASHBOARD = new MemberDashboard(
+    TEST_MEMBER
   );
   public static final AddMember TEST_ADD_MEMBER_CMD = new AddMember(
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
     TEST_EMAIL,
-    TEST_PASSWORD,
-    TEST_PASSWORD,
+    TEST_CLEAR_TEXT_PASSWORD,
+    TEST_CLEAR_TEXT_PASSWORD,
     TEST_ZIP_CODE
   );
-  public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(TEST_TOKEN);
-  static URI uri;
+  public static final AddMember TEST_ADD_MEMBER2_CMD = new AddMember(
+    TEST_FIRST_NAME2,
+    TEST_LAST_NAME2,
+    TEST_EMAIL2,
+    TEST_CLEAR_TEXT_PASSWORD,
+    TEST_CLEAR_TEXT_PASSWORD,
+    TEST_ZIP_CODE
+  );
+  public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(
+    TEST_VERIFICATION_TOKEN
+  );
+  public static final SessionID TEST_SESSION_ID = SessionID.of("Test Session ID");
+  public static final LoginMember TEST_LOGIN_MEMBER_CMD = new LoginMember(
+    TEST_EMAIL,
+    TEST_CLEAR_TEXT_PASSWORD
+  );
+
+  static final URI TEST_SUGGESTION_URI;
 
   static {
     try {
-      uri = new URI("http://example.com/suggestions");
+      TEST_SUGGESTION_URI = new URI("http://example.com/suggestions");
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
@@ -69,9 +103,7 @@ public class TestData {
     "MA",
     "12345",
     "mkbucc@gmail.com",
-    uri,
+    TEST_SUGGESTION_URI,
     Duration.ofDays(365)
   );
-
-  public static final SessionID TEST_SESSION_ID = SessionID.of("Test Session ID");
 }

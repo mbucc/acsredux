@@ -9,10 +9,10 @@ Enable Java sources to use InstantSource and sealed classes.
 1. Open https://jdk.java.net/17/ and **DOWNLOAD** the GPL v2 open-source build for your platform.
 
 1. Open a terminal, **CHANGE** in your $HOME directory.
-1. **UNTAR** downloaded tarball. `tar xzvf ~/Downloads/openjdk-17.0.1_macos-x64_bin.tar.gz`
+1. **UNTAR** downloaded tarball. `tar xvf ~/Downloads/openjdk-17.0.2_macos-x64_bin.tar`
 
-1. Using sudo, **MOVE** jdk-17.0.1.jdk to the standard Java location on OSX.
-   `sudo mv jdk-17.0.1.jdk /Library/Java/JavaVirtualMachines/`
+1. Using sudo, **MOVE** jdk-17.0.2.jdk to the standard Java location on OSX.
+   `sudo mv jdk-17.0.2.jdk /Library/Java/JavaVirtualMachines/`
 
 1. **VERIFY** OSX sees the new version: `/usr/libexec/java_home -v 17` should
    output `/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home`

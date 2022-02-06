@@ -1,5 +1,6 @@
 package com.acsredux.adapter.mailgun;
 
+import static com.acsredux.lib.env.VariableUtil.encryptionKeyOrDie;
 import static java.net.http.HttpRequest.BodyPublishers;
 import static java.net.http.HttpResponse.BodyHandlers;
 
@@ -21,11 +22,20 @@ public final class MailgunNotifier implements MemberNotifier {
   private final Configuration conf;
   private final HttpClient http;
 
+  /**
+   * Load configuration from the environment.
+   * <p>
+   * Halts (i.e., thows IllegalStateException) if an encryption key is not
+   * found in the environment.
+   *
+   * @see com.acsredux.lib.env.Variable
+   */
   public MailgunNotifier() {
     this(Configuration.loadFromEnvironment());
   }
 
   MailgunNotifier(Configuration conf) {
+    encryptionKeyOrDie();
     this.conf = conf;
     this.http =
       HttpClient

@@ -4,6 +4,7 @@ import com.acsredux.core.base.Event;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.commands.MemberCommand;
 import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.entities.Member;
@@ -21,11 +22,11 @@ import java.util.Optional;
 
 public final class MemberProvider implements MemberService {
 
-  private final AddMemberHandler addMemberHandler;
+  private final CreateHandler addMemberHandler;
   private final VerifyEmailHandler verifyEmailHandler;
+  private final LoginHandler loginHandler;
   private final MemberReader reader;
   private final MemberWriter writer;
-  private final MemberAdminReader adminReader;
   // SecureRandom self-seeds on the first call to nextBytes(), typically
   // from /dev/random (or /dev/urandom) in Linux.
   private final SecureRandom secureRandom = new SecureRandom();
@@ -37,22 +38,21 @@ public final class MemberProvider implements MemberService {
     InstantSource clock,
     MemberAdminReader adminReader
   ) {
-    addMemberHandler = new AddMemberHandler(r, adminReader, w, notifier, clock);
+    addMemberHandler = new CreateHandler(r, adminReader, w, notifier, clock);
     verifyEmailHandler = new VerifyEmailHandler(r, w, clock);
+    loginHandler = new LoginHandler(r, w, clock);
+
     this.reader = r;
     this.writer = w;
-    this.adminReader = adminReader;
   }
 
   @Override
   public Event handle(MemberCommand x) {
-    if (x instanceof AddMember c) {
-      return addMemberHandler.handle(c);
-    } else if (x instanceof VerifyEmail c) {
-      return verifyEmailHandler.handle(c);
-    } else {
-      throw new IllegalArgumentException("invalid command " + x);
-    }
+    return switch (x) {
+      case AddMember x1 -> addMemberHandler.handle(x1);
+      case VerifyEmail x1 -> verifyEmailHandler.handle(x1);
+      case LoginMember x1 -> loginHandler.handle(x1);
+    };
   }
 
   @Override

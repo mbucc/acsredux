@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.stub/com/acsredux/adapter/stub/Stub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.stub/com/acsredux/adapter/stub/Stub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/FormCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/FormCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/CreateHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/PasswordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/PasswordUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/values/ClearTextPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/values/ClearTextPassword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/ChaCha20Poly1305.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/ChaCha20Poly1305.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/Variable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/members/TestMemberAdd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/members/TestCreate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestAddMemberHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestCreateHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/values/TestClearTextPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/values/TestClearTextPassword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/web/gold/members/create.golden" beforeDir="false" afterPath="$PROJECT_DIR$/test/web/gold/members/create.golden" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/web/gold/members/create.post-no_password.golden" beforeDir="false" afterPath="$PROJECT_DIR$/test/web/gold/members/create.post-no_password.golden" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/template/members/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/template/members/create.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectId" id="255FbJhwcHZiBjm18HfaO8BSIzw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/test/web/gold/members" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2560154" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/web/gold/members" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/tests" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.acsredux.adapter.mailgun" />
+      <recent name="com.acsredux.adapter.stub" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.acsredux.core.members.services" />
+      <recent name="com.acsredux.core.members.values" />
+      <recent name="com.acsredux.core.base" />
+      <recent name="com.acsredux.core.members.events" />
+      <recent name="com.acsredux.adapter.web.members" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.TestClearTextPassword.testEquality">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestClearTextPassword.testEquality" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.members" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.members.values.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.members.values" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.members.values.TestClearTextPassword" />
+      <option name="METHOD_NAME" value="testEquality" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCreate" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.adapter.web" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.adapter.web.members.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.adapter.web.members" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.adapter.web.members.TestCreate" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCreateHandler.requiredRecordFields" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.members" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.members.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.members.services" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.members.services.TestCreateHandler" />
+      <option name="METHOD_NAME" value="requiredRecordFields(com.acsredux.core.members.services.TestCreateHandler$RequiredFieldsTestData)" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCreateHandler.testSunnyPath" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.members" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.members.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.members.services" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.members.services.TestCreateHandler" />
+      <option name="METHOD_NAME" value="testSunnyPath" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCreate.testCreatePostSunny" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.adapter.web" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.adapter.web.members.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.adapter.web.members" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.adapter.web.members.TestCreate" />
+      <option name="METHOD_NAME" value="testCreatePostSunny" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false">
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Java Scratch">
+      <shortenClasspath name="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TestClearTextPassword.testEquality" />
+        <item itemvalue="JUnit.TestCreate" />
+        <item itemvalue="JUnit.TestCreate.testCreatePostSunny" />
+        <item itemvalue="JUnit.TestCreateHandler.testSunnyPath" />
+        <item itemvalue="JUnit.TestCreateHandler.requiredRecordFields" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="" />
+      <created>1644809112009</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1644809112009</updated>
+    </task>
+    <task id="LOCAL-00001" summary="WIP (huge commit)&#10;&#10;Some changes:&#10;  * convert to using IntelliJ and Makefile&#10;    this was a long struggle.  committing because I&#10;    finally got this working correctly.&#10;  * major (unfinished) refactor of web code. pull&#10;    member code into it's own directory.&#10;  * implement password hashing, and rename value type&#10;    passwords are (one-way) hashed, secrets are (two-way)&#10;    encrypted.">
+      <created>1644840726745</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1644840726745</updated>
+    </task>
+    <task id="LOCAL-00002" summary="All tests pass again">
+      <created>1644886479554</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1644886479554</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Refactor member handler into workload-specific classes&#10;&#10;Also, fix a bunch of problems identified by IntelliJ.">
+      <created>1644965000207</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1644965000207</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update javadoc script to match new directory layout&#10;&#10;Regenerated docs.">
+      <created>1644967126179</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1644967126179</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases.">
+      <created>1644973537179</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1644973537179</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="WIP (huge commit)&#10;&#10;Some changes:&#10;  * convert to using IntelliJ and Makefile&#10;    this was a long struggle.  committing because I&#10;    finally got this working correctly.&#10;  * major (unfinished) refactor of web code. pull&#10;    member code into it's own directory.&#10;  * implement password hashing, and rename value type&#10;    passwords are (one-way) hashed, secrets are (two-way)&#10;    encrypted." />
+    <MESSAGE value="All tests pass again" />
+    <MESSAGE value="Refactor member handler into workload-specific classes&#10;&#10;Also, fix a bunch of problems identified by IntelliJ." />
+    <MESSAGE value="Update javadoc script to match new directory layout&#10;&#10;Regenerated docs." />
+    <MESSAGE value="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases." />
+  </component>
+</project>

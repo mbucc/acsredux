@@ -1,5 +1,5 @@
 200
-Content-Length: 485
+Content-Length: 385
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -9,15 +9,17 @@ Content-type: text/html; charset= UTF-8
     <title>Member Dashboard</title>
   </head>
   <body>
-    <p>Test User</p>
-    <p><a href="/">home</a></p>
+    <p>
+     Test User     (<a href="/members/login">log in</a>)
+     <br /><a href="/">home</a>
+     <br /><a href="http://example.com/suggestions">suggestions</a>
+    </p>
+
     <h1>Member Dashboard</h1>
+
+
     <p>小川 治兵衛 has been a member since January 15, 2022.</p>
 
-    <p>Your email has been verified and you are now an active member.</p>
-    <p>
-      Do you have ideas for how this site could be better? Use the
-      <a href="http://example.com/suggestions">suggestion box</a>.
-    </p>
   </body>
 </html>
+

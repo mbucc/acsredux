@@ -22,3 +22,5 @@ for f in $FILES; do
 	mv $d/$name0 $d/$name1
 	find src -name "*.java" -exec sed -i '' -- "s/$name0/$name1/g" {} +
 done
+
+find test -name '*.actual'|while read f; do f1=$(echo $f|sed 's/\.actual/.golden/'); mv $f $f1; done 

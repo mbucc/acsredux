@@ -11,15 +11,17 @@ public record Member(
   LastName lastName,
   ZipCode zip,
   MemberStatus status,
-  EncryptedPassword password,
+  HashedPassword password,
   RegistrationDate registeredOn,
-  ZoneId tz
+  ZoneId tz,
+  LoginTime lastLogin,
+  LoginTime secondToLastLogin
 ) {
   public String memberSince() {
     return DateUtil.fullDate(registeredOn.val(), tz);
   }
 
-  public String fullname() {
+  public String fullName() {
     return firstName.val() + " " + lastName.val();
   }
 
@@ -33,7 +35,9 @@ public record Member(
       newStatus,
       password,
       registeredOn,
-      tz
+      tz,
+      lastLogin,
+      secondToLastLogin
     );
   }
 }

@@ -22,38 +22,45 @@
 package com.acsredux.lib.env;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-//import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
-public class ChaCha20Poly1305 {
+class ChaCha20Poly1305 {
 
   private static final String CHACHA = "ChaCha20";
   private static final String ENCRYPT_ALGO = "ChaCha20-Poly1305";
   private static final int NONCE_LEN = 12; // 96 bits, 12 bytes
 
+  private static final SecretKey ENCRYPTION_KEY = new SecretKeySpec(
+    Base64.getDecoder().decode(VariableUtil.readEncryptionKey()),
+    "ChaCha20-Poly1305"
+  );
+
+  static boolean keyExists() {
+    return ENCRYPTION_KEY != null;
+  }
+
   private ChaCha20Poly1305() {
     throw new UnsupportedOperationException("static only");
   }
 
-  public static String encryptToBase64(byte[] pText, SecretKey key) throws Exception {
-    return Base64.getEncoder().encodeToString(encrypt(pText, key));
+  public static String encryptToBase64(byte[] pText) throws Exception {
+    return Base64.getEncoder().encodeToString(encrypt(pText));
   }
 
-  public static byte[] decryptFromBase64(String encrypted, SecretKey key)
-    throws Exception {
-    return decrypt(Base64.getDecoder().decode(encrypted), key);
+  public static byte[] decryptFromBase64(String encrypted) throws Exception {
+    return decrypt(Base64.getDecoder().decode(encrypted));
   }
 
-  public static char[] decryptFromBase64ToCharArray(String encrypted, SecretKey key)
-    throws Exception {
-    byte[] xs = decryptFromBase64(encrypted, key);
-    var decoder = Charset.forName("UTF8").newDecoder();
+  public static char[] decryptFromBase64ToCharArray(String encrypted) throws Exception {
+    byte[] xs = decryptFromBase64(encrypted);
+    var decoder = StandardCharsets.UTF_8.newDecoder();
     var charBuffer = decoder.decode(ByteBuffer.wrap(xs));
     var ys = new char[charBuffer.length()];
     for (int i = 0; i < charBuffer.length(); i++) {
@@ -63,42 +70,48 @@ public class ChaCha20Poly1305 {
   }
 
   public static String getKeyToBase64() throws Exception {
-    return Base64.getEncoder().encodeToString(getKey().getEncoded());
+    return Base64.getEncoder().encodeToString(getEncryptionKey().getEncoded());
   }
 
-  public static SecretKey getKey() throws Exception {
+  public static String getSaltToBase64(int saltSizeInBytes) {
+    if (saltSizeInBytes < 1) {
+      throw new IllegalArgumentException("salt size must be greater than zero");
+    }
+    byte[] salt = new byte[saltSizeInBytes];
+    new SecureRandom().nextBytes(salt);
+    return Base64.getEncoder().encodeToString(salt);
+  }
+
+  public static SecretKey getEncryptionKey() throws Exception {
     KeyGenerator keyGen = KeyGenerator.getInstance(CHACHA);
     keyGen.init(256, SecureRandom.getInstanceStrong());
     return keyGen.generateKey();
   }
 
   // if no nonce, generate a random 12 bytes nonce
-  public static byte[] encrypt(byte[] pText, SecretKey key) throws Exception {
-    return encrypt(pText, key, getNonce());
+  public static byte[] encrypt(byte[] pText) throws Exception {
+    return encrypt(pText, getNonce());
   }
 
-  public static byte[] encrypt(byte[] pText, SecretKey key, byte[] nonce)
-    throws Exception {
+  public static byte[] encrypt(byte[] pText, byte[] nonce) throws Exception {
     Cipher cipher = Cipher.getInstance(ENCRYPT_ALGO);
 
     // IV, initialization value with nonce
     IvParameterSpec iv = new IvParameterSpec(nonce);
 
-    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+    cipher.init(Cipher.ENCRYPT_MODE, ChaCha20Poly1305.ENCRYPTION_KEY, iv);
 
     byte[] encryptedText = cipher.doFinal(pText);
 
     // append nonce to the encrypted text
-    byte[] output = ByteBuffer
+    return ByteBuffer
       .allocate(encryptedText.length + NONCE_LEN)
       .put(encryptedText)
       .put(nonce)
       .array();
-
-    return output;
   }
 
-  public static byte[] decrypt(byte[] cText, SecretKey key) throws Exception {
+  public static byte[] decrypt(byte[] cText) throws Exception {
     ByteBuffer bb = ByteBuffer.wrap(cText);
 
     // split cText to get the appended nonce
@@ -114,12 +127,10 @@ public class ChaCha20Poly1305 {
 
     IvParameterSpec iv = new IvParameterSpec(nonce);
 
-    cipher.init(Cipher.DECRYPT_MODE, key, iv);
+    cipher.init(Cipher.DECRYPT_MODE, ChaCha20Poly1305.ENCRYPTION_KEY, iv);
 
     // decrypted text
-    byte[] output = cipher.doFinal(encryptedText);
-
-    return output;
+    return cipher.doFinal(encryptedText);
   }
 
   // 96-bit nonce (12 bytes)
