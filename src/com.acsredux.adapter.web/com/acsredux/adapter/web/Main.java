@@ -25,9 +25,11 @@ public class Main {
 
   public static void main(String[] args) throws IOException {
     var xs = CommandLineArguments.scan(args);
-
     LOGGER.log(INFO, "creating HttpServer on port {0}", xs.portAsString());
 
+    //
+    //			Load services
+    //
     Stub stub = Stub.provider();
     ZoneId tz = ZoneId.of("US/Eastern");
     MemberService memberService = MemberServiceFactory.getMemberService(
@@ -37,28 +39,36 @@ public class Main {
       stub,
       tz
     );
-    CookieAuthenticator cookieAuthenticator = new CookieAuthenticator(memberService);
+    AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
 
+    //
+    //			Create server
+    //
     HttpServer server = HttpServer.create(
       new InetSocketAddress(xs.host, xs.port),
       xs.backlog
     );
     server.setExecutor(Executors.newFixedThreadPool(xs.threads));
 
+    //
+    //			Setup routing
+    //
+    CookieAuthenticator auth = new CookieAuthenticator(memberService);
     HttpContext ctx = server.createContext(
       "/",
-      new RootHandler(memberService, xs.documentRoot)
+      new RootHandler(memberService, adminService, xs.documentRoot)
     );
-    ctx.setAuthenticator(cookieAuthenticator);
-
-    AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
+    ctx.setAuthenticator(auth);
     ctx =
       server.createContext(
         "/members",
         new MembersHandler(xs.documentRoot, memberService, adminService)
       );
-    ctx.setAuthenticator(cookieAuthenticator);
+    ctx.setAuthenticator(auth);
 
+    //
+    //			Start server
+    //
     server.start();
   }
 }

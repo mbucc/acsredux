@@ -143,7 +143,7 @@ public final class Stub
       100, // limitOnBetaCustomers
       0, // currentAnnualSubscriptionFeeInCents
       "Kitty Korner",
-      "<p>A place where you can share your cat pictures with fellow cat lovers.</p>",
+      "A place where you can share your cat pictures with fellow cat lovers.",
       "30 Main St.",
       "Anywhere",
       "MA",

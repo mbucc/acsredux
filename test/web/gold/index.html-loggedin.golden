@@ -1,16 +1,18 @@
 200
-Content-Length: 208
+Content-Length: 242
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
-    <title>Garden Journal</title>
+    <title>My New Website</title>
   </head>
   <body>
     <p>小川 治兵衛</p>
-    <h1>Garden Journal</h1>
+    <h1>My New Website</h1>
     <p><a href="/members/123">Dashboard</a></p>
+
+    <p>An on-line community.</p>
   </body>
 </html>

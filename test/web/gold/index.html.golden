@@ -1,16 +1,18 @@
 200
-Content-Length: 210
+Content-Length: 244
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
-    <title>Garden Journal</title>
+    <title>My New Website</title>
   </head>
   <body>
     <p>Test User</p>
-    <h1>Garden Journal</h1>
+    <h1>My New Website</h1>
     <p><a href="/members/create">Become a member</a></p>
+
+    <p>An on-line community.</p>
   </body>
 </html>

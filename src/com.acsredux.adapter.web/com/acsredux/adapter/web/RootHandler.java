@@ -3,6 +3,8 @@ package com.acsredux.adapter.web;
 import static com.acsredux.adapter.web.WebUtil.writeResponse;
 
 import com.acsredux.adapter.web.auth.MemberPrincipal;
+import com.acsredux.core.admin.AdminService;
+import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.MemberService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -19,9 +21,11 @@ class RootHandler extends BaseHandler {
 
   private String templateRoot;
   private MustacheFactory mf;
+  private AdminService adminService;
 
-  RootHandler(MemberService x, String templateRoot) {
-    super(x);
+  RootHandler(MemberService x1, AdminService x2, String templateRoot) {
+    super(x1);
+    this.adminService = x2;
     this.templateRoot = templateRoot;
     this.mf = new DefaultMustacheFactory(new File(this.templateRoot));
   }
@@ -38,6 +42,9 @@ class RootHandler extends BaseHandler {
     if (x1.getPrincipal() instanceof MemberPrincipal y1) {
       view.put("memberID", y1.getMember().id().val());
     }
+    SiteInfo siteInfo = adminService.getSiteInfo();
+    view.put("siteTitle", siteInfo.name());
+    view.put("siteDescription", siteInfo.description());
     try {
       m.execute(writer, view).flush();
     } catch (Exception e) {

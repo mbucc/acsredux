@@ -2,15 +2,17 @@
 
 <html>
   <head>
-    <title>Garden Journal</title>
+    <title>{{siteTitle}}</title>
   </head>
   <body>
     <p>{{ principal }}</p>
-    <h1>Garden Journal</h1>
+    <h1>{{siteTitle}}</h1>
     {{#memberID}}
     <p><a href="/members/{{memberID}}">Dashboard</a></p>
     {{/memberID}} {{^memberID}}
     <p><a href="/members/create">Become a member</a></p>
     {{/memberID}}
+
+    <p>{{siteDescription}}</p>
   </body>
 </html>
