@@ -99,18 +99,18 @@ public class VariableUtil {
     String fn = VariableUtil.getString(x, System.getenv());
     if (fn.startsWith("~" + File.separator)) {
       fn = System.getProperty("user.home") + fn.substring(1);
-      try {
-        return Files.readAllBytes(Path.of(fn));
-      } catch (Exception e) {
-        String fmt = "error reading '%s' with cwd = %s";
-        throw new RuntimeException(
-          String.format(fmt, fn, System.getProperty("user.dir")),
-          e
-        );
-      }
-    } else {
+    } else if (fn.startsWith("~")) {
       throw new UnsupportedOperationException(
-        "Please use an absolute path " + "to indicate a user's home directory."
+        "Please use an absolute path to indicate a user's home directory."
+      );
+    }
+    try {
+      return Files.readAllBytes(Path.of(fn));
+    } catch (Exception e) {
+      String fmt = "error reading '%s' with cwd = %s";
+      throw new RuntimeException(
+        String.format(fmt, fn, System.getProperty("user.dir")),
+        e
       );
     }
   }

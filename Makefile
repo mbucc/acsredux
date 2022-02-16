@@ -95,8 +95,8 @@ compile: checkstyle
 
 .PHONY: test
 test: compiletests
-	ACSREDUX_SALT_FILENAME=./test/salt \
-	ACSREDUX_SECRET_FILENAME=./test/encryption-key \
+	ACSREDUX_PASSWORD_SALT_FILENAME=./test/salt \
+	ACSREDUX_ENCRYPTION_KEY_FILENAME=./test/encryption-key \
 	${JAVA} \
 		-cp "lib/*:testclasses:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		org.junit.platform.console.ConsoleLauncher \

@@ -7,32 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases.">
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Login screen done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.stub/com/acsredux/adapter/stub/Stub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.stub/com/acsredux/adapter/stub/Stub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/FormCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/FormCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/AddMemberHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/CreateHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/PasswordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/PasswordUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/values/ClearTextPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/values/ClearTextPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/ChaCha20Poly1305.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/ChaCha20Poly1305.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/Variable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/members/TestMemberAdd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/members/TestCreate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestAddMemberHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestCreateHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/values/TestClearTextPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/values/TestClearTextPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/web/gold/members/create.golden" beforeDir="false" afterPath="$PROJECT_DIR$/test/web/gold/members/create.golden" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/web/gold/members/create.post-no_password.golden" beforeDir="false" afterPath="$PROJECT_DIR$/test/web/gold/members/create.post-no_password.golden" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/template/members/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/template/members/create.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +36,16 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Use template partials for consistent head and tail&#10;&#10;Set pageTitle and menuitems attributes on views passed to templates." />
+        <option name="rewordedMessage" value="Login screen done&#10;&#10;Massive refactoring.&#10;&#10;  * Convert to Java 17 preview for sealed types + switch goodness&#10;  * Support IntelliJ, as refactoring is so much faster.  It was&#10;    tough to the IntelliJ module configuration to work with tests&#10;    in a different content root.  Commit IntelliJ configuration &#10;    files (.idea and *.iml).&#10;  * Split member handler into workload-specific classes.&#10;  * Fix some of the problems identified by IntelliJ.&#10;  * Implement password hashing.&#10;  * Make member details suitable for public viewing&#10;  * Document command-line handling of envvars&#10;  * Make ChaCha class protected (no need to be public).&#10;  * Tighten up member route predicates&#10;  * Use template partials for consistent head and tail&#10;  * Set pageTitle and menuitems attributes on views passed to templates." />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="a65a784ecf6f155838518b4f14a8f2319202ea27" />
+  </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -82,6 +70,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="ignore.preview.features.used" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test/web/gold/members" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -358,7 +347,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644973537179</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Login screen done">
+      <created>1644986236035</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1644986236035</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -378,6 +374,7 @@
     <MESSAGE value="Refactor member handler into workload-specific classes&#10;&#10;Also, fix a bunch of problems identified by IntelliJ." />
     <MESSAGE value="Update javadoc script to match new directory layout&#10;&#10;Regenerated docs." />
     <MESSAGE value="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases." />
+    <MESSAGE value="Login screen done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login screen done" />
   </component>
 </project>
