@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="TestData">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/testlib/com.acsredux.testlib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src/com.acsredux.lib.testutil" />
+    </SOURCES>
+  </library>
+</component>

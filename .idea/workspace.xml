@@ -7,10 +7,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Login screen done">
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Fix envvar names used in Makefile&#10;&#10;Also, fix readFile() to handle file names that don't start&#10;with '~/'.">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/TestData.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com.acsredux.core.articles.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ArticleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/BaseArticleCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/CreateArticleCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/events/ArticleCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/services/ArticleServiceProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/AltText.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Article.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/ArticleID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Image.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/ImageSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Paragraph.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/PublishedDate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Section.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/SectionElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Title.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/values/Word.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/values/MemberPrincipal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/TestGetArticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/testutil_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com/acsredux/lib/env/VariableUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.env/com.acsredux.lib.env.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.env/com.acsredux.lib.env.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com.acsredux.lib.testutil.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com.acsredux.lib.testutil.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/TestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testlib/com.acsredux.testlib.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testlib/com.acsredux.testlib.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testlib/testutil.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +60,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -71,15 +105,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ignore.preview.features.used" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/test/web/gold/members" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/tests" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2560154" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.acsredux.core.articles.values" />
+      <recent name="com.acsredux.core.articles" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/tests" />
+      <recent name="$PROJECT_DIR$/src/com.acsredux.core.articles" />
       <recent name="$PROJECT_DIR$/test/web/gold/members" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -87,6 +127,8 @@
       <recent name="$PROJECT_DIR$/src/tests" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.acsredux.core.members.values" />
+      <recent name="com.acsredux.core.articles" />
       <recent name="com.acsredux.adapter.mailgun" />
       <recent name="com.acsredux.adapter.stub" />
     </key>
@@ -98,7 +140,7 @@
       <recent name="com.acsredux.adapter.web.members" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.TestClearTextPassword.testEquality">
+  <component name="RunManager" selected="JUnit.TestGetArticle.testCreateArticle">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
@@ -165,66 +207,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestCreateHandler.requiredRecordFields" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
-      <module name="com.acsredux.core.members" />
-      <selectedOptions>
-        <option name="module.classpath" visible="false" />
-      </selectedOptions>
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.acsredux.core.members.services.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="17" />
-      <option name="PACKAGE_NAME" value="com.acsredux.core.members.services" />
-      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.members.services.TestCreateHandler" />
-      <option name="METHOD_NAME" value="requiredRecordFields(com.acsredux.core.members.services.TestCreateHandler$RequiredFieldsTestData)" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs>
-        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
-        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
-      </envs>
-      <dir value="$PROJECT_DIR$/src" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestCreateHandler.testSunnyPath" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
-      <module name="com.acsredux.core.members" />
-      <selectedOptions>
-        <option name="module.classpath" visible="false" />
-      </selectedOptions>
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.acsredux.core.members.services.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="17" />
-      <option name="PACKAGE_NAME" value="com.acsredux.core.members.services" />
-      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.members.services.TestCreateHandler" />
-      <option name="METHOD_NAME" value="testSunnyPath" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs>
-        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
-        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
-      </envs>
-      <dir value="$PROJECT_DIR$/src" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="TestCreate.testCreatePostSunny" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
       <module name="com.acsredux.adapter.web" />
       <selectedOptions>
@@ -241,6 +223,66 @@
       <option name="PACKAGE_NAME" value="com.acsredux.adapter.web.members" />
       <option name="MAIN_CLASS_NAME" value="com.acsredux.adapter.web.members.TestCreate" />
       <option name="METHOD_NAME" value="testCreatePostSunny" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestGetArticle.sunnyCase" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.articles" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.articles.events.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.articles" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.articles.TestGetArticle" />
+      <option name="METHOD_NAME" value="sunnyCase" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs>
+        <env name="ACSREDUX_SALT_FILENAME" value="./../../test/salt" />
+        <env name="ACSREDUX_SECRET_FILENAME" value="./../../test/encryption-key" />
+      </envs>
+      <dir value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestGetArticle.testCreateArticle" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.articles" />
+      <selectedOptions>
+        <option name="module.classpath" visible="false" />
+      </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.articles.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.articles" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.articles.TestGetArticle" />
+      <option name="METHOD_NAME" value="testCreateArticle" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="TEST_SEARCH_SCOPE">
@@ -295,11 +337,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TestGetArticle.testCreateArticle" />
+        <item itemvalue="JUnit.TestGetArticle.sunnyCase" />
         <item itemvalue="JUnit.TestClearTextPassword.testEquality" />
         <item itemvalue="JUnit.TestCreate" />
         <item itemvalue="JUnit.TestCreate.testCreatePostSunny" />
-        <item itemvalue="JUnit.TestCreateHandler.testSunnyPath" />
-        <item itemvalue="JUnit.TestCreateHandler.requiredRecordFields" />
       </list>
     </recent_temporary>
   </component>
@@ -354,7 +396,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644986236035</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fix envvar names used in Makefile&#10;&#10;Also, fix readFile() to handle file names that don't start&#10;with '~/'.">
+      <created>1644987153643</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1644987153643</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -375,6 +424,7 @@
     <MESSAGE value="Update javadoc script to match new directory layout&#10;&#10;Regenerated docs." />
     <MESSAGE value="Implement login handler&#10;&#10;Convert to Java 17 preview feature so we can use sealed types in&#10;a switch and have the compiler warn us when we don't cover all&#10;the cases." />
     <MESSAGE value="Login screen done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Login screen done" />
+    <MESSAGE value="Fix envvar names used in Makefile&#10;&#10;Also, fix readFile() to handle file names that don't start&#10;with '~/'." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix envvar names used in Makefile&#10;&#10;Also, fix readFile() to handle file names that don't start&#10;with '~/'." />
   </component>
 </project>

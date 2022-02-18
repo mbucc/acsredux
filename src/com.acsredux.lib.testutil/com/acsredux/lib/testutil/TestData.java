@@ -4,13 +4,18 @@ import static com.acsredux.core.members.services.PasswordUtil.hashpw;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
+import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.events.ArticleCreatedEvent;
+import com.acsredux.core.articles.values.*;
 import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import java.net.URI;
+import java.security.Principal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.List;
 
 public class TestData {
 
@@ -105,5 +110,24 @@ public class TestData {
     "mkbucc@gmail.com",
     TEST_SUGGESTION_URI,
     Duration.ofDays(365)
+  );
+
+  public static ArticleID TEST_ARTICLE_ID = new ArticleID(123L);
+  public static Image TEST_IMAGE = Image.of("http://example.com/img1.png");
+  public static Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
+  public static Article TEST_ARTICLE = new Article(
+    Title.of("A Test Title"),
+    List.of(TEST_SECTION),
+    new PublishedDate(Instant.now())
+  );
+
+  public static Principal TEST_MEMBER_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
+  public static CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
+    TEST_MEMBER_PRINCIPAL,
+    TEST_ARTICLE
+  );
+  public static ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
+    TEST_CREATE_ARTICLE_COMMAND,
+    TEST_ARTICLE_ID
   );
 }

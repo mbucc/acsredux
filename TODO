@@ -1,10 +1,11 @@
 2021-12-27: add content data model and editing
 2022-02-07: If user clicks token link after deleting cookie, add link to login page.
 2022-02-05: Externalize page titles (use data?)
+2022-02-18: Add Identity argument to VerifyEmailToken workload.
 
 2021-12-07: create com.acsredux.adapter.sqlite
-2021-12-27: deploy
 2021-12-27: add Apache side car for SSL
+2021-12-27: deploy
 2021-08-09: read up on SystemLogger, LoggerFinder and java.util.logging.
 2021-08-09: limit # of users during testing
 2022-01-30: add reset password link
