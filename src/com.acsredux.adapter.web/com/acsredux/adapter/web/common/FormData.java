@@ -60,7 +60,7 @@ public class FormData {
   @Override
   public String toString() {
     String[] patterns = { "pwd", "password", "passwd" };
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     buf.append("<FormData: ");
     for (Map.Entry<String, List<String>> kv : this.data.entrySet()) {
       buf.append(kv.getKey());

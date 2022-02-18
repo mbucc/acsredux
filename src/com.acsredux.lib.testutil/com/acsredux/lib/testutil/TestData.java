@@ -28,7 +28,7 @@ public class TestData {
   public static final LastName TEST_LAST_NAME2 = new LastName("Walton");
 
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
-  public static Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
+  public static final Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
 
   public static final ClearTextPassword TEST_CLEAR_TEXT_PASSWORD = ClearTextPassword.of(
     "a3cDefg!"
@@ -118,20 +118,20 @@ public class TestData {
     Duration.ofDays(365)
   );
 
-  public static ArticleID TEST_ARTICLE_ID = new ArticleID(123L);
-  public static Image TEST_IMAGE = Image.of("http://example.com/img1.png");
-  public static Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
-  public static Article TEST_ARTICLE = new Article(
+  public static final ArticleID TEST_ARTICLE_ID = new ArticleID(123L);
+  public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
+  public static final Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
+  public static final Article TEST_ARTICLE = new Article(
     Title.of("A Test Title"),
     List.of(TEST_SECTION),
     new PublishedDate(Instant.now())
   );
 
-  public static CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
+  public static final CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
     TEST_PRINCIPAL,
     TEST_ARTICLE
   );
-  public static ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
+  public static final ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
     TEST_CREATE_ARTICLE_COMMAND,
     TEST_ARTICLE_ID
   );

@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public final class VerifyEmail extends BaseMemberCommand {
 
-  VerificationToken token;
+  final VerificationToken token;
 
   public VerifyEmail(Principal principal, VerificationToken token) {
     super(principal);

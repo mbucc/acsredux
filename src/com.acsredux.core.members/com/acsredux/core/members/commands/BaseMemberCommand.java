@@ -10,9 +10,4 @@ public abstract sealed class BaseMemberCommand
   BaseMemberCommand(Principal principal) {
     super(principal);
   }
-
-  @Override
-  public String toString() {
-    return super.toString();
-  }
 }

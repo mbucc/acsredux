@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ArticleServiceProvider implements ArticleService {
 
-  ArticleReader reader;
-  ArticleWriter writer;
+  final ArticleReader reader;
+  final ArticleWriter writer;
   private final InstantSource clock;
 
   public ArticleServiceProvider(ArticleReader r, ArticleWriter w, InstantSource c) {

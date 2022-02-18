@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public final class CreateArticleCommand extends BaseArticleCommand {
 
-  Article article;
+  final Article article;
 
   public CreateArticleCommand(Principal principal, Article article) {
     super(principal);
