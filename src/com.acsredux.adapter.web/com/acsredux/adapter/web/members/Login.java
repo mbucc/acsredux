@@ -10,7 +10,7 @@ import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
-import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberLoggedIn;
 import com.github.mustachejava.Mustache;
@@ -41,8 +41,8 @@ class Login {
   void handlePostLogin(HttpExchange x1, FormData x2) {
     Result<String> result = Result
       .ok(x2)
-      .map(WebUtil::form2cmd)
-      .map(MemberCommand.class::cast)
+      .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
+      .map(BaseMemberCommand.class::cast)
       .map(memberService::handle)
       .map(MemberLoggedIn.class::cast)
       .map(MemberLoggedIn::member)

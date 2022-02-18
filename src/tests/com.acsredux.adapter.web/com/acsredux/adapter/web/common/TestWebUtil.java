@@ -25,7 +25,7 @@ class TestWebUtil {
     x.add("command", FormCommand.CREATE.name());
 
     // execute
-    Command y = WebUtil.form2cmd(x);
+    Command y = WebUtil.form2cmd(TEST_PRINCIPAL, x);
 
     // verify
     if (y instanceof AddMember y1) {
@@ -49,7 +49,7 @@ class TestWebUtil {
     x.add("command", FormCommand.LOGIN.name());
 
     // execute
-    Command y = WebUtil.form2cmd(x);
+    Command y = WebUtil.form2cmd(TEST_PRINCIPAL, x);
 
     // verify
     if (y instanceof LoginMember y1) {

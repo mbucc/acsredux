@@ -52,7 +52,7 @@ class TestGetArticle {
   void testCreateArticle() {
     // execute
     List<Event> ys = svc.createArticle(
-      TEST_MEMBER_PRINCIPAL,
+      TEST_PRINCIPAL,
       TEST_CREATE_ARTICLE_COMMAND,
       this.clockTime
     );
@@ -70,7 +70,7 @@ class TestGetArticle {
       .assertCall(
         0,
         "createArticle",
-        TEST_MEMBER_PRINCIPAL,
+        TEST_PRINCIPAL,
         TEST_CREATE_ARTICLE_COMMAND,
         this.clockTime
       );

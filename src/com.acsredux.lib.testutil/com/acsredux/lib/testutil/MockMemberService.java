@@ -2,7 +2,7 @@ package com.acsredux.lib.testutil;
 
 import com.acsredux.core.base.Event;
 import com.acsredux.core.members.MemberService;
-import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
@@ -17,7 +17,7 @@ public class MockMemberService implements MemberService {
   private String anonymousUsername = "Test Anonymous User";
 
   @Override
-  public Event handle(MemberCommand x) {
+  public Event handle(BaseMemberCommand x) {
     return this.event;
   }
 

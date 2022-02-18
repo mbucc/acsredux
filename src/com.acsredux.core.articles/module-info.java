@@ -2,7 +2,7 @@
     The articles core defines the services, data types, and ports for writing articles.
  */
 module com.acsredux.core.articles {
-  requires com.acsredux.core.base;
+  requires transitive com.acsredux.core.base;
   exports com.acsredux.core.articles.ports ;
   exports com.acsredux.core.articles.values ;
   exports com.acsredux.core.articles ;

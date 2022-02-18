@@ -1,22 +1,13 @@
 package com.acsredux.core.members.services;
 
 import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
-import static com.acsredux.lib.testutil.TestData.TEST_ADD_MEMBER2_CMD;
-import static com.acsredux.lib.testutil.TestData.TEST_CLEAR_TEXT_PASSWORD;
-import static com.acsredux.lib.testutil.TestData.TEST_EMAIL;
-import static com.acsredux.lib.testutil.TestData.TEST_FIRST_NAME;
-import static com.acsredux.lib.testutil.TestData.TEST_LAST_NAME;
-import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
-import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
-import static com.acsredux.lib.testutil.TestData.TEST_VERIFICATION_TOKEN;
-import static com.acsredux.lib.testutil.TestData.TEST_ZIP_CODE;
+import static com.acsredux.lib.testutil.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
-import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
@@ -118,16 +109,9 @@ class TestCreateHandler {
   @Test
   void testSunnyPath() {
     // execute
-    MemberAdded y = assertDoesNotThrow(() -> service.handle(TEST_ADD_MEMBER2_CMD));
+    assertDoesNotThrow(() -> service.handle(TEST_ADD_MEMBER2_CMD));
 
     // verify
-    MemberAdded memberAdded = new MemberAdded(
-      TEST_ADD_MEMBER2_CMD,
-      this.clockTime,
-      TEST_VERIFICATION_TOKEN,
-      TEST_MEMBER_ID
-    );
-
     MockProxy
       .toProxy(writer)
       .assertCallCount(2)
@@ -152,6 +136,12 @@ class TestCreateHandler {
       );
 
     MockProxy.toProxy(adminReader).assertCallCount(1).assertCall(0, "getSiteInfo");
+    //    MemberAdded memberAdded = new MemberAdded(
+    //            TEST_ADD_MEMBER2_CMD,
+    //            this.clockTime,
+    //            TEST_VERIFICATION_TOKEN,
+    //            TEST_MEMBER_ID
+    //    );
     //    then(notifier).should().memberAdded(memberAdded, TEST_SITE_INFO);
     //    then(notifier).shouldHaveNoMoreInteractions();
   }
@@ -159,6 +149,7 @@ class TestCreateHandler {
   private enum RequiredFieldsTestData {
     EMAIL(
       new AddMember(
+        TEST_PRINCIPAL,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         null,
@@ -170,6 +161,7 @@ class TestCreateHandler {
     ),
     PASSWORD1(
       new AddMember(
+        TEST_PRINCIPAL,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         TEST_EMAIL,
@@ -181,6 +173,7 @@ class TestCreateHandler {
     ),
     PASSWORD2(
       new AddMember(
+        TEST_PRINCIPAL,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         TEST_EMAIL,

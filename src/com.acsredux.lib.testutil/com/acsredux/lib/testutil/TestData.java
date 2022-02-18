@@ -27,6 +27,9 @@ public class TestData {
   public static final FirstName TEST_FIRST_NAME2 = new FirstName("Bill");
   public static final LastName TEST_LAST_NAME2 = new LastName("Walton");
 
+  public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
+  public static Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
+
   public static final ClearTextPassword TEST_CLEAR_TEXT_PASSWORD = ClearTextPassword.of(
     "a3cDefg!"
   );
@@ -34,7 +37,6 @@ public class TestData {
     "test token"
   );
   public static final ZipCode TEST_ZIP_CODE = new ZipCode("02134");
-  public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
   public static final MemberStatus TEST_MEMBER_STATUS = MemberStatus.ACTIVE;
   public static final HashedPassword TEST_HASHED_PASSWORD = hashpw(
     TEST_CLEAR_TEXT_PASSWORD
@@ -62,6 +64,7 @@ public class TestData {
     TEST_MEMBER
   );
   public static final AddMember TEST_ADD_MEMBER_CMD = new AddMember(
+    TEST_PRINCIPAL,
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
     TEST_EMAIL,
@@ -70,6 +73,7 @@ public class TestData {
     TEST_ZIP_CODE
   );
   public static final AddMember TEST_ADD_MEMBER2_CMD = new AddMember(
+    TEST_PRINCIPAL,
     TEST_FIRST_NAME2,
     TEST_LAST_NAME2,
     TEST_EMAIL2,
@@ -78,10 +82,12 @@ public class TestData {
     TEST_ZIP_CODE
   );
   public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(
+    TEST_PRINCIPAL,
     TEST_VERIFICATION_TOKEN
   );
   public static final SessionID TEST_SESSION_ID = SessionID.of("Test Session ID");
   public static final LoginMember TEST_LOGIN_MEMBER_CMD = new LoginMember(
+    TEST_PRINCIPAL,
     TEST_EMAIL,
     TEST_CLEAR_TEXT_PASSWORD
   );
@@ -121,9 +127,8 @@ public class TestData {
     new PublishedDate(Instant.now())
   );
 
-  public static Principal TEST_MEMBER_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
   public static CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
-    TEST_MEMBER_PRINCIPAL,
+    TEST_PRINCIPAL,
     TEST_ARTICLE
   );
   public static ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(

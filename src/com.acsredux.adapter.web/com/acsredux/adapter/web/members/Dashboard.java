@@ -18,6 +18,7 @@ import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
 import java.net.URI;
+import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -46,7 +47,7 @@ class Dashboard {
       .ok(x1)
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
-      .map(mid -> verifyToken(mid, x2))
+      .map(mid -> verifyToken(x1.getPrincipal(), mid, x2))
       .map(memberService::getDashboard)
       .map(MemberDashboard::member)
       .map(mid -> dashboardView(mid, x2))
@@ -63,9 +64,12 @@ class Dashboard {
     }
   }
 
-  MemberID verifyToken(MemberID x1, FormData x2) {
+  MemberID verifyToken(Principal principal, MemberID x1, FormData x2) {
     if (x2.get("token") != null) {
-      VerifyEmail cmd = new VerifyEmail(new VerificationToken(x2.get("token")));
+      VerifyEmail cmd = new VerifyEmail(
+        principal,
+        new VerificationToken(x2.get("token"))
+      );
       try {
         memberService.handle(cmd);
       } catch (ValidationException e) {

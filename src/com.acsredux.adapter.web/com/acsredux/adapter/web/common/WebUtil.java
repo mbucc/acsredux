@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class WebUtil {
     return new String(xs, StandardCharsets.UTF_8);
   }
 
-  public static Command form2cmd(FormData x) {
+  public static Command form2cmd(Principal principal, FormData x) {
     final FormCommand cmd;
     try {
       cmd = FormCommand.valueOf(x.get("command").toUpperCase());
@@ -63,6 +64,7 @@ public class WebUtil {
     }
     return switch (cmd) {
       case CREATE -> new AddMember(
+        principal,
         new FirstName(x.get("firstName")),
         new LastName(x.get("lastName")),
         new Email(x.get("email")),
@@ -71,6 +73,7 @@ public class WebUtil {
         new ZipCode(x.get("zip"))
       );
       case LOGIN -> new LoginMember(
+        principal,
         new Email(x.get("email")),
         ClearTextPassword.of(x.get("pwd"))
       );

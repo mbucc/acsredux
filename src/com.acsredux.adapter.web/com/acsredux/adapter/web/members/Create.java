@@ -10,7 +10,7 @@ import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
-import com.acsredux.core.members.commands.MemberCommand;
+import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.events.MemberAdded;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -45,8 +45,8 @@ class Create {
     // Pipeline
     Result<String> result = Result
       .ok(x2)
-      .map(WebUtil::form2cmd)
-      .map(MemberCommand.class::cast)
+      .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
+      .map(BaseMemberCommand.class::cast)
       .map(memberService::handle)
       .map(MemberAdded.class::cast)
       .map(MemberAdded::memberID)
