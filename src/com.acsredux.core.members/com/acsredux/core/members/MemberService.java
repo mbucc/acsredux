@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface MemberService {
   String ANONYMOUS_USERNAME = "Anonymous User";
 
+  // commands
   Event handle(BaseMemberCommand x);
-
   SessionID createSessionID(MemberID id);
 
   // queries

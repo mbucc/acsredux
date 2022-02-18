@@ -51,11 +51,7 @@ class TestGetArticle {
   @Test
   void testCreateArticle() {
     // execute
-    List<Event> ys = svc.createArticle(
-      TEST_PRINCIPAL,
-      TEST_CREATE_ARTICLE_COMMAND,
-      this.clockTime
-    );
+    List<Event> ys = svc.handle(TEST_CREATE_ARTICLE_COMMAND);
 
     // verify
     assertEquals(1, ys.size());
@@ -67,12 +63,6 @@ class TestGetArticle {
     MockProxy
       .toProxy(w)
       .assertCallCount(1)
-      .assertCall(
-        0,
-        "createArticle",
-        TEST_PRINCIPAL,
-        TEST_CREATE_ARTICLE_COMMAND,
-        this.clockTime
-      );
+      .assertCall(0, "createArticle", TEST_CREATE_ARTICLE_COMMAND);
   }
 }

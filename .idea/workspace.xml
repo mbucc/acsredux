@@ -7,32 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Start article module with get and create">
-      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.base/com/acsredux/core/base/BaseCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/BaseMemberCommand.java" afterDir="false" />
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="IntelliJ problem fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/common/WebUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Create.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Create.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Dashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com/acsredux/adapter/web/members/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/BaseArticleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/BaseArticleCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/CreateArticleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/commands/CreateArticleCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.base/com/acsredux/core/base/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.base/com/acsredux/core/base/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ArticleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/services/ArticleServiceProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/services/ArticleServiceProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/AddMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/AddMember.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/LoginMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/LoginMember.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/MemberCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/VerifyEmail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/commands/VerifyEmail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/services/MemberProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockMemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/TestData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.mailgun/com/acsredux/adapter/mailgun/ManualTestOfMailGunSend.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.mailgun/com/acsredux/adapter/mailgun/ManualTestOfMailGunSend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.adapter.web/com/acsredux/adapter/web/common/TestWebUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/TestGetArticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/TestGetArticle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestCreateHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestCreateHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.members/com/acsredux/core/members/services/TestLoginHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testlib/com.acsredux.testlib.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testlib/com.acsredux.testlib.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,23 +113,30 @@
       <recent name="com.acsredux.adapter.web.members" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Whole project (5)">
+  <component name="RunManager" selected="JUnit.TestGetArticle.testCreateArticle">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Whole project (1)" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+    <configuration name="TestGetArticle.testCreateArticle" type="JUnit" factoryName="JUnit" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <module name="com.acsredux.core.articles" />
       <selectedOptions>
         <option name="module.classpath" visible="false" />
       </selectedOptions>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.acsredux.core.articles.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="17" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="PACKAGE_NAME" value="com.acsredux.core.articles" />
+      <option name="MAIN_CLASS_NAME" value="com.acsredux.core.articles.TestGetArticle" />
+      <option name="METHOD_NAME" value="testCreateArticle" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="wholeProject" />
@@ -317,11 +306,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TestGetArticle.testCreateArticle" />
         <item itemvalue="JUnit.Whole project (5)" />
         <item itemvalue="JUnit.Whole project (4)" />
         <item itemvalue="JUnit.Whole project (3)" />
         <item itemvalue="JUnit.Whole project (2)" />
-        <item itemvalue="JUnit.Whole project (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -390,7 +379,21 @@
       <option name="project" value="LOCAL" />
       <updated>1645186844947</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Refactor commands&#10;&#10;Changes:&#10;  * Use inheritance instead of interfaces&#10;  * Add UUID, Principal, and Instant to BaseCommand&#10;  * Rename MemberCommand to BaseMemberCommand.">
+      <created>1645221993022</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1645221993022</updated>
+    </task>
+    <task id="LOCAL-00010" summary="IntelliJ problem fixes">
+      <created>1645222500584</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1645222500584</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -413,6 +416,8 @@
     <MESSAGE value="Login screen done" />
     <MESSAGE value="Fix envvar names used in Makefile&#10;&#10;Also, fix readFile() to handle file names that don't start&#10;with '~/'." />
     <MESSAGE value="Start article module with get and create" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start article module with get and create" />
+    <MESSAGE value="Refactor commands&#10;&#10;Changes:&#10;  * Use inheritance instead of interfaces&#10;  * Add UUID, Principal, and Instant to BaseCommand&#10;  * Rename MemberCommand to BaseMemberCommand." />
+    <MESSAGE value="IntelliJ problem fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="IntelliJ problem fixes" />
   </component>
 </project>
