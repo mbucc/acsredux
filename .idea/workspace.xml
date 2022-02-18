@@ -7,14 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="IntelliJ problem fixes">
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Article service can use one method for all commands">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ArticleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/ports/ArticleWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/services/ArticleServiceProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.articles/com/acsredux/core/articles/services/ArticleServiceProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com.acsredux.core.members/com/acsredux/core/members/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/MockArticleWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/TestGetArticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/com.acsredux.core.articles/com/acsredux/core/articles/TestGetArticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -393,7 +388,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645222500584</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Article service can use one method for all commands">
+      <created>1645223290732</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1645223290732</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -418,6 +420,8 @@
     <MESSAGE value="Start article module with get and create" />
     <MESSAGE value="Refactor commands&#10;&#10;Changes:&#10;  * Use inheritance instead of interfaces&#10;  * Add UUID, Principal, and Instant to BaseCommand&#10;  * Rename MemberCommand to BaseMemberCommand." />
     <MESSAGE value="IntelliJ problem fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="IntelliJ problem fixes" />
+    <MESSAGE value="Make article service use just one method for all commands" />
+    <MESSAGE value="Article service can use one method for all commands" />
+    <option name="LAST_COMMIT_MESSAGE" value="Article service can use one method for all commands" />
   </component>
 </project>
