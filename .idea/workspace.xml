@@ -7,7 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Article service can use one method for all commands">
+    <list default="true" id="9411bebf-803e-40f7-9ea9-25846f54c67c" name="Changes" comment="Update TODO list">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
     </list>
@@ -395,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645223290732</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Update TODO list">
+      <created>1645223535529</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1645223535529</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -422,6 +429,7 @@
     <MESSAGE value="IntelliJ problem fixes" />
     <MESSAGE value="Make article service use just one method for all commands" />
     <MESSAGE value="Article service can use one method for all commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="Article service can use one method for all commands" />
+    <MESSAGE value="Update TODO list" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update TODO list" />
   </component>
 </project>
