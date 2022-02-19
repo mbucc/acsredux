@@ -21,4 +21,3 @@
 2022-02-08: Document password hashing approach.
   * https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
     https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
-2022-02-04: Finish RBAC paper and document security approach.
