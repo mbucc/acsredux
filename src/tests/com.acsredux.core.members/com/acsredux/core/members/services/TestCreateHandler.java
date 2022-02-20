@@ -149,7 +149,7 @@ class TestCreateHandler {
   private enum RequiredFieldsTestData {
     EMAIL(
       new AddMember(
-        TEST_PRINCIPAL,
+        TEST_SUBJECT,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         null,
@@ -161,7 +161,7 @@ class TestCreateHandler {
     ),
     PASSWORD1(
       new AddMember(
-        TEST_PRINCIPAL,
+        TEST_SUBJECT,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         TEST_EMAIL,
@@ -173,7 +173,7 @@ class TestCreateHandler {
     ),
     PASSWORD2(
       new AddMember(
-        TEST_PRINCIPAL,
+        TEST_SUBJECT,
         TEST_FIRST_NAME,
         TEST_LAST_NAME,
         TEST_EMAIL,

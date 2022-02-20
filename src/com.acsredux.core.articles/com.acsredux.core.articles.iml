@@ -14,5 +14,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="com.acsredux.core.base" scope="TEST" />
     <orderEntry type="module" module-name="com.acsredux.core.base" />
+    <orderEntry type="module" module-name="com.acsredux.core.members" />
   </component>
 </module>

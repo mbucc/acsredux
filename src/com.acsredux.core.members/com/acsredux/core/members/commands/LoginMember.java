@@ -2,16 +2,16 @@ package com.acsredux.core.members.commands;
 
 import com.acsredux.core.members.values.ClearTextPassword;
 import com.acsredux.core.members.values.Email;
-import java.security.Principal;
 import java.util.Objects;
+import javax.security.auth.Subject;
 
 public final class LoginMember extends BaseMemberCommand {
 
   private final Email email;
   private final ClearTextPassword password;
 
-  public LoginMember(Principal principal, Email email, ClearTextPassword password) {
-    super(principal);
+  public LoginMember(Subject subject, Email email, ClearTextPassword password) {
+    super(subject);
     Objects.requireNonNull(email);
     Objects.requireNonNull(password);
     this.email = email;

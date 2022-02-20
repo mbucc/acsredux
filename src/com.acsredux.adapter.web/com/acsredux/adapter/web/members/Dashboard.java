@@ -19,9 +19,12 @@ import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
 import java.net.URI;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.UnaryOperator;
+import javax.security.auth.Subject;
 
 class Dashboard {
 
@@ -65,11 +68,14 @@ class Dashboard {
   }
 
   MemberID verifyToken(Principal principal, MemberID x1, FormData x2) {
+    Subject subject = new Subject(
+      true,
+      Set.of(principal),
+      Collections.emptySet(),
+      Collections.emptySet()
+    );
     if (x2.get("token") != null) {
-      VerifyEmail cmd = new VerifyEmail(
-        principal,
-        new VerificationToken(x2.get("token"))
-      );
+      VerifyEmail cmd = new VerifyEmail(subject, new VerificationToken(x2.get("token")));
       try {
         memberService.handle(cmd);
       } catch (ValidationException e) {

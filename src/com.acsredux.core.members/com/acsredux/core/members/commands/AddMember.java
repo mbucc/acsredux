@@ -5,8 +5,8 @@ import com.acsredux.core.members.values.Email;
 import com.acsredux.core.members.values.FirstName;
 import com.acsredux.core.members.values.LastName;
 import com.acsredux.core.members.values.ZipCode;
-import java.security.Principal;
 import java.util.Objects;
+import javax.security.auth.Subject;
 
 public final class AddMember extends BaseMemberCommand {
 
@@ -18,7 +18,7 @@ public final class AddMember extends BaseMemberCommand {
   private final ZipCode zipCode;
 
   public AddMember(
-    Principal principal,
+    Subject subject,
     FirstName firstName,
     LastName lastName,
     Email email,
@@ -26,7 +26,7 @@ public final class AddMember extends BaseMemberCommand {
     ClearTextPassword password2,
     ZipCode zipCode
   ) {
-    super(principal);
+    super(subject);
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -39,6 +39,7 @@ public final class AddMember extends BaseMemberCommand {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
     AddMember addMember = (AddMember) o;
     return (
       firstName.equals(addMember.firstName) &&
@@ -52,7 +53,15 @@ public final class AddMember extends BaseMemberCommand {
 
   @Override
   public int hashCode() {
-    return Objects.hash(firstName, lastName, email, password1, password2, zipCode);
+    return Objects.hash(
+      super.hashCode(),
+      firstName,
+      lastName,
+      email,
+      password1,
+      password2,
+      zipCode
+    );
   }
 
   @Override

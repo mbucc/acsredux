@@ -13,8 +13,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javax.security.auth.Subject;
 
 public class WebUtil {
 
@@ -62,9 +65,15 @@ public class WebUtil {
         "invalid command " + x.get("command") + " in form data " + x
       );
     }
+    Subject subject = new Subject(
+      true,
+      Set.of(principal),
+      Collections.emptySet(),
+      Collections.emptySet()
+    );
     return switch (cmd) {
       case CREATE -> new AddMember(
-        principal,
+        subject,
         new FirstName(x.get("firstName")),
         new LastName(x.get("lastName")),
         new Email(x.get("email")),
@@ -73,7 +82,7 @@ public class WebUtil {
         new ZipCode(x.get("zip"))
       );
       case LOGIN -> new LoginMember(
-        principal,
+        subject,
         new Email(x.get("email")),
         ClearTextPassword.of(x.get("pwd"))
       );

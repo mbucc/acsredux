@@ -16,6 +16,13 @@ import java.util.Objects;
  */
 public class MockProxy implements InvocationHandler {
 
+  record MethodCall(Method method, Object[] args) {
+    @Override
+    public String toString() {
+      return method.getName() + "(" + Arrays.toString(args) + ")";
+    }
+  }
+
   private final Object obj;
 
   private final List<MethodCall> calls = new ArrayList<>();
@@ -64,12 +71,5 @@ public class MockProxy implements InvocationHandler {
       prefix
     );
     return this;
-  }
-
-  record MethodCall(Method method, Object[] args) {
-    @Override
-    public String toString() {
-      return method.getName() + "(" + Arrays.toString(args) + ")";
-    }
   }
 }

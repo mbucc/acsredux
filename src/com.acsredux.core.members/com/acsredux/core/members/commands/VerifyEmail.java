@@ -1,8 +1,8 @@
 package com.acsredux.core.members.commands;
 
 import com.acsredux.core.members.values.VerificationToken;
-import java.security.Principal;
 import java.util.Objects;
+import javax.security.auth.Subject;
 
 /**
  * A VerifyEmail command is submitted when a member clicks the
@@ -12,8 +12,8 @@ public final class VerifyEmail extends BaseMemberCommand {
 
   final VerificationToken token;
 
-  public VerifyEmail(Principal principal, VerificationToken token) {
-    super(principal);
+  public VerifyEmail(Subject subject, VerificationToken token) {
+    super(subject);
     Objects.requireNonNull(token);
     this.token = token;
   }

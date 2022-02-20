@@ -1,21 +1,21 @@
 package com.acsredux.core.base;
 
-import java.security.Principal;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+import javax.security.auth.Subject;
 
 public class BaseCommand implements Command {
 
   private final Instant created;
   private final UUID guid;
-  private final Principal principal;
+  private final Subject subject;
 
-  public BaseCommand(Principal principal) {
-    Objects.requireNonNull(principal);
+  public BaseCommand(Subject subject) {
+    Objects.requireNonNull(subject);
     this.created = Instant.now();
     this.guid = java.util.UUID.randomUUID();
-    this.principal = principal;
+    this.subject = subject;
   }
 
   @Override
@@ -29,8 +29,8 @@ public class BaseCommand implements Command {
   }
 
   @Override
-  public Principal principal() {
-    return principal;
+  public Subject subject() {
+    return subject;
   }
 
   @Override
@@ -41,13 +41,13 @@ public class BaseCommand implements Command {
     return (
       created.equals(that.created) &&
       guid.equals(that.guid) &&
-      principal.equals(that.principal)
+      subject.equals(that.subject)
     );
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(created, guid, principal);
+    return Objects.hash(created, guid, subject);
   }
 
   @Override
@@ -58,8 +58,8 @@ public class BaseCommand implements Command {
       created +
       ", guid=" +
       guid +
-      ", principal=" +
-      principal +
+      ", subject=" +
+      subject +
       '}'
     );
   }

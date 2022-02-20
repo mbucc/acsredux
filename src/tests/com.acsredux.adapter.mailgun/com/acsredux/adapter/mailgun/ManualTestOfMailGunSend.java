@@ -1,7 +1,6 @@
 package com.acsredux.adapter.mailgun;
 
-import static com.acsredux.lib.testutil.TestData.TEST_PRINCIPAL;
-import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
+import static com.acsredux.lib.testutil.TestData.*;
 
 import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.events.MemberAdded;
@@ -16,7 +15,7 @@ class ManualTestOfMailGunSend {
   void testNotifyOfMemberAddedSunny() {
     // setup
     AddMember cmd = new AddMember(
-      TEST_PRINCIPAL,
+      TEST_SUBJECT,
       new FirstName("Bill"),
       new LastName("Russell"),
       new Email("mkbucc@gmail.com"),

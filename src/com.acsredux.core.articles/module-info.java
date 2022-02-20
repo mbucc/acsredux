@@ -3,6 +3,7 @@
  */
 module com.acsredux.core.articles {
   requires transitive com.acsredux.core.base;
+  requires com.acsredux.core.members;
   exports com.acsredux.core.articles.ports ;
   exports com.acsredux.core.articles.values ;
   exports com.acsredux.core.articles ;

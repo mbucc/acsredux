@@ -1,9 +1,8 @@
-2022-02-18: policy generator
-2022-02-18: security (dynamic proxy)
 2022-02-18: article creation
-2022-02-18: article update
-2022-02-18: article delete
-2022-02-18: article share
+2022-02-18: article update (policy: only authors can update their articles)
+2022-02-18: article delete (policy: only authors can delete their articles)
+2022-02-19: article tag as editable, identify editors.
+
 2022-02-18: add security to token acceptance? (review this)
 2021-12-27: add content data model and editing
 2022-02-07: If user clicks token link after deleting cookie, add link to login page.

@@ -54,7 +54,7 @@ class TestLoginHandler {
   void testInvalidPassword() {
     // setup
     LoginMember cmd = new LoginMember(
-      TEST_PRINCIPAL,
+      TEST_SUBJECT,
       TEST_EMAIL,
       new ClearTextPassword("aaaabbbb".toCharArray())
     );

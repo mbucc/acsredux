@@ -1,15 +1,15 @@
 package com.acsredux.core.articles.commands;
 
 import com.acsredux.core.articles.values.Article;
-import java.security.Principal;
 import java.util.Objects;
+import javax.security.auth.Subject;
 
 public final class CreateArticleCommand extends BaseArticleCommand {
 
   final Article article;
 
-  public CreateArticleCommand(Principal principal, Article article) {
-    super(principal);
+  public CreateArticleCommand(Subject subject, Article article) {
+    super(subject);
     Objects.requireNonNull(article);
     this.article = article;
   }

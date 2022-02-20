@@ -5,6 +5,11 @@ import static com.acsredux.core.members.MemberService.hashpw;
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
+import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.ports.ArticleReader;
+import com.acsredux.core.articles.ports.ArticleWriter;
+import com.acsredux.core.articles.values.Article;
+import com.acsredux.core.articles.values.ArticleID;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.AddMember;
@@ -19,26 +24,31 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 public final class Stub
-  implements MemberReader, MemberWriter, MemberNotifier, MemberAdminReader, AdminReader {
+  implements
+    MemberReader,
+    MemberWriter,
+    MemberNotifier,
+    MemberAdminReader,
+    AdminReader,
+    ArticleReader,
+    ArticleWriter {
 
   private static final Stub INSTANCE = new Stub();
 
   private final List<Member> members;
   private final Map<VerificationToken, MemberID> tokens;
   private final Map<SessionID, MemberID> sessions;
+  private final Map<ArticleID, Article> articles;
 
   private Stub() {
     tokens = new HashMap<>();
     sessions = new HashMap<>();
     members = new ArrayList<>();
+    articles = new HashMap<>();
     members.add(
       new Member(
         new MemberID(1L),
@@ -221,5 +231,23 @@ public final class Stub
       return Optional.empty();
     }
     return findByID(sessions.get(x));
+  }
+
+  @Override
+  public Article getArticle(ArticleID x) {
+    return articles.get(x);
+  }
+
+  @Override
+  public ArticleID createArticle(CreateArticleCommand x) {
+    long maxArticleID = articles
+      .keySet()
+      .stream()
+      .mapToLong(ArticleID::id)
+      .max()
+      .orElse(0);
+    ArticleID aid = new ArticleID(maxArticleID + 1);
+    articles.put(aid, x.article());
+    return aid;
   }
 }

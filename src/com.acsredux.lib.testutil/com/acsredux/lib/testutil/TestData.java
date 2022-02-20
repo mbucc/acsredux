@@ -15,7 +15,10 @@ import java.security.Principal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import javax.security.auth.Subject;
 
 public class TestData {
 
@@ -29,6 +32,12 @@ public class TestData {
 
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
   public static final Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
+  public static final Subject TEST_SUBJECT = new Subject(
+    true,
+    Set.of(TEST_PRINCIPAL),
+    Collections.emptySet(),
+    Collections.emptySet()
+  );
 
   public static final ClearTextPassword TEST_CLEAR_TEXT_PASSWORD = ClearTextPassword.of(
     "a3cDefg!"
@@ -64,7 +73,7 @@ public class TestData {
     TEST_MEMBER
   );
   public static final AddMember TEST_ADD_MEMBER_CMD = new AddMember(
-    TEST_PRINCIPAL,
+    TEST_SUBJECT,
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
     TEST_EMAIL,
@@ -73,7 +82,7 @@ public class TestData {
     TEST_ZIP_CODE
   );
   public static final AddMember TEST_ADD_MEMBER2_CMD = new AddMember(
-    TEST_PRINCIPAL,
+    TEST_SUBJECT,
     TEST_FIRST_NAME2,
     TEST_LAST_NAME2,
     TEST_EMAIL2,
@@ -82,12 +91,12 @@ public class TestData {
     TEST_ZIP_CODE
   );
   public static final VerifyEmail TEST_VERIFY_EMAIL_CMD = new VerifyEmail(
-    TEST_PRINCIPAL,
+    TEST_SUBJECT,
     TEST_VERIFICATION_TOKEN
   );
   public static final SessionID TEST_SESSION_ID = SessionID.of("Test Session ID");
   public static final LoginMember TEST_LOGIN_MEMBER_CMD = new LoginMember(
-    TEST_PRINCIPAL,
+    TEST_SUBJECT,
     TEST_EMAIL,
     TEST_CLEAR_TEXT_PASSWORD
   );
@@ -122,13 +131,14 @@ public class TestData {
   public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
   public static final Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
   public static final Article TEST_ARTICLE = new Article(
+    TEST_MEMBER_ID,
     Title.of("A Test Title"),
     List.of(TEST_SECTION),
     new PublishedDate(Instant.now())
   );
 
   public static final CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
-    TEST_PRINCIPAL,
+    TEST_SUBJECT,
     TEST_ARTICLE
   );
   public static final ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
