@@ -1,0 +1,9 @@
+{
+  "acls": [
+    {
+      "resource": "article",
+      "action": "foobar",
+      "users": ["AuthenticatedMember"]
+    }
+  ]
+}

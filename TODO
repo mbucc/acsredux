@@ -2,6 +2,7 @@
 2022-02-18: article update (policy: only authors can update their articles)
 2022-02-18: article delete (policy: only authors can delete their articles)
 2022-02-19: article tag as editable, identify editors.
+2022-02-20: test error handling for IsResource
 
 2022-02-18: add security to token acceptance? (review this)
 2021-12-27: add content data model and editing

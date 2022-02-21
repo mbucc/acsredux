@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.adapter.web/com.acsredux.adapter.web.iml" filepath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com.acsredux.adapter.web.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.core.admin/com.acsredux.core.admin.iml" filepath="$PROJECT_DIR$/src/com.acsredux.core.admin/com.acsredux.core.admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.core.articles/com.acsredux.core.articles.iml" filepath="$PROJECT_DIR$/src/com.acsredux.core.articles/com.acsredux.core.articles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.core.auth/com.acsredux.core.auth.iml" filepath="$PROJECT_DIR$/src/com.acsredux.core.auth/com.acsredux.core.auth.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.core.base/com.acsredux.core.base.iml" filepath="$PROJECT_DIR$/src/com.acsredux.core.base/com.acsredux.core.base.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.core.members/com.acsredux.core.members.iml" filepath="$PROJECT_DIR$/src/com.acsredux.core.members/com.acsredux.core.members.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.lib.env/com.acsredux.lib.env.iml" filepath="$PROJECT_DIR$/src/com.acsredux.lib.env/com.acsredux.lib.env.iml" />

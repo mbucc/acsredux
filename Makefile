@@ -60,16 +60,19 @@ mlib/%@1.jar: compile resourcebundles
 ###########################################################################
 #
 #
-#		Classes and resource bundles
+#		Classes and resources
 #
 #
 ###########################################################################
 
-.PHONY: resourcebundles
-resourcebundles: \
-		classes/com.acsredux.core.members/MemberErrorMessages.properties
+.PHONY: resources
+resources: \
+		classes/com.acsredux.core.members/MemberErrorMessages.properties \
+		classes/com.acsredux.core.auth/security-policy.xsd
 
 classes/%Messages.properties: src/%Messages.properties
+	cp $? $@
+classes/%.xsd: src/%.xsd
 	cp $? $@
 
 .PHONY: compile
@@ -125,7 +128,7 @@ manualtest: compiletests
 # Keeps test files out of modules.
 # Let's us use testutil without putting it in module-infos.
 .PHONY: compiletests
-compiletests: compile resourcebundles testlib/com.acsredux.testlib.jar
+compiletests: compile resources testlib/com.acsredux.testlib.jar
 	${JAVAC} \
 		-d testclasses \
 		-cp "testlib/*:$$(echo classes/*|tr ' ' :)" \

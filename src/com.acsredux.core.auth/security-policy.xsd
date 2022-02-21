@@ -1,0 +1,38 @@
+<xs:schema
+    xmlns:xs='http://www.w3.org/2001/XMLSchema'
+    xmlns='uri:acsredux.com:schemas:security-policy'
+    targetNamespace = 'uri:acsredux.com:schemas:security-policy'
+    elementFormDefault='qualified'>
+
+  <xs:element name="policy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="acls">
+
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ac" maxOccurs="unbounded">
+
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="resource" type="xs:string"/>
+                    <xs:element name="action" type="xs:string"/>
+                    <xs:element name="users">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="user" type="xs:string" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
