@@ -1,5 +1,5 @@
 200
-Content-Length: 385
+Content-Length: 411
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -18,7 +18,11 @@ Content-type: text/html; charset= UTF-8
     <h1>Member Dashboard</h1>
 
 
-    <p>小川 治兵衛 has been a member since January 15, 2022.</p>
+<p>小川 治兵衛 has been a member since January 15, 2022.</p>
+
+<h2>Articles</h2>
+<ol>
+</ol>
 
   </body>
 </html>

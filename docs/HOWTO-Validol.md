@@ -5,6 +5,8 @@ How to use Validol to validate JSON
 
 A toy example that illustrates the strategy.
 
+*I did not end up using this library.*
+
 Notes:
 * `FastFail` chains validators and stops processing as soon as one fails.
   * arg1: a validator; for example, `WellFormedJson`

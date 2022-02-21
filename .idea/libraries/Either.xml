@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Either">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/Either.java.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

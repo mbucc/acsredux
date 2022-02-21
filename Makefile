@@ -23,7 +23,9 @@ jars: \
 	mlib/com.acsredux.adapter.mailgun@1.jar \
 	mlib/com.acsredux.lib.env@1.jar \
 	mlib/compiler-0.9.10.jar \
-	mlib/result-flow-3.1.0.jar
+	mlib/result-flow-3.1.0.jar \
+	mlib/Either.java.jar \
+	mlib/gson-2.9.0.jar
 
 mlib/compiler-0.9.10.jar: lib/compiler-0.9.10.jar
 	cp $? $@
@@ -97,7 +99,7 @@ compile: checkstyle
 ###########################################################################
 
 .PHONY: test
-test: compiletests
+test: compiletests testresources
 	ACSREDUX_PASSWORD_SALT_FILENAME=./test/salt \
 	ACSREDUX_ENCRYPTION_KEY_FILENAME=./test/encryption-key \
 	${JAVA} \
@@ -109,13 +111,21 @@ test: compiletests
 		--exclude-engine=junit-vintage \
 		--scan-classpath
 
+.PHONY: testresources
+testresources: \
+		testclasses/policy-ok1.json \
+		testclasses/policy-bad1.json
+
+testclasses/policy%.json: src/tests/com.acsredux.core.auth/policy%.json
+	cp $? $@
+
 # Manual tests are not run as part of the normal "make test" target.
 # For example, a notifier test that actually sends an email.
 # Manual tests have class names that start with "ManualTest".
 .PHONY: manualtest
 manualtest: compiletests
 	${JAVA} \
-		-cp "testclasses:testlib/*:$$(echo classes/*|tr ' ' :)" \
+		-cp "lib/*:testclasses:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		org.junit.platform.console.ConsoleLauncher \
 		--disable-banner \
 		--details=$(JUNIT_DETAILS) \
@@ -124,14 +134,11 @@ manualtest: compiletests
 		--include-classname=".*ManualTest.*" \
 		--scan-classpath
 
-# Use classpath not module lib for compiling and running tests.
-# Keeps test files out of modules.
-# Let's us use testutil without putting it in module-infos.
 .PHONY: compiletests
 compiletests: compile resources testlib/com.acsredux.testlib.jar
 	${JAVAC} \
 		-d testclasses \
-		-cp "testlib/*:$$(echo classes/*|tr ' ' :)" \
+		-cp "lib/*:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		$$(find src -name '*.java'|egrep '(/Test|/Mock|/ManualTest)')
 
 
@@ -143,7 +150,7 @@ testlib/com.acsredux.testlib.jar: \
 		./src/com.acsredux.lib.testutil/com/acsredux/lib/testutil/MockAdminService.java
 	${JAVAC} \
 		-d testclasses \
-		-cp "testlib/*:$$(echo classes/*|tr ' ' :)" \
+		-cp "lib/*:testlib/*:$$(echo classes/*|tr ' ' :)" \
 		$$(find src/com.acsredux.lib.testutil -name '*.java')
 	jar --create \
 		--file=$@ \
