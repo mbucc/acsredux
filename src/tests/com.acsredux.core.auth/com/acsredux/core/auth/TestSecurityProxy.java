@@ -37,7 +37,7 @@ public class TestSecurityProxy {
   }
 
   @Test
-  void testDumpWithNullArg() throws NoSuchMethodException {
+  void testDumpMethodSignatureWithNullArg() throws NoSuchMethodException {
     // setup
     Method m = TestProvider.class.getMethod("handle", Command.class);
     Object[] args = new Object[] { null };
@@ -50,7 +50,7 @@ public class TestSecurityProxy {
   }
 
   @Test
-  void testDumpWithNonNullArg() throws NoSuchMethodException {
+  void testDumpMethodSignatureWithNonNullArg() throws NoSuchMethodException {
     // setup
     Method m = TestProvider.class.getMethod("handle", Command.class);
     Object[] args = new Object[] { new MockCommand(new Subject()) };
@@ -71,7 +71,7 @@ public class TestSecurityProxy {
   }
 
   @Test
-  void testIsNotRecognized() {
+  void testMethodIsNotRecognized() {
     // setup
     MemberService x = SecurityProxy.of(new MockMemberService(), new MockSecurityPolicy());
 
