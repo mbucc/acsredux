@@ -1,6 +1,6 @@
 package com.acsredux.core.members.services;
 
-import static com.acsredux.core.members.services.PasswordUtil.checkpw;
+import static com.acsredux.core.members.PasswordUtil.checkpw;
 
 import com.acsredux.core.base.AuthenticationException;
 import com.acsredux.core.members.commands.LoginMember;

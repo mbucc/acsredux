@@ -15,5 +15,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="com.acsredux.core.base" />
+    <orderEntry type="module" module-name="com.acsredux.core.members" />
+    <orderEntry type="module" module-name="com.acsredux.core.articles" />
   </component>
 </module>

@@ -1,3 +1,3 @@
 package com.acsredux.core.auth.values;
 
-public record Entitlement(Resource resource, Action action, User user) {}
+public record Entitlement(ResourceSpec resource, Action action, User user) {}

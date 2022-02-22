@@ -3,7 +3,6 @@ package com.acsredux.core.members;
 import com.acsredux.core.base.Event;
 import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
-import com.acsredux.core.members.services.PasswordUtil;
 import com.acsredux.core.members.values.*;
 import java.util.Optional;
 

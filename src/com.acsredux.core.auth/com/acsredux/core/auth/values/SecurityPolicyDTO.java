@@ -14,7 +14,7 @@ public class SecurityPolicyDTO {
 
     public Entitlement asEntitlement() {
       return new Entitlement(
-        Resource.of(resource),
+        ResourceSpec.of(resource),
         Action.valueOf(action.toUpperCase()),
         User.of(user)
       );

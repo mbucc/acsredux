@@ -1,6 +1,6 @@
 package com.acsredux.lib.testutil;
 
-import static com.acsredux.core.members.services.PasswordUtil.hashpw;
+import static com.acsredux.core.members.PasswordUtil.hashpw;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;

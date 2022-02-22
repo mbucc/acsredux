@@ -1,4 +1,4 @@
-package com.acsredux.core.members.services;
+package com.acsredux.core.members;
 
 import com.acsredux.core.members.values.ClearTextPassword;
 import com.acsredux.core.members.values.HashedPassword;
@@ -36,7 +36,7 @@ public class PasswordUtil {
     }
   }
 
-  static boolean checkpw(ClearTextPassword x1, HashedPassword x2) {
+  public static boolean checkpw(ClearTextPassword x1, HashedPassword x2) {
     HashedPassword y = hashpw(x1);
     return Objects.equals(x2, y);
   }

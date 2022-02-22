@@ -2,6 +2,7 @@
 2022-02-18: article update (policy: only authors can update their articles)
 2022-02-18: article delete (policy: only authors can delete their articles)
 2022-02-19: article add editable "tag" (ala tailscale RBAC)
+2022-02-21: replace result-flow with Either.java.
 
 2022-02-18: add policy to token acceptance?
 2022-02-07: If user clicks token link after deleting cookie, add link to login page.
