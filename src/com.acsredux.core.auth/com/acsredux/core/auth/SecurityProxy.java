@@ -7,6 +7,7 @@ import com.acsredux.core.members.MemberService;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import javax.security.auth.Subject;
 
 public class SecurityProxy implements InvocationHandler {
 
@@ -42,16 +43,33 @@ public class SecurityProxy implements InvocationHandler {
 
   @Override
   public Object invoke(Object proxy, Method m, Object[] args) {
-    if (!policy.isRecognizedMethod(resourceType, m, args)) {
-      throw new SecurityPolicyException(
-        "unrecognized method in SecurityProxy: " + dump(m, args)
-      );
-    }
     try {
-      return m.invoke(handler, args);
+      if (policy.isAllowed(m, args)) {
+        return m.invoke(handler, args);
+      } else {
+        String fmt = "%s denied access to %s";
+        throw new SecurityPolicyException(
+          String.format(fmt, dump(policy.getSubject(args)), dump(m, args))
+        );
+      }
+    } catch (SecurityPolicyException e) {
+      throw e;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  // Compress onto one line.
+  static String dump(Subject x) {
+    if (x == null) {
+      return "null";
+    }
+    return x
+      .toString()
+      .replaceAll("[\\r\\n]", " ")
+      .replaceAll("\\t+", " ")
+      .replaceAll("  *", " ")
+      .replaceAll(" *$", "");
   }
 
   static String dump(Method m, Object[] args) {

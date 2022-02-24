@@ -2,6 +2,7 @@ package com.acsredux.adapter.web.members;
 
 import static com.acsredux.adapter.web.members.Util.addMenu;
 
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.core.admin.values.SiteInfo;
@@ -9,13 +10,16 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.entities.Member;
+import com.acsredux.core.members.values.AnonymousPrincipal;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.members.values.MemberPrincipal;
 import com.acsredux.core.members.values.MemberStatus;
 import com.acsredux.core.members.values.VerificationToken;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpPrincipal;
 import de.perschon.resultflow.Result;
 import java.net.URI;
 import java.security.Principal;
@@ -67,22 +71,27 @@ class Dashboard {
     }
   }
 
-  MemberID verifyToken(Principal principal, MemberID x1, FormData x2) {
-    Subject subject = new Subject(
-      true,
-      Set.of(principal),
-      Collections.emptySet(),
-      Collections.emptySet()
-    );
-    if (x2.get("token") != null) {
-      VerifyEmail cmd = new VerifyEmail(subject, new VerificationToken(x2.get("token")));
+  Subject subject(HttpPrincipal x) {
+    Principal y = new AnonymousPrincipal();
+    if (x instanceof MemberHttpPrincipal x1) {
+      y = MemberPrincipal.of(x1.getMember());
+    }
+    return new Subject(true, Set.of(y), Collections.emptySet(), Collections.emptySet());
+  }
+
+  MemberID verifyToken(HttpPrincipal x1, MemberID x2, FormData x3) {
+    if (x3.get("token") != null) {
+      VerifyEmail cmd = new VerifyEmail(
+        subject(x1),
+        new VerificationToken(x3.get("token"))
+      );
       try {
         memberService.handle(cmd);
       } catch (ValidationException e) {
-        x2.add("error", e.getMessage());
+        x3.add("error", e.getMessage());
       }
     }
-    return x1;
+    return x2;
   }
 
   Map<String, Object> dashboardView(Member x, FormData x2) {

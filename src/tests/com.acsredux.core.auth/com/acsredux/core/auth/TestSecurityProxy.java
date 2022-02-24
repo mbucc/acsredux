@@ -1,9 +1,9 @@
 package com.acsredux.core.auth;
 
+import static com.acsredux.lib.testutil.TestData.TEST_SUBJECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.acsredux.core.auth.values.Resource;
 import com.acsredux.core.base.BaseCommand;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.Event;
@@ -65,13 +65,18 @@ public class TestSecurityProxy {
   static class MockSecurityPolicy implements SecurityPolicy {
 
     @Override
-    public boolean isRecognizedMethod(Resource resourceType, Method m, Object[] args) {
+    public boolean isAllowed(Method m, Object[] args) {
       return false;
+    }
+
+    @Override
+    public Subject getSubject(Object[] args) {
+      return TEST_SUBJECT;
     }
   }
 
   @Test
-  void testMethodIsNotRecognized() {
+  void testMethodIsNotAllowed() {
     // setup
     MemberService x = SecurityProxy.of(new MockMemberService(), new MockSecurityPolicy());
 
@@ -83,7 +88,9 @@ public class TestSecurityProxy {
 
     // verify
     assertEquals(
-      "unrecognized method in SecurityProxy: com.acsredux.core.members.MemberService.handle(AddMember x1)",
+      "Subject: Principal: MemberPrincipal[mid=MemberID[val=123]] " +
+      "denied access to " +
+      "com.acsredux.core.members.MemberService.handle(AddMember x1)",
       y.getMessage()
     );
   }

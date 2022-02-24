@@ -1,6 +1,6 @@
 package com.acsredux.adapter.web.common;
 
-import com.acsredux.adapter.web.auth.MemberPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +24,7 @@ public class FormData {
   public void addPrincipal(HttpExchange x) {
     if (x.getPrincipal() != null) {
       add("principal", x.getPrincipal().getUsername());
-      if (x.getPrincipal() instanceof MemberPrincipal y) {
+      if (x.getPrincipal() instanceof MemberHttpPrincipal y) {
         add("memberID", String.valueOf(y.getMember().id().val()));
       }
     }

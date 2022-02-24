@@ -3,7 +3,7 @@ package com.acsredux.adapter.web.members;
 import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
-import com.acsredux.adapter.web.auth.AnonymousPrincipal;
+import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ class TestMemberLogin {
   void testGetMemberLogin() {
     // setup
     var mock = new MockHttpExchange("/members/login");
-    mock.setPrincipal(new AnonymousPrincipal("Anonymous"));
+    mock.setPrincipal(new AnonymousHttpPrincipal("Anonymous"));
 
     // execute
     handler.handle(mock);

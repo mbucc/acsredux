@@ -2,7 +2,7 @@ package com.acsredux.adapter.web;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.acsredux.adapter.web.auth.AnonymousPrincipal;
+import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.github.difflib.text.DiffRowGenerator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
@@ -30,7 +30,7 @@ public class MockHttpExchange extends HttpExchange {
   final String url;
   final String requestMethod;
   final String requestBody;
-  HttpPrincipal principal = new AnonymousPrincipal("Test User");
+  HttpPrincipal principal = new AnonymousHttpPrincipal("Test User");
   String goldenSuffix = "";
   final String testDir = projectRoot() + "/test/web/gold";
   String webDir = projectRoot() + "/web/template";

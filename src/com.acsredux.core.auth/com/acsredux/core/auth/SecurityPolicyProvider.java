@@ -1,71 +1,72 @@
 package com.acsredux.core.auth;
 
+import com.acsredux.core.articles.commands.CreateArticleCommand;
 import com.acsredux.core.auth.values.Entitlement;
-import com.acsredux.core.auth.values.Resource;
+import com.acsredux.core.auth.values.Guard;
 import com.acsredux.core.auth.values.SecurityPolicyDTO;
+import com.acsredux.core.base.Command;
+import com.acsredux.core.members.values.MemberPrincipal;
 import com.spencerwi.either.Result;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.security.auth.Subject;
 
-/*
-Find command
-  1. if another arg, goto 2.  else return null.
-  2. check if it implements Command
-  3. if so, return it
-  4. go to 1.
-
-find subject
-  1. find command
-  2. if null, return null
-  3. cast, and extra subject.
-
-Find action
-  1. find command
-  2. if null, return null.
-  3. find "bottom-most" command class name (possible?)
-  4. if command name starts with "create" or "add", return create.
-  5. if command name starts with "update" return update
-  6. if command name starts with "delete" return delete
-     HMMM .... this is weak.
-     I'd rather register every command and use instanceof.
-     then return false (and email an error) if we hit an
-     unknown command.
-
-What about queries?
-
-  One possibility: use ArchUnit to ensure all service methods either:
-    1. take a command as an argument, or
-    2. return a value that implements the marker interface QueryResponse.
-
-
-
-
-
- */
 public class SecurityPolicyProvider implements SecurityPolicy {
 
   private final List<Entitlement> entitlements;
-  private final Map<Method, Predicate<Object[]>> protectedMethods;
+  private final List<Guard> guards;
 
   public SecurityPolicyProvider(List<Entitlement> entitlements) {
     this.entitlements = entitlements;
-    protectedMethods = new HashMap<>();
+    this.guards =
+      entitlements
+        .stream()
+        .map(SecurityPolicyProvider::toGuard)
+        .collect(Collectors.toList());
+  }
+
+  private static Guard toGuard(Entitlement entitlement) {
+    return new Guard(
+      SecurityPolicyProvider::isCreateArticle,
+      SecurityPolicyProvider::isLoggedIn
+    );
+  }
+
+  static boolean isLoggedIn(Subject x) {
+    return !x.getPrincipals(MemberPrincipal.class).isEmpty();
+  }
+
+  static boolean isCreateArticle(Method x) {
+    return (
+      x.getParameterCount() > 0 &&
+      CreateArticleCommand.class.isAssignableFrom(x.getParameterTypes()[0])
+    );
   }
 
   public List<Entitlement> entitlements() {
-    return entitlements;
+    return new ArrayList<>(entitlements);
   }
 
-  public boolean isAllowed(Resource x1, Method m, Object[] args) {
-    Predicate<Object[]> check = protectedMethods.get(m);
-    if (check == null) {
-      return true;
+  public boolean isAllowed(Method m, Object[] args) {
+    boolean isNotGuarded = true;
+    boolean isPastGuard = false;
+    for (Guard x : guards) {
+      if (x.isMatchingResource().test(m)) {
+        isNotGuarded = false;
+        isPastGuard = x.isMatchingSubject().test(getSubject(args));
+      }
     }
-    return check.test(args);
+    return isNotGuarded || isPastGuard;
+  }
+
+  @Override
+  public Subject getSubject(Object[] args) {
+    if (args.length > 0) {
+      return ((Command) args[0]).subject();
+    }
+    throw new IllegalStateException("no subject found.");
   }
 
   public static Result<SecurityPolicyProvider> parse(String s) {
@@ -81,10 +82,5 @@ public class SecurityPolicyProvider implements SecurityPolicy {
         .map(SecurityPolicyDTO.ACL::asEntitlement)
         .collect(Collectors.toList())
     );
-  }
-
-  @Override
-  public boolean isRecognizedMethod(Resource resourceType, Method m, Object[] args) {
-    return false;
   }
 }

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acsredux.adapter.web.MockHttpExchange;
-import com.acsredux.adapter.web.auth.MemberPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.core.members.values.*;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockMemberService;
@@ -64,7 +64,7 @@ class TestMemberDashboard {
     // setup
     var mock = new MockHttpExchange("/members/2", "GET");
     this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
-    mock.setPrincipal(new MemberPrincipal(TEST_MEMBER));
+    mock.setPrincipal(new MemberHttpPrincipal(TEST_MEMBER));
 
     // execute
     this.handler.handle(mock);

@@ -3,7 +3,7 @@ package com.acsredux.adapter.web;
 import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 
-import com.acsredux.adapter.web.auth.MemberPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ class TestRootHandler {
   void testMemberLoggedIn() {
     // setup
     var mock = new MockHttpExchange("/");
-    mock.setPrincipal(new MemberPrincipal(TEST_MEMBER));
+    mock.setPrincipal(new MemberHttpPrincipal(TEST_MEMBER));
     mock.setGoldenSuffix("loggedin");
 
     // execute

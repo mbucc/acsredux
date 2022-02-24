@@ -2,9 +2,9 @@ package com.acsredux.adapter.web.auth;
 
 import com.sun.net.httpserver.HttpPrincipal;
 
-public class AnonymousPrincipal extends HttpPrincipal {
+public class AnonymousHttpPrincipal extends HttpPrincipal {
 
-  public AnonymousPrincipal(String username) {
+  public AnonymousHttpPrincipal(String username) {
     super(username, "/");
   }
 }

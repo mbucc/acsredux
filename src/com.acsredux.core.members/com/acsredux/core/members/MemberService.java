@@ -7,7 +7,7 @@ import com.acsredux.core.members.values.*;
 import java.util.Optional;
 
 public interface MemberService {
-  String ANONYMOUS_USERNAME = "Anonymous User";
+  public static String ANONYMOUS_USERNAME = "Anonymous User";
 
   // commands
   Event handle(BaseMemberCommand x);

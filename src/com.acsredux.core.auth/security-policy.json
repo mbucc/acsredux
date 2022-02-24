@@ -1,0 +1,10 @@
+{
+  "acls": [
+    // Only a logged in member can create an article.
+    {
+      "resource": "articles",
+      "action": "create",
+      "user": "AuthenticatedMember"
+    }
+  ]
+}

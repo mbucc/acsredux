@@ -39,7 +39,7 @@ public class CookieAuthenticator extends Authenticator {
   }
 
   HttpPrincipal anonymousPrincipal() {
-    return new AnonymousPrincipal(memberService.getAnonymousUsername());
+    return new AnonymousHttpPrincipal(memberService.getAnonymousUsername());
   }
 
   public Authenticator.Result authenticate(HttpExchange x) {
@@ -48,7 +48,7 @@ public class CookieAuthenticator extends Authenticator {
       .map(SessionID::new)
       .map(memberService::findBySessionID)
       .flatMap(o -> o)
-      .map(MemberPrincipal::new)
+      .map(MemberHttpPrincipal::new)
       .map(HttpPrincipal.class::cast)
       .orElseGet(this::anonymousPrincipal);
     return new Authenticator.Success(principal);
