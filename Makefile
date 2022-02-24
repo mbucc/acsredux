@@ -29,11 +29,14 @@ jars: \
 
 mlib/compiler-0.9.10.jar: lib/compiler-0.9.10.jar
 	cp $? $@
-
 mlib/result-flow-3.1.0.jar: lib/result-flow-3.1.0.jar
 	cp $? $@
+mlib/Either.java.jar: lib/Either.java.jar
+	cp $? $@
+mlib/gson-2.9.0.jar: lib/gson-2.9.0.jar
+	cp $? $@
 
-mlib/com.acsredux.adapter.web@1.jar: compile resourcebundles
+mlib/com.acsredux.adapter.web@1.jar: compile resources
 	@mkdir -p mlib
 	jar --create \
 		--file=$@ \
@@ -51,7 +54,7 @@ mlib/com.acsredux.lib.env@1.jar: compile
 		-C classes/$$(echo "$@"|cut -d/ -f2|cut -d@ -f1) \
 		.
 
-mlib/%@1.jar: compile resourcebundles
+mlib/%@1.jar: compile resources
 	@mkdir -p mlib
 	jar --create \
 		--file=$@ \
@@ -70,11 +73,11 @@ mlib/%@1.jar: compile resourcebundles
 .PHONY: resources
 resources: \
 		classes/com.acsredux.core.members/MemberErrorMessages.properties \
-		classes/com.acsredux.core.auth/security-policy.xsd
+		classes/com.acsredux.core.auth/security-policy.json
 
 classes/%Messages.properties: src/%Messages.properties
 	cp $? $@
-classes/%.xsd: src/%.xsd
+classes/%.json: src/%.json
 	cp $? $@
 
 .PHONY: compile
