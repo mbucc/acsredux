@@ -7,7 +7,7 @@ import com.acsredux.core.members.values.*;
 import java.util.Optional;
 
 public interface MemberService {
-  public static String ANONYMOUS_USERNAME = "Anonymous User";
+  String ANONYMOUS_USERNAME = "Anonymous User";
 
   // commands
   Event handle(BaseMemberCommand x);
@@ -17,10 +17,6 @@ public interface MemberService {
   Optional<MemberDashboard> findDashboard(MemberID x);
   MemberDashboard getDashboard(MemberID x);
   int activeMembers();
-
-  default String getAnonymousUsername() {
-    return ANONYMOUS_USERNAME;
-  }
 
   Optional<Member> findBySessionID(SessionID x);
 

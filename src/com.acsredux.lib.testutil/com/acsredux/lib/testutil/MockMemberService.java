@@ -42,11 +42,6 @@ public class MockMemberService implements MemberService {
   }
 
   @Override
-  public String getAnonymousUsername() {
-    return anonymousUsername;
-  }
-
-  @Override
   public Optional<Member> findBySessionID(SessionID x) {
     return Optional.ofNullable(this.member);
   }

@@ -30,10 +30,9 @@ public class MockHttpExchange extends HttpExchange {
   final String url;
   final String requestMethod;
   final String requestBody;
-  HttpPrincipal principal = new AnonymousHttpPrincipal("Test User");
+  HttpPrincipal principal = new AnonymousHttpPrincipal();
   String goldenSuffix = "";
   final String testDir = projectRoot() + "/test/web/gold";
-  String webDir = projectRoot() + "/web/template";
 
   public static String projectRoot() {
     String cwd = System.getProperty("user.dir");
@@ -60,44 +59,65 @@ public class MockHttpExchange extends HttpExchange {
     this.requestBody = body;
   }
 
+  public void setPrincipal(HttpPrincipal x) {
+    this.principal = x;
+  }
+
+  // ---------------------------------------------------------------------------
+  //
+  //      H T T P    E X C H A N G E    I N T E R F A C E
+  //
+  // ---------------------------------------------------------------------------
+
+  @Override
   public void close() {}
 
+  @Override
   public Object getAttribute(String name) {
     return null;
   }
 
+  @Override
   public HttpContext getHttpContext() {
     return null;
   }
 
+  @Override
   public InetSocketAddress getLocalAddress() {
     return null;
   }
 
+  @Override
   public HttpPrincipal getPrincipal() {
     return this.principal;
   }
 
+  @Override
   public String getProtocol() {
     return null;
   }
 
+  @Override
   public InetSocketAddress getRemoteAddress() {
     return null;
   }
 
+  @Override
   public InputStream getRequestBody() {
     return new ByteArrayInputStream(requestBody.getBytes(StandardCharsets.UTF_8));
   }
 
+  @Override
   public Headers getRequestHeaders() {
     return this.requestHeaders;
   }
 
+  @Override
   public String getRequestMethod() {
     return this.requestMethod;
   }
 
+  @Override
   public URI getRequestURI() {
     try {
       return new URI(this.url);
@@ -106,32 +126,44 @@ public class MockHttpExchange extends HttpExchange {
     }
   }
 
+  @Override
   public OutputStream getResponseBody() {
     return this.responseBody;
   }
 
+  @Override
   public int getResponseCode() {
     return 200;
   }
 
+  @Override
   public Headers getResponseHeaders() {
     return this.responseHeaders;
   }
 
+  @Override
   public void sendResponseHeaders(int rCode, long responseLength) {
     this.responseCode = rCode;
     this.responseLength = responseLength;
   }
 
+  @Override
   public void setAttribute(String name, Object value) {}
 
+  @Override
   public void setStreams(InputStream i, OutputStream o) {}
+
+  // ---------------------------------------------------------------------------
+  //
+  //      G O L D    T E S T S
+  //
+  // ---------------------------------------------------------------------------
 
   String expected() {
     try {
       return Files.readString(expectedPath());
     } catch (IOException e) {
-      throw new IllegalStateException("can't create diff", e);
+      throw new IllegalStateException("can't read expected HTML", e);
     }
   }
 
@@ -247,10 +279,6 @@ public class MockHttpExchange extends HttpExchange {
       System.out.println(diff());
       fail("actual output did not match expected output");
     }
-  }
-
-  public void setPrincipal(HttpPrincipal x) {
-    this.principal = x;
   }
 
   public void setGoldenSuffix(String x) {

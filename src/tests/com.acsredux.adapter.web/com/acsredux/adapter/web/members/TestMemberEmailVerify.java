@@ -8,12 +8,15 @@ import static com.acsredux.lib.testutil.TestData.TEST_VERIFICATION_TOKEN;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.acsredux.adapter.web.MockHttpExchange;
+import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockMemberService;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TestMemberEmailVerify {
@@ -38,18 +41,26 @@ class TestMemberEmailVerify {
   @Test
   void testIsEmailVerify() {
     assertFalse(
-      handler.dashboardHandler.isEmailVerify(
+      handler.dashboardHandler.isGetDashboardWithVerificationToken(
         new MockHttpExchange("/members/2?token=abc123")
       )
     );
     assertFalse(
-      handler.dashboardHandler.isEmailVerify(new MockHttpExchange("/members/2"))
+      handler.dashboardHandler.isGetDashboardWithVerificationToken(
+        new MockHttpExchange("/members/2")
+      )
     );
-    assertFalse(handler.dashboardHandler.isEmailVerify(new MockHttpExchange("/members")));
+    assertFalse(
+      handler.dashboardHandler.isGetDashboardWithVerificationToken(
+        new MockHttpExchange("/members")
+      )
+    );
   }
 
   @Test
-  void testGetDashboardWithValidToken() {
+  @Disabled("TODO: require cookie on token click.")
+  // If token is valid and they no longer have cookie, make them regenerate token.
+  void testGetDashboardWithValidTokenAndAnonymousPrincipal() {
     // setup
     String url = String.format(
       "/members/%d?token=%s",
@@ -57,6 +68,27 @@ class TestMemberEmailVerify {
       URLEncoder.encode(TEST_VERIFICATION_TOKEN.val(), StandardCharsets.UTF_8)
     );
     var mock = new MockHttpExchange(url, "GET");
+    mock.setPrincipal(new AnonymousHttpPrincipal());
+    this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
+
+    // execute
+    this.handler.handle(mock);
+
+    // verify
+    mock.goldTest();
+  }
+
+  @Test
+  // Result of a token click is the same if someone is logged or not.
+  void testGetDashboardWithValidTokenAndPrincipal() {
+    // setup
+    String url = String.format(
+      "/members/%d?token=%s",
+      TEST_MEMBER_ID.val(),
+      URLEncoder.encode(TEST_VERIFICATION_TOKEN.val(), StandardCharsets.UTF_8)
+    );
+    var mock = new MockHttpExchange(url, "GET");
+    mock.setPrincipal(new MemberHttpPrincipal(TEST_MEMBER));
     this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
 
     // execute

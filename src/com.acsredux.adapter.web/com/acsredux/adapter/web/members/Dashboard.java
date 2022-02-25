@@ -54,6 +54,25 @@ class Dashboard {
       .ok(x1)
       .map(HttpExchange::getRequestURI)
       .map(this::memberID)
+      .map(memberService::getDashboard)
+      .map(MemberDashboard::member)
+      .map(mid -> dashboardView(mid, x2))
+      .map(toHTML)
+      .get();
+  }
+
+  void handleGetDashboardWithVerificationToken(HttpExchange x1, FormData x2) {
+    // Partial for data pipeline.
+    UnaryOperator<Map<String, Object>> toHTML = data -> {
+      WebUtil.renderForm(template, x1, data);
+      return data;
+    };
+
+    // Data pipeline.
+    Result
+      .ok(x1)
+      .map(HttpExchange::getRequestURI)
+      .map(this::memberID)
       .map(mid -> verifyToken(x1.getPrincipal(), mid, x2))
       .map(memberService::getDashboard)
       .map(MemberDashboard::member)
@@ -115,10 +134,16 @@ class Dashboard {
   }
 
   boolean isGetDashboard(HttpExchange x) {
-    return x.getRequestURI().getPath().matches("/members/\\d+$");
+    return (
+      x.getRequestMethod().equalsIgnoreCase("GET") &&
+      x.getRequestURI().getPath().matches("/members/\\d+$")
+    );
   }
 
-  boolean isEmailVerify(HttpExchange x) {
-    return x.getRequestURI().getPath().matches("/members/\\d+?token=");
+  boolean isGetDashboardWithVerificationToken(HttpExchange x) {
+    return (
+      x.getRequestMethod().equalsIgnoreCase("GET") &&
+      x.getRequestURI().getPath().matches("/members/\\d+?token=")
+    );
   }
 }

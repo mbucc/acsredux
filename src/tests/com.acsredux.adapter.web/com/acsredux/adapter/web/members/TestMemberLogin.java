@@ -25,7 +25,7 @@ class TestMemberLogin {
   void testGetMemberLogin() {
     // setup
     var mock = new MockHttpExchange("/members/login");
-    mock.setPrincipal(new AnonymousHttpPrincipal("Anonymous"));
+    mock.setPrincipal(new AnonymousHttpPrincipal());
 
     // execute
     handler.handle(mock);

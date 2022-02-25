@@ -117,11 +117,11 @@ class TestBaseHandler {
     String expected =
       """
       200
-      Content-Length: 66
+      Content-Length: 71
       Content-type: text/html; charset= UTF-8
       
       Form values posted:
-      <FormData: principal=Test User, firstname=foo>""";
+      <FormData: principal=Anonymous User, firstname=foo>""";
     assertEquals(expected, mock.actual());
   }
 

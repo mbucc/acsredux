@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.acsredux.adapter.web.MockHttpExchange;
+import com.acsredux.core.members.MemberService;
 import com.acsredux.lib.testutil.MockMemberService;
 import com.sun.net.httpserver.Authenticator;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +53,7 @@ class TestMemberServiceUsage {
 
     // verify
     if (y instanceof Authenticator.Success y1) {
-      assertEquals("foobar", y1.getPrincipal().getUsername());
+      assertEquals(MemberService.ANONYMOUS_USERNAME, y1.getPrincipal().getUsername());
     } else {
       fail("return value not an instance of Authenticator.Success: " + y);
     }

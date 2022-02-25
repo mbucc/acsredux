@@ -6,9 +6,9 @@
   </head>
   <body>
     <p>
-     {{principal}}{{#memberID}}
+     {{#memberID}}{{principal}}
      (<a href="/members/logout">log out</a>){{/memberID}}{{^memberID}}
-     (<a href="/members/login">log in</a>){{/memberID}}
+     <a href="/members/login">log in</a>{{/memberID}}
 
      {{#menuitems}}
      <br /><a href="{{link}}">{{text}}</a>

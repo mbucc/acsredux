@@ -1,5 +1,5 @@
 200
-Content-Length: 411
+Content-Length: 415
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ Content-type: text/html; charset= UTF-8
   </head>
   <body>
     <p>
-     Test User     (<a href="/members/login">log in</a>)
+小川 治兵衛     (<a href="/members/logout">log out</a>)
      <br /><a href="/">home</a>
      <br /><a href="http://example.com/suggestions">suggestions</a>
     </p>

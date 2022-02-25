@@ -38,10 +38,7 @@ public class CookieAuthenticator extends Authenticator {
       .findFirst();
   }
 
-  HttpPrincipal anonymousPrincipal() {
-    return new AnonymousHttpPrincipal(memberService.getAnonymousUsername());
-  }
-
+  @Override
   public Authenticator.Result authenticate(HttpExchange x) {
     HttpPrincipal principal = findAuthCookie(x.getRequestHeaders())
       .map(HttpCookie::getValue)
@@ -50,7 +47,7 @@ public class CookieAuthenticator extends Authenticator {
       .flatMap(o -> o)
       .map(MemberHttpPrincipal::new)
       .map(HttpPrincipal.class::cast)
-      .orElseGet(this::anonymousPrincipal);
+      .orElseGet(AnonymousHttpPrincipal::new);
     return new Authenticator.Success(principal);
   }
 }
