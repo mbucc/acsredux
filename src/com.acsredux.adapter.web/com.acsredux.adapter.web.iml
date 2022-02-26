@@ -16,5 +16,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="com.acsredux.core.members" />
     <orderEntry type="module" module-name="com.acsredux.adapter.stub" />
+    <orderEntry type="module" module-name="com.acsredux.core.auth" />
   </component>
 </module>

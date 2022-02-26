@@ -1,5 +1,7 @@
 package com.acsredux.core.auth.values;
 
+import static java.lang.Math.min;
+
 import com.acsredux.core.auth.SecurityPolicyException;
 import com.google.gson.Gson;
 import java.util.List;
@@ -31,6 +33,13 @@ public class SecurityPolicyDTO {
       throw new SecurityPolicyException("empty policy JSON");
     }
     Gson gson = new Gson();
-    return gson.fromJson(x, SecurityPolicyDTO.class);
+    try {
+      return gson.fromJson(x, SecurityPolicyDTO.class);
+    } catch (Exception e) {
+      throw new RuntimeException(
+        "can't parse: " + x.substring(0, min(50, x.length())),
+        e
+      );
+    }
   }
 }

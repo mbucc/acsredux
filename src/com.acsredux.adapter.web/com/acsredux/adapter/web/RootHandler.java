@@ -6,7 +6,6 @@ import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.members.MemberService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -23,9 +22,8 @@ class RootHandler extends BaseHandler {
   private final MustacheFactory mf;
   private final AdminService adminService;
 
-  RootHandler(MemberService x1, AdminService x2, String templateRoot) {
-    super(x1);
-    this.adminService = x2;
+  RootHandler(AdminService x1, String templateRoot) {
+    this.adminService = x1;
     this.mf = new DefaultMustacheFactory(new File(templateRoot));
   }
 

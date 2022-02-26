@@ -5,6 +5,7 @@ module com.acsredux.adapter.web {
   requires jdk.httpserver;
   requires com.github.mustachejava;
   requires com.github.leopard2a5.resultflow;
+  requires com.acsredux.core.auth;
 
   exports com.acsredux.adapter.web ;
 }

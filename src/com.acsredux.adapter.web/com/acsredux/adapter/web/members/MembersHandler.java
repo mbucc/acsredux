@@ -21,7 +21,6 @@ public class MembersHandler extends BaseHandler {
     MemberService memberService,
     AdminService adminService
   ) {
-    super(memberService);
     File f = new File(templateRoot);
     if (!f.exists()) {
       String fmt = "cant' open %s with current working directory %s";

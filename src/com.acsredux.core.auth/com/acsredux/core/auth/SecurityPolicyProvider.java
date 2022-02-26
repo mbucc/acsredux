@@ -6,7 +6,6 @@ import com.acsredux.core.auth.values.Guard;
 import com.acsredux.core.auth.values.SecurityPolicyDTO;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.members.values.MemberPrincipal;
-import com.spencerwi.either.Result;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,18 +68,20 @@ public class SecurityPolicyProvider implements SecurityPolicy {
     throw new IllegalStateException("no subject found.");
   }
 
-  public static Result<SecurityPolicyProvider> parse(String s) {
-    return Result
-      .attempt(() -> SecurityPolicyDTO.parse(s))
-      .map(SecurityPolicyProvider::of);
+  public static SecurityPolicyProvider parse(String s) {
+    return SecurityPolicyProvider.of(SecurityPolicyDTO.parse(s));
   }
 
   static SecurityPolicyProvider of(SecurityPolicyDTO x) {
-    return new SecurityPolicyProvider(
-      x.acls
-        .stream()
-        .map(SecurityPolicyDTO.ACL::asEntitlement)
-        .collect(Collectors.toList())
-    );
+    try {
+      return new SecurityPolicyProvider(
+        x.acls
+          .stream()
+          .map(SecurityPolicyDTO.ACL::asEntitlement)
+          .collect(Collectors.toList())
+      );
+    } catch (Exception e) {
+      throw new SecurityPolicyException(e);
+    }
   }
 }

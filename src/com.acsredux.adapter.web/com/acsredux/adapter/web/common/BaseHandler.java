@@ -5,7 +5,6 @@ import static com.acsredux.adapter.web.common.WebUtil.safeDump;
 import static java.io.OutputStream.nullOutputStream;
 
 import com.acsredux.core.base.NotFoundException;
-import com.acsredux.core.members.MemberService;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -18,18 +17,12 @@ import java.util.function.Predicate;
 
 public abstract class BaseHandler implements HttpHandler {
 
-  protected final MemberService memberService;
-
   public record Route(
     Predicate<HttpExchange> matcher,
     BiConsumer<HttpExchange, FormData> handler
   ) {}
 
   protected abstract List<Route> getRoutes();
-
-  public BaseHandler(MemberService x) {
-    this.memberService = x;
-  }
 
   // For tests
   private PrintStream err = System.err;

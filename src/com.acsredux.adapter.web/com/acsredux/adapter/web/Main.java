@@ -7,6 +7,10 @@ import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
+import com.acsredux.core.auth.SecurityPolicy;
+import com.acsredux.core.auth.SecurityPolicyProvider;
+import com.acsredux.core.auth.SecurityProxy;
+import com.acsredux.core.base.Util;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
 import com.sun.net.httpserver.HttpContext;
@@ -33,14 +37,17 @@ public class Main {
     //
     Stub stub = Stub.provider();
     ZoneId tz = ZoneId.of("US/Eastern");
-    MemberService memberService = MemberServiceFactory.getMemberService(
-      stub,
-      stub,
-      stub,
-      stub,
-      tz
+    SecurityPolicy policy = SecurityPolicyProvider.parse(
+      Util.readResource("security-policy.json")
     );
-    AdminService adminService = AdminServiceFactory.getAdminService(stub, tz);
+    MemberService memberService = SecurityProxy.of(
+      MemberServiceFactory.getMemberService(stub, stub, stub, stub, tz),
+      policy
+    );
+    AdminService adminService = SecurityProxy.of(
+      AdminServiceFactory.getAdminService(stub, tz),
+      policy
+    );
     MemberService.passwordSaltOrDie();
 
     //
@@ -58,7 +65,7 @@ public class Main {
     CookieAuthenticator auth = new CookieAuthenticator(memberService);
     HttpContext ctx = server.createContext(
       "/",
-      new RootHandler(memberService, adminService, xs.documentRoot)
+      new RootHandler(adminService, xs.documentRoot)
     );
     ctx.setAuthenticator(auth);
     ctx =

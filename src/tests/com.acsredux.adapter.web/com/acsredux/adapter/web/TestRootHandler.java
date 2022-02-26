@@ -17,8 +17,7 @@ class TestRootHandler {
   void setup() {
     MockMemberService memberService = new MockMemberService();
     MockAdminService adminService = new MockAdminService();
-    handler =
-      new RootHandler(memberService, adminService, projectRoot() + "/web/template");
+    handler = new RootHandler(adminService, projectRoot() + "/web/template");
   }
 
   @Test

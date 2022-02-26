@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.core.base.NotFoundException;
-import com.acsredux.core.members.MemberService;
-import com.acsredux.lib.testutil.MockMemberService;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,10 +19,6 @@ class TestBaseHandler {
 
   static class TestHandler extends BaseHandler {
 
-    TestHandler(MemberService x) {
-      super(x);
-    }
-
     final List<Route> routes = new ArrayList<>();
 
     @Override
@@ -37,7 +31,7 @@ class TestBaseHandler {
 
   @BeforeEach
   void setup() {
-    this.handler = new TestHandler(new MockMemberService());
+    this.handler = new TestHandler();
   }
 
   @Test
