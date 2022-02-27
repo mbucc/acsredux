@@ -45,7 +45,7 @@ public class CookieAuthenticator extends Authenticator {
       .map(SessionID::new)
       .map(memberService::findBySessionID)
       .flatMap(o -> o)
-      .map(MemberHttpPrincipal::new)
+      .map(o -> o.isAdmin() ? new AdminHttpPrincipal(o) : new MemberHttpPrincipal(o))
       .map(HttpPrincipal.class::cast)
       .orElseGet(AnonymousHttpPrincipal::new);
     return new Authenticator.Success(principal);

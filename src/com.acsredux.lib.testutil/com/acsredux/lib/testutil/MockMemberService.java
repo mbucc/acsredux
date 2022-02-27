@@ -1,10 +1,10 @@
 package com.acsredux.lib.testutil;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
-import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.SessionID;
 import java.util.Optional;
@@ -13,7 +13,6 @@ public class MockMemberService implements MemberService {
 
   private Event event;
   private Member member;
-  private MemberDashboard dashboard = null;
   private String anonymousUsername = "Test Anonymous User";
 
   @Override
@@ -22,18 +21,16 @@ public class MockMemberService implements MemberService {
   }
 
   @Override
-  public Optional<MemberDashboard> findDashboard(MemberID x) {
-    return Optional.ofNullable(this.dashboard);
-  }
-
-  @Override
-  public MemberDashboard getDashboard(MemberID x) {
-    return this.dashboard;
-  }
-
-  @Override
   public int activeMembers() {
     return 1;
+  }
+
+  @Override
+  public Member getByID(MemberID x) {
+    if (this.member == null) {
+      throw new NotFoundException("no member with id " + x);
+    }
+    return this.member;
   }
 
   @Override
@@ -56,9 +53,5 @@ public class MockMemberService implements MemberService {
 
   public void setEvent(Event x) {
     this.event = x;
-  }
-
-  public void setDashboard(MemberDashboard x) {
-    this.dashboard = x;
   }
 }

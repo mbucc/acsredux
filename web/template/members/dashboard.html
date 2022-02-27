@@ -3,10 +3,12 @@
 <p>{{firstName}} {{lastName}} has been a member since {{memberSince}}.</p>
 
 <h2>Articles</h2>
-<ol>{{#articles}}
-    <li><a href="/articles/{{id}}">{{title}}</a></li>
+<ol>
+{{#articles}}
+  <li><a href="/articles/{{id}}">{{title}}</a></li>
 {{/articles}}
-</ol>{{#isMyPage}}
+</ol>
+{{#isMyPage}}
 <a href="/articles/create">Create a new article</a>
 {{/isMyPage}}
 

@@ -2,25 +2,13 @@ package com.acsredux.adapter.web.members;
 
 import static com.acsredux.adapter.web.auth.CookieAuthenticator.COOKIE_FMT;
 
-import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.values.MemberID;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
 
-class Util {
-
-  static void addMenu(Map<String, Object> xs, SiteInfo x1) {
-    xs.put(
-      "menuitems",
-      List.of(
-        Map.of("link", "/", "text", "home"),
-        Map.of("link", x1.suggestionBoxURL(), "text", "suggestions")
-      )
-    );
-  }
+public class Util {
 
   public static String redirect(HttpExchange x1, String newLocation) {
     Headers ys = x1.getResponseHeaders();
@@ -43,5 +31,14 @@ class Util {
     Headers ys = x1.getResponseHeaders();
     ys.set("Set-cookie", String.format(COOKIE_FMT, x2.sid().val(), maxAge));
     return x2;
+  }
+
+  public static MemberID uriToMemberID(URI x) {
+    String[] ys = x.getPath().split("/");
+    try {
+      return new MemberID(Long.valueOf(ys[ys.length - 1]));
+    } catch (Exception e) {
+      throw new IllegalStateException("no member ID in " + x.getPath());
+    }
   }
 }

@@ -24,8 +24,12 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public final class Stub
   implements
@@ -61,7 +65,8 @@ public final class Stub
         new RegistrationDate(Instant.now()),
         ZoneId.of("US/Eastern"),
         LoginTime.of(Instant.now()),
-        LoginTime.of(null)
+        LoginTime.of(null),
+        true
       )
     );
   }
@@ -100,12 +105,6 @@ public final class Stub
   }
 
   @Override
-  public Optional<MemberDashboard> findMemberDashboard(MemberID x) {
-    Function<Member, MemberDashboard> toDashboard = MemberDashboard::new;
-    return members.stream().filter(o -> o.id().equals(x)).findFirst().map(toDashboard);
-  }
-
-  @Override
   public VerificationToken addAddMemberToken(MemberID memberID, CreatedOn now) {
     var y = new VerificationToken("token" + memberID.val());
     tokens.put(y, memberID);
@@ -133,7 +132,8 @@ public final class Stub
         new RegistrationDate(Instant.now()),
         ZoneId.of("US/Eastern"),
         LoginTime.of(Instant.now()),
-        LoginTime.of(null)
+        LoginTime.of(null),
+        false
       )
     );
     return newID;
@@ -219,7 +219,8 @@ public final class Stub
       y.registeredOn(),
       y.tz(),
       x2,
-      y.lastLogin()
+      y.lastLogin(),
+      false
     );
     members.remove(y);
     members.add(y1);
@@ -239,11 +240,20 @@ public final class Stub
   }
 
   @Override
+  public List<Article> findArticlesByMemberID(MemberID x) {
+    return articles
+      .values()
+      .stream()
+      .filter(o -> o.author().equals(x))
+      .collect(Collectors.toList());
+  }
+
+  @Override
   public ArticleID createArticle(CreateArticleCommand x) {
     long maxArticleID = articles
       .keySet()
       .stream()
-      .mapToLong(ArticleID::id)
+      .mapToLong(ArticleID::val)
       .max()
       .orElse(0);
     ArticleID aid = new ArticleID(maxArticleID + 1);

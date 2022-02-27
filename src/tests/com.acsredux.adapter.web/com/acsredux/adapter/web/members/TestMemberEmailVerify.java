@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
-import com.acsredux.core.members.values.MemberDashboard;
 import com.acsredux.lib.testutil.MockAdminService;
+import com.acsredux.lib.testutil.MockArticleService;
 import com.acsredux.lib.testutil.MockMemberService;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +34,8 @@ class TestMemberEmailVerify {
       new MembersHandler(
         projectRoot() + "/web/template",
         mockMemberService,
-        mockAdminService
+        mockAdminService,
+        new MockArticleService()
       );
   }
 
@@ -69,7 +70,6 @@ class TestMemberEmailVerify {
     );
     var mock = new MockHttpExchange(url, "GET");
     mock.setPrincipal(new AnonymousHttpPrincipal());
-    this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
 
     // execute
     this.handler.handle(mock);
@@ -87,9 +87,9 @@ class TestMemberEmailVerify {
       TEST_MEMBER_ID.val(),
       URLEncoder.encode(TEST_VERIFICATION_TOKEN.val(), StandardCharsets.UTF_8)
     );
+    this.mockMemberService.setMember(TEST_MEMBER);
     var mock = new MockHttpExchange(url, "GET");
     mock.setPrincipal(new MemberHttpPrincipal(TEST_MEMBER));
-    this.mockMemberService.setDashboard(new MemberDashboard(TEST_MEMBER));
 
     // execute
     this.handler.handle(mock);

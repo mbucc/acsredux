@@ -9,6 +9,7 @@ import com.acsredux.core.articles.ports.ArticleWriter;
 import com.acsredux.core.articles.values.Article;
 import com.acsredux.core.articles.values.ArticleID;
 import com.acsredux.core.base.Event;
+import com.acsredux.core.members.values.MemberID;
 import java.time.InstantSource;
 import java.util.List;
 
@@ -28,10 +29,17 @@ public class ArticleServiceProvider implements ArticleService {
   }
 
   @Override
+  public List<Article> findArticlesByMemberID(MemberID x) {
+    return reader.findArticlesByMemberID(x);
+  }
+
+  @Override
   public List<Event> handle(BaseArticleCommand x) {
-    return switch (x) {
-      case CreateArticleCommand y -> handle(y);
-    };
+    if (x instanceof CreateArticleCommand x1) {
+      return handle(x1);
+    } else {
+      throw new IllegalStateException("invalid command " + x);
+    }
   }
 
   private List<Event> handle(CreateArticleCommand x) {

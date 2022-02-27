@@ -4,6 +4,7 @@ import static com.acsredux.adapter.web.common.WebUtil.writeResponse;
 
 import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.adapter.web.common.FormData;
+import com.acsredux.adapter.web.views.BaseView;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -15,7 +16,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.StringJoiner;
 
 class RootHandler extends BaseHandler {
 
@@ -32,18 +33,43 @@ class RootHandler extends BaseHandler {
     return Collections.singletonList(new Route(x -> true, this::renderIndex));
   }
 
+  class RootView extends BaseView {
+
+    public final String siteDescription;
+
+    public RootView(HttpExchange x1, FormData x2, SiteInfo x3) {
+      super(x1, x2, x3, x3.name());
+      this.siteDescription = x3.description();
+    }
+
+    @Override
+    public String toString() {
+      return new StringJoiner(", ", RootView.class.getSimpleName() + "[", "]")
+        .add("siteDescription='" + siteDescription + "'")
+        .add("pageTitle='" + pageTitle + "'")
+        .add("menuItems=" + menuItems)
+        .add("error='" + error + "'")
+        .add("principalID=" + principalID)
+        .add("principalName='" + principalName + "'")
+        .add("isLoggedIn=" + isLoggedIn)
+        .add("isAdmin=" + isAdmin)
+        .add("isInAlphaTesting=" + isInAlphaTesting)
+        .add("suggestionBoxURL='" + suggestionBoxURL + "'")
+        .add("alphaTestMemberLimit=" + alphaTestMemberLimit)
+        .toString();
+    }
+  }
+
   private void renderIndex(HttpExchange x1, FormData x2) {
     Mustache m = mf.compile("index.html");
     Writer writer = new StringWriter();
-    Map<String, Object> view = x2.asMap();
     SiteInfo siteInfo = adminService.getSiteInfo();
-    view.put("pageTitle", siteInfo.name());
-    view.put("siteDescription", siteInfo.description());
+    RootView view = new RootView(x1, x2, siteInfo);
     try {
       m.execute(writer, view).flush();
     } catch (Exception e) {
       throw new IllegalStateException(
-        "error rendering template index.html with data " + Collections.emptyMap(),
+        "error rendering template index.html with data " + view,
         e
       );
     }

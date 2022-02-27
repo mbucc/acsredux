@@ -34,15 +34,6 @@ class TestBaseHandler {
     this.handler = new TestHandler();
   }
 
-  @Test
-  void testPageNotFound() {
-    // setup
-    var mock = new MockHttpExchange("/");
-
-    // execute and verify
-    assertThrows(NotFoundException.class, () -> handler.handle(mock));
-  }
-
   private void addRoute(BiConsumer<HttpExchange, FormData> x) {
     this.handler.routes.add(new BaseHandler.Route(this::alwaysTrue, x));
   }
@@ -79,6 +70,15 @@ class TestBaseHandler {
   }
 
   @Test
+  void testPageNotFound() {
+    // setup
+    var mock = new MockHttpExchange("/");
+
+    // execute and verify
+    assertThrows(NotFoundException.class, () -> handler.handle(mock));
+  }
+
+  @Test
   void testHelloWorld() {
     // setup
     addRoute(this::helloWorld);
@@ -111,11 +111,11 @@ class TestBaseHandler {
     String expected =
       """
       200
-      Content-Length: 71
+      Content-Length: 75
       Content-type: text/html; charset= UTF-8
       
       Form values posted:
-      <FormData: principal=Anonymous User, firstname=foo>""";
+      <FormData: firstname=foo, principalName=Anonymous User>""";
     assertEquals(expected, mock.actual());
   }
 

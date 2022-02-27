@@ -8,4 +8,6 @@ module com.acsredux.adapter.web {
   requires com.acsredux.core.auth;
 
   exports com.acsredux.adapter.web ;
+  opens com.acsredux.adapter.web to com.github.mustachejava;
+  opens com.acsredux.adapter.web.views to com.github.mustachejava;
 }

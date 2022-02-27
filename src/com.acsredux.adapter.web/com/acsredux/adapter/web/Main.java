@@ -7,6 +7,8 @@ import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
+import com.acsredux.core.articles.ArticleService;
+import com.acsredux.core.articles.ArticleServiceFactory;
 import com.acsredux.core.auth.SecurityPolicy;
 import com.acsredux.core.auth.SecurityPolicyProvider;
 import com.acsredux.core.auth.SecurityProxy;
@@ -48,6 +50,10 @@ public class Main {
       AdminServiceFactory.getAdminService(stub, tz),
       policy
     );
+    ArticleService articleService = SecurityProxy.of(
+      ArticleServiceFactory.getArticleService(stub, stub, tz),
+      policy
+    );
     MemberService.passwordSaltOrDie();
 
     //
@@ -71,7 +77,7 @@ public class Main {
     ctx =
       server.createContext(
         "/members",
-        new MembersHandler(xs.documentRoot, memberService, adminService)
+        new MembersHandler(xs.documentRoot, memberService, adminService, articleService)
       );
     ctx.setAuthenticator(auth);
 

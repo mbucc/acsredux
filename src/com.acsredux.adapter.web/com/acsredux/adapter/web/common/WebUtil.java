@@ -25,7 +25,7 @@ public class WebUtil {
     throw new UnsupportedOperationException("static only");
   }
 
-  public static void renderForm(Mustache m, HttpExchange x, Object data) {
+  public static Object renderForm(Mustache m, HttpExchange x, Object data) {
     try {
       Writer writer = new StringWriter();
       m.execute(writer, data);
@@ -37,6 +37,7 @@ public class WebUtil {
 
       OutputStream os = x.getResponseBody();
       os.write(body);
+      return data;
     } catch (Exception e) {
       throw new IllegalStateException("can't render form with data=" + data, e);
     }

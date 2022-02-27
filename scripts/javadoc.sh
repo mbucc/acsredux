@@ -2,6 +2,7 @@
 # January 16, 2022
 
 javadoc \
+   --enable-preview --release 17 \
    -quiet \
    -Xdoclint:none  \
    -p lib \

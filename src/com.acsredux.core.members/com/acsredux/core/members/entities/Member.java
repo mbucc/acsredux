@@ -15,7 +15,8 @@ public record Member(
   RegistrationDate registeredOn,
   ZoneId tz,
   LoginTime lastLogin,
-  LoginTime secondToLastLogin
+  LoginTime secondToLastLogin,
+  boolean isAdmin
 ) {
   public String memberSince() {
     return DateUtil.fullDate(registeredOn.val(), tz);
@@ -37,7 +38,12 @@ public record Member(
       registeredOn,
       tz,
       lastLogin,
-      secondToLastLogin
+      secondToLastLogin,
+      isAdmin
     );
+  }
+
+  public PublicMember asPublic() {
+    return new PublicMember(id, firstName, tz, registeredOn);
   }
 }

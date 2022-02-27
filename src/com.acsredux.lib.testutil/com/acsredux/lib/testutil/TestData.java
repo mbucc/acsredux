@@ -67,10 +67,8 @@ public class TestData {
     TEST_REGISTRATION_DATE,
     TEST_TIME_ZONE,
     TEST_LOGIN_TIME,
-    TEST_SECOND_LOGIN_TIME
-  );
-  public static final MemberDashboard TEST_MEMBER_DASHBOARD = new MemberDashboard(
-    TEST_MEMBER
+    TEST_SECOND_LOGIN_TIME,
+    false
   );
   public static final AddMember TEST_ADD_MEMBER_CMD = new AddMember(
     TEST_SUBJECT,
@@ -131,6 +129,7 @@ public class TestData {
   public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
   public static final Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
   public static final Article TEST_ARTICLE = new Article(
+    TEST_ARTICLE_ID,
     TEST_MEMBER_ID,
     Title.of("A Test Title"),
     List.of(TEST_SECTION),

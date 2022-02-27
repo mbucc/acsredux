@@ -3,6 +3,9 @@ package com.acsredux.lib.testutil;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotFoundException;
+import com.acsredux.core.base.ValidationException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -51,8 +54,19 @@ public class MockProxy implements InvocationHandler {
     this.calls.add(new MethodCall(m, args));
     try {
       return m.invoke(obj, args);
+    } catch (NotFoundException | AuthenticationException | ValidationException e) {
+      throw e;
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      Throwable cause = e.getCause();
+      if (cause == null) {
+        throw new RuntimeException(e);
+      }
+      switch (cause) {
+        case NotFoundException e2 -> throw e2;
+        case AuthenticationException e2 -> throw e2;
+        case ValidationException e2 -> throw e2;
+        default -> throw new RuntimeException(e);
+      }
     }
   }
 

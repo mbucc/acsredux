@@ -17,8 +17,8 @@ class TestStub {
     // setup
     var stub = Stub.provider();
     var now = new CreatedOn(Instant.now());
-    var dash = stub.findMemberDashboard(TEST_MEMBER_ID);
-    assertFalse(dash.isPresent());
+    var member = stub.findByID(TEST_MEMBER_ID);
+    assertFalse(member.isPresent());
 
     // execute
     var newMemberID = stub.addMember(
@@ -29,7 +29,7 @@ class TestStub {
 
     // verify
     assertEquals(2L, newMemberID.val());
-    dash = stub.findMemberDashboard(newMemberID);
-    assertTrue(dash.isPresent());
+    member = stub.findByID(newMemberID);
+    assertTrue(member.isPresent());
   }
 }

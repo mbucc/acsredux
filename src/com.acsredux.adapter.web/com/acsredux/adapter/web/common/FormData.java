@@ -23,11 +23,19 @@ public class FormData {
 
   public void addPrincipal(HttpExchange x) {
     if (x.getPrincipal() != null) {
-      add("principal", x.getPrincipal().getUsername());
+      add("principalName", x.getPrincipal().getUsername());
       if (x.getPrincipal() instanceof MemberHttpPrincipal y) {
-        add("memberID", String.valueOf(y.getMember().id().val()));
+        add("principalID", String.valueOf(y.getMember().id().val()));
       }
     }
+  }
+
+  public long getPrincipalID() {
+    String id = get("principalID");
+    if (id == null) {
+      return 0;
+    }
+    return Long.parseLong(id);
   }
 
   public String get(String key) {

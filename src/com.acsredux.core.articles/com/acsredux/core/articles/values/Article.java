@@ -4,6 +4,7 @@ import com.acsredux.core.members.values.MemberID;
 import java.util.List;
 
 public record Article(
+  ArticleID id,
   MemberID author,
   Title title,
   List<Section> sections,

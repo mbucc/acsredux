@@ -1,3 +1,3 @@
 package com.acsredux.core.articles.values;
 
-public record ArticleID(Long id) {}
+public record ArticleID(Long val) {}

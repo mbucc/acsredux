@@ -173,7 +173,7 @@ testlib/com.acsredux.testlib.jar: \
 checkstyle: fmt
 	if [ "$(SKIP_FMT)" = "N" ]; then \
 		${JAVA} \
-			-jar testlib/checkstyle-9.2.1-all.jar \
+			-jar testlib/checkstyle-9.3-all.jar \
 			-c test/checkstyle.xml \
 			$$(find src -name '*.java'|grep -v module-info) ; \
 	fi

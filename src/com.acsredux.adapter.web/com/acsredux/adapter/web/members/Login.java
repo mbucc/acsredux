@@ -1,12 +1,12 @@
 package com.acsredux.adapter.web.members;
 
 import static com.acsredux.adapter.web.members.Util.addCookie;
-import static com.acsredux.adapter.web.members.Util.addMenu;
 import static com.acsredux.adapter.web.members.Util.createSession;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
+import com.acsredux.adapter.web.views.LoginView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
@@ -17,7 +17,6 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
-import java.util.Map;
 
 class Login {
 
@@ -32,10 +31,8 @@ class Login {
   }
 
   void handleGetLogin(HttpExchange x1, FormData x2) {
-    Map<String, Object> ys = x2.asMap();
-    ys.put("pageTitle", "Login");
-    addMenu(ys, siteInfo);
-    WebUtil.renderForm(template, x1, ys);
+    LoginView view = new LoginView(x1, x2, siteInfo);
+    WebUtil.renderForm(template, x1, view);
   }
 
   void handlePostLogin(HttpExchange x1, FormData x2) {

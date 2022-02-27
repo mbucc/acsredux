@@ -3,6 +3,7 @@ package com.acsredux.adapter.web.members;
 import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.articles.ArticleService;
 import com.acsredux.core.members.MemberService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
@@ -12,14 +13,15 @@ import java.util.List;
 public class MembersHandler extends BaseHandler {
 
   private final Login loginHandler;
-  private final Create createHandler;
+  private final CreateHandler createHandler;
   private final Logout logoutHandler;
-  final Dashboard dashboardHandler;
+  final DashboardHandler dashboardHandler;
 
   public MembersHandler(
     String templateRoot,
     MemberService memberService,
-    AdminService adminService
+    AdminService adminService,
+    ArticleService articleService
   ) {
     File f = new File(templateRoot);
     if (!f.exists()) {
@@ -31,9 +33,10 @@ public class MembersHandler extends BaseHandler {
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.loginHandler = new Login(mf, memberService, siteInfo);
-    this.createHandler = new Create(mf, memberService, siteInfo);
+    this.createHandler = new CreateHandler(mf, memberService, siteInfo);
     this.logoutHandler = new Logout();
-    this.dashboardHandler = new Dashboard(mf, memberService, siteInfo);
+    this.dashboardHandler =
+      new DashboardHandler(mf, memberService, siteInfo, articleService);
   }
 
   @Override
