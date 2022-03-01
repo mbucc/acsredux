@@ -5,6 +5,7 @@ import static java.lang.System.Logger.Level.INFO;
 import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.members.MembersHandler;
+import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
 import com.acsredux.core.articles.ArticleService;
@@ -78,6 +79,12 @@ public class Main {
       server.createContext(
         "/members",
         new MembersHandler(xs.documentRoot, memberService, adminService, articleService)
+      );
+    ctx.setAuthenticator(auth);
+    ctx =
+      server.createContext(
+        "/photo-diary",
+        new PhotoDiaryHandler(xs.documentRoot, articleService, adminService)
       );
     ctx.setAuthenticator(auth);
 

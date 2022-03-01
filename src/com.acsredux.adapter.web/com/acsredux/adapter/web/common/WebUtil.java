@@ -1,7 +1,10 @@
 package com.acsredux.adapter.web.common;
 
+import com.acsredux.core.articles.commands.CreatePhotoDiary;
+import com.acsredux.core.articles.values.DiaryName;
+import com.acsredux.core.articles.values.DiaryYear;
 import com.acsredux.core.base.Command;
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
@@ -73,7 +76,7 @@ public class WebUtil {
       Collections.emptySet()
     );
     return switch (cmd) {
-      case CREATE -> new AddMember(
+      case CREATE -> new CreateMember(
         subject,
         new FirstName(x.get("firstName")),
         new LastName(x.get("lastName")),
@@ -86,6 +89,11 @@ public class WebUtil {
         subject,
         new Email(x.get("email")),
         ClearTextPassword.of(x.get("pwd"))
+      );
+      case CREATE_PHOTO_DIARY -> new CreatePhotoDiary(
+        subject,
+        DiaryYear.parse(x.get("year")),
+        new DiaryName(x.get("name"))
       );
     };
   }

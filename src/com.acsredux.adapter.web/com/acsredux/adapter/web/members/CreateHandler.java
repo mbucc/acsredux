@@ -6,7 +6,7 @@ import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
-import com.acsredux.adapter.web.views.CreateView;
+import com.acsredux.adapter.web.views.CreateMemberView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.MemberService;
@@ -30,7 +30,7 @@ class CreateHandler {
   }
 
   void handleGetCreate(HttpExchange x1, FormData x2) {
-    CreateView view = new CreateView(x1, x2, siteInfo);
+    CreateMemberView view = new CreateMemberView(x1, x2, siteInfo);
     view.lookupMemberCount(memberService);
     WebUtil.renderForm(template, x1, view);
   }

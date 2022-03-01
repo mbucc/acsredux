@@ -1,43 +1,20 @@
 package com.acsredux.core.members.commands;
 
+import static com.acsredux.core.base.Util.req;
+
 import com.acsredux.core.members.values.VerificationToken;
-import java.util.Objects;
+import java.util.ResourceBundle;
 import javax.security.auth.Subject;
 
 /**
  * A VerifyEmail command is submitted when a member clicks the
  * token link we sent in the welcome email.
  */
-public final class VerifyEmail extends BaseMemberCommand {
-
-  final VerificationToken token;
-
-  public VerifyEmail(Subject subject, VerificationToken token) {
-    super(subject);
-    Objects.requireNonNull(token);
-    this.token = token;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    if (!super.equals(o)) return false;
-    VerifyEmail that = (VerifyEmail) o;
-    return token.equals(that.token);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(super.hashCode(), token);
-  }
-
-  @Override
-  public String toString() {
-    return "VerifyEmail{" + "token=" + token + "} " + super.toString();
-  }
-
-  public VerificationToken token() {
-    return token;
+public record VerifyEmail(Subject subject, VerificationToken token)
+  implements BaseMemberCommand {
+  public VerifyEmail {
+    var rb = ResourceBundle.getBundle("MemberErrorMessages");
+    req(subject, "Subject");
+    req(token, rb.getString("token_missing"));
   }
 }

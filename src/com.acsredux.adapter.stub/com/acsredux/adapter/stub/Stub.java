@@ -5,14 +5,15 @@ import static com.acsredux.core.members.MemberService.hashpw;
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
-import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.commands.CreatePhotoDiary;
 import com.acsredux.core.articles.ports.ArticleReader;
 import com.acsredux.core.articles.ports.ArticleWriter;
 import com.acsredux.core.articles.values.Article;
 import com.acsredux.core.articles.values.ArticleID;
+import com.acsredux.core.articles.values.Title;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.MemberAdminReader;
@@ -112,7 +113,7 @@ public final class Stub
   }
 
   @Override
-  public MemberID addMember(AddMember cmd, MemberStatus initialStatus, CreatedOn now) {
+  public MemberID addMember(CreateMember cmd, MemberStatus initialStatus, CreatedOn now) {
     long maxID = members
       .stream()
       .map(Member::id)
@@ -249,15 +250,30 @@ public final class Stub
   }
 
   @Override
-  public ArticleID createArticle(CreateArticleCommand x) {
+  public ArticleID createArticle(CreatePhotoDiary x) {
     long maxArticleID = articles
       .keySet()
       .stream()
       .mapToLong(ArticleID::val)
       .max()
       .orElse(0);
-    ArticleID aid = new ArticleID(maxArticleID + 1);
-    articles.put(aid, x.article());
-    return aid;
+    ArticleID articleID = new ArticleID(maxArticleID + 1);
+    var ys = x.subject().getPrincipals(MemberPrincipal.class);
+    if (ys.isEmpty()) {
+      throw new IllegalStateException("no member principal");
+    }
+    MemberID memberID = ys.stream().findFirst().get().mid();
+    final Title title;
+    //    if (x.
+    //    articles.put(
+    //      articleID,
+    //      new Article(
+    //        articleID,
+    //        memberID,
+    //        new Title(String.format("%d"))
+    //
+    //
+    //    ));
+    return articleID;
   }
 }

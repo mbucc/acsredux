@@ -4,6 +4,6 @@ import com.acsredux.core.articles.values.Article;
 
 record ArticleView(String title, long id) {
   static ArticleView of(Article x) {
-    return new ArticleView(x.title().toString(), x.id().val());
+    return new ArticleView(x.title().val(), x.id().val());
   }
 }

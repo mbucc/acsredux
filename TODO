@@ -1,4 +1,13 @@
 2022-02-18: add article creation to web adapter
+  - put name of year log in admin data
+  - prompt for year
+  - render months
+  - upload photo for each month
+  - add summary (top-level and monthly)
+  - add ability to caption each photo
+
+2022-02-28: login with invalid email shows "not found" instead of error.
+
 
 2022-02-18: article update (policy: only authors can update their articles)
 2022-02-18: article delete (policy: only authors can delete their articles)

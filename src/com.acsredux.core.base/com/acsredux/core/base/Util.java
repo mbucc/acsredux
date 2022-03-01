@@ -15,9 +15,15 @@ public class Util {
     }
   }
 
-  public static void dieIfNull(Object x, String msg) {
+  public static void req(Object x, String msg) {
     if (x == null) {
       throw new ValidationException(msg);
+    }
+  }
+
+  public static void die(Object x, String msg) {
+    if (x == null) {
+      throw new IllegalStateException(msg);
     }
   }
 

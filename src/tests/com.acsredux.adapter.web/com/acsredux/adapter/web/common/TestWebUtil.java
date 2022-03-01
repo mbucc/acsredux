@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.acsredux.core.base.Command;
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class TestWebUtil {
     Command y = WebUtil.form2cmd(TEST_PRINCIPAL, x);
 
     // verify
-    if (y instanceof AddMember y1) {
+    if (y instanceof CreateMember y1) {
       assertEquals(TEST_EMAIL, y1.email());
       assertEquals(TEST_FIRST_NAME, y1.firstName());
       assertEquals(TEST_LAST_NAME, y1.lastName());

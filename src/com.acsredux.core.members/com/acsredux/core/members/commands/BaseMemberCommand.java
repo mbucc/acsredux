@@ -1,13 +1,7 @@
 package com.acsredux.core.members.commands;
 
-import com.acsredux.core.base.BaseCommand;
-import javax.security.auth.Subject;
+import com.acsredux.core.base.Command;
 
-public abstract sealed class BaseMemberCommand
-  extends BaseCommand
-  permits AddMember, LoginMember, VerifyEmail {
-
-  BaseMemberCommand(Subject subject) {
-    super(subject);
-  }
-}
+public sealed interface BaseMemberCommand
+  extends Command
+  permits CreateMember, LoginMember, VerifyEmail {}

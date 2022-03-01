@@ -1,6 +1,6 @@
 package com.acsredux.core.auth;
 
-import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.commands.CreatePhotoDiary;
 import com.acsredux.core.auth.values.Entitlement;
 import com.acsredux.core.auth.values.Guard;
 import com.acsredux.core.auth.values.SecurityPolicyDTO;
@@ -40,7 +40,7 @@ public class SecurityPolicyProvider implements SecurityPolicy {
   static boolean isCreateArticle(Method x) {
     return (
       x.getParameterCount() > 0 &&
-      CreateArticleCommand.class.isAssignableFrom(x.getParameterTypes()[0])
+      CreatePhotoDiary.class.isAssignableFrom(x.getParameterTypes()[0])
     );
   }
 

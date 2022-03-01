@@ -1,13 +1,5 @@
 package com.acsredux.core.articles.commands;
 
-import com.acsredux.core.base.BaseCommand;
-import javax.security.auth.Subject;
+import com.acsredux.core.base.Command;
 
-public abstract sealed class BaseArticleCommand
-  extends BaseCommand
-  permits CreateArticleCommand {
-
-  public BaseArticleCommand(Subject subject) {
-    super(subject);
-  }
-}
+public sealed interface BaseArticleCommand extends Command permits CreatePhotoDiary {}

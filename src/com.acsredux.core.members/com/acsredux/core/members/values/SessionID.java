@@ -1,10 +1,10 @@
 package com.acsredux.core.members.values;
 
-import static com.acsredux.core.base.Util.dieIfNull;
+import static com.acsredux.core.base.Util.req;
 
 public record SessionID(String val) {
   public SessionID {
-    dieIfNull(val, "session ID");
+    req(val, "session ID");
   }
 
   public static SessionID of(String x) {

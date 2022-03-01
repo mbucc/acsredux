@@ -1,0 +1,25 @@
+{{> ../head}}
+
+{{#error}}
+<p style="color: red">{{{error}}}</p>
+{{/error}}
+
+<form action="/photo-diary/create" method="post">
+
+<p>
+<label for="year">Year to create diary for:</label><br>
+<input id="year" type="text" name="year"{{#year}} value="{{year}}"{{/year}} required />
+
+<p>
+<label for="name">Name of diary (optional):</label><br>
+<input id="name" type="text" name="name"{{#name}} value="{{name}}"{{/name}} /><br>
+
+<p>
+<input type="submit" value="Create new photo diary" />
+
+<input type="hidden" name="command" value="create_photo_diary" />
+
+</form>
+
+
+{{> ../tail}}

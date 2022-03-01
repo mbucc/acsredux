@@ -4,7 +4,7 @@ import static com.acsredux.core.members.PasswordUtil.hashpw;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
-import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.commands.CreatePhotoDiary;
 import com.acsredux.core.articles.events.ArticleCreatedEvent;
 import com.acsredux.core.articles.values.*;
 import com.acsredux.core.members.commands.*;
@@ -70,7 +70,7 @@ public class TestData {
     TEST_SECOND_LOGIN_TIME,
     false
   );
-  public static final AddMember TEST_ADD_MEMBER_CMD = new AddMember(
+  public static final CreateMember TEST_ADD_MEMBER_CMD = new CreateMember(
     TEST_SUBJECT,
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
@@ -79,7 +79,7 @@ public class TestData {
     TEST_CLEAR_TEXT_PASSWORD,
     TEST_ZIP_CODE
   );
-  public static final AddMember TEST_ADD_MEMBER2_CMD = new AddMember(
+  public static final CreateMember TEST_ADD_MEMBER2_CMD = new CreateMember(
     TEST_SUBJECT,
     TEST_FIRST_NAME2,
     TEST_LAST_NAME2,
@@ -128,17 +128,21 @@ public class TestData {
   public static final ArticleID TEST_ARTICLE_ID = new ArticleID(123L);
   public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
   public static final Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
+  public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
+  public static final DiaryName TEST_DIARY_NAME = null;
+  public static final Title TEST_TITLE = new Title("A Test Title");
   public static final Article TEST_ARTICLE = new Article(
     TEST_ARTICLE_ID,
     TEST_MEMBER_ID,
-    Title.of("A Test Title"),
+    TEST_TITLE,
     List.of(TEST_SECTION),
     new PublishedDate(Instant.now())
   );
 
-  public static final CreateArticleCommand TEST_CREATE_ARTICLE_COMMAND = new CreateArticleCommand(
+  public static final CreatePhotoDiary TEST_CREATE_ARTICLE_COMMAND = new CreatePhotoDiary(
     TEST_SUBJECT,
-    TEST_ARTICLE
+    TEST_DIARY_YEAR,
+    TEST_DIARY_NAME
   );
   public static final ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
     TEST_CREATE_ARTICLE_COMMAND,

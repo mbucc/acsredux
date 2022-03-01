@@ -1,5 +1,5 @@
 200
-Content-Length: 519
+Content-Length: 534
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ Content-type: text/html; charset= UTF-8
 <ol>
   <li><a href="/articles/123">A Test Title</a></li>
 </ol>
-<a href="/articles/create">Create a new article</a>
+<a href="/photo-diary/create">Create a photo diary for a year.</a>
 
   </body>
 </html>

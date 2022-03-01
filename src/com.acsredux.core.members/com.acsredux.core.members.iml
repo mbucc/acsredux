@@ -16,5 +16,6 @@
     <orderEntry type="module" module-name="com.acsredux.core.admin" exported="" />
     <orderEntry type="module" module-name="com.acsredux.core.base" exported="" />
     <orderEntry type="library" scope="TEST" name="testlib" level="project" />
+    <orderEntry type="library" name="lombok-1.18.22" level="project" />
   </component>
 </module>

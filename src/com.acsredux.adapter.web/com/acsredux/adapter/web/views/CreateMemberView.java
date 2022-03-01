@@ -5,7 +5,7 @@ import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.members.MemberService;
 import com.sun.net.httpserver.HttpExchange;
 
-public class CreateView extends BaseView {
+public class CreateMemberView extends BaseView {
 
   int memberCount;
   final String email;
@@ -15,7 +15,7 @@ public class CreateView extends BaseView {
   final String pwd1;
   final String pwd2;
 
-  public CreateView(HttpExchange x1, FormData x2, SiteInfo x3) {
+  public CreateMemberView(HttpExchange x1, FormData x2, SiteInfo x3) {
     super(x1, x2, x3, "Create Membership");
     this.email = x2.get("email");
     this.firstName = x2.get("firstName");
@@ -25,7 +25,7 @@ public class CreateView extends BaseView {
     this.pwd2 = x2.get("pwd2");
   }
 
-  public CreateView lookupMemberCount(MemberService x) {
+  public CreateMemberView lookupMemberCount(MemberService x) {
     this.memberCount = x.activeMembers();
     return this;
   }

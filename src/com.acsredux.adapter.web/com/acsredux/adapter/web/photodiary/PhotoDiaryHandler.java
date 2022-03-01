@@ -1,21 +1,21 @@
-package com.acsredux.adapter.web.articles;
+package com.acsredux.adapter.web.photodiary;
 
 import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.members.MemberService;
+import com.acsredux.core.articles.ArticleService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import java.io.File;
 import java.util.List;
 
-public class ArticlesHandler extends BaseHandler {
+public class PhotoDiaryHandler extends BaseHandler {
 
   private final CreateHandler createHandler;
 
-  public ArticlesHandler(
+  public PhotoDiaryHandler(
     String templateRoot,
-    MemberService memberService,
+    ArticleService articleService,
     AdminService adminService
   ) {
     File f = new File(templateRoot);
@@ -27,17 +27,14 @@ public class ArticlesHandler extends BaseHandler {
     }
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
-    this.createHandler = new CreateHandler(mf, memberService, siteInfo);
+    this.createHandler = new CreateHandler(mf, articleService, siteInfo);
   }
 
   @Override
   protected List<Route> getRoutes() {
     return List.of(
-      new Route(createHandler::isGetCreateHandler, createHandler::handleGetCreateHandler),
-      new Route(
-        createHandler::isPostCreateHandler,
-        createHandler::handlePostCreateHandler
-      )
+      new Route(createHandler::isGetCreate, createHandler::handleGetCreate),
+      new Route(createHandler::isPostCreate, createHandler::handlePostCreate)
     );
   }
 }

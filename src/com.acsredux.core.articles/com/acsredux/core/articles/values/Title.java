@@ -1,16 +1,14 @@
 package com.acsredux.core.articles.values;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.acsredux.core.base.ValidationException;
 
-public record Title(List<Word> words) {
-  public static Title of(String x) {
-    return new Title(Arrays.stream(x.split(" ")).map(Word::new).toList());
+public record Title(String val) {
+  public Title {
+    if (val.isBlank()) {
+      throw new ValidationException("Title cannot be empty");
+    }
   }
-
-  @Override
-  public String toString() {
-    return words.stream().map(Word::toString).collect(Collectors.joining(" "));
+  public static Title of(String x) {
+    return x == null ? null : new Title(x);
   }
 }

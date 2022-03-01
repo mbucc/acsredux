@@ -2,7 +2,7 @@ package com.acsredux.core.articles.services;
 
 import com.acsredux.core.articles.ArticleService;
 import com.acsredux.core.articles.commands.BaseArticleCommand;
-import com.acsredux.core.articles.commands.CreateArticleCommand;
+import com.acsredux.core.articles.commands.CreatePhotoDiary;
 import com.acsredux.core.articles.events.ArticleCreatedEvent;
 import com.acsredux.core.articles.ports.ArticleReader;
 import com.acsredux.core.articles.ports.ArticleWriter;
@@ -35,14 +35,14 @@ public class ArticleServiceProvider implements ArticleService {
 
   @Override
   public List<Event> handle(BaseArticleCommand x) {
-    if (x instanceof CreateArticleCommand x1) {
+    if (x instanceof CreatePhotoDiary x1) {
       return handle(x1);
     } else {
       throw new IllegalStateException("invalid command " + x);
     }
   }
 
-  private List<Event> handle(CreateArticleCommand x) {
+  private List<Event> handle(CreatePhotoDiary x) {
     ArticleID y = writer.createArticle(x);
     return List.of(new ArticleCreatedEvent(x, y));
   }

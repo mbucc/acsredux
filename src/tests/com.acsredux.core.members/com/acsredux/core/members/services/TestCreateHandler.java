@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.ValidationException;
-import com.acsredux.core.members.commands.AddMember;
 import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
@@ -19,8 +18,6 @@ import java.time.InstantSource;
 import java.util.ResourceBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 class TestCreateHandler {
 
@@ -42,19 +39,6 @@ class TestCreateHandler {
     MemberNotifier notifier = (MemberNotifier) MockProxy.of(new MockMemberNotifier());
     InstantSource clock = InstantSource.fixed(this.clockTime.val());
     this.service = new CreateHandler(reader, adminReader, writer, notifier, clock);
-  }
-
-  @ParameterizedTest
-  @EnumSource
-  void requiredRecordFields(RequiredFieldsTestData x) {
-    // execute
-    var e = assertThrows(
-      ValidationException.class,
-      () -> service.validateAddMember(x.cmd)
-    );
-
-    // validate
-    assertEquals(x.expected, e.getMessage());
   }
 
   @Test
@@ -144,52 +128,5 @@ class TestCreateHandler {
     //    );
     //    then(notifier).should().memberAdded(memberAdded, TEST_SITE_INFO);
     //    then(notifier).shouldHaveNoMoreInteractions();
-  }
-
-  private enum RequiredFieldsTestData {
-    EMAIL(
-      new AddMember(
-        TEST_SUBJECT,
-        TEST_FIRST_NAME,
-        TEST_LAST_NAME,
-        null,
-        TEST_CLEAR_TEXT_PASSWORD,
-        TEST_CLEAR_TEXT_PASSWORD,
-        TEST_ZIP_CODE
-      ),
-      MSGS.getString("email_missing")
-    ),
-    PASSWORD1(
-      new AddMember(
-        TEST_SUBJECT,
-        TEST_FIRST_NAME,
-        TEST_LAST_NAME,
-        TEST_EMAIL,
-        null,
-        TEST_CLEAR_TEXT_PASSWORD,
-        TEST_ZIP_CODE
-      ),
-      MSGS.getString("password1_missing")
-    ),
-    PASSWORD2(
-      new AddMember(
-        TEST_SUBJECT,
-        TEST_FIRST_NAME,
-        TEST_LAST_NAME,
-        TEST_EMAIL,
-        TEST_CLEAR_TEXT_PASSWORD,
-        null,
-        TEST_ZIP_CODE
-      ),
-      MSGS.getString("password2_missing")
-    );
-
-    final AddMember cmd;
-    final String expected;
-
-    RequiredFieldsTestData(AddMember cmd, String expected) {
-      this.cmd = cmd;
-      this.expected = expected;
-    }
   }
 }

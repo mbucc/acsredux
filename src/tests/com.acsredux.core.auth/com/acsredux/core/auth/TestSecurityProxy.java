@@ -4,7 +4,6 @@ import static com.acsredux.lib.testutil.TestData.TEST_SUBJECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.acsredux.core.base.BaseCommand;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.Event;
 import com.acsredux.core.members.MemberService;
@@ -29,10 +28,17 @@ public class TestSecurityProxy {
     }
   }
 
-  static class MockCommand extends BaseCommand {
+  static class MockCommand implements Command {
+
+    Subject subject;
 
     public MockCommand(Subject subject) {
-      super(subject);
+      this.subject = subject;
+    }
+
+    @Override
+    public Subject subject() {
+      return this.subject;
     }
   }
 
@@ -90,7 +96,7 @@ public class TestSecurityProxy {
     assertEquals(
       "Subject: Principal: MemberPrincipal[mid=MemberID[val=123]] " +
       "denied access to " +
-      "com.acsredux.core.members.MemberService.handle(AddMember x1)",
+      "com.acsredux.core.members.MemberService.handle(CreateMember x1)",
       y.getMessage()
     );
   }

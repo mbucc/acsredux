@@ -1,0 +1,42 @@
+200
+Content-Length: 706
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Create Article</title>
+  </head>
+  <body>
+    <p>
+     <a href="/members/login">log in</a>
+     <br /><a href="/">home</a>
+     <br /><a href="http://example.com/suggestions">suggestions</a>
+    </p>
+
+    <h1>Create Article</h1>
+
+
+
+<form action="/photo-diary/create" method="post">
+
+<p>
+<label for="year">Year to create diary for:</label><br>
+<input id="year" type="text" name="year" required />
+
+<p>
+<label for="name">Name of diary (optional):</label><br>
+<input id="name" type="text" name="name" /><br>
+
+<p>
+<input type="submit" value="Create new photo diary" />
+
+<input type="hidden" name="command" value="create_photo_diary" />
+
+</form>
+
+
+  </body>
+</html>
+

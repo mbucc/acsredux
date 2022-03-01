@@ -1,10 +1,9 @@
 package com.acsredux.core.members.services;
 
-import static com.acsredux.core.base.Util.dieIfNull;
 import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
 
 import com.acsredux.core.base.ValidationException;
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
@@ -39,11 +38,7 @@ public final class CreateHandler {
     this.msgs = ResourceBundle.getBundle("MemberErrorMessages");
   }
 
-  Accum validateAddMember(AddMember x) {
-    dieIfNull(x.email(), msgs.getString("email_missing"));
-    dieIfNull(x.password1(), msgs.getString("password1_missing"));
-    dieIfNull(x.password2(), msgs.getString("password2_missing"));
-
+  Accum validateAddMember(CreateMember x) {
     if (!x.password1().equals(x.password2())) {
       throw new ValidationException(msgs.getString("password_mismatch"));
     }
@@ -94,18 +89,18 @@ public final class CreateHandler {
 
   private static class Accum {
 
-    final AddMember cmd;
+    final CreateMember cmd;
     MemberID newMemberID;
     VerificationToken token;
     final CreatedOn createdOn;
 
-    Accum(AddMember cmd, CreatedOn createdOn) {
+    Accum(CreateMember cmd, CreatedOn createdOn) {
       this.cmd = cmd;
       this.createdOn = createdOn;
     }
   }
 
-  MemberAdded handle(AddMember x) {
+  MemberAdded handle(CreateMember x) {
     return Optional
       .of(x)
       .map(this::validateAddMember)

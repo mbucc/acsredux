@@ -3,14 +3,14 @@ package com.acsredux.core.members.services;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_VERIFICATION_TOKEN;
 
-import com.acsredux.core.members.commands.AddMember;
+import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
 
 public class MockMemberWriter implements MemberWriter {
 
   @Override
-  public MemberID addMember(AddMember cmd, MemberStatus initialStatus, CreatedOn now) {
+  public MemberID addMember(CreateMember cmd, MemberStatus initialStatus, CreatedOn now) {
     return TEST_MEMBER_ID;
   }
 
