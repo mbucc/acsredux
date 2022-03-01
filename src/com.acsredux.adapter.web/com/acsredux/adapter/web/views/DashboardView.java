@@ -3,7 +3,7 @@ package com.acsredux.adapter.web.views;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.members.Util;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.articles.ArticleService;
+import com.acsredux.core.content.ContentService;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.MemberID;
@@ -49,7 +49,7 @@ public class DashboardView extends BaseView {
     return this;
   }
 
-  public DashboardView lookupMemberArticles(ArticleService x) {
+  public DashboardView lookupMemberArticles(ContentService x) {
     this.articles =
       x
         .findArticlesByMemberID(new MemberID(this.memberID))

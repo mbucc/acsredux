@@ -4,7 +4,7 @@ import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
-import com.acsredux.core.articles.ArticleService;
+import com.acsredux.core.content.ContentService;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockArticleService;
 import com.acsredux.lib.testutil.MockMemberService;
@@ -19,13 +19,13 @@ class TestMemberLogin {
   void setup() {
     MockMemberService memberService = new MockMemberService();
     MockAdminService adminService = new MockAdminService();
-    ArticleService articleService = new MockArticleService();
+    ContentService contentService = new MockArticleService();
     handler =
       new MembersHandler(
         projectRoot() + "/web/template",
         memberService,
         adminService,
-        articleService
+        contentService
       );
   }
 

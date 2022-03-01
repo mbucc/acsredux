@@ -1,10 +1,10 @@
 package com.acsredux.core.auth;
 
-import com.acsredux.core.articles.commands.CreatePhotoDiary;
 import com.acsredux.core.auth.values.Entitlement;
 import com.acsredux.core.auth.values.Guard;
 import com.acsredux.core.auth.values.SecurityPolicyDTO;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.members.values.MemberPrincipal;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

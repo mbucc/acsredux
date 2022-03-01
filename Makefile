@@ -75,6 +75,7 @@ mlib/%@1.jar: compile resources
 .PHONY: resources
 resources: \
 		classes/com.acsredux.core.members/MemberErrorMessages.properties \
+		classes/com.acsredux.core.content/ContentErrorMessages.properties \
 		classes/com.acsredux.core.auth/security-policy.json
 
 classes/%Messages.properties: src/%Messages.properties

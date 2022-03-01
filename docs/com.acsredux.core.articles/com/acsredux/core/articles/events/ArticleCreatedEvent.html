@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-02-27">
-<meta name="description" content="declaration: module: com.acsredux.core.articles, package: com.acsredux.core.articles.events, record: ArticleCreatedEvent">
+<meta name="description" content="declaration: module: com.acsredux.core.content, package: com.acsredux.core.content.events, record: ArticleCreatedEvent">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -69,13 +69,13 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="module-label-in-type">Module</span>&nbsp;<a href="../../../../../module-summary.html">com.acsredux.core.articles</a></div>
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">com.acsredux.core.articles.events</a></div>
+<div class="sub-title"><span class="module-label-in-type">Module</span>&nbsp;<a href="../../../../../module-summary.html">com.acsredux.core.content</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">com.acsredux.core.content.events</a></div>
 <h1 title="Record Class ArticleCreatedEvent" class="title">Record Class ArticleCreatedEvent</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">java.lang.Record</a>
-<div class="inheritance">com.acsredux.core.articles.events.ArticleCreatedEvent</div>
+<div class="inheritance">com.acsredux.core.content.events.ArticleCreatedEvent</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -84,7 +84,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../../../../com.acsredux.core.base/com/acsredux/core/base/Event.html" title="interface in com.acsredux.core.base">Event</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ArticleCreatedEvent</span>(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.articles.commands">CreateArticleCommand</a>&nbsp;cmd, <a href="../values/ArticleID.html" title="class in com.acsredux.core.articles.values">ArticleID</a>&nbsp;id)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ArticleCreatedEvent</span>(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.content.commands">CreateArticleCommand</a>&nbsp;cmd, <a href="../values/ArticleID.html" title="class in com.acsredux.core.content.values">ArticleID</a>&nbsp;id)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a>
 implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/base/Event.html" title="interface in com.acsredux.core.base">Event</a></span></div>
 </section>
@@ -98,8 +98,8 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.acsredux.core.articles.commands.CreateArticleCommand,com.acsredux.core.articles.values.ArticleID)" class="member-name-link">ArticleCreatedEvent</a><wbr>(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.articles.commands">CreateArticleCommand</a>&nbsp;cmd,
- <a href="../values/ArticleID.html" title="class in com.acsredux.core.articles.values">ArticleID</a>&nbsp;id)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.acsredux.core.content.commands.CreateArticleCommand,com.acsredux.core.content.values.ArticleID)" class="member-name-link">ArticleCreatedEvent</a><wbr>(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.content.commands">CreateArticleCommand</a>&nbsp;cmd,
+ <a href="../values/ArticleID.html" title="class in com.acsredux.core.content.values">ArticleID</a>&nbsp;id)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>ArticleCreatedEvent</code> record class.</div>
 </div>
@@ -117,7 +117,7 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.articles.commands">CreateArticleCommand</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.content.commands">CreateArticleCommand</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cmd()" class="member-name-link">cmd</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>cmd</code> record component.</div>
@@ -132,7 +132,7 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../values/ArticleID.html" title="class in com.acsredux.core.articles.values">ArticleID</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../values/ArticleID.html" title="class in com.acsredux.core.content.values">ArticleID</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#id()" class="member-name-link">id</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>id</code> record component.</div>
@@ -160,10 +160,10 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(com.acsredux.core.articles.commands.CreateArticleCommand,com.acsredux.core.articles.values.ArticleID)">
+<section class="detail" id="&lt;init&gt;(com.acsredux.core.content.commands.CreateArticleCommand,com.acsredux.core.content.values.ArticleID)">
 <h3>ArticleCreatedEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ArticleCreatedEvent</span><wbr><span class="parameters">(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.articles.commands">CreateArticleCommand</a>&nbsp;cmd,
- <a href="../values/ArticleID.html" title="class in com.acsredux.core.articles.values">ArticleID</a>&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ArticleCreatedEvent</span><wbr><span class="parameters">(<a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.content.commands">CreateArticleCommand</a>&nbsp;cmd,
+ <a href="../values/ArticleID.html" title="class in com.acsredux.core.content.values">ArticleID</a>&nbsp;id)</span></div>
 <div class="block">Creates an instance of a <code>ArticleCreatedEvent</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -224,7 +224,7 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <li>
 <section class="detail" id="cmd()">
 <h3>cmd</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.articles.commands">CreateArticleCommand</a></span>&nbsp;<span class="element-name">cmd</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../commands/CreateArticleCommand.html" title="class in com.acsredux.core.content.commands">CreateArticleCommand</a></span>&nbsp;<span class="element-name">cmd</span>()</div>
 <div class="block">Returns the value of the <code>cmd</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -235,7 +235,7 @@ implements <a href="../../../../../../com.acsredux.core.base/com/acsredux/core/b
 <li>
 <section class="detail" id="id()">
 <h3>id</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../values/ArticleID.html" title="class in com.acsredux.core.articles.values">ArticleID</a></span>&nbsp;<span class="element-name">id</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../values/ArticleID.html" title="class in com.acsredux.core.content.values">ArticleID</a></span>&nbsp;<span class="element-name">id</span>()</div>
 <div class="block">Returns the value of the <code>id</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>

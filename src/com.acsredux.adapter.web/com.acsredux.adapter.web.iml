@@ -17,6 +17,6 @@
     <orderEntry type="module" module-name="com.acsredux.core.members" />
     <orderEntry type="module" module-name="com.acsredux.adapter.stub" />
     <orderEntry type="module" module-name="com.acsredux.core.auth" />
-    <orderEntry type="module" module-name="com.acsredux.core.articles" />
+    <orderEntry type="module" module-name="com.acsredux.core.content" />
   </component>
 </module>

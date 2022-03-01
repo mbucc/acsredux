@@ -5,8 +5,8 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.DashboardView;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.articles.ArticleService;
 import com.acsredux.core.base.ValidationException;
+import com.acsredux.core.content.ContentService;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.values.AnonymousPrincipal;
@@ -26,14 +26,14 @@ import javax.security.auth.Subject;
 class DashboardHandler {
 
   private final MemberService memberService;
-  private final ArticleService articleService;
+  private final ContentService contentService;
   private final SiteInfo siteInfo;
   private final Mustache template;
 
-  DashboardHandler(MustacheFactory mf, MemberService x1, SiteInfo x2, ArticleService x3) {
+  DashboardHandler(MustacheFactory mf, MemberService x1, SiteInfo x2, ContentService x3) {
     this.memberService = x1;
     this.siteInfo = x2;
-    this.articleService = x3;
+    this.contentService = x3;
     this.template = mf.compile("members/dashboard.html");
   }
 
@@ -41,7 +41,7 @@ class DashboardHandler {
     Result
       .ok(new DashboardView(x1, x2, siteInfo, "Member Dashboard"))
       .map(o -> o.lookupMemberInfo(memberService))
-      .map(o -> o.lookupMemberArticles(articleService))
+      .map(o -> o.lookupMemberArticles(contentService))
       .map(o -> WebUtil.renderForm(template, x1, o))
       .get();
   }

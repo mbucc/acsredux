@@ -1,10 +1,10 @@
 package com.acsredux.core.auth;
 
 import com.acsredux.core.admin.AdminService;
-import com.acsredux.core.articles.ArticleService;
 import com.acsredux.core.base.AuthenticationException;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
+import com.acsredux.core.content.ContentService;
 import com.acsredux.core.members.MemberService;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -37,8 +37,8 @@ public class SecurityProxy implements InvocationHandler {
     return (AdminService) getProxy(x1, x2);
   }
 
-  public static ArticleService of(ArticleService x1, SecurityPolicy x2) {
-    return (ArticleService) getProxy(x1, x2);
+  public static ContentService of(ContentService x1, SecurityPolicy x2) {
+    return (ContentService) getProxy(x1, x2);
   }
 
   @Override

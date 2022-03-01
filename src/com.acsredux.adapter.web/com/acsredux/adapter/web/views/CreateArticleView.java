@@ -7,8 +7,13 @@ import java.util.StringJoiner;
 
 public class CreateArticleView extends BaseView {
 
+  final String year;
+  final String name;
+
   public CreateArticleView(HttpExchange x1, FormData x2, SiteInfo x3) {
     super(x1, x2, x3, "Create Article");
+    this.year = x2.get("year");
+    this.name = x2.get("name");
   }
 
   @Override

@@ -4,9 +4,16 @@ import static com.acsredux.core.members.PasswordUtil.hashpw;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
-import com.acsredux.core.articles.commands.CreatePhotoDiary;
-import com.acsredux.core.articles.events.ArticleCreatedEvent;
-import com.acsredux.core.articles.values.*;
+import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.events.PhotoDiaryCreated;
+import com.acsredux.core.content.values.Content;
+import com.acsredux.core.content.values.ContentID;
+import com.acsredux.core.content.values.DiaryName;
+import com.acsredux.core.content.values.DiaryYear;
+import com.acsredux.core.content.values.Image;
+import com.acsredux.core.content.values.PublishedDate;
+import com.acsredux.core.content.values.Section;
+import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.commands.*;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
@@ -125,27 +132,31 @@ public class TestData {
     Duration.ofDays(365)
   );
 
-  public static final ArticleID TEST_ARTICLE_ID = new ArticleID(123L);
+  public static final ContentID TEST_CONTENT_ID = new ContentID(123L);
   public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
-  public static final Section TEST_SECTION = new Section(List.of(TEST_IMAGE));
+  public static final Title TEST_SECTION_TITLE = new Title("A Test Section Title");
+  public static final Section TEST_SECTION = new Section(
+    TEST_SECTION_TITLE,
+    List.of(TEST_IMAGE)
+  );
   public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
   public static final DiaryName TEST_DIARY_NAME = null;
   public static final Title TEST_TITLE = new Title("A Test Title");
-  public static final Article TEST_ARTICLE = new Article(
-    TEST_ARTICLE_ID,
+  public static final Content TEST_PHOTO_DIARY = new Content(
+    TEST_CONTENT_ID,
     TEST_MEMBER_ID,
     TEST_TITLE,
     List.of(TEST_SECTION),
     new PublishedDate(Instant.now())
   );
 
-  public static final CreatePhotoDiary TEST_CREATE_ARTICLE_COMMAND = new CreatePhotoDiary(
+  public static final CreatePhotoDiary TEST_CREATE_PHOTO_DIARY_COMMAND = new CreatePhotoDiary(
     TEST_SUBJECT,
     TEST_DIARY_YEAR,
     TEST_DIARY_NAME
   );
-  public static final ArticleCreatedEvent TEST_ARTICLE_CREATED_EVENT = new ArticleCreatedEvent(
-    TEST_CREATE_ARTICLE_COMMAND,
-    TEST_ARTICLE_ID
+  public static final PhotoDiaryCreated TEST_PHOTO_DIARY_CREATED = new PhotoDiaryCreated(
+    TEST_CREATE_PHOTO_DIARY_COMMAND,
+    TEST_CONTENT_ID
   );
 }

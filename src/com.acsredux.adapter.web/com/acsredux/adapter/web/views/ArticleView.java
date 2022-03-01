@@ -1,9 +1,9 @@
 package com.acsredux.adapter.web.views;
 
-import com.acsredux.core.articles.values.Article;
+import com.acsredux.core.content.values.Content;
 
 record ArticleView(String title, long id) {
-  static ArticleView of(Article x) {
+  static ArticleView of(Content x) {
     return new ArticleView(x.title().val(), x.id().val());
   }
 }

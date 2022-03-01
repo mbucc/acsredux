@@ -53,10 +53,10 @@ public class MockHttpExchange extends HttpExchange {
     this(url, requestMethod, DEFAULT_REQUEST_BODY);
   }
 
-  public MockHttpExchange(String url, String requestMethod, String body) {
+  public MockHttpExchange(String url, String requestMethod, String requestBody) {
     this.url = url;
     this.requestMethod = requestMethod;
-    this.requestBody = body;
+    this.requestBody = requestBody;
   }
 
   public void setPrincipal(HttpPrincipal x) {

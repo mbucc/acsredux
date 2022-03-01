@@ -6,6 +6,7 @@ module com.acsredux.adapter.web {
   requires com.github.mustachejava;
   requires com.github.leopard2a5.resultflow;
   requires com.acsredux.core.auth;
+  requires com.acsredux.core.content;
 
   exports com.acsredux.adapter.web ;
   opens com.acsredux.adapter.web to com.github.mustachejava;

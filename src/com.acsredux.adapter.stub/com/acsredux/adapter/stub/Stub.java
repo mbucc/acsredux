@@ -5,14 +5,16 @@ import static com.acsredux.core.members.MemberService.hashpw;
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
-import com.acsredux.core.articles.commands.CreatePhotoDiary;
-import com.acsredux.core.articles.ports.ArticleReader;
-import com.acsredux.core.articles.ports.ArticleWriter;
-import com.acsredux.core.articles.values.Article;
-import com.acsredux.core.articles.values.ArticleID;
-import com.acsredux.core.articles.values.Title;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
+import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.ports.ContentReader;
+import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.values.Content;
+import com.acsredux.core.content.values.ContentID;
+import com.acsredux.core.content.values.PublishedDate;
+import com.acsredux.core.content.values.Section;
+import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberAdded;
@@ -26,11 +28,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Stub
   implements
@@ -39,21 +43,21 @@ public final class Stub
     MemberNotifier,
     MemberAdminReader,
     AdminReader,
-    ArticleReader,
-    ArticleWriter {
+    ContentReader,
+    ContentWriter {
 
   private static final Stub INSTANCE = new Stub();
 
   private final List<Member> members;
   private final Map<VerificationToken, MemberID> tokens;
   private final Map<SessionID, MemberID> sessions;
-  private final Map<ArticleID, Article> articles;
+  private final Map<ContentID, Content> content;
 
   private Stub() {
     tokens = new HashMap<>();
     sessions = new HashMap<>();
     members = new ArrayList<>();
-    articles = new HashMap<>();
+    content = new HashMap<>();
     members.add(
       new Member(
         new MemberID(1L),
@@ -236,13 +240,13 @@ public final class Stub
   }
 
   @Override
-  public Article getArticle(ArticleID x) {
-    return articles.get(x);
+  public Content getContent(ContentID x) {
+    return content.get(x);
   }
 
   @Override
-  public List<Article> findArticlesByMemberID(MemberID x) {
-    return articles
+  public List<Content> findContentByMemberID(MemberID x) {
+    return content
       .values()
       .stream()
       .filter(o -> o.author().equals(x))
@@ -250,30 +254,61 @@ public final class Stub
   }
 
   @Override
-  public ArticleID createArticle(CreatePhotoDiary x) {
-    long maxArticleID = articles
+  public ContentID createContent(CreatePhotoDiary x) {
+    long maxArticleID = content
       .keySet()
       .stream()
-      .mapToLong(ArticleID::val)
+      .mapToLong(ContentID::val)
       .max()
       .orElse(0);
-    ArticleID articleID = new ArticleID(maxArticleID + 1);
+    ContentID contentID = new ContentID(maxArticleID + 1);
+
     var ys = x.subject().getPrincipals(MemberPrincipal.class);
     if (ys.isEmpty()) {
       throw new IllegalStateException("no member principal");
     }
     MemberID memberID = ys.stream().findFirst().get().mid();
+
+    content.put(
+      contentID,
+      new Content(
+        contentID,
+        memberID,
+        getTitle(x),
+        getSections(x),
+        new PublishedDate(Instant.now())
+      )
+    );
+    return contentID;
+  }
+
+  private List<Section> getSections(CreatePhotoDiary x) {
+    return Stream
+      .of(
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      )
+      .map(o -> new Section(new Title(o), Collections.emptyList()))
+      .collect(Collectors.toList());
+  }
+
+  private Title getTitle(CreatePhotoDiary x) {
     final Title title;
-    //    if (x.
-    //    articles.put(
-    //      articleID,
-    //      new Article(
-    //        articleID,
-    //        memberID,
-    //        new Title(String.format("%d"))
-    //
-    //
-    //    ));
-    return articleID;
+    if (x.name() == null || x.name().val().isBlank()) {
+      title = new Title(String.valueOf(x.year().val()));
+    } else {
+      title = new Title(String.format("%s - %s", x.year().val(), x.name().val()));
+    }
+    return title;
   }
 }

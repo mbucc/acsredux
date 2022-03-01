@@ -1,9 +1,9 @@
 package com.acsredux.adapter.web.common;
 
-import com.acsredux.core.articles.commands.CreatePhotoDiary;
-import com.acsredux.core.articles.values.DiaryName;
-import com.acsredux.core.articles.values.DiaryYear;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.values.DiaryName;
+import com.acsredux.core.content.values.DiaryYear;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.values.*;

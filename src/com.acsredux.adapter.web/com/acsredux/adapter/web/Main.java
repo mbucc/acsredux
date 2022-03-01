@@ -8,12 +8,12 @@ import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
-import com.acsredux.core.articles.ArticleService;
-import com.acsredux.core.articles.ArticleServiceFactory;
 import com.acsredux.core.auth.SecurityPolicy;
 import com.acsredux.core.auth.SecurityPolicyProvider;
 import com.acsredux.core.auth.SecurityProxy;
 import com.acsredux.core.base.Util;
+import com.acsredux.core.content.ContentService;
+import com.acsredux.core.content.ContentServiceFactory;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
 import com.sun.net.httpserver.HttpContext;
@@ -51,8 +51,8 @@ public class Main {
       AdminServiceFactory.getAdminService(stub, tz),
       policy
     );
-    ArticleService articleService = SecurityProxy.of(
-      ArticleServiceFactory.getArticleService(stub, stub, tz),
+    ContentService contentService = SecurityProxy.of(
+      ContentServiceFactory.getArticleService(stub, stub, tz),
       policy
     );
     MemberService.passwordSaltOrDie();
@@ -78,13 +78,13 @@ public class Main {
     ctx =
       server.createContext(
         "/members",
-        new MembersHandler(xs.documentRoot, memberService, adminService, articleService)
+        new MembersHandler(xs.documentRoot, memberService, adminService, contentService)
       );
     ctx.setAuthenticator(auth);
     ctx =
       server.createContext(
         "/photo-diary",
-        new PhotoDiaryHandler(xs.documentRoot, articleService, adminService)
+        new PhotoDiaryHandler(xs.documentRoot, contentService, adminService)
       );
     ctx.setAuthenticator(auth);
 

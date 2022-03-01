@@ -3,7 +3,7 @@ package com.acsredux.adapter.web.photodiary;
 import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.articles.ArticleService;
+import com.acsredux.core.content.ContentService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import java.io.File;
@@ -15,7 +15,7 @@ public class PhotoDiaryHandler extends BaseHandler {
 
   public PhotoDiaryHandler(
     String templateRoot,
-    ArticleService articleService,
+    ContentService contentService,
     AdminService adminService
   ) {
     File f = new File(templateRoot);
@@ -27,7 +27,7 @@ public class PhotoDiaryHandler extends BaseHandler {
     }
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
-    this.createHandler = new CreateHandler(mf, articleService, siteInfo);
+    this.createHandler = new CreateHandler(mf, contentService, siteInfo);
   }
 
   @Override
