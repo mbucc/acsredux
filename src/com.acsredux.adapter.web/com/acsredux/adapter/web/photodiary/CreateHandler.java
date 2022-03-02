@@ -2,9 +2,10 @@ package com.acsredux.adapter.web.photodiary;
 
 import static com.acsredux.adapter.web.members.Util.redirect;
 
+import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
-import com.acsredux.adapter.web.views.CreateArticleView;
+import com.acsredux.adapter.web.views.CreatePhotoDiaryView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
@@ -28,14 +29,14 @@ public class CreateHandler {
   }
 
   void handleGetCreate(HttpExchange x1, FormData x2) {
-    CreateArticleView view = new CreateArticleView(x1, x2, siteInfo);
+    CreatePhotoDiaryView view = new CreatePhotoDiaryView(x1, x2, siteInfo);
     WebUtil.renderForm(template, x1, view);
   }
 
   public void handlePostCreate(HttpExchange x1, FormData x2) {
     Result<String> result = Result
       .ok(x2)
-      .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
+      .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle)
       .map(os -> os.get(0))

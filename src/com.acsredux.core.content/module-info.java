@@ -11,4 +11,5 @@ module com.acsredux.core.content {
   exports com.acsredux.core.content ;
   exports com.acsredux.core.content.events ;
   exports com.acsredux.core.content.commands ;
+  exports com.acsredux.core.content.entities ;
 }

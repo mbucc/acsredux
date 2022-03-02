@@ -1,12 +1,12 @@
 200
-Content-Length: 467
+Content-Length: 491
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
-    <title>Member Dashboard</title>
+    <title>A Test Title</title>
   </head>
   <body>
     <p>
@@ -15,15 +15,13 @@ Content-type: text/html; charset= UTF-8
      <br /><a href="http://example.com/suggestions">suggestions</a>
     </p>
 
-    <h1>Member Dashboard</h1>
+    <h1>A Test Title</h1>
 
 
-<p>小川 治兵衛 has been a member since January 15, 2022.</p>
 
-<h2>Articles</h2>
-<ol>
-  <li><a href="/photo-diary/123">A Test Title</a></li>
-</ol>
+<h2>A Test Section Title</h2>
+    <p><img url="http://example.com/img1.png">
+    <p><a href="/photo-diary/123/a_test_title/add-image"><button type="button">Add Image</button></a>
 
   </body>
 </html>

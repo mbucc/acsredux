@@ -19,7 +19,7 @@ jars: \
 	mlib/com.acsredux.core.members@1.jar \
 	mlib/com.acsredux.core.admin@1.jar \
 	mlib/com.acsredux.core.auth@1.jar \
-	mlib/com.acsredux.core.articles@1.jar \
+	mlib/com.acsredux.core.content@1.jar \
 	mlib/com.acsredux.core.base@1.jar \
 	mlib/com.acsredux.adapter.stub@1.jar \
 	mlib/com.acsredux.adapter.mailgun@1.jar \

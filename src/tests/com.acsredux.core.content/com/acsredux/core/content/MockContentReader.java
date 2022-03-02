@@ -2,8 +2,8 @@ package com.acsredux.core.content;
 
 import static com.acsredux.lib.testutil.TestData.TEST_PHOTO_DIARY;
 
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.ports.ContentReader;
-import com.acsredux.core.content.values.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.MemberID;
 import java.util.List;

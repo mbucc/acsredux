@@ -12,7 +12,7 @@ import java.util.StringJoiner;
 
 public class BaseView {
 
-  public final String pageTitle;
+  public String pageTitle;
   public final List<Map<String, String>> menuItems;
   public final String error;
   public final long principalID;
@@ -22,6 +22,10 @@ public class BaseView {
   public final boolean isInAlphaTesting;
   public final String suggestionBoxURL;
   public final int alphaTestMemberLimit;
+
+  public BaseView(HttpExchange x1, FormData x2, SiteInfo x3) {
+    this(x1, x2, x3, "");
+  }
 
   public BaseView(HttpExchange x1, FormData x2, SiteInfo x3, String title) {
     this.pageTitle = title;
@@ -37,11 +41,18 @@ public class BaseView {
     this.isInAlphaTesting = x3.siteStatus() == SiteStatus.ALPHA;
     this.suggestionBoxURL = x3.suggestionBoxURL().toString();
     this.alphaTestMemberLimit = x3.limitOnAlphaCustomers();
-    this.menuItems =
-      List.of(
-        Map.of("link", "/", "text", "home"),
-        Map.of("link", suggestionBoxURL, "text", "suggestions")
-      );
+    this.menuItems = makeMenu();
+  }
+
+  private List<Map<String, String>> makeMenu() {
+    return List.of(
+      Map.of("link", "/", "text", "home"),
+      Map.of("link", suggestionBoxURL, "text", "suggestions")
+    );
+  }
+
+  public void setPageTitle(String title) {
+    this.pageTitle = title;
   }
 
   @Override

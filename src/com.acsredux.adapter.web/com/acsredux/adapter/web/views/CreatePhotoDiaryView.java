@@ -5,20 +5,20 @@ import com.acsredux.core.admin.values.SiteInfo;
 import com.sun.net.httpserver.HttpExchange;
 import java.util.StringJoiner;
 
-public class CreateArticleView extends BaseView {
+public class CreatePhotoDiaryView extends BaseView {
 
   final String year;
   final String name;
 
-  public CreateArticleView(HttpExchange x1, FormData x2, SiteInfo x3) {
-    super(x1, x2, x3, "Create Article");
+  public CreatePhotoDiaryView(HttpExchange x1, FormData x2, SiteInfo x3) {
+    super(x1, x2, x3, "Create a new photo diary");
     this.year = x2.get("year");
     this.name = x2.get("name");
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", CreateArticleView.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", CreatePhotoDiaryView.class.getSimpleName() + "[", "]")
       .add("pageTitle='" + pageTitle + "'")
       .add("menuItems=" + menuItems)
       .add("error='" + error + "'")

@@ -1,8 +1,10 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.github.difflib.text.DiffRowGenerator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
@@ -26,6 +28,9 @@ public class MockHttpExchange extends HttpExchange {
 
   public static final String DEFAULT_REQUEST_BODY = "Hello world!";
   public static final String DEFAULT_REQUEST_METHOD = "GET";
+  public static final MemberHttpPrincipal TEST_HTTP_PRINCIPAL = new MemberHttpPrincipal(
+    TEST_MEMBER
+  );
 
   final String url;
   final String requestMethod;

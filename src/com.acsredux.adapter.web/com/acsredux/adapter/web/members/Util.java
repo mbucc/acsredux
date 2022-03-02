@@ -7,6 +7,7 @@ import com.acsredux.core.members.values.MemberID;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URI;
+import java.net.URLEncoder;
 
 public class Util {
 
@@ -33,12 +34,26 @@ public class Util {
     return x2;
   }
 
-  public static MemberID uriToMemberID(URI x) {
+  /**
+   * Parse entity ID from last component in URL path and return as a long.
+   */
+  public static long uriToLong(URI x) {
     String[] ys = x.getPath().split("/");
     try {
-      return new MemberID(Long.valueOf(ys[ys.length - 1]));
+      return Long.parseLong(ys[ys.length - 1]);
     } catch (Exception e) {
-      throw new IllegalStateException("no member ID in " + x.getPath());
+      throw new IllegalStateException("no ID at end of " + x.getPath());
+    }
+  }
+
+  /**
+   * Convert to lower case, replace spaces with underscores, and url encode.
+   */
+  public static String titleToSlug(String x) {
+    try {
+      return URLEncoder.encode(x.toLowerCase().replaceAll(" ", "_"), "UTF-8");
+    } catch (Exception e) {
+      throw new IllegalStateException(String.format("can't convert '%s' to slug", x), e);
     }
   }
 }

@@ -4,7 +4,7 @@ import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
 
 import java.security.Principal;
 
-public record AnonymousPrincipal() implements Principal {
+public record AnonymousPrincipal() implements Principal, ACSMemberPrincipal {
   @Override
   public String getName() {
     return ANONYMOUS_USERNAME;

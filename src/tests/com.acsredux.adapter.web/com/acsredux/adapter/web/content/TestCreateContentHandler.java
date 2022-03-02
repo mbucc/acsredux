@@ -1,5 +1,6 @@
-package com.acsredux.adapter.web.articles;
+package com.acsredux.adapter.web.content;
 
+import static com.acsredux.adapter.web.MockHttpExchange.TEST_HTTP_PRINCIPAL;
 import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
@@ -35,6 +36,7 @@ class TestCreateContentHandler {
   void testGet() {
     // setup
     var mock = new MockHttpExchange("/photo-diary/create", "GET");
+    mock.setPrincipal(TEST_HTTP_PRINCIPAL);
 
     // execute
     this.handler.handle(mock);

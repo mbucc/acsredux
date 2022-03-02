@@ -4,22 +4,12 @@
 <p style="color: red">{{{error}}}</p>
 {{/error}}
 
-<form action="/articles/create" method="post">
-
-    <input accept="image/*" type='file' id="inputImage1" />
-    <img id="image1" src="#" alt="your first image" />
-
-    <input type="hidden" name="command" value="CreateArticle" />
-    <input type="submit" value="Create Article" />
-</form>
-<script>
-inputImage1.onchange = evt => {
-  const [file] = inputImage1.files
-  if (file) {
-    image1.src = URL.createObjectURL(file)
-  }
-}
-</script>
-
+{{#sections}}
+<h2>{{title}}</h2>
+    {{#elements}}
+    <p>{{{html}}}
+    {{/elements}}
+    <p><a href="/photo-diary/{{contentID}}/{{slug}}/add-image"><button type="button">Add Image</button></a>
+{{/sections}}
 
 {{> ../tail}}

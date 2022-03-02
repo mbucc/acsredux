@@ -26,7 +26,7 @@ public class DashboardView extends BaseView {
 
   public DashboardView(HttpExchange x1, FormData x2, SiteInfo x3, String title) {
     super(x1, x2, x3, title);
-    this.memberID = Util.uriToMemberID(x1.getRequestURI()).val();
+    this.memberID = Util.uriToLong(x1.getRequestURI());
   }
 
   public boolean isMyPage() {

@@ -4,10 +4,10 @@ import com.acsredux.core.base.Event;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
-import com.acsredux.core.content.values.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.MemberID;
 import java.time.InstantSource;
@@ -24,7 +24,7 @@ public class ContentServiceProvider implements ContentService {
   }
 
   @Override
-  public Content getContent(ContentID x) {
+  public Content getByID(ContentID x) {
     return reader.getContent(x);
   }
 

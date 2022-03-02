@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web.common;
 
+import static com.acsredux.adapter.web.MockHttpExchange.TEST_HTTP_PRINCIPAL;
 import static com.acsredux.lib.testutil.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +26,7 @@ class TestWebUtil {
     x.add("command", FormCommand.CREATE.name());
 
     // execute
-    Command y = WebUtil.form2cmd(TEST_PRINCIPAL, x);
+    Command y = WebUtil.form2cmd(TEST_HTTP_PRINCIPAL, x);
 
     // verify
     if (y instanceof CreateMember y1) {
@@ -49,7 +50,7 @@ class TestWebUtil {
     x.add("command", FormCommand.LOGIN.name());
 
     // execute
-    Command y = WebUtil.form2cmd(TEST_PRINCIPAL, x);
+    Command y = WebUtil.form2cmd(TEST_HTTP_PRINCIPAL, x);
 
     // verify
     if (y instanceof LoginMember y1) {

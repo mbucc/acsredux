@@ -8,9 +8,9 @@ import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
-import com.acsredux.core.content.values.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
@@ -263,26 +263,31 @@ public final class Stub
       .orElse(0);
     ContentID contentID = new ContentID(maxArticleID + 1);
 
-    var ys = x.subject().getPrincipals(MemberPrincipal.class);
+    var ys = x
+      .subject()
+      .getPrincipals()
+      .stream()
+      .map(ACSMemberPrincipal.class::cast)
+      .toList();
     if (ys.isEmpty()) {
       throw new IllegalStateException("no member principal");
     }
-    MemberID memberID = ys.stream().findFirst().get().mid();
+    MemberID memberID = ys.get(0).mid();
 
     content.put(
       contentID,
       new Content(
         contentID,
         memberID,
-        getTitle(x),
-        getSections(x),
+        x.title(),
+        getMonthSections(),
         new PublishedDate(Instant.now())
       )
     );
     return contentID;
   }
 
-  private List<Section> getSections(CreatePhotoDiary x) {
+  private List<Section> getMonthSections() {
     return Stream
       .of(
         "Jan",
@@ -300,15 +305,5 @@ public final class Stub
       )
       .map(o -> new Section(new Title(o), Collections.emptyList()))
       .collect(Collectors.toList());
-  }
-
-  private Title getTitle(CreatePhotoDiary x) {
-    final Title title;
-    if (x.name() == null || x.name().val().isBlank()) {
-      title = new Title(String.valueOf(x.year().val()));
-    } else {
-      title = new Title(String.format("%s - %s", x.year().val(), x.name().val()));
-    }
-    return title;
   }
 }

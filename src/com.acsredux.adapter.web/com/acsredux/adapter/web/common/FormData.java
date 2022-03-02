@@ -98,7 +98,10 @@ public class FormData {
       for (String pair : encodedRequestBody.split("&")) {
         String[] pieces = pair.split("=");
         String k = URLDecoder.decode(pieces[0], StandardCharsets.UTF_8);
-        String v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
+        String v = "";
+        if (pieces.length > 1) {
+          v = URLDecoder.decode(pieces[1], StandardCharsets.UTF_8);
+        }
         y.add(k, v);
       }
     } catch (Exception e) {

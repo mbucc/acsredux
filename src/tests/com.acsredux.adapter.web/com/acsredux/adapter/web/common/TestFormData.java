@@ -52,6 +52,20 @@ class TestFormData {
   }
 
   @Test
+  void testOptionalField() {
+    // setup
+    String postData = "year=2022&name=&command=create_photo_diary";
+
+    // execute
+    FormData y = assertDoesNotThrow(() -> FormData.of(postData));
+
+    // verify
+    assertEquals("2022", y.get("year"));
+    assertEquals("create_photo_diary", y.get("command"));
+    assertEquals("", y.get("name"));
+  }
+
+  @Test
   void testAsMap() {
     // setup
     formData.add("value", "1");

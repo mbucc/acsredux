@@ -6,7 +6,7 @@ import static com.acsredux.lib.testutil.TestData.TEST_PHOTO_DIARY_CREATED;
 import com.acsredux.core.base.Event;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
-import com.acsredux.core.content.values.Content;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.MemberID;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class MockArticleService implements ContentService {
 
   @Override
-  public Content getContent(ContentID x) {
+  public Content getByID(ContentID x) {
     return TEST_PHOTO_DIARY;
   }
 

@@ -1,12 +1,12 @@
 200
-Content-Length: 788
+Content-Length: 808
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
-    <title>Create Article</title>
+    <title>Create a new photo diary</title>
   </head>
   <body>
     <p>
@@ -15,7 +15,7 @@ Content-type: text/html; charset= UTF-8
      <br /><a href="http://example.com/suggestions">suggestions</a>
     </p>
 
-    <h1>Create Article</h1>
+    <h1>Create a new photo diary</h1>
 
 
 <p style="color: red">Please enter a year.</p>

@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web.common;
 
+import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.values.DiaryName;
@@ -15,7 +16,6 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class WebUtil {
     return new String(xs, StandardCharsets.UTF_8);
   }
 
-  public static Command form2cmd(Principal principal, FormData x) {
+  public static Command form2cmd(ACSHttpPrincipal principal, FormData x) {
     final FormCommand cmd;
     try {
       cmd = FormCommand.valueOf(x.get("command").toUpperCase());
@@ -71,7 +71,7 @@ public class WebUtil {
     }
     Subject subject = new Subject(
       true,
-      Set.of(principal),
+      Set.of(principal.asMemberPrincipal()),
       Collections.emptySet(),
       Collections.emptySet()
     );

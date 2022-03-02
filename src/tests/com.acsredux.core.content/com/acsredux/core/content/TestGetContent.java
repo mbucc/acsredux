@@ -35,7 +35,7 @@ class TestGetContent {
   @Test
   void testGetContent() {
     // execute
-    var y = svc.getContent(TEST_CONTENT_ID);
+    var y = svc.getByID(TEST_CONTENT_ID);
 
     // verify
     assertEquals(TEST_PHOTO_DIARY, y);

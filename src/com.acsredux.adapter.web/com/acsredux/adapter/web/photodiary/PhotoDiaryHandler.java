@@ -12,6 +12,7 @@ import java.util.List;
 public class PhotoDiaryHandler extends BaseHandler {
 
   private final CreateHandler createHandler;
+  private final UpdateHandler updateHandler;
 
   public PhotoDiaryHandler(
     String templateRoot,
@@ -28,13 +29,15 @@ public class PhotoDiaryHandler extends BaseHandler {
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.createHandler = new CreateHandler(mf, contentService, siteInfo);
+    this.updateHandler = new UpdateHandler(mf, contentService, siteInfo);
   }
 
   @Override
   protected List<Route> getRoutes() {
     return List.of(
       new Route(createHandler::isGetCreate, createHandler::handleGetCreate),
-      new Route(createHandler::isPostCreate, createHandler::handlePostCreate)
+      new Route(createHandler::isPostCreate, createHandler::handlePostCreate),
+      new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate)
     );
   }
 }

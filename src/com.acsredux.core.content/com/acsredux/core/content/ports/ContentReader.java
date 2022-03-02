@@ -1,6 +1,6 @@
 package com.acsredux.core.content.ports;
 
-import com.acsredux.core.content.values.Content;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.MemberID;
 import java.util.List;

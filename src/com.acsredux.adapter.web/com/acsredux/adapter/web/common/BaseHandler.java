@@ -100,6 +100,6 @@ public abstract class BaseHandler implements HttpHandler {
         return;
       }
     }
-    throw new NotFoundException(x.toString());
+    throw new NotFoundException("No route for " + x.toString());
   }
 }
