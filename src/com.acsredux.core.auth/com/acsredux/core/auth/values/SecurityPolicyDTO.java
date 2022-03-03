@@ -8,11 +8,19 @@ import java.util.List;
 
 public class SecurityPolicyDTO {
 
+  private SecurityPolicyDTO() {
+    throw new UnsupportedOperationException("static only");
+  }
+
   public static class ACL {
 
     public String resource;
     public String action;
     public String user;
+
+    private ACL() {
+      throw new UnsupportedOperationException("static only");
+    }
 
     public Entitlement asEntitlement() {
       return new Entitlement(

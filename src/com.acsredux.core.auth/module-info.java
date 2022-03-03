@@ -3,8 +3,8 @@
  */
 module com.acsredux.core.auth {
   requires com.google.gson;
-  requires com.acsredux.core.members;
-  requires com.acsredux.core.content;
+  requires transitive com.acsredux.core.members;
+  requires transitive com.acsredux.core.content;
 
   exports com.acsredux.core.auth ;
   exports com.acsredux.core.auth.values ;

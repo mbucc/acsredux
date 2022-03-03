@@ -4,7 +4,7 @@
  */
 module com.acsredux.core.content {
   requires transitive com.acsredux.core.base;
-  requires com.acsredux.core.members;
+  requires transitive com.acsredux.core.members;
 
   exports com.acsredux.core.content.ports ;
   exports com.acsredux.core.content.values ;
