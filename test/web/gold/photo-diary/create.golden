@@ -1,5 +1,5 @@
 200
-Content-Length: 746
+Content-Length: 755
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -23,7 +23,7 @@ Content-type: text/html; charset= UTF-8
 
 <p>
 <label for="year">Year to create diary for:</label><br>
-<input id="year" type="text" name="year" required />
+<input id="year" type="text" name="year" required autofocus/>
 
 <p>
 <label for="name">Name of diary (optional):</label><br>
