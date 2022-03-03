@@ -91,7 +91,8 @@ compile: checkstyle
 		-Xlint \
 		-Xlint:-requires-automatic \
 		--module-source-path src \
-		$$(find src -name '*.java'|egrep -v '(/Test|/Mock|/ManualTest)')
+		$$(find src -name '*.java'|egrep -v '(/Test|/Mock|/ManualTest)') \
+		2>&1 | awk '/ warning: \[preview] patterns/{getline;getline;next} 1'
 
 
 
