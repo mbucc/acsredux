@@ -6,7 +6,7 @@ import java.security.Principal;
 public record MemberPrincipal(MemberID mid) implements Principal, ACSMemberPrincipal {
   @Override
   public String getName() {
-    return String.valueOf(mid());
+    return String.valueOf(mid().val());
   }
 
   public static MemberPrincipal of(Member x) {

@@ -25,7 +25,7 @@ class TestMemberProvider {
 
   @Test
   void testSunnyPath() {
-    // execut
+    // execute
     PublicMember y = assertDoesNotThrow(() -> service.getPublicByID(TEST_MEMBER_ID));
 
     // verify

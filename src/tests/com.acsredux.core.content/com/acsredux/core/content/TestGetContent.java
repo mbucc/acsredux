@@ -5,10 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
 import com.acsredux.core.content.services.ContentServiceProvider;
+import com.acsredux.core.content.values.DiaryYear;
 import com.acsredux.lib.testutil.MockProxy;
 import java.time.Instant;
 import java.time.InstantSource;
@@ -51,18 +53,17 @@ class TestGetContent {
   @Test
   void testCreateContent() {
     // execute
-    List<Event> ys = svc.handle(TEST_CREATE_PHOTO_DIARY_COMMAND);
+    var cmd = new CreatePhotoDiary(TEST_SUBJECT, new DiaryYear(2000), null);
+    List<Event> ys = svc.handle(cmd);
 
     // verify
+    var expected = new PhotoDiaryCreated(cmd, TEST_CONTENT_ID);
     assertEquals(1, ys.size());
     if (ys.get(0) instanceof PhotoDiaryCreated y1) {
-      assertEquals(TEST_PHOTO_DIARY_CREATED, y1);
+      assertEquals(expected, y1);
     } else {
       fail("Wrong event type returned by create: " + ys.get(0));
     }
-    MockProxy
-      .toProxy(w)
-      .assertCallCount(1)
-      .assertCall(0, "createContent", TEST_CREATE_PHOTO_DIARY_COMMAND);
+    MockProxy.toProxy(w).assertCallCount(1).assertCall(0, "createContent", cmd);
   }
 }

@@ -8,9 +8,7 @@ import java.util.List;
 
 public class SecurityPolicyDTO {
 
-  private SecurityPolicyDTO() {
-    throw new UnsupportedOperationException("static only");
-  }
+  public SecurityPolicyDTO() {}
 
   public static class ACL {
 
@@ -18,9 +16,7 @@ public class SecurityPolicyDTO {
     public String action;
     public String user;
 
-    private ACL() {
-      throw new UnsupportedOperationException("static only");
-    }
+    public ACL() {}
 
     public Entitlement asEntitlement() {
       return new Entitlement(

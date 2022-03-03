@@ -155,7 +155,7 @@ public class TestData {
   );
   public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
   public static final DiaryName TEST_DIARY_NAME = null;
-  public static final Title TEST_TITLE = new Title("A Test Title");
+  public static final Title TEST_TITLE = new Title("" + TEST_DIARY_YEAR.val());
   public static final Content TEST_PHOTO_DIARY = new Content(
     TEST_CONTENT_ID,
     TEST_MEMBER_ID,
