@@ -88,14 +88,7 @@ classes/%.json: src/%.json
 
 .PHONY: compile
 compile: checkstyle
-	${JAVAC} \
-		-p lib \
-		-d classes \
-		-Xlint \
-		-Xlint:-requires-automatic \
-		--module-source-path src \
-		$$(find src -name '*.java'|egrep -v '(/Test|/Mock|/ManualTest)') \
-		2>&1 | awk '/ warning: \[preview] patterns/{getline;getline;next} 1'
+	JAVAC="${JAVAC}" ./scripts/javac.sh
 
 
 
@@ -211,3 +204,4 @@ clean:
 	rm -rf testclasses
 	rm -rf tmp
 	find ./test -name '*.actual' | xargs rm
+	rm -f compile.out
