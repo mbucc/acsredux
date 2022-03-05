@@ -13,6 +13,7 @@ public class PhotoDiaryHandler extends BaseHandler {
 
   private final CreateHandler createHandler;
   private final UpdateHandler updateHandler;
+  private final UploadHandler uploadHandler;
 
   public PhotoDiaryHandler(
     String templateRoot,
@@ -30,6 +31,7 @@ public class PhotoDiaryHandler extends BaseHandler {
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.createHandler = new CreateHandler(mf, contentService, siteInfo);
     this.updateHandler = new UpdateHandler(mf, contentService, siteInfo);
+    this.uploadHandler = new UploadHandler(mf, contentService, siteInfo);
   }
 
   @Override
@@ -37,7 +39,8 @@ public class PhotoDiaryHandler extends BaseHandler {
     return List.of(
       new Route(createHandler::isGetCreate, createHandler::handleGetCreate),
       new Route(createHandler::isPostCreate, createHandler::handlePostCreate),
-      new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate)
+      new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate),
+      new Route(uploadHandler::isGetUpload, uploadHandler::handleGetUpload)
     );
   }
 }

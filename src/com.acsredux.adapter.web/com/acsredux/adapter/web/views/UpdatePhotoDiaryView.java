@@ -8,11 +8,10 @@ import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.Image;
 import com.acsredux.core.content.values.Paragraph;
-import com.acsredux.core.content.values.Section;
 import com.acsredux.core.content.values.SectionElement;
 import com.sun.net.httpserver.HttpExchange;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class UpdatePhotoDiaryView extends BaseView {
@@ -49,14 +48,7 @@ public class UpdatePhotoDiaryView extends BaseView {
     }
   }
 
-  record SectionDTO(String title, List<El> elements) {
-    public static SectionDTO of(Section s) {
-      return new SectionDTO(
-        s.title().val(),
-        s.content().stream().map(SectionDTO::toEl).collect(Collectors.toList())
-      );
-    }
-
+  record SectionDTO(String title, int sectionIndex, List<El> elements) {
     private static El toEl(SectionElement x) {
       return switch (x) {
         case Image o -> new ImgEl(
@@ -77,25 +69,21 @@ public class UpdatePhotoDiaryView extends BaseView {
     Content y = x.getByID(new ContentID(this.contentID));
     this.setPageTitle(y.title().val());
     this.slug = Util.titleToSlug(y.title().val());
-    this.sections =
-      y.sections().stream().map(SectionDTO::of).collect(Collectors.toList());
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", UpdatePhotoDiaryView.class.getSimpleName() + "[", "]")
-      .add("pageTitle='" + pageTitle + "'")
-      .add("menuItems=" + menuItems)
-      .add("error='" + error + "'")
-      .add("principalID=" + principalID)
-      .add("principalName='" + principalName + "'")
-      .add("isLoggedIn=" + isLoggedIn)
-      .add("isAdmin=" + isAdmin)
-      .add("isInAlphaTesting=" + isInAlphaTesting)
-      .add("suggestionBoxURL='" + suggestionBoxURL + "'")
-      .add("alphaTestMemberLimit=" + alphaTestMemberLimit)
-      .add("contentID=" + contentID)
-      .add("sections=" + sections)
-      .toString();
+    this.sections = new ArrayList<>();
+    for (int i = 0; i < y.sections().size(); i++) {
+      this.sections.add(
+          new SectionDTO(
+            y.sections().get(i).title().val(),
+            i,
+            y
+              .sections()
+              .get(i)
+              .content()
+              .stream()
+              .map(SectionDTO::toEl)
+              .collect(Collectors.toList())
+          )
+        );
+    }
   }
 }

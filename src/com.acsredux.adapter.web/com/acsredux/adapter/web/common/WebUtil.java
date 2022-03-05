@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -131,5 +132,18 @@ public class WebUtil {
       }
     }
     return buf.toString();
+  }
+
+  public static long parseLongFromURIPathComponent(URI x, int i) {
+    var xs = x.toString().split("/");
+    if (xs.length < i + 1) {
+      throw new IllegalStateException("invalid URI " + x);
+    }
+    try {
+      return Long.parseLong(xs[i]);
+    } catch (Exception e) {
+      String fmt = "can't parse long from path component %d in %s";
+      throw new IllegalStateException(String.format(fmt, i, x.toString()));
+    }
   }
 }

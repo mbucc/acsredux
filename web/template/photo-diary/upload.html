@@ -1,0 +1,29 @@
+{{> ../head}}
+
+{{#error}}
+<p style="color: red">{{{error}}}</p>
+{{/error}}
+
+<form action="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image" method="post">
+
+<p>
+<label for="picker">Preview image:</label>
+<input id="picker" accept="image/*" type='file' required autofocus/>
+
+<p><input type="submit" value="Upload image to your {{diaryName}} diary" />
+
+<p><img id="preview" src="#" width="350px" alt="Image Preview" />
+
+</form>
+
+<script>
+picker.onchange = evt => {
+  const [file] = picker.files
+  if (file) {
+    preview.src = URL.createObjectURL(file)
+  }
+}
+</script>
+
+
+{{> ../tail}}

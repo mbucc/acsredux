@@ -1,19 +1,14 @@
 2022-02-18: add article creation to web adapter
-  - put name of year log in admin data
-  - prompt for year
-  - render months
   - upload photo for each month
   - add summary (top-level and monthly)
   - add ability to caption each photo
 
 2022-02-28: login with invalid email shows "not found" instead of error.
 
-
 2022-02-18: article update (policy: only authors can update their articles)
 2022-02-18: article delete (policy: only authors can delete their articles)
 2022-02-19: article add editable "tag" (ala tailscale RBAC)
 2022-02-21: replace result-flow with Either.java.
-2022-03-02: clean up all the module warnings.
 
 2022-02-25: If no cookie when validating token, user needs to change browser settings.
 2022-02-25: Expire email validation tokens (add expiration to admin data).

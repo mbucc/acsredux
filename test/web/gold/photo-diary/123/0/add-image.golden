@@ -1,0 +1,46 @@
+200
+Content-Length: 826
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Upload a photo to A Test Section Title</title>
+  </head>
+  <body>
+    <p>
+小川 治兵衛     (<a href="/members/logout">log out</a>)
+     <br /><a href="/">home</a>
+     <br /><a href="http://example.com/suggestions">suggestions</a>
+    </p>
+
+    <h1>Upload a photo to A Test Section Title</h1>
+
+
+
+<form action="/photo-diary/123/0/add-image" method="post">
+
+<p>
+<label for="picker">Preview image:</label>
+<input id="picker" accept="image/*" type='file' required autofocus/>
+
+<p><input type="submit" value="Upload image to your 2022 diary" />
+
+<p><img id="preview" src="#" width="350px" alt="Image Preview" />
+
+</form>
+
+<script>
+picker.onchange = evt => {
+  const [file] = picker.files
+  if (file) {
+    preview.src = URL.createObjectURL(file)
+  }
+}
+</script>
+
+
+  </body>
+</html>
+
