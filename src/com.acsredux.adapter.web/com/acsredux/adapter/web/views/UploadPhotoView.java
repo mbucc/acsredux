@@ -29,11 +29,12 @@ public class UploadPhotoView extends BaseView {
     return (int) WebUtil.parseLongFromURIPathComponent(x, 3);
   }
 
-  public void lookupContentInfo(ContentService x) {
+  public UploadPhotoView lookupContentInfo(ContentService x) {
     Content y = x.getByID(new ContentID(this.contentID));
     String sectionTitle = y.sections().get(this.sectionIndex).title().val();
     String title = String.format("Upload a photo to %s", sectionTitle);
     this.diaryName = y.title().val();
     this.setPageTitle(title);
+    return this;
   }
 }

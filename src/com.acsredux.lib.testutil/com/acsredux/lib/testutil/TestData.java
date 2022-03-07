@@ -43,6 +43,12 @@ import javax.security.auth.Subject;
 
 public class TestData {
 
+  // So tests can open files both when run from IntelliJ and the makefile.
+  public static String projectRoot() {
+    String cwd = System.getProperty("user.dir");
+    return cwd.contains("acsredux/src/") ? "../../" : ".";
+  }
+
   public static final Email TEST_EMAIL = new Email("test@example.com");
   public static final FirstName TEST_FIRST_NAME = new FirstName("小川");
   public static final LastName TEST_LAST_NAME = new LastName("治兵衛");

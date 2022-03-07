@@ -11,6 +11,7 @@
     <orderEntry type="library" scope="TEST" name="testlib" level="project" />
     <orderEntry type="library" name="mustache-0.9.10" level="project" />
     <orderEntry type="library" name="result-flow-3.1.0" level="project" />
+    <orderEntry type="library" name="Either" level="project" />
     <orderEntry type="module" module-name="com.acsredux.lib.testutil" scope="TEST" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

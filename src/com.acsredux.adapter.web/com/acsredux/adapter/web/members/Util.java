@@ -6,6 +6,9 @@ import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.values.MemberID;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URLEncoder;
 
@@ -20,6 +23,52 @@ public class Util {
       throw new RuntimeException("redirect to " + newLocation + " failed", e);
     }
     return newLocation;
+  }
+
+  public static String dumpReq(HttpExchange x) {
+    return String.format("%s %s", x.getRequestMethod(), x.getRequestURI().getPath());
+  }
+
+  private static void setPlainTextResponse(HttpExchange x) {
+    Headers ys = x.getResponseHeaders();
+    ys.set("Content-type", "text/plain; charset= UTF-8");
+  }
+
+  private static void writeBody(HttpExchange x, byte[] body, int status)
+    throws IOException {
+    x.sendResponseHeaders(status, body.length);
+    OutputStream os = x.getResponseBody();
+    os.write(body);
+  }
+
+  public static void notFound(HttpExchange x) {
+    byte[] body = "Not found.".getBytes();
+    int status = 404;
+    try {
+      setPlainTextResponse(x);
+      writeBody(x, body, status);
+    } catch (IOException e) {
+      // Not much we can do at this point.
+      System.err.println("error sending 404");
+      e.printStackTrace(System.err);
+    }
+  }
+
+  public static void internalError(HttpExchange x1, Exception x2) {
+    internalError(x1, x2, System.err);
+  }
+
+  public static void internalError(HttpExchange x1, Exception x2, PrintStream x3) {
+    byte[] body = "Internal error.".getBytes();
+    int status = 500;
+    try {
+      setPlainTextResponse(x1);
+      writeBody(x1, body, status);
+    } catch (Exception e1) {
+      System.err.printf("error sending 500: %s%n", e1.getMessage());
+    } finally {
+      x2.printStackTrace(x3);
+    }
   }
 
   static MemberSession createSession(MemberID mid, MemberService x) {

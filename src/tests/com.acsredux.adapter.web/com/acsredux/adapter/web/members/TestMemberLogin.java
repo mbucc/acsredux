@@ -1,6 +1,6 @@
 package com.acsredux.adapter.web.members;
 
-import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
+import static com.acsredux.lib.testutil.TestData.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;

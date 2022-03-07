@@ -1,5 +1,5 @@
 200
-Content-Length: 826
+Content-Length: 987
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -19,13 +19,15 @@ Content-type: text/html; charset= UTF-8
 
 
 
-<form action="/photo-diary/123/0/add-image" method="post">
+<form action="/photo-diary/123/0/add-image" enctype="multipart/form-data" method="post">
 
 <p>
 <label for="picker">Preview image:</label>
-<input id="picker" accept="image/*" type='file' required autofocus/>
+<input id="picker" type="file" name="picker" accept="image/*" required autofocus/>
+<input type="hidden" name="contentID" value="123">
+<input type="hidden" name="sectionIndex" value="0">
 
-<p><input type="submit" value="Upload image to your 2022 diary" />
+<p><input type="submit" name="submit" value="Upload image to your 2022 diary" />
 
 <p><img id="preview" src="#" width="350px" alt="Image Preview" />
 

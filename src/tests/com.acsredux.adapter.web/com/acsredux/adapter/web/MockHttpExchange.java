@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
+import com.acsredux.lib.testutil.TestData;
 import com.github.difflib.text.DiffRowGenerator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
@@ -26,7 +27,7 @@ import java.util.Objects;
 
 public class MockHttpExchange extends HttpExchange {
 
-  public static final String DEFAULT_REQUEST_BODY = "Hello world!";
+  public static final byte[] DEFAULT_REQUEST_BODY = "Hello world!".getBytes();
   public static final String DEFAULT_REQUEST_METHOD = "GET";
   public static final MemberHttpPrincipal TEST_HTTP_PRINCIPAL = new MemberHttpPrincipal(
     TEST_MEMBER
@@ -34,15 +35,10 @@ public class MockHttpExchange extends HttpExchange {
 
   final String url;
   final String requestMethod;
-  final String requestBody;
+  final byte[] requestBody;
   HttpPrincipal principal = new AnonymousHttpPrincipal();
   String goldenSuffix = "";
-  final String testDir = projectRoot() + "/test/web/gold";
-
-  public static String projectRoot() {
-    String cwd = System.getProperty("user.dir");
-    return cwd.contains("acsredux/src/") ? "../../" : ".";
-  }
+  final String testDir = TestData.projectRoot() + "/test/web/gold";
 
   final Headers responseHeaders = new Headers();
   final Headers requestHeaders = new Headers();
@@ -59,6 +55,10 @@ public class MockHttpExchange extends HttpExchange {
   }
 
   public MockHttpExchange(String url, String requestMethod, String requestBody) {
+    this(url, requestMethod, requestBody.getBytes(StandardCharsets.UTF_8));
+  }
+
+  public MockHttpExchange(String url, String requestMethod, byte[] requestBody) {
     this.url = url;
     this.requestMethod = requestMethod;
     this.requestBody = requestBody;
@@ -109,7 +109,7 @@ public class MockHttpExchange extends HttpExchange {
 
   @Override
   public InputStream getRequestBody() {
-    return new ByteArrayInputStream(requestBody.getBytes(StandardCharsets.UTF_8));
+    return new ByteArrayInputStream(requestBody);
   }
 
   @Override

@@ -40,7 +40,8 @@ public class PhotoDiaryHandler extends BaseHandler {
       new Route(createHandler::isGetCreate, createHandler::handleGetCreate),
       new Route(createHandler::isPostCreate, createHandler::handlePostCreate),
       new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate),
-      new Route(uploadHandler::isGetUpload, uploadHandler::handleGetUpload)
+      new Route(uploadHandler::isGetUpload, uploadHandler::handleGetUpload),
+      new Route(UploadHandler::isPostUpload, uploadHandler::handlePostUpload)
     );
   }
 }

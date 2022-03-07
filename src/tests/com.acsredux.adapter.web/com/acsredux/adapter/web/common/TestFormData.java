@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.acsredux.adapter.web.MockHttpExchange;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,14 @@ class TestFormData {
   @Test
   void testOptionalField() {
     // setup
-    String postData = "year=2022&name=&command=create_photo_diary";
+    var x = new MockHttpExchange(
+      "/",
+      "POST",
+      "year=2022&name=&command=create_photo_diary".getBytes()
+    );
 
     // execute
-    FormData y = assertDoesNotThrow(() -> FormData.of(postData));
+    FormData y = assertDoesNotThrow(() -> FormData.of(x));
 
     // verify
     assertEquals("2022", y.get("year"));
@@ -112,16 +117,20 @@ class TestFormData {
 
   @Test
   void testOfWorksWithEmptyString() {
-    assertDoesNotThrow(() -> FormData.of(""));
+    assertDoesNotThrow(() -> FormData.of(new MockHttpExchange("/")));
   }
 
   @Test
   void testThreeValues() {
     // setup
-    var formdata = "email=t%40t.com&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!";
+    var x = new MockHttpExchange(
+      "/",
+      "POST",
+      "email=t%40t.com&pwd1=aBcd3fgh!&pwd2=aBcd3fgh!".getBytes()
+    );
 
     // execute
-    FormData y = FormData.of(formdata);
+    FormData y = FormData.of(x);
 
     // verify
     assertEquals("t@t.com", y.get("email"));

@@ -18,7 +18,7 @@ public record CreatePhotoDiary(Subject subject, DiaryYear year, DiaryName name)
   }
 
   public Title title() {
-    if (name == null || name.val().isBlank()) {
+    if (name == null || name.val() == null || name.val().isBlank()) {
       return new Title(String.valueOf(year.val()));
     }
     return new Title(String.format("%d: %s", year.val(), name.val()));

@@ -27,11 +27,8 @@ jars: \
 	mlib/compiler-0.9.10.jar \
 	mlib/result-flow-3.1.0.jar \
 	mlib/Either.java.jar \
-	mlib/gson-2.9.0.jar \
-	mlib/commons-fileupload-1.4.jar
+	mlib/gson-2.9.0.jar
 
-mlib/commons-fileupload-1.4.jar: lib/commons-fileupload-1.4.jar
-	cp $? $@
 mlib/compiler-0.9.10.jar: lib/compiler-0.9.10.jar
 	cp $? $@
 mlib/result-flow-3.1.0.jar: lib/result-flow-3.1.0.jar

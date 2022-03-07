@@ -1,10 +1,17 @@
 package com.acsredux.adapter.web.common;
 
+import static java.io.OutputStream.nullOutputStream;
+
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.UploadPhoto;
+import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.DiaryName;
 import com.acsredux.core.content.values.DiaryYear;
+import com.acsredux.core.content.values.FileContent;
+import com.acsredux.core.content.values.FileName;
+import com.acsredux.core.content.values.SectionIndex;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.values.*;
@@ -20,10 +27,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.security.auth.Subject;
 
 public class WebUtil {
+
+  public static final String CONTENT_TYPE = "Content-type";
 
   private WebUtil() {
     throw new UnsupportedOperationException("static only");
@@ -36,7 +49,7 @@ public class WebUtil {
       byte[] body = writer.toString().getBytes();
 
       Headers ys = x.getResponseHeaders();
-      ys.set("Content-type", "text/html; charset= UTF-8");
+      ys.set(CONTENT_TYPE, "text/html; charset= UTF-8");
       x.sendResponseHeaders(200, body.length);
 
       OutputStream os = x.getResponseBody();
@@ -47,14 +60,12 @@ public class WebUtil {
     }
   }
 
-  public static String readRequestBody(HttpExchange x) {
-    final byte[] y;
+  public static byte[] readRequestBody(HttpExchange x) {
     try {
-      y = x.getRequestBody().readAllBytes();
+      return x.getRequestBody().readAllBytes();
     } catch (IOException e) {
       throw new IllegalStateException("error reading request", e);
     }
-    return toUTF8String(y);
   }
 
   public static String toUTF8String(byte[] xs) {
@@ -96,6 +107,13 @@ public class WebUtil {
         DiaryYear.parse(x.get("year")),
         new DiaryName(x.get("name"))
       );
+      case UPLOAD_PHOTO -> new UploadPhoto(
+        subject,
+        ContentID.parse(x.get("contentID")),
+        SectionIndex.parse(x.get("sectionIndex")),
+        new FileName(x.getUploadedFiles().get(0).filename()),
+        new FileContent(x.getUploadedFiles().get(0).val())
+      );
     };
   }
 
@@ -103,7 +121,7 @@ public class WebUtil {
   public static void writeResponse(HttpExchange x1, byte[] body) {
     try {
       Headers ys = x1.getResponseHeaders();
-      ys.set("Content-type", "text/html; charset= UTF-8");
+      ys.set(CONTENT_TYPE, "text/html; charset= UTF-8");
       x1.sendResponseHeaders(200, body.length);
       OutputStream os = x1.getResponseBody();
       os.write(body);
@@ -112,23 +130,28 @@ public class WebUtil {
     }
   }
 
-  public static String safeDump(HttpExchange x) {
+  public static String dumpRequest(HttpExchange x) {
     StringBuilder buf = new StringBuilder();
     buf.append(x.getRequestMethod());
     buf.append(" ");
     buf.append(x.getRequestURI().toString());
     buf.append("\n\n");
-    for (Map.Entry<String, List<String>> y : x.getRequestHeaders().entrySet()) {
-      buf.append(y.getKey());
-      buf.append(": ");
-      if (y.getValue() != null) {
-        if (y.getValue().size() == 1) {
-          buf.append(y.getValue().get(0));
+    if (x.getRequestHeaders().isEmpty()) {
+      buf.append("No HTTP headers");
+    } else {
+      for (Map.Entry<String, List<String>> y : x.getRequestHeaders().entrySet()) {
+        buf.append(y.getKey());
+        buf.append(": ");
+        if (y.getValue() != null) {
+          if (y.getValue().size() == 1) {
+            buf.append(y.getValue().get(0));
+          } else {
+            buf.append(y.getValue());
+          }
         } else {
-          buf.append(y.getValue());
+          buf.append("null");
         }
-      } else {
-        buf.append("null");
+        buf.append("\n");
       }
     }
     return buf.toString();
@@ -143,7 +166,57 @@ public class WebUtil {
       return Long.parseLong(xs[i]);
     } catch (Exception e) {
       String fmt = "can't parse long from path component %d in %s";
-      throw new IllegalStateException(String.format(fmt, i, x.toString()));
+      throw new IllegalStateException(String.format(fmt, i, x));
     }
+  }
+
+  static void drainRequestBody(HttpExchange x) {
+    try {
+      x.getRequestBody().transferTo(nullOutputStream());
+    } catch (IOException e) {
+      throw new IllegalStateException(
+        "error reading request " + "body for " + dumpRequest(x),
+        e
+      );
+    }
+  }
+
+  static String getContentTypeFromString(String x) {
+    return Optional
+      .ofNullable(x)
+      .map(String::trim)
+      .filter(o -> o.toLowerCase().contains("content-type:"))
+      .map(o -> o.replaceAll("(?i).*Content-Type: *", ""))
+      .map(o -> o.replaceAll(" *;.*", ""))
+      .orElseThrow(() -> new NoSuchElementException("no content type in '" + x + "'"));
+  }
+
+  static String getContentType(HttpExchange x) {
+    Objects.requireNonNull(x);
+    return Optional
+      .of(x)
+      .map(HttpExchange::getRequestHeaders)
+      .map(o -> o.get(CONTENT_TYPE))
+      .filter(o -> !o.isEmpty())
+      .map(o -> o.get(0))
+      .orElseThrow(() ->
+        new NoSuchElementException(
+          "no " + CONTENT_TYPE + " header in:\n" + dumpRequest(x)
+        )
+      );
+  }
+
+  static String getHeaderParameter(String header, String parameterName) {
+    var marker = (parameterName + "=").toLowerCase();
+    return Stream
+      .of(header.split(";"))
+      .map(String::trim)
+      .filter(o -> o.toLowerCase().startsWith(marker))
+      .map(o -> o.split("=")[1])
+      .findFirst()
+      .map(o -> o.replaceAll("^\"|\"$", ""))
+      .orElseThrow(() ->
+        new NoSuchElementException("no " + parameterName + " in header '" + header + "'")
+      );
   }
 }

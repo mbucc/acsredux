@@ -6,6 +6,7 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
@@ -15,6 +16,7 @@ import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.MemberPrincipal;
 import java.time.InstantSource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -44,14 +46,17 @@ public class ContentServiceProvider implements ContentService {
 
   @Override
   public List<Event> handle(BaseContentCommand x) {
-    if (x instanceof CreatePhotoDiary x1) {
-      return handle(x1);
-    } else {
-      throw new IllegalStateException("invalid command " + x);
-    }
+    return switch (x) {
+      case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
+      case UploadPhoto x1 -> handleUploadPhoto(x1);
+    };
   }
 
-  private List<Event> handle(CreatePhotoDiary x) {
+  private List<Event> handleUploadPhoto(UploadPhoto x) {
+    return Collections.emptyList();
+  }
+
+  private List<Event> handleCreatePhotoDiary(CreatePhotoDiary x) {
     MemberID mid = validateMemberLoggedIn(x);
     validateUniqueTitleForMember(mid, x.title());
     ContentID y = writer.createContent(x);

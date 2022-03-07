@@ -1,9 +1,9 @@
 package com.acsredux.adapter.web.content;
 
 import static com.acsredux.adapter.web.MockHttpExchange.TEST_HTTP_PRINCIPAL;
-import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
 import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
+import static com.acsredux.lib.testutil.TestData.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
@@ -69,7 +69,7 @@ class TestCreateContentHandler {
     var mock = new MockHttpExchange(
       "/photo-diary/create",
       "POST",
-      "command=create_photo_diary&year=2022&name=foobar"
+      "command=create_photo_diary&year=2022&filename=foobar"
     );
     mock.setPrincipal(new MemberHttpPrincipal(TEST_MEMBER));
 

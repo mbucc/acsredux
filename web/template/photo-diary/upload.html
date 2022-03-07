@@ -4,13 +4,15 @@
 <p style="color: red">{{{error}}}</p>
 {{/error}}
 
-<form action="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image" method="post">
+<form action="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image" enctype="multipart/form-data" method="post">
 
 <p>
 <label for="picker">Preview image:</label>
-<input id="picker" accept="image/*" type='file' required autofocus/>
+<input id="picker" type="file" name="picker" accept="image/*" required autofocus/>
+<input type="hidden" name="contentID" value="{{contentID}}">
+<input type="hidden" name="sectionIndex" value="{{sectionIndex}}">
 
-<p><input type="submit" value="Upload image to your {{diaryName}} diary" />
+<p><input type="submit" name="submit" value="Upload image to your {{diaryName}} diary" />
 
 <p><img id="preview" src="#" width="350px" alt="Image Preview" />
 

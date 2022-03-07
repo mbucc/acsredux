@@ -1,8 +1,8 @@
 package com.acsredux.adapter.web.content;
 
 import static com.acsredux.adapter.web.MockHttpExchange.TEST_HTTP_PRINCIPAL;
-import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
+import static com.acsredux.lib.testutil.TestData.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;

@@ -1,7 +1,7 @@
 package com.acsredux.adapter.web.common;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.core.base.NotFoundException;
@@ -16,6 +16,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestBaseHandler {
+
+  public static final String NOT_FOUND_RESPONSE =
+    """
+    404
+    Content-Length: 10
+    Content-type: text/plain; charset= UTF-8
+          
+    Not found.""";
 
   static class TestHandler extends BaseHandler {
 
@@ -39,7 +47,7 @@ class TestBaseHandler {
   }
 
   private void setResponse(HttpExchange x1, byte[] body) {
-    x1.getResponseHeaders().set("Content-type", "text/html; charset= UTF-8");
+    x1.getResponseHeaders().set("Content-type", "text/plain; charset= UTF-8");
     try {
       x1.sendResponseHeaders(200, body.length);
       x1.getResponseBody().write(body);
@@ -74,8 +82,11 @@ class TestBaseHandler {
     // setup
     var mock = new MockHttpExchange("/");
 
-    // execute and verify
-    assertThrows(NotFoundException.class, () -> handler.handle(mock));
+    // execute
+    assertDoesNotThrow(() -> handler.handle(mock));
+
+    // verify
+    assertEquals(NOT_FOUND_RESPONSE, mock.actual());
   }
 
   @Test
@@ -92,7 +103,7 @@ class TestBaseHandler {
       """
       200
       Content-Length: 11
-      Content-type: text/html; charset= UTF-8
+      Content-type: text/plain; charset= UTF-8
       
       Hello World""";
     assertEquals(expected, mock.actual());
@@ -112,7 +123,7 @@ class TestBaseHandler {
       """
       200
       Content-Length: 75
-      Content-type: text/html; charset= UTF-8
+      Content-type: text/plain; charset= UTF-8
       
       Form values posted:
       <FormData: firstname=foo, principalName=Anonymous User>""";
@@ -130,14 +141,7 @@ class TestBaseHandler {
     handler.handle(mock);
 
     // verify
-    String expected =
-      """
-      404
-      Content-Length: 10
-      Content-type: text/html; charset= UTF-8
-      
-      Not found.""";
-    assertEquals(expected, mock.actual());
+    assertEquals(NOT_FOUND_RESPONSE, mock.actual());
   }
 
   @Test
@@ -155,7 +159,7 @@ class TestBaseHandler {
       """
       500
       Content-Length: 15
-      Content-type: text/html; charset= UTF-8
+      Content-type: text/plain; charset= UTF-8
       
       Internal error.""";
     assertEquals(expected, mock.actual());

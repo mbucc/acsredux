@@ -4,4 +4,5 @@ public enum FormCommand {
   CREATE,
   LOGIN,
   CREATE_PHOTO_DIARY,
+  UPLOAD_PHOTO,
 }

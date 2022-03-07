@@ -1,7 +1,7 @@
 package com.acsredux.adapter.web;
 
-import static com.acsredux.adapter.web.MockHttpExchange.projectRoot;
 import static com.acsredux.lib.testutil.TestData.TEST_MEMBER;
+import static com.acsredux.lib.testutil.TestData.projectRoot;
 
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;

@@ -241,7 +241,10 @@ public final class Stub
 
   @Override
   public Content getContent(ContentID x) {
-    return content.get(x);
+    if (content.containsKey(x)) {
+      return content.get(x);
+    }
+    throw new NotFoundException("No photo diary found with ID " + x.val());
   }
 
   @Override

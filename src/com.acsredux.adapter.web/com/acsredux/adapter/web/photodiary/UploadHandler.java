@@ -1,12 +1,18 @@
 package com.acsredux.adapter.web.photodiary;
 
+import static com.acsredux.adapter.web.members.Util.internalError;
+import static com.acsredux.adapter.web.members.Util.redirect;
+
+import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.UploadPhotoView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.content.ContentService;
+import com.acsredux.core.content.commands.BaseContentCommand;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
 
 public class UploadHandler {
@@ -22,16 +28,44 @@ public class UploadHandler {
   }
 
   public void handleGetUpload(HttpExchange x1, FormData x2) {
-    UploadPhotoView view = new UploadPhotoView(x1, x2, siteInfo);
-    view.lookupContentInfo(contentService);
-    WebUtil.renderForm(template, x1, view);
+    var y = Result
+      .ok(new UploadPhotoView(x1, x2, siteInfo))
+      .map(o -> o.lookupContentInfo(contentService))
+      .map(o -> WebUtil.renderForm(template, x1, o));
+    if (y.isErr()) {
+      internalError(x1, y.getException());
+    }
   }
 
-  // /photo-diary/123/2022/add-image
+  public void handlePostUpload(HttpExchange x1, FormData x2) {
+    var y = Result
+      .ok(x2)
+      .map(o -> o.add("command", "UPLOAD_PHOTO"))
+      .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
+      .map(BaseContentCommand.class::cast)
+      .map(contentService::handle);
+    if (y.isOk()) {
+      var contentID = x2.get("contentID");
+      var location = String.format("/photo-diary/%s", contentID);
+      redirect(x1, location);
+    } else {
+      // TODO: Fix this.
+      throw new RuntimeException(y.getException());
+    }
+  }
+
+  // /photo-diary/123/0/add-image
   public boolean isGetUpload(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/photo-diary/\\d+/.*/add-image")
+      x.getRequestURI().getPath().matches("/photo-diary/\\d+/\\d+/add-image")
+    );
+  }
+
+  public static boolean isPostUpload(HttpExchange x) {
+    return (
+      x.getRequestMethod().equalsIgnoreCase("POST") &&
+      x.getRequestURI().getPath().matches("/photo-diary/\\d+/\\d+/add-image")
     );
   }
 }

@@ -55,7 +55,6 @@ describe('ACS Redux tests', () => {
     cy.get('#name').type(`back yard{enter}`)
   })
 
-
   it('can add a photo', () => {
       cy.visit('/members/login')
       cy.get('#email').type(`t@t.com`)
@@ -63,10 +62,10 @@ describe('ACS Redux tests', () => {
       cy.get('li > a').click()
       cy.get(':nth-child(4) > a > button').click()
       cy.get('#picker').selectFile('cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg')
-      //cy.get(':nth-child(2) > input').click()
+      cy.get(':nth-child(2) > input').click()
     })
 
-  it('create a second member', () => {
+  it('can create a second member', () => {
     const pwd = 'abCd3fg!'
     cy.visit('/')
     cy.get(':nth-child(3) > a')
@@ -81,7 +80,7 @@ describe('ACS Redux tests', () => {
     cy.getCookie('session_id').should('exist')
   })
 
-  it('second member does not see create diary link on first member\'s page', () => {
+  it('hides the create diary link on first member\'s page when second member is logged in', () => {
     const pwd = 'abCd3fg!'
     cy.visit('/members/login')
     cy.get('#email').type(`u@t.com`)
@@ -92,4 +91,6 @@ describe('ACS Redux tests', () => {
     cy.contains('2022: back yard')
     cy.contains('Create a photo diary').should('not.exist')
   })
+
+
 })
