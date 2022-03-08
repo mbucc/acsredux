@@ -16,12 +16,13 @@ public record ContentID(Long val) {
     if (x == null) {
       return null;
     }
+
     try {
-      return new ContentID(Long.valueOf(x));
+      return new ContentID(Long.valueOf(x.trim()));
     } catch (NumberFormatException e) {
       ResourceBundle rb = ResourceBundle.getBundle("ContentErrorMessages");
       throw new ValidationException(
-        MessageFormat.format(rb.getString("invalid_long"), x)
+        MessageFormat.format(rb.getString("invalid_content_id"), x)
       );
     }
   }

@@ -9,9 +9,13 @@ import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.entities.Content;
+import com.acsredux.core.content.events.ImageSavedEvent;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.content.values.ContentID;
+import com.acsredux.core.content.values.FileContent;
+import com.acsredux.core.content.values.FileName;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
 import com.acsredux.core.content.values.Title;
@@ -23,7 +27,11 @@ import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
 import com.acsredux.core.members.values.*;
+import java.io.File;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -44,16 +52,16 @@ public final class Stub
     MemberAdminReader,
     AdminReader,
     ContentReader,
-    ContentWriter {
-
-  private static final Stub INSTANCE = new Stub();
+    ContentWriter,
+    ImageWriter {
 
   private final List<Member> members;
   private final Map<VerificationToken, MemberID> tokens;
   private final Map<SessionID, MemberID> sessions;
   private final Map<ContentID, Content> content;
+  private String documentRoot = ".";
 
-  private Stub() {
+  public Stub() {
     tokens = new HashMap<>();
     sessions = new HashMap<>();
     members = new ArrayList<>();
@@ -76,14 +84,8 @@ public final class Stub
     );
   }
 
-  // From java.util.ServiceLoader documentation (Java17):
-  //        If the service provider declares a provider method, then the service
-  //        loader invokes that method to obtain an instance of the service
-  //        provider. A provider method is a public static method named "provider"
-  //        with no formal parameters and a return type that is assignable to
-  //        the service's interface or class.
-  public static Stub provider() {
-    return Stub.INSTANCE;
+  public void setDocumentRoot(String x) {
+    this.documentRoot = x;
   }
 
   public Optional<Member> findByID(MemberID x) {
@@ -308,5 +310,39 @@ public final class Stub
       )
       .map(o -> new Section(new Title(o), Collections.emptyList()))
       .collect(Collectors.toList());
+  }
+
+  // ---------------------------------------------------------------------------
+  //
+  //       I M A G E    W R I T E R
+  //
+  // ---------------------------------------------------------------------------
+
+  @Override
+  public ImageSavedEvent save(Instant instant, MemberID x1, FileContent x2, FileName x3) {
+    String fmt = "%s/static/img/%d/%s";
+    String fn = String.format(fmt, this.documentRoot, x1.val(), x3.val());
+    try {
+      Path path = Paths.get(fn);
+      makeParentDir(path);
+      Files.write(path, x2.val());
+    } catch (Exception e) {
+      throw new IllegalStateException("can't write to fn", e);
+    }
+    return new ImageSavedEvent();
+  }
+
+  private void makeParentDir(Path path) {
+    if (path.toFile().getParent() != null) {
+      File parentDir = new File(path.toFile().getParent());
+      if (!parentDir.exists()) {
+        parentDir.mkdirs();
+      }
+    }
+  }
+
+  @Override
+  public FileContent resize(FileContent x1, int pixelHeight) {
+    return x1;
   }
 }

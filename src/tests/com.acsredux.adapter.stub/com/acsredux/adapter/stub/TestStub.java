@@ -15,7 +15,7 @@ class TestStub {
   @Test
   void testAddMember() {
     // setup
-    var stub = Stub.provider();
+    var stub = new Stub();
     var now = new CreatedOn(Instant.now());
     var member = stub.findByID(TEST_MEMBER_ID);
     assertFalse(member.isPresent());

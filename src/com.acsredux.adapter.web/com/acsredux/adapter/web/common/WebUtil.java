@@ -107,13 +107,20 @@ public class WebUtil {
         DiaryYear.parse(x.get("year")),
         new DiaryName(x.get("name"))
       );
-      case UPLOAD_PHOTO -> new UploadPhoto(
-        subject,
-        ContentID.parse(x.get("contentID")),
-        SectionIndex.parse(x.get("sectionIndex")),
-        new FileName(x.getUploadedFiles().get(0).filename()),
-        new FileContent(x.getUploadedFiles().get(0).val())
-      );
+      case UPLOAD_PHOTO -> {
+        FilePart f = x.getUploadedFiles().get(0);
+        System.out.println(
+          "MKB: getUploadedFiles().get(0).val().length = " + f.val().length
+        );
+        var y = new UploadPhoto(
+          subject,
+          ContentID.parse(x.get("contentID")),
+          SectionIndex.parse(x.get("sectionIndex")),
+          new FileName(f.filename()),
+          new FileContent(f.val())
+        );
+        yield y;
+      }
     };
   }
 

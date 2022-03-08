@@ -14,6 +14,7 @@ import com.acsredux.core.content.MockContentWriter;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.lib.testutil.MockProxy;
 import java.util.ResourceBundle;
 import javax.security.auth.Subject;
@@ -23,7 +24,8 @@ public class TestContentServiceProvider {
 
   ContentReader r = (ContentReader) MockProxy.of(new MockContentReader());
   ContentWriter w = (ContentWriter) MockProxy.of(new MockContentWriter());
-  ContentServiceProvider service = new ContentServiceProvider(r, w, null);
+  ImageWriter iw = null;
+  ContentServiceProvider service = new ContentServiceProvider(null, r, w, iw);
   ResourceBundle rb = ResourceBundle.getBundle("ContentErrorMessages");
 
   @Test

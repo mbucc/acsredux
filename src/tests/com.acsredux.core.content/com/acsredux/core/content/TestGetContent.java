@@ -9,6 +9,7 @@ import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.content.services.ContentServiceProvider;
 import com.acsredux.core.content.values.DiaryYear;
 import com.acsredux.lib.testutil.MockProxy;
@@ -28,10 +29,11 @@ class TestGetContent {
 
   @BeforeEach
   void setup() {
+    InstantSource c = InstantSource.fixed(this.clockTime);
     r = (ContentReader) MockProxy.of(new MockContentReader());
     w = (ContentWriter) MockProxy.of(new MockContentWriter());
-    InstantSource c = InstantSource.fixed(this.clockTime);
-    this.svc = new ContentServiceProvider(r, w, c);
+    ImageWriter iw = null;
+    this.svc = new ContentServiceProvider(c, r, w, iw);
   }
 
   @Test
@@ -47,7 +49,8 @@ class TestGetContent {
   {
     r = (ContentReader) MockProxy.of(new MockContentReader());
     w = (ContentWriter) MockProxy.of(new MockContentWriter());
-    this.svc = new ContentServiceProvider(r, w, null);
+    ImageWriter iw = null;
+    this.svc = new ContentServiceProvider(null, r, w, iw);
   }
 
   @Test

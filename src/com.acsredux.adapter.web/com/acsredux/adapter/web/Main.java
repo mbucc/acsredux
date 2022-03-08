@@ -38,7 +38,8 @@ public class Main {
     //
     //			Load services
     //
-    Stub stub = Stub.provider();
+    Stub stub = new Stub();
+    stub.setDocumentRoot(xs.documentRoot);
     ZoneId tz = ZoneId.of("US/Eastern");
     SecurityPolicy policy = SecurityPolicyProvider.parse(
       Util.readResource("security-policy.json")
@@ -52,7 +53,7 @@ public class Main {
       policy
     );
     ContentService contentService = SecurityProxy.of(
-      ContentServiceFactory.getArticleService(stub, stub, tz),
+      ContentServiceFactory.getArticleService(tz, stub, stub, stub),
       policy
     );
     MemberService.passwordSaltOrDie();

@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class FormData {
 
@@ -106,65 +104,6 @@ public class FormData {
     return FormData.parse(x.getRequestURI().getRawQuery());
   }
 
-  static FilePart parseFilePart(String[] lines, int i) {
-    String name = getHeaderParameter(lines[i], "name");
-    String filename = getHeaderParameter(lines[i++], "filename");
-    String filetype = getContentTypeFromString(lines[i++]);
-
-    // Skip blank line.
-    i++;
-
-    StringBuilder sb = new StringBuilder();
-    for (i = i; i < lines.length; i++) {
-      sb.append(lines[i]);
-    }
-    byte[] content = sb.toString().getBytes();
-    return new FilePart(name, filename, filetype, content);
-  }
-
-  static FormFieldPart parseFormFieldPart(String[] lines, int i) {
-    String name = getHeaderParameter(lines[i], "name");
-
-    // Skip blank line.
-    i++;
-
-    StringBuilder sb = new StringBuilder();
-    for (i = i + 1; i < lines.length; i++) {
-      sb.append(lines[i]);
-    }
-    byte[] content = sb.toString().getBytes();
-    return new FormFieldPart(name, content);
-  }
-
-  static MultiPart parsePart(String s) {
-    if (s == null || s.isBlank()) {
-      return null;
-    }
-
-    String[] lines = s.split("\\r?\\n");
-
-    // The first should be the content disposition.
-    int i = 0;
-    if (!lines[i].toLowerCase().trim().startsWith("content-disposition:")) {
-      String fmt = "first line did not start with 'content-disposition:', got '%s'";
-      throw new IllegalStateException(String.format(fmt, i, lines[i]));
-    }
-
-    // Parsing uploaded files is different from parsing form fields.
-    if (lines[i].toLowerCase().contains("filename=")) {
-      return parseFilePart(lines, i);
-    } else {
-      return parseFormFieldPart(lines, i);
-    }
-  }
-
-  private static String[] splitRequestBody(HttpExchange x) {
-    var boundary =
-      BOUNDARY_PREFIX + getHeaderParameter(getContentType(x), "boundary") + "\\r?\\n";
-    var y = new String(readRequestBody(x), StandardCharsets.ISO_8859_1);
-    return y.split(boundary);
-  }
-
   // Example request body:
   //
   //      1: ------WebKitFormBoundaryybJ2sgPCQZ05qgDP
@@ -187,23 +126,76 @@ public class FormData {
   private static FormData parseMultiPartForm(HttpExchange x) {
     var y = new FormData();
 
-    String[] xs = splitRequestBody(x);
+    // Read MIME type boundary from header.
+    var boundary = getHeaderParameter(getContentType(x), "boundary");
 
-    List<MultiPart> parts = Stream
-      .of(xs)
-      .map(FormData::parsePart)
-      .filter(Objects::nonNull)
-      .toList();
+    // bytes [] -> ISO_8859_1 -> byte[] is lossless.
+    var body = new String(readRequestBody(x), StandardCharsets.ISO_8859_1);
+    var lines = body.split("\\n");
 
-    // Store uploaded files and form fields in the FormData.
-    for (MultiPart part : parts) {
-      switch (part) {
-        case FilePart y1 -> y.parts.add(y1);
-        case FormFieldPart y1 -> y.add(y1.name(), y1.valAsString());
+    // Parse body into it's parts.
+    int i = 0;
+    int j = 0;
+    List<MultiPart> ys = new ArrayList<>();
+    i = readUpToAndIncluding(lines, j, "content-disposition:");
+    while (i < lines.length) {
+      j = readUpToAndIncluding(lines, i, boundary);
+
+      // This part is a file upload if there is a filename attribute.
+      if (lines[i].toLowerCase().contains("filename=")) {
+        String filename = getHeaderParameter(lines[i], "filename");
+        String name = getHeaderParameter(lines[i++], "name");
+        String filetype = getContentTypeFromString(lines[i++]);
+        i++; // blank line between content type and content
+        StringBuilder sb = new StringBuilder();
+        for (int k = i; k < j; k++) {
+          sb.append(lines[k]);
+          sb.append("\n");
+        }
+        y.parts.add(
+          new FilePart(
+            name,
+            filename,
+            filetype,
+            sb.toString().getBytes(StandardCharsets.ISO_8859_1)
+          )
+        );
+      } else {
+        String name = getHeaderParameter(lines[i++], "name");
+        i++; // blank line before value.
+
+        // I think this could be multi-line content (e.g., in a text box).
+        StringBuilder sb = new StringBuilder();
+        for (int k = i; k < j; k++) {
+          sb.append(lines[k].trim());
+          sb.append(" ");
+        }
+        y.add(
+          name,
+          new String(
+            sb.toString().trim().getBytes(StandardCharsets.ISO_8859_1),
+            StandardCharsets.UTF_8
+          )
+        );
       }
+
+      i = j + 1;
     }
 
     return y;
+  }
+
+  // pattern is not a regex!
+  private static int readUpToAndIncluding(String[] lines, int i, String notAtRegex) {
+    for (int j = i; j < lines.length; j++) {
+      if (lines[j].toLowerCase().trim().contains(notAtRegex.toLowerCase())) {
+        return j;
+      }
+    }
+    String fmt = "can't find '%s' between lines %d and %d.  line[%d]=\n%s";
+    throw new IllegalStateException(
+      String.format(fmt, notAtRegex, i, lines.length, i, lines[i])
+    );
   }
 
   private static FormData parseFormData(HttpExchange x) {
