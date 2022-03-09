@@ -6,7 +6,7 @@ import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.lib.testutil.MockAdminService;
-import com.acsredux.lib.testutil.MockArticleService;
+import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class TestMemberLogin {
   void setup() {
     MockMemberService memberService = new MockMemberService();
     MockAdminService adminService = new MockAdminService();
-    ContentService contentService = new MockArticleService();
+    ContentService contentService = new MockContentService();
     handler =
       new MembersHandler(
         projectRoot() + "/web/template",

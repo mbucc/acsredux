@@ -6,7 +6,7 @@ import static com.acsredux.lib.testutil.TestData.projectRoot;
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;
-import com.acsredux.lib.testutil.MockArticleService;
+import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class TestMemberLogout {
         projectRoot() + "/web/template",
         memberService,
         adminService,
-        new MockArticleService()
+        new MockContentService()
       );
   }
 

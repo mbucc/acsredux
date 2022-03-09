@@ -8,12 +8,14 @@ import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
+import com.acsredux.core.content.values.AltText;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.DiaryName;
 import com.acsredux.core.content.values.DiaryYear;
 import com.acsredux.core.content.values.FileContent;
 import com.acsredux.core.content.values.FileName;
 import com.acsredux.core.content.values.Image;
+import com.acsredux.core.content.values.ImageSource;
 import com.acsredux.core.content.values.PhotoID;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
@@ -160,12 +162,17 @@ public class TestData {
   );
 
   public static final ContentID TEST_CONTENT_ID = new ContentID(123L);
-  public static final Image TEST_PHOTO = Image.of("http://example.com/img1.png");
+  public static final AltText TEST_ALT_TEXT = new AltText("img1");
+  public static final Image TEST_IMAGE = new Image(
+    new ImageSource("/static/img1.png"),
+    TEST_ALT_TEXT,
+    null
+  );
   public static final PhotoID TEST_PHOTO_ID = new PhotoID(1000L);
   public static final Title TEST_SECTION_TITLE = new Title("A Test Section Title");
   public static final Section TEST_SECTION = new Section(
     TEST_SECTION_TITLE,
-    List.of(TEST_PHOTO)
+    List.of(TEST_IMAGE)
   );
   public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
   public static final DiaryName TEST_DIARY_NAME = null;

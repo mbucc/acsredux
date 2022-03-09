@@ -14,9 +14,11 @@ import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
 import com.acsredux.core.content.ports.ImageWriter;
+import com.acsredux.core.content.values.AltText;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.FileContent;
 import com.acsredux.core.content.values.FileName;
+import com.acsredux.core.content.values.Image;
 import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.MemberPrincipal;
@@ -56,7 +58,7 @@ public class ContentServiceProvider implements ContentService {
   }
 
   @Override
-  public List<Content> findArticlesByMemberID(MemberID x) {
+  public List<Content> findByMemberID(MemberID x) {
     return reader.findByMemberID(x);
   }
 
@@ -72,8 +74,9 @@ public class ContentServiceProvider implements ContentService {
     List<Event> ys = new ArrayList<>();
 
     MemberID mid = validateMemberLoggedIn(x);
+    validateContentOwnedByMember(x.contentID(), mid);
 
-    // Save original.
+    // Save image to disk.
     FileName fn1 = x.fileName().insertSuffix("orig");
     ys.add(iwriter.save(clock.instant(), mid, x.content(), fn1));
 
@@ -83,7 +86,8 @@ public class ContentServiceProvider implements ContentService {
     ys.add(iwriter.save(clock.instant(), mid, resized, fn2));
 
     // Add photo to diary.
-    writer.addPhotoToDiary(x, fn2);
+    Image img = new Image(iwriter.src(mid, fn2), AltText.of(x.fileName()), null);
+    writer.addPhotoToDiary(x.contentID(), x.sectionIndex(), img);
     ys.add(new PhotoAddedToDiary(x));
 
     return ys;
@@ -99,9 +103,16 @@ public class ContentServiceProvider implements ContentService {
   MemberID validateMemberLoggedIn(Command x) {
     Set<MemberPrincipal> ys = x.subject().getPrincipals(MemberPrincipal.class);
     if (ys.isEmpty()) {
-      throw new AuthenticationException(rb.getString("not_logged_in1"));
+      throw new AuthenticationException(rb.getString("not_logged_in"));
     }
     return ys.stream().toList().get(0).mid();
+  }
+
+  private void validateContentOwnedByMember(ContentID x1, MemberID x2) {
+    Content y = reader.getByID(x1);
+    if (!y.author().equals(x2)) {
+      throw new AuthenticationException(rb.getString("not_content_owner"));
+    }
   }
 
   void validateUniqueTitleForMember(MemberID x1, Title x2) {

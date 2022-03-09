@@ -8,6 +8,7 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.UploadPhotoView;
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.base.AuthenticationException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
@@ -52,6 +53,9 @@ public class UploadHandler {
     } else {
       Exception e = y.getException();
       if (e instanceof ValidationException e1) {
+        x2.add("error", e1.getMessage());
+        handleGetUpload(x1, x2);
+      } else if (e instanceof AuthenticationException e1) {
         x2.add("error", e1.getMessage());
         handleGetUpload(x1, x2);
       } else {

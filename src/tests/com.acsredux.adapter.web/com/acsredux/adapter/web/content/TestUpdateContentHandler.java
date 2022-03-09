@@ -7,7 +7,7 @@ import static com.acsredux.lib.testutil.TestData.projectRoot;
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
 import com.acsredux.lib.testutil.MockAdminService;
-import com.acsredux.lib.testutil.MockArticleService;
+import com.acsredux.lib.testutil.MockContentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +15,12 @@ class TestUpdateContentHandler {
 
   PhotoDiaryHandler handler;
   MockAdminService mockAdminService;
-  MockArticleService mockArticleService;
+  MockContentService mockArticleService;
 
   @BeforeEach
   void setup() {
     this.mockAdminService = new MockAdminService();
-    this.mockArticleService = new MockArticleService();
+    this.mockArticleService = new MockContentService();
     this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
     this.handler =
       new PhotoDiaryHandler(

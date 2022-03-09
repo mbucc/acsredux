@@ -9,7 +9,6 @@ import com.acsredux.core.base.Command;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
-import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ImageSavedEvent;
 import com.acsredux.core.content.ports.ContentReader;
@@ -19,9 +18,11 @@ import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.DocumentRoot;
 import com.acsredux.core.content.values.FileContent;
 import com.acsredux.core.content.values.FileName;
+import com.acsredux.core.content.values.Image;
 import com.acsredux.core.content.values.ImageSource;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
+import com.acsredux.core.content.values.SectionIndex;
 import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.entities.Member;
@@ -326,13 +327,8 @@ public final class Stub
       .collect(Collectors.toList());
   }
 
-  @Override
-  public void addPhotoToDiary(UploadPhoto x1, FileName x3) {
-    content.put(
-      x1.contentID(),
-      getByID(x1.contentID())
-        .with(x1.sectionIndex(), src(this.documentRoot, cmd2mid(x1), x3))
-    );
+  public void addPhotoToDiary(ContentID x1, SectionIndex x2, Image x3) {
+    content.put(x1, getByID(x1).with(x2, x3));
   }
 
   // ---------------------------------------------------------------------------
@@ -344,8 +340,8 @@ public final class Stub
   @Override
   public ImageSavedEvent save(Instant instant, MemberID x1, FileContent x2, FileName x3) {
     try {
-      ImageSource imgsrc = src(this.documentRoot, x1, x3);
-      Path path = Paths.get(imgsrc.val());
+      ImageSource imgsrc = src(x1, x3);
+      Path path = Paths.get(this.documentRoot.val(), imgsrc.val());
       makeParentDir(path);
       Files.write(path, x2.val());
     } catch (Exception e) {

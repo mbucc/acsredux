@@ -63,6 +63,17 @@ describe('ACS Redux tests', () => {
       cy.get(':nth-child(4) > a > button').click()
       cy.get('#picker').selectFile('cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg')
       cy.get(':nth-child(2) > input').click()
+
+      // Uploading photo redirects back to diary.
+      cy.location('pathname').should('eq', '/photo-diary/1')
+
+      // And the image should actually load.
+      // "naturalWidth" and "naturalHeight" are set when the image loads
+      cy.get('[alt="10138-80-prospect-business-hours-medium"]')
+      .should('be.visible')
+      .and(($img) => {
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
     })
 
   it('can create a second member', () => {
@@ -80,7 +91,7 @@ describe('ACS Redux tests', () => {
     cy.getCookie('session_id').should('exist')
   })
 
-  it('hides the create diary link on first member\'s page when second member is logged in', () => {
+  it('member 2 does not see a create diary link on member 1 dashboard', () => {
     const pwd = 'abCd3fg!'
     cy.visit('/members/login')
     cy.get('#email').type(`u@t.com`)
@@ -90,6 +101,15 @@ describe('ACS Redux tests', () => {
     cy.visit('/members/2')
     cy.contains('2022: back yard')
     cy.contains('Create a photo diary').should('not.exist')
+  })
+
+  it('member 2 does not see an add image button on member 1 photo diary', () => {
+    const pwd = 'abCd3fg!'
+    cy.visit('/members/login')
+    cy.get('#email').type(`u@t.com`)
+    cy.get('#pwd').type(`abCd3fg!{enter}`)
+    cy.visit('/photo-diary/1')
+    cy.contains('+ img').should('not.exist')
   })
 
 

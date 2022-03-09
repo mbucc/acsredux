@@ -52,7 +52,7 @@ public class DashboardView extends BaseView {
   public DashboardView lookupMemberArticles(ContentService x) {
     this.articles =
       x
-        .findArticlesByMemberID(new MemberID(this.memberID))
+        .findByMemberID(new MemberID(this.memberID))
         .stream()
         .map(ArticleView::of)
         .collect(Collectors.toList());

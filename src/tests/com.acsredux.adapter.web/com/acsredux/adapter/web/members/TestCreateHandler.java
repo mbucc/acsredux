@@ -7,7 +7,7 @@ import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.values.*;
 import com.acsredux.lib.testutil.MockAdminService;
-import com.acsredux.lib.testutil.MockArticleService;
+import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class TestCreateHandler {
         projectRoot() + "/web/template",
         mockMemberService,
         mockAdminService,
-        new MockArticleService()
+        new MockContentService()
       );
   }
 

@@ -1,7 +1,7 @@
 package com.acsredux.core.content.entities;
 
 import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.content.values.ImageSource;
+import com.acsredux.core.content.values.Image;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
 import com.acsredux.core.content.values.SectionIndex;
@@ -18,7 +18,7 @@ public record Content(
   List<Section> sections,
   PublishedDate published
 ) {
-  public Content with(SectionIndex x1, ImageSource x2) {
+  public Content with(SectionIndex x1, Image x2) {
     List<Section> ys = new ArrayList<>(sections.size());
     for (int i = 0; i < sections.size(); i++) {
       if (i == x1.val()) {

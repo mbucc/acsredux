@@ -9,7 +9,10 @@
     {{#elements}}
     <p>{{{html}}}
     {{/elements}}
-    <p><a href="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image"><button type="button">Add Image</button></a>
+
+    {{#isMyPage}}
+    <p><a href="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image"><button type="button">+ img</button></a>
+    {{/isMyPage}}
 {{/sections}}
 
 {{> ../tail}}

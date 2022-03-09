@@ -11,7 +11,7 @@ import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.MemberID;
 import java.util.List;
 
-public class MockArticleService implements ContentService {
+public class MockContentService implements ContentService {
 
   @Override
   public Content getByID(ContentID x) {
@@ -19,7 +19,7 @@ public class MockArticleService implements ContentService {
   }
 
   @Override
-  public List<Content> findArticlesByMemberID(MemberID x) {
+  public List<Content> findByMemberID(MemberID x) {
     return List.of(TEST_PHOTO_DIARY);
   }
 

@@ -11,7 +11,7 @@ import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.AnonymousHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;
-import com.acsredux.lib.testutil.MockArticleService;
+import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +35,7 @@ class TestMemberEmailVerify {
         projectRoot() + "/web/template",
         mockMemberService,
         mockAdminService,
-        new MockArticleService()
+        new MockContentService()
       );
   }
 

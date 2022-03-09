@@ -10,7 +10,7 @@ import java.util.List;
 public interface ContentService {
   // Queries
   Content getByID(ContentID x);
-  List<Content> findArticlesByMemberID(MemberID x);
+  List<Content> findByMemberID(MemberID x);
 
   // Commands
   List<Event> handle(BaseContentCommand x);

@@ -12,11 +12,13 @@ import com.acsredux.core.content.values.SectionElement;
 import com.sun.net.httpserver.HttpExchange;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UpdatePhotoDiaryView extends BaseView {
 
   final long contentID;
+  long memberID;
   String slug;
   List<SectionDTO> sections;
 
@@ -28,7 +30,7 @@ public class UpdatePhotoDiaryView extends BaseView {
     @Override
     public String html() {
       StringBuilder sb = new StringBuilder();
-      sb.append("<img url=\"");
+      sb.append("<img src=\"");
       sb.append(url);
       sb.append("\"");
       if (!alt.isBlank()) {
@@ -67,6 +69,7 @@ public class UpdatePhotoDiaryView extends BaseView {
 
   public void lookupContentInfo(ContentService x) {
     Content y = x.getByID(new ContentID(this.contentID));
+    this.memberID = y.author().val();
     this.setPageTitle(y.title().val());
     this.slug = Util.titleToSlug(y.title().val());
     this.sections = new ArrayList<>();
@@ -85,5 +88,9 @@ public class UpdatePhotoDiaryView extends BaseView {
           )
         );
     }
+  }
+
+  public boolean isMyPage() {
+    return Objects.equals(memberID, principalID);
   }
 }

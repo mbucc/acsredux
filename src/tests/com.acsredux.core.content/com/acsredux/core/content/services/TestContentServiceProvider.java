@@ -59,6 +59,6 @@ public class TestContentServiceProvider {
       AuthenticationException.class,
       () -> service.validateMemberLoggedIn(x)
     );
-    assertEquals(rb.getString("not_logged_in1"), y.getMessage());
+    assertEquals(rb.getString("not_logged_in"), y.getMessage());
   }
 }
