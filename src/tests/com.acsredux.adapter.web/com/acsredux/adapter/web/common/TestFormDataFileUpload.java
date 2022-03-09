@@ -2,9 +2,7 @@ package com.acsredux.adapter.web.common;
 
 import static com.acsredux.adapter.web.common.FormData.BOUNDARY_PREFIX;
 import static com.acsredux.adapter.web.common.FormData.isFormUpload;
-import static com.acsredux.adapter.web.common.FormData.parseFilePart;
 import static com.acsredux.adapter.web.common.WebUtil.CONTENT_TYPE;
-import static com.acsredux.lib.testutil.TestData.projectRoot;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,25 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acsredux.adapter.web.MockHttpExchange;
 import com.sun.net.httpserver.HttpExchange;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 class TestFormDataFileUpload {
 
   public static final String BOUNDARY = "----WebKitFormBoundaryybJ2sgPCQZ05qgDP";
 
-  private String testImage() {
-    return (
-      projectRoot() + "cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg"
-    );
-  }
-
-  private String imageUploadRequest() {
-    return projectRoot() + "test/fileupload/photoUploadRequestBody.bytes";
-  }
-
   @Test
-  void testIsFormUploadTrueForMultiPartContent() throws IOException {
+  void testIsFormUploadTrueForMultiPartContent() {
     // setup
     HttpExchange x = new MockHttpExchange("/", "POST");
     x.getRequestHeaders().add(CONTENT_TYPE, "multipart/form-data; boundary=" + BOUNDARY);
@@ -41,7 +28,7 @@ class TestFormDataFileUpload {
   }
 
   @Test
-  void testIsFormUploadFalseFormFormConent() throws IOException {
+  void testIsFormUploadFalseFormFormConent() {
     // setup
     HttpExchange x = new MockHttpExchange("/", "POST");
     x.getRequestHeaders().add(CONTENT_TYPE, "application/x-www-form-urlencoded");
@@ -51,7 +38,7 @@ class TestFormDataFileUpload {
   }
 
   @Test
-  void testIsFormUploadFalseIfNoContentType() throws IOException {
+  void testIsFormUploadFalseIfNoContentType() {
     // setup
     HttpExchange x = new MockHttpExchange("/", "POST");
 
@@ -60,28 +47,7 @@ class TestFormDataFileUpload {
   }
 
   @Test
-  void testparseUploadedFileSunny() throws IOException {
-    // setup
-    String x =
-      """
-      Content-Disposition: form-data; name="picker"; filename="my-file.txt"
-      Content-Type: text/plain
-      
-      Hello World!
-      """;
-
-    // execute
-    var y = parseFilePart(x.split("\n"), 0);
-
-    // verify
-    assertNotNull(y);
-    assertEquals("my-file.txt", y.filename());
-    assertEquals("text/plain", y.filetype());
-    assertArrayEquals("Hello World!".getBytes(), y.val());
-  }
-
-  @Test
-  void testParse() throws IOException {
+  void testParse() {
     // setup
     String requestBody =
       BOUNDARY_PREFIX +

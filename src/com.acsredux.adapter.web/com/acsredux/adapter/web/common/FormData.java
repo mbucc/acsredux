@@ -137,17 +137,20 @@ public class FormData {
     int i = 0;
     int j = 0;
     List<MultiPart> ys = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
     i = readUpToAndIncluding(lines, j, "content-disposition:");
     while (i < lines.length) {
       j = readUpToAndIncluding(lines, i, boundary);
 
-      // This part is a file upload if there is a filename attribute.
       if (lines[i].toLowerCase().contains("filename=")) {
+        //
+        //        The part can either be a file upload ...
+        //
         String filename = getHeaderParameter(lines[i], "filename");
         String name = getHeaderParameter(lines[i++], "name");
         String filetype = getContentTypeFromString(lines[i++]);
-        i++; // blank line between content type and content
-        StringBuilder sb = new StringBuilder();
+        i++; //   blank line between content type and content
+        sb.setLength(0);
         for (int k = i; k < j; k++) {
           sb.append(lines[k]);
           sb.append("\n");
@@ -157,15 +160,18 @@ public class FormData {
             name,
             filename,
             filetype,
-            sb.toString().getBytes(StandardCharsets.ISO_8859_1)
+            sb.toString().trim().getBytes(StandardCharsets.ISO_8859_1)
           )
         );
       } else {
+        //
+        //        ... or a form field value.
+        //
         String name = getHeaderParameter(lines[i++], "name");
-        i++; // blank line before value.
+        i++; //   blank line before value.
 
-        // I think this could be multi-line content (e.g., in a text box).
-        StringBuilder sb = new StringBuilder();
+        //        Assume a form field could have multiple lines.
+        sb.setLength(0);
         for (int k = i; k < j; k++) {
           sb.append(lines[k].trim());
           sb.append(" ");
@@ -185,7 +191,7 @@ public class FormData {
     return y;
   }
 
-  // pattern is not a regex!
+  //            pattern is not a regex!
   private static int readUpToAndIncluding(String[] lines, int i, String notAtRegex) {
     for (int j = i; j < lines.length; j++) {
       if (lines[j].toLowerCase().trim().contains(notAtRegex.toLowerCase())) {

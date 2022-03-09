@@ -9,6 +9,7 @@ import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
+import com.acsredux.core.content.events.PhotoAddedToDiary;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
@@ -51,12 +52,12 @@ public class ContentServiceProvider implements ContentService {
 
   @Override
   public Content getByID(ContentID x) {
-    return reader.getContent(x);
+    return reader.getByID(x);
   }
 
   @Override
   public List<Content> findArticlesByMemberID(MemberID x) {
-    return reader.findContentByMemberID(x);
+    return reader.findByMemberID(x);
   }
 
   @Override
@@ -81,6 +82,10 @@ public class ContentServiceProvider implements ContentService {
     FileContent resized = iwriter.resize(x.content(), STANDARD_HEIGHT_IN_PIXELS);
     ys.add(iwriter.save(clock.instant(), mid, resized, fn2));
 
+    // Add photo to diary.
+    writer.addPhotoToDiary(x, fn2);
+    ys.add(new PhotoAddedToDiary(x));
+
     return ys;
   }
 
@@ -101,7 +106,7 @@ public class ContentServiceProvider implements ContentService {
 
   void validateUniqueTitleForMember(MemberID x1, Title x2) {
     Optional<Content> doc = reader
-      .findContentByMemberID(x1)
+      .findByMemberID(x1)
       .stream()
       .filter(o -> o.title().equals(x2))
       .findFirst();

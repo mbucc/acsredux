@@ -109,17 +109,13 @@ public class WebUtil {
       );
       case UPLOAD_PHOTO -> {
         FilePart f = x.getUploadedFiles().get(0);
-        System.out.println(
-          "MKB: getUploadedFiles().get(0).val().length = " + f.val().length
-        );
-        var y = new UploadPhoto(
+        yield new UploadPhoto(
           subject,
           ContentID.parse(x.get("contentID")),
           SectionIndex.parse(x.get("sectionIndex")),
           new FileName(f.filename()),
           new FileContent(f.val())
         );
-        yield y;
       }
     };
   }

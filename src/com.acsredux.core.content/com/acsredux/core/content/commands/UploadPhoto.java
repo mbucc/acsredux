@@ -13,6 +13,8 @@ public record UploadPhoto(
   Subject subject,
   ContentID contentID,
   SectionIndex sectionIndex,
+  // TODO: Rename this field to uploadFileName to differentiate from our standard file name.
+  // Use different types?
   FileName fileName,
   FileContent content
 )

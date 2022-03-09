@@ -43,7 +43,7 @@ class TestGetContent {
 
     // verify
     assertEquals(TEST_PHOTO_DIARY, y);
-    MockProxy.toProxy(r).assertCallCount(1).assertCall(0, "getContent", TEST_CONTENT_ID);
+    MockProxy.toProxy(r).assertCallCount(1).assertCall(0, "getByID", TEST_CONTENT_ID);
   }
 
   {

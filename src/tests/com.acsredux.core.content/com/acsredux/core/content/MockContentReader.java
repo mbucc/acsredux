@@ -11,12 +11,12 @@ import java.util.List;
 public class MockContentReader implements ContentReader {
 
   @Override
-  public Content getContent(ContentID x) {
+  public Content getByID(ContentID x) {
     return TEST_PHOTO_DIARY;
   }
 
   @Override
-  public List<Content> findContentByMemberID(MemberID x) {
+  public List<Content> findByMemberID(MemberID x) {
     return List.of(TEST_PHOTO_DIARY);
   }
 }

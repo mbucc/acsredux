@@ -40,7 +40,7 @@ public class TestContentServiceProvider {
     MockProxy
       .toProxy(r)
       .assertCallCount(1)
-      .assertCall(0, "findContentByMemberID", TEST_MEMBER_ID);
+      .assertCall(0, "findByMemberID", TEST_MEMBER_ID);
   }
 
   @Test

@@ -5,17 +5,21 @@ import static com.acsredux.core.members.MemberService.hashpw;
 import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
+import com.acsredux.core.base.Command;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ImageSavedEvent;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
 import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.content.values.ContentID;
+import com.acsredux.core.content.values.DocumentRoot;
 import com.acsredux.core.content.values.FileContent;
 import com.acsredux.core.content.values.FileName;
+import com.acsredux.core.content.values.ImageSource;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
 import com.acsredux.core.content.values.Title;
@@ -55,17 +59,13 @@ public final class Stub
     ContentWriter,
     ImageWriter {
 
-  private final List<Member> members;
-  private final Map<VerificationToken, MemberID> tokens;
-  private final Map<SessionID, MemberID> sessions;
-  private final Map<ContentID, Content> content;
-  private String documentRoot = ".";
+  private final List<Member> members = new ArrayList<>();
+  private final Map<VerificationToken, MemberID> tokens = new HashMap<>();
+  private final Map<SessionID, MemberID> sessions = new HashMap<>();
+  private final Map<ContentID, Content> content = new HashMap<>();
+  private DocumentRoot documentRoot = new DocumentRoot(".");
 
   public Stub() {
-    tokens = new HashMap<>();
-    sessions = new HashMap<>();
-    members = new ArrayList<>();
-    content = new HashMap<>();
     members.add(
       new Member(
         new MemberID(1L),
@@ -85,7 +85,7 @@ public final class Stub
   }
 
   public void setDocumentRoot(String x) {
-    this.documentRoot = x;
+    this.documentRoot = new DocumentRoot(x);
   }
 
   public Optional<Member> findByID(MemberID x) {
@@ -241,8 +241,14 @@ public final class Stub
     return findByID(sessions.get(x));
   }
 
+  // ---------------------------------------------------------------------------
+  //
+  //       C O N T E N T    R E A D E R
+  //
+  // ---------------------------------------------------------------------------
+
   @Override
-  public Content getContent(ContentID x) {
+  public Content getByID(ContentID x) {
     if (content.containsKey(x)) {
       return content.get(x);
     }
@@ -250,13 +256,19 @@ public final class Stub
   }
 
   @Override
-  public List<Content> findContentByMemberID(MemberID x) {
+  public List<Content> findByMemberID(MemberID x) {
     return content
       .values()
       .stream()
       .filter(o -> o.author().equals(x))
       .collect(Collectors.toList());
   }
+
+  // ---------------------------------------------------------------------------
+  //
+  //       C O N T E N T    W R I T E R
+  //
+  // ---------------------------------------------------------------------------
 
   @Override
   public ContentID createContent(CreatePhotoDiary x) {
@@ -267,7 +279,21 @@ public final class Stub
       .max()
       .orElse(0);
     ContentID contentID = new ContentID(maxArticleID + 1);
+    content.put(
+      contentID,
+      new Content(
+        contentID,
+        cmd2mid(x),
+        x.title(),
+        getMonthSections(),
+        new PublishedDate(Instant.now())
+      )
+    );
+    return contentID;
+  }
 
+  // TODO: Create our own Subject interface as getACSMemberPrincipal().
+  private MemberID cmd2mid(Command x) {
     var ys = x
       .subject()
       .getPrincipals()
@@ -277,19 +303,7 @@ public final class Stub
     if (ys.isEmpty()) {
       throw new IllegalStateException("no member principal");
     }
-    MemberID memberID = ys.get(0).mid();
-
-    content.put(
-      contentID,
-      new Content(
-        contentID,
-        memberID,
-        x.title(),
-        getMonthSections(),
-        new PublishedDate(Instant.now())
-      )
-    );
-    return contentID;
+    return ys.get(0).mid();
   }
 
   private List<Section> getMonthSections() {
@@ -312,6 +326,15 @@ public final class Stub
       .collect(Collectors.toList());
   }
 
+  @Override
+  public void addPhotoToDiary(UploadPhoto x1, FileName x3) {
+    content.put(
+      x1.contentID(),
+      getByID(x1.contentID())
+        .with(x1.sectionIndex(), src(this.documentRoot, cmd2mid(x1), x3))
+    );
+  }
+
   // ---------------------------------------------------------------------------
   //
   //       I M A G E    W R I T E R
@@ -320,10 +343,9 @@ public final class Stub
 
   @Override
   public ImageSavedEvent save(Instant instant, MemberID x1, FileContent x2, FileName x3) {
-    String fmt = "%s/static/img/%d/%s";
-    String fn = String.format(fmt, this.documentRoot, x1.val(), x3.val());
     try {
-      Path path = Paths.get(fn);
+      ImageSource imgsrc = src(this.documentRoot, x1, x3);
+      Path path = Paths.get(imgsrc.val());
       makeParentDir(path);
       Files.write(path, x2.val());
     } catch (Exception e) {

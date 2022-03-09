@@ -6,6 +6,6 @@ import com.acsredux.core.members.values.MemberID;
 import java.util.List;
 
 public interface ContentReader {
-  Content getContent(ContentID x);
-  List<Content> findContentByMemberID(MemberID x);
+  Content getByID(ContentID x);
+  List<Content> findByMemberID(MemberID x);
 }

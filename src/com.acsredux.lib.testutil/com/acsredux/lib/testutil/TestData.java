@@ -5,14 +5,19 @@ import static com.acsredux.core.members.PasswordUtil.hashpw;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
 import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.DiaryName;
 import com.acsredux.core.content.values.DiaryYear;
+import com.acsredux.core.content.values.FileContent;
+import com.acsredux.core.content.values.FileName;
 import com.acsredux.core.content.values.Image;
+import com.acsredux.core.content.values.PhotoID;
 import com.acsredux.core.content.values.PublishedDate;
 import com.acsredux.core.content.values.Section;
+import com.acsredux.core.content.values.SectionIndex;
 import com.acsredux.core.content.values.Title;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
@@ -32,6 +37,8 @@ import com.acsredux.core.members.values.SessionID;
 import com.acsredux.core.members.values.VerificationToken;
 import com.acsredux.core.members.values.ZipCode;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.Duration;
 import java.time.Instant;
@@ -97,7 +104,7 @@ public class TestData {
     TEST_SECOND_LOGIN_TIME,
     false
   );
-  public static final CreateMember TEST_ADD_MEMBER_CMD = new CreateMember(
+  public static final CreateMember TEST_CREATE_MEMBER_CMD = new CreateMember(
     TEST_SUBJECT,
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
@@ -153,11 +160,12 @@ public class TestData {
   );
 
   public static final ContentID TEST_CONTENT_ID = new ContentID(123L);
-  public static final Image TEST_IMAGE = Image.of("http://example.com/img1.png");
+  public static final Image TEST_PHOTO = Image.of("http://example.com/img1.png");
+  public static final PhotoID TEST_PHOTO_ID = new PhotoID(1000L);
   public static final Title TEST_SECTION_TITLE = new Title("A Test Section Title");
   public static final Section TEST_SECTION = new Section(
     TEST_SECTION_TITLE,
-    List.of(TEST_IMAGE)
+    List.of(TEST_PHOTO)
   );
   public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
   public static final DiaryName TEST_DIARY_NAME = null;
@@ -178,5 +186,27 @@ public class TestData {
   public static final PhotoDiaryCreated TEST_PHOTO_DIARY_CREATED = new PhotoDiaryCreated(
     TEST_CREATE_PHOTO_DIARY_COMMAND,
     TEST_CONTENT_ID
+  );
+
+  public static final SectionIndex TEST_SECTION_INDEX = new SectionIndex(0);
+  public static final FileName TEST_FILE_NAME = new FileName("t.png");
+  private static byte[] imgbytes;
+
+  static {
+    var imgfn = "cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg";
+    try {
+      imgbytes = Files.readAllBytes(Paths.get(projectRoot(), imgfn));
+    } catch (Exception e) {
+      throw new IllegalStateException("can't read " + imgfn, e);
+    }
+  }
+
+  public static final FileContent TEST_FILE_CONTENT = new FileContent(imgbytes);
+  public static final UploadPhoto TEST_UPLOAD_PHOTO_COMMAND = new UploadPhoto(
+    TEST_SUBJECT,
+    TEST_CONTENT_ID,
+    TEST_SECTION_INDEX,
+    TEST_FILE_NAME,
+    TEST_FILE_CONTENT
   );
 }

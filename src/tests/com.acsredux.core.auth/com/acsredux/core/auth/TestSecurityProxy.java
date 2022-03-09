@@ -89,7 +89,7 @@ public class TestSecurityProxy {
     // execute
     SecurityPolicyException y = assertThrows(
       SecurityPolicyException.class,
-      () -> x.handle(TestData.TEST_ADD_MEMBER_CMD)
+      () -> x.handle(TestData.TEST_CREATE_MEMBER_CMD)
     );
 
     // verify
