@@ -37,10 +37,17 @@ class ChaCha20Poly1305 {
   private static final String ENCRYPT_ALGO = "ChaCha20-Poly1305";
   private static final int NONCE_LEN = 12; // 96 bits, 12 bytes
 
-  private static final SecretKey ENCRYPTION_KEY = new SecretKeySpec(
-    Base64.getDecoder().decode(VariableUtil.readEncryptionKey()),
-    "ChaCha20-Poly1305"
-  );
+  private static final byte[] SECRET_KEY_BYTES;
+  private static final SecretKey ENCRYPTION_KEY;
+
+  static {
+    SECRET_KEY_BYTES = Base64.getDecoder().decode(VariableUtil.readEncryptionKey());
+    if (SECRET_KEY_BYTES.length > 0) {
+      ENCRYPTION_KEY = new SecretKeySpec(SECRET_KEY_BYTES, "ChaCha20-Poly1305");
+    } else {
+      ENCRYPTION_KEY = null;
+    }
+  }
 
   static boolean keyExists() {
     return ENCRYPTION_KEY != null;

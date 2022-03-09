@@ -202,3 +202,4 @@ clean:
 	rm -rf tmp
 	find ./test -name '*.actual' | xargs rm
 	rm -f compile.out
+	rm -rf ./web/template/static
