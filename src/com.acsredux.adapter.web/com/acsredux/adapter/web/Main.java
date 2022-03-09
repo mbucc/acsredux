@@ -24,6 +24,16 @@ import java.net.InetSocketAddress;
 import java.time.ZoneId;
 import java.util.concurrent.Executors;
 
+/**
+ * Start webserver.   Command-line options are:
+ * <ul>
+ *   <li>-h &lt;host> (default=localhost)
+ *   <li>-p &lt;port> (default=8000)
+ *   <li>-r &lt;document_root>
+ *   <li>-b &lt;backlog> (default=0)
+ *   <li>-t &lt;threads> (default=10)
+ * </ul>
+ */
 public class Main {
 
   private static final System.Logger LOGGER = System.getLogger("ConsoleLogger");

@@ -22,12 +22,12 @@ class CommandLineArguments {
 
   private static void usage() {
     System.err.print(
-      "valid arguments: " +
-      "-h <host> " +
-      "-p <port> " +
-      "-r <document_root> " +
-      "-b <backlog> " +
-      "-t <threads>"
+      "valid arguments:\n" +
+      "-h <host> (default=localhost)\n" +
+      "-p <port> (default=8000)\n" +
+      "-r <document_root>\n" +
+      "-b <backlog> (default=0)\n" +
+      "-t <threads> (default=10)\n"
     );
   }
 
