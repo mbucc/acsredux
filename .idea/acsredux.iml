@@ -6,6 +6,8 @@
       <excludeFolder url="file://$MODULE_DIR$/classes" />
       <excludeFolder url="file://$MODULE_DIR$/boneyard" />
       <excludeFolder url="file://$MODULE_DIR$/testclasses" />
+      <excludeFolder url="file://$MODULE_DIR$/web/template/static" />
+      <excludeFolder url="file://$MODULE_DIR$/mlib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
