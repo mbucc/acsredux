@@ -1,7 +1,7 @@
 package com.acsredux.adapter.web.common;
 
-import static com.acsredux.adapter.web.members.Util.internalError;
-import static com.acsredux.adapter.web.members.Util.notFound;
+import static com.acsredux.adapter.web.common.WebUtil.internalError;
+import static com.acsredux.adapter.web.common.WebUtil.notFound;
 
 import com.acsredux.core.base.NotFoundException;
 import com.sun.net.httpserver.HttpExchange;

@@ -30,7 +30,7 @@ public class UpdatePhotoDiaryView extends BaseView {
     @Override
     public String html() {
       StringBuilder sb = new StringBuilder();
-      sb.append("<img src=\"");
+      sb.append("<img height=\"300px\" src=\"");
       sb.append(url);
       sb.append("\"");
       if (!alt.isBlank()) {

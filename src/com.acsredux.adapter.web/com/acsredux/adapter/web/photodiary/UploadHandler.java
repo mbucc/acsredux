@@ -1,6 +1,6 @@
 package com.acsredux.adapter.web.photodiary;
 
-import static com.acsredux.adapter.web.members.Util.internalError;
+import static com.acsredux.adapter.web.common.WebUtil.internalError;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;

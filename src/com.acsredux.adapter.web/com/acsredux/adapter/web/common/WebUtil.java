@@ -20,6 +20,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
@@ -221,5 +222,56 @@ public class WebUtil {
       .orElseThrow(() ->
         new NoSuchElementException("no " + parameterName + " in header '" + header + "'")
       );
+  }
+
+  private static void setPlainTextResponse(HttpExchange x) {
+    Headers ys = x.getResponseHeaders();
+    ys.set("Content-type", "text/plain; charset= UTF-8");
+  }
+
+  private static void writeBody(HttpExchange x, byte[] body, int status)
+    throws IOException {
+    x.sendResponseHeaders(status, body.length);
+    OutputStream os = x.getResponseBody();
+    os.write(body);
+  }
+
+  public static void notFound(HttpExchange x) {
+    byte[] body = "Not found.".getBytes();
+    int status = 404;
+    try {
+      setPlainTextResponse(x);
+      writeBody(x, body, status);
+    } catch (IOException e) {
+      // Not much we can do at this point.
+      System.err.println("error sending 404");
+      e.printStackTrace(System.err);
+    }
+  }
+
+  public static void internalError(HttpExchange x1, Exception x2) {
+    internalError(x1, x2, System.err);
+  }
+
+  public static void internalError(HttpExchange x1, Exception x2, PrintStream x3) {
+    byte[] body = "Internal error.".getBytes();
+    int status = 500;
+    try {
+      setPlainTextResponse(x1);
+      writeBody(x1, body, status);
+    } catch (Exception e1) {
+      System.err.printf("error sending 500: %s%n", e1.getMessage());
+    } finally {
+      x2.printStackTrace(x3);
+    }
+  }
+
+  public static void clientError(HttpExchange x1, int status, String message) {
+    try {
+      setPlainTextResponse(x1);
+      writeBody(x1, message.getBytes(), status);
+    } catch (Exception e1) {
+      System.err.printf("error sending client error: %s%n", e1.getMessage());
+    }
   }
 }

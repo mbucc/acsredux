@@ -6,6 +6,7 @@ import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
+import com.acsredux.adapter.web.staticfiles.StaticFileHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
 import com.acsredux.core.auth.SecurityPolicy;
@@ -16,7 +17,7 @@ import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.ContentServiceFactory;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
-import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -40,10 +41,14 @@ public class Main {
     //
     Stub stub = new Stub();
     stub.setDocumentRoot(xs.documentRoot);
-    ZoneId tz = ZoneId.of("US/Eastern");
+
     SecurityPolicy policy = SecurityPolicyProvider.parse(
       Util.readResource("security-policy.json")
     );
+
+    ZoneId tz = ZoneId.of("US/Eastern");
+    MemberService.passwordSaltOrDie();
+
     MemberService memberService = SecurityProxy.of(
       MemberServiceFactory.getMemberService(stub, stub, stub, stub, tz),
       policy
@@ -56,7 +61,6 @@ public class Main {
       ContentServiceFactory.getArticleService(tz, stub, stub, stub),
       policy
     );
-    MemberService.passwordSaltOrDie();
 
     //
     //			Create server
@@ -68,26 +72,26 @@ public class Main {
     server.setExecutor(Executors.newFixedThreadPool(xs.threads));
 
     //
-    //			Setup routing
+    //			Setup path handlers.
     //
-    CookieAuthenticator auth = new CookieAuthenticator(memberService);
-    HttpContext ctx = server.createContext(
-      "/",
-      new RootHandler(adminService, xs.documentRoot)
-    );
-    ctx.setAuthenticator(auth);
-    ctx =
-      server.createContext(
+    record Pair(String path, HttpHandler handler) {}
+    Pair[] pairs = new Pair[] {
+      new Pair("/", new RootHandler(adminService, xs.documentRoot)),
+      new Pair(
         "/members",
         new MembersHandler(xs.documentRoot, memberService, adminService, contentService)
-      );
-    ctx.setAuthenticator(auth);
-    ctx =
-      server.createContext(
+      ),
+      new Pair(
         "/photo-diary",
         new PhotoDiaryHandler(xs.documentRoot, contentService, adminService)
-      );
-    ctx.setAuthenticator(auth);
+      ),
+      new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
+    };
+    CookieAuthenticator auth = new CookieAuthenticator(memberService);
+    for (Pair p : pairs) {
+      var ctx = server.createContext(p.path, p.handler);
+      ctx.setAuthenticator(auth);
+    }
 
     //
     //			Start server
