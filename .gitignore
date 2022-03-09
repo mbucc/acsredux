@@ -6,3 +6,5 @@ out/
 tmp
 
 .idea/workspace.xml
+
+web/template/static/
