@@ -1,5 +1,5 @@
 200
-Content-Length: 461
+Content-Length: 476
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@ Content-type: text/html; charset= UTF-8
 
 
 <h2>A Test Section Title</h2>
-    <p><img src="/static/img1.png" alt="img1">
+    <p><img height="300px" src="/static/img1.png" alt="img1">
 
     <p><a href="/photo-diary/123/0/add-image"><button type="button">+ img</button></a>
 
