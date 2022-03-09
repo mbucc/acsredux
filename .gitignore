@@ -2,7 +2,9 @@ classes/
 testclasses/
 mlib/
 out/
+
 *.actual
+*.tgz
 tmp
 
 .idea/workspace.xml
