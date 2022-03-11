@@ -54,7 +54,7 @@ public class UpdatePhotoDiaryView extends BaseView {
     private static El toEl(SectionElement x) {
       return switch (x) {
         case Image o -> new ImgEl(
-          o.source().val().toString(),
+          o.source().val(),
           o.altText() == null ? "" : o.altText().val()
         );
         case Paragraph o -> new TxtEl(o.val());

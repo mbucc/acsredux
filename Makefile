@@ -16,6 +16,7 @@ JAVA=java --enable-preview
 
 jars: \
 	mlib/com.acsredux.adapter.web@1.jar \
+	mlib/com.acsredux.adapter.filesystem@1.jar \
 	mlib/com.acsredux.core.members@1.jar \
 	mlib/com.acsredux.core.admin@1.jar \
 	mlib/com.acsredux.core.auth@1.jar \
@@ -203,3 +204,4 @@ clean:
 	find ./test -name '*.actual' | xargs rm
 	rm -f compile.out
 	rm -rf ./web/template/static
+	rm -f members.json sessions.json tokens.json content.json

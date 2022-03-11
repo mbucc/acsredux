@@ -19,5 +19,8 @@
     <orderEntry type="module" module-name="com.acsredux.adapter.stub" />
     <orderEntry type="module" module-name="com.acsredux.core.auth" />
     <orderEntry type="module" module-name="com.acsredux.core.content" />
+    <orderEntry type="module" module-name="com.acsredux.lib.env" />
+    <orderEntry type="module" module-name="com.acsredux.adapter.mailgun" />
+    <orderEntry type="module" module-name="com.acsredux.adapter.filesystem" />
   </component>
 </module>

@@ -11,7 +11,8 @@ public enum Variable {
   ACSREDUX_ENCRYPTION_KEY_FILENAME(STRING, "~/.acsredux"),
   MAILGUN_API_KEY(SECRET),
   MAILGUN_API_URL(URL),
-  NOTIFIER_SEND_TIMEOUT_IN_SECONDS(INT, "5");
+  NOTIFIER_SEND_TIMEOUT_IN_SECONDS(INT, "5"),
+  IS_PRODUCTION(STRING, "N");
 
   private final VariableType typ;
   private final String defaultValue;

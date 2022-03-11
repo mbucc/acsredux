@@ -15,11 +15,10 @@ public interface MemberService {
   // queries
   int activeMembers();
   Member getByID(MemberID x);
-  Optional<Member> findBySessionID(SessionID x);
-
   default PublicMember getPublicByID(MemberID x) {
     return getByID(x).asPublic();
   }
+  Optional<Member> findBySessionID(SessionID x);
 
   // other
   String ANONYMOUS_USERNAME = "Anonymous User";

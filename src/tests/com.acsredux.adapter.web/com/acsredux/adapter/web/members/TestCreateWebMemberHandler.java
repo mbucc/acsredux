@@ -12,7 +12,7 @@ import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestCreateHandler {
+class TestCreateWebMemberHandler {
 
   MockMemberService mockMemberService;
   MockAdminService mockAdminService;

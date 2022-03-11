@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/acsredux.iml" filepath="$PROJECT_DIR$/.idea/acsredux.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.adapter.filesystem/com.acsredux.adapter.filesystem.iml" filepath="$PROJECT_DIR$/src/com.acsredux.adapter.filesystem/com.acsredux.adapter.filesystem.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.adapter.mailgun/com.acsredux.adapter.mailgun.iml" filepath="$PROJECT_DIR$/src/com.acsredux.adapter.mailgun/com.acsredux.adapter.mailgun.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.adapter.stub/com.acsredux.adapter.stub.iml" filepath="$PROJECT_DIR$/src/com.acsredux.adapter.stub/com.acsredux.adapter.stub.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/com.acsredux.adapter.web/com.acsredux.adapter.web.iml" filepath="$PROJECT_DIR$/src/com.acsredux.adapter.web/com.acsredux.adapter.web.iml" />

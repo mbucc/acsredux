@@ -165,8 +165,7 @@ public class TestData {
   public static final AltText TEST_ALT_TEXT = new AltText("img1");
   public static final Image TEST_IMAGE = new Image(
     new ImageSource("/static/img1.png"),
-    TEST_ALT_TEXT,
-    null
+    TEST_ALT_TEXT
   );
   public static final PhotoID TEST_PHOTO_ID = new PhotoID(1000L);
   public static final Title TEST_SECTION_TITLE = new Title("A Test Section Title");

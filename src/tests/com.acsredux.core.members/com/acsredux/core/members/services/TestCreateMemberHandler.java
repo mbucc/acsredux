@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestCreateHandler {
+class TestCreateMemberHandler {
 
   private static final ResourceBundle MSGS = ResourceBundle.getBundle(
     "MemberErrorMessages"
@@ -103,7 +103,7 @@ class TestCreateHandler {
         0,
         "addMember",
         TEST_ADD_MEMBER2_CMD,
-        MemberStatus.NEEDS_EMAIL_VERIFICATION,
+        MemberStatus.ACTIVE,
         this.clockTime
       )
       .assertCall(1, "addAddMemberToken", TEST_MEMBER_ID, this.clockTime);

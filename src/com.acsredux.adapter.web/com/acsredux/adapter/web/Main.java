@@ -1,7 +1,9 @@
 package com.acsredux.adapter.web;
 
+import static com.acsredux.lib.env.VariableUtil.getString;
 import static java.lang.System.Logger.Level.INFO;
 
+import com.acsredux.adapter.filesystem.FileSystem;
 import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.members.MembersHandler;
@@ -9,14 +11,23 @@ import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
 import com.acsredux.adapter.web.staticfiles.StaticFileHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
+import com.acsredux.core.admin.ports.AdminReader;
 import com.acsredux.core.auth.SecurityPolicy;
 import com.acsredux.core.auth.SecurityPolicyProvider;
 import com.acsredux.core.auth.SecurityProxy;
 import com.acsredux.core.base.Util;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.ContentServiceFactory;
+import com.acsredux.core.content.ports.ContentReader;
+import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
+import com.acsredux.core.members.ports.MemberAdminReader;
+import com.acsredux.core.members.ports.MemberNotifier;
+import com.acsredux.core.members.ports.MemberReader;
+import com.acsredux.core.members.ports.MemberWriter;
+import com.acsredux.lib.env.Variable;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
@@ -47,10 +58,39 @@ public class Main {
     LOGGER.log(INFO, "creating HttpServer on port {0}", xs.portAsString());
 
     //
-    //			Load services
+    //			Load frameworks
     //
+
     Stub stub = new Stub();
     stub.setDocumentRoot(xs.documentRoot);
+
+    // TODO: Use ServiceProvider in factories.
+    MemberNotifier mn = stub;
+    MemberReader mr = stub;
+    MemberWriter mw = stub;
+    MemberAdminReader mar = stub;
+    AdminReader ar = stub;
+    ContentReader cr = stub;
+    ContentWriter cw = stub;
+    ImageWriter iw = stub;
+
+    if ("Y".equals(getString(Variable.IS_PRODUCTION, System.getenv()))) {
+      System.out.println("using production adapters.");
+      //mn = new MailgunNotifier();
+      FileSystem fs = new FileSystem();
+      fs.setDocumentRoot(xs.documentRoot);
+      mr = fs;
+      mw = fs;
+      mar = fs;
+      ar = fs;
+      cr = fs;
+      cw = fs;
+      iw = fs;
+    }
+
+    //
+    //			Load services
+    //
 
     SecurityPolicy policy = SecurityPolicyProvider.parse(
       Util.readResource("security-policy.json")
@@ -60,15 +100,15 @@ public class Main {
     MemberService.passwordSaltOrDie();
 
     MemberService memberService = SecurityProxy.of(
-      MemberServiceFactory.getMemberService(stub, stub, stub, stub, tz),
+      MemberServiceFactory.getMemberService(mr, mw, mn, mar, tz),
       policy
     );
     AdminService adminService = SecurityProxy.of(
-      AdminServiceFactory.getAdminService(stub, tz),
+      AdminServiceFactory.getAdminService(ar, tz),
       policy
     );
     ContentService contentService = SecurityProxy.of(
-      ContentServiceFactory.getArticleService(tz, stub, stub, stub),
+      ContentServiceFactory.getArticleService(tz, cr, cw, iw),
       policy
     );
 

@@ -45,10 +45,7 @@ public class BaseView {
   }
 
   private List<Map<String, String>> makeMenu() {
-    return List.of(
-      Map.of("link", "/", "text", "home"),
-      Map.of("link", suggestionBoxURL, "text", "suggestions")
-    );
+    return List.of(Map.of("link", "/", "text", "home"));
   }
 
   public void setPageTitle(String title) {

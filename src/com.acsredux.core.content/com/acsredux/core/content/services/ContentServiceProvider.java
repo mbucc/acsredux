@@ -86,7 +86,7 @@ public class ContentServiceProvider implements ContentService {
     ys.add(iwriter.save(clock.instant(), mid, resized, fn2));
 
     // Add photo to diary.
-    Image img = new Image(iwriter.src(mid, fn2), AltText.of(x.fileName()), null);
+    Image img = new Image(iwriter.src(mid, fn2), AltText.of(x.fileName()));
     writer.addPhotoToDiary(x.contentID(), x.sectionIndex(), img);
     ys.add(new PhotoAddedToDiary(x));
 
