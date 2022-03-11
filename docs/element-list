@@ -1,3 +1,5 @@
+module:com.acsredux.adapter.filesystem
+com.acsredux.adapter.filesystem
 module:com.acsredux.adapter.mailgun
 com.acsredux.adapter.mailgun
 module:com.acsredux.adapter.stub
