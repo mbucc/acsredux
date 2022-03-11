@@ -10,3 +10,4 @@ tmp
 .idea/workspace.xml
 
 web/template/static/
+siteinfo.json

@@ -1,12 +1,14 @@
 200
-Content-Length: 919
+Content-Length: 1066
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Upload a photo to A Test Section Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <p>

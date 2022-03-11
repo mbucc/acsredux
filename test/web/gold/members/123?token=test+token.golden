@@ -1,12 +1,14 @@
 200
-Content-Length: 461
+Content-Length: 608
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
 
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Member Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <p>

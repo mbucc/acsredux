@@ -15,9 +15,11 @@ public interface MemberService {
   // queries
   int activeMembers();
   Member getByID(MemberID x);
+
   default PublicMember getPublicByID(MemberID x) {
     return getByID(x).asPublic();
   }
+
   Optional<Member> findBySessionID(SessionID x);
 
   // other
