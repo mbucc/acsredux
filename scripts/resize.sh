@@ -5,7 +5,7 @@
 
 L=$HOME/log/resize.log
 D=$HOME/web/template/static/members
-for f0 in $(find $D -name '*.orig.jpeg'); do
+for f0 in $(find $D -name '*.orig.jp*g'); do
 	w=$(identify -format "%w" $f0)
 	h=$(identify -format "%h" $f0)
 
@@ -17,7 +17,7 @@ for f0 in $(find $D -name '*.orig.jpeg'); do
 	n0=$(stat -c%s $f0)
 	n1=$(stat -c%s $f1)
 	if [ $n0 -eq $n1 ]; then
-		echo resizing $f0 from ${w}x${h} to $orientation >> $L
+		echo $date resizing $f0 from ${w}x${h} to $orientation >> $L
 		/usr/bin/convert $f0 -resize $orientation -bordercolor black -border 3x3 -interlace NONE $f1
 	fi
 done
