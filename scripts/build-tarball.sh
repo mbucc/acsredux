@@ -9,7 +9,7 @@ make clean
 make
 
 mkdir bin
-cp start.sh stop.sh env.sh ./bin
+cp start.sh stop.sh env.sh scripts/resize.sh ./bin
 cat scripts/env-setup|sed 's;./env.sh;env.sh;' > ./bin/env-setup
 
 tar czvf $fn ./mlib ./web ./bin
