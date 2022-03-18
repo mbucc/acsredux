@@ -1,5 +1,5 @@
 200
-Content-Length: 1066
+Content-Length: 1173
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -44,6 +44,7 @@ picker.onchange = evt => {
 </script>
 
 
-  </body>
+<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
+</body>
 </html>
 

@@ -1,5 +1,5 @@
 200
-Content-Length: 555
+Content-Length: 662
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -25,6 +25,7 @@ Content-type: text/html; charset= UTF-8
 
     <p><a href="/photo-diary/123/0/add-image"><button type="button">+ img</button></a>
 
-  </body>
+<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
+</body>
 </html>
 

@@ -1,5 +1,5 @@
 200
-Content-Length: 834
+Content-Length: 941
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -38,6 +38,7 @@ Content-type: text/html; charset= UTF-8
 </form>
 
 
-  </body>
+<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
+</body>
 </html>
 

@@ -11,11 +11,14 @@ public class SiteInfoDTO {
   String siteTitle;
   String siteDescription;
   String siteEmail;
+  String analyticsScriptTag;
 
   SiteInfoDTO() {}
 
   public SiteInfo asSiteInfo() {
     try {
+      String x =
+        "<script data-goatcounter='https://gardendiary.goatcounter.com/count' async src='//gc.zgo.at/count.js'></script>";
       return new SiteInfo(
         SiteStatus.ALPHA,
         25,
@@ -29,7 +32,8 @@ public class SiteInfoDTO {
         "",
         siteEmail,
         new URI("http://example.com"),
-        Duration.ofDays(365)
+        Duration.ofDays(365),
+        analyticsScriptTag
       );
     } catch (Exception e) {
       throw new IllegalStateException("illegal siteinfo json: " + this, e);

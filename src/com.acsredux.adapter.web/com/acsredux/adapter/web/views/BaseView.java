@@ -19,9 +19,12 @@ public class BaseView {
   public String principalName;
   public final boolean isLoggedIn;
   public final boolean isAdmin;
+
+  // site-wide information.
   public final boolean isInAlphaTesting;
   public final String suggestionBoxURL;
   public final int alphaTestMemberLimit;
+  public final String analyticsScriptTag;
 
   public BaseView(HttpExchange x1, FormData x2, SiteInfo x3) {
     this(x1, x2, x3, "");
@@ -41,6 +44,8 @@ public class BaseView {
     this.isInAlphaTesting = x3.siteStatus() == SiteStatus.ALPHA;
     this.suggestionBoxURL = x3.suggestionBoxURL().toString();
     this.alphaTestMemberLimit = x3.limitOnAlphaCustomers();
+    this.analyticsScriptTag = x3.analyticsScriptTag();
+
     this.menuItems = makeMenu();
   }
 
@@ -64,6 +69,7 @@ public class BaseView {
       .add("isInAlphaTesting=" + isInAlphaTesting)
       .add("suggestionBoxURL='" + suggestionBoxURL + "'")
       .add("alphaTestMemberLimit=" + alphaTestMemberLimit)
+      .add("analyticsScriptTag='" + analyticsScriptTag + "'")
       .toString();
   }
 }

@@ -103,7 +103,7 @@ public final class FileSystem
       List<MemberDTO> ys = gson.fromJson(reader, MEMBER_TYPE);
       this.members = ys.stream().map(MemberDTO::asMember).collect(Collectors.toList());
     } catch (Exception e) {
-      throw new IllegalStateException("can't load members", e);
+      throw new IllegalStateException("can't read '" + MEMBERS_JSON_FILE + "'", e);
     }
   }
 
@@ -112,7 +112,7 @@ public final class FileSystem
       List<MemberDTO> ys = this.members.stream().map(MemberDTO::new).toList();
       gson.toJson(ys, writer);
     } catch (Exception e) {
-      throw new IllegalStateException("can't write members", e);
+      throw new IllegalStateException("can't write '" + MEMBERS_JSON_FILE + "'", e);
     }
   }
 
@@ -128,7 +128,7 @@ public final class FileSystem
         this.tokens.put(y.getVerificationToken(), y.getMemberID());
       }
     } catch (Exception e) {
-      throw new IllegalStateException("can't load tokens", e);
+      throw new IllegalStateException("can't read '" + TOKENS_JSON_FILE + "'", e);
     }
   }
 
@@ -137,7 +137,7 @@ public final class FileSystem
       List<TokenDTO> ys = this.tokens.entrySet().stream().map(TokenDTO::new).toList();
       gson.toJson(ys, writer);
     } catch (Exception e) {
-      throw new IllegalStateException("can't write tokens", e);
+      throw new IllegalStateException("can't write '" + TOKENS_JSON_FILE + "'", e);
     }
   }
 
@@ -153,7 +153,7 @@ public final class FileSystem
         this.sessions.put(y.getSessionID(), y.getMemberID());
       }
     } catch (Exception e) {
-      throw new IllegalStateException("can't load sessions", e);
+      throw new IllegalStateException("can't read '" + SESSION_JSON_FILE + "'", e);
     }
   }
 
@@ -163,7 +163,7 @@ public final class FileSystem
         this.sessions.entrySet().stream().map(SessionDTO::new).toList();
       gson.toJson(ys, writer);
     } catch (Exception e) {
-      throw new IllegalStateException("can't write sessions", e);
+      throw new IllegalStateException("can't write '" + SESSION_JSON_FILE + "'", e);
     }
   }
 
@@ -180,7 +180,7 @@ public final class FileSystem
         this.content.put(y1.id(), y1);
       }
     } catch (Exception e) {
-      throw new IllegalStateException("can't load content", e);
+      throw new IllegalStateException("can't read '" + CONTENT_JSON_FILE + "'", e);
     }
   }
 
@@ -189,7 +189,7 @@ public final class FileSystem
       List<ContentDTO> ys = this.content.values().stream().map(ContentDTO::new).toList();
       gson.toJson(ys, writer);
     } catch (Exception e) {
-      throw new IllegalStateException("can't write content", e);
+      throw new IllegalStateException("can't write '" + CONTENT_JSON_FILE + "'", e);
     }
   }
 
@@ -202,7 +202,7 @@ public final class FileSystem
       SiteInfoDTO y = gson.fromJson(reader, SiteInfoDTO.class);
       this.siteInfo = y.asSiteInfo();
     } catch (Exception e) {
-      throw new IllegalStateException("can't load tokens", e);
+      throw new IllegalStateException("can't read '" + SITEINFO_JSON_FILE + "'", e);
     }
   }
 

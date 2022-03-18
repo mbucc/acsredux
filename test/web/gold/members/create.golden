@@ -1,5 +1,5 @@
 200
-Content-Length: 1754
+Content-Length: 1861
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -59,6 +59,7 @@ Content-type: text/html; charset= UTF-8
   <input type="hidden" name="command" value="create" />
   <input type="submit" value="Submit membership request" />
 </form>
-  </body>
+<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
+</body>
 </html>
 

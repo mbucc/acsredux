@@ -158,7 +158,8 @@ public class TestData {
     "12345",
     "mkbucc@gmail.com",
     TEST_SUGGESTION_URI,
-    Duration.ofDays(365)
+    Duration.ofDays(365),
+    "<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>"
   );
 
   public static final ContentID TEST_CONTENT_ID = new ContentID(123L);

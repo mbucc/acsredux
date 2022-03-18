@@ -16,5 +16,6 @@ public record SiteInfo(
   String zip,
   String fromEmail,
   URI suggestionBoxURL,
-  Duration cookieMaxAge
+  Duration cookieMaxAge,
+  String analyticsScriptTag // e.g., see https://www.goatcounter.com
 ) {}
