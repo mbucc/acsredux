@@ -58,7 +58,7 @@ public class Main {
     LOGGER.log(INFO, "creating HttpServer on port {0}", xs.portAsString());
 
     //
-    //			Load frameworks
+    //			Load adapters
     //
 
     Stub stub = new Stub();
@@ -115,6 +115,7 @@ public class Main {
     //
     //			Create server
     //
+
     HttpServer server = HttpServer.create(
       new InetSocketAddress(xs.host, xs.port),
       xs.backlog
@@ -122,18 +123,20 @@ public class Main {
     server.setExecutor(Executors.newFixedThreadPool(xs.threads));
 
     //
-    //			Setup path handlers.
+    //			Create context for each service and add the CookieAuthenticator to each.
     //
+
+    String templateRoot = xs.documentRoot + "/template";
     record Pair(String path, HttpHandler handler) {}
     Pair[] pairs = new Pair[] {
-      new Pair("/", new RootHandler(adminService, xs.documentRoot)),
+      new Pair("/", new RootHandler(templateRoot, adminService)),
       new Pair(
         "/members",
-        new MembersHandler(xs.documentRoot, memberService, adminService, contentService)
+        new MembersHandler(templateRoot, memberService, adminService, contentService)
       ),
       new Pair(
         "/photo-diary",
-        new PhotoDiaryHandler(xs.documentRoot, contentService, adminService)
+        new PhotoDiaryHandler(templateRoot, contentService, adminService)
       ),
       new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
     };

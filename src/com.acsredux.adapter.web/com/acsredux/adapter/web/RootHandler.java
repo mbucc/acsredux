@@ -23,7 +23,7 @@ class RootHandler extends BaseHandler {
   private final MustacheFactory mf;
   private final AdminService adminService;
 
-  RootHandler(AdminService x1, String templateRoot) {
+  RootHandler(String templateRoot, AdminService x1) {
     this.adminService = x1;
     this.mf = new DefaultMustacheFactory(new File(templateRoot));
   }

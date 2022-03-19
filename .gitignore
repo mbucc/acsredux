@@ -9,5 +9,5 @@ tmp
 
 .idea/workspace.xml
 
-web/template/static/
+web/static/members
 siteinfo.json
