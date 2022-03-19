@@ -43,6 +43,7 @@ public class UploadHandler {
     var y = Result
       .ok(x2)
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
+      .map(UploadHandler::normalizeDates)
       .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
@@ -62,6 +63,18 @@ public class UploadHandler {
         internalError(x1, e);
       }
     }
+  }
+
+  // imageDateTime   = parsed by JS from image.
+  // imageDatePicker = picker displayed if parse fails.
+  static FormData normalizeDates(FormData x) {
+    String y = x.get("imageDateTime");
+    String d2 = x.get("imageDatePicker");
+    if (d2 != null && !d2.isBlank()) {
+      y = d2;
+    }
+    x.add("imageDate", y);
+    return x;
   }
 
   // /photo-diary/123/0/add-image

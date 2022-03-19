@@ -8,24 +8,22 @@
 
 <p>
 <label for="picker">Preview image:</label>
-<input id="picker" type="file" name="picker" accept="image/*" required autofocus/>
+<input type="file" name="picker" id="picker" accept="image/*" required autofocus/>
+<label for="imageDatePicker" style="display:none;" id="imageDatePickerLabel">Date taken:</label>
+<input type="date" name="imageDatePicker" id="imageDatePicker" style="display:none;" /><br>
 <input type="hidden" name="contentID" value="{{contentID}}">
 <input type="hidden" name="sectionIndex" value="{{sectionIndex}}">
+<input type="hidden" id="imageOrientation" name="imageOrientation" value=""><br>
+<input type="hidden" id="imageDateTime" name="imageDateTime" value=""><br>
 
 <p><input type="submit" name="submit" value="Upload image to your {{diaryName}} diary" />
 
-<p><img id="preview" src="#" width="350px" alt="Image Preview" />
+<p><img id="preview" src="#" width="350px" alt="Image Preview"  style="display:none;" />
 
 </form>
 
-<script>
-picker.onchange = evt => {
-  const [file] = picker.files
-  if (file) {
-    preview.src = URL.createObjectURL(file)
-  }
-}
-</script>
+<script src="/static/js/exif-reader.2022-03-19.js"></script>
+<script src="/static/js/upload.js"></script>
 
 
 {{> ../tail}}

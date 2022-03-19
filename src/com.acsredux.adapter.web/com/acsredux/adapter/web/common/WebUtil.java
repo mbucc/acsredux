@@ -6,12 +6,7 @@ import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
-import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.content.values.DiaryName;
-import com.acsredux.core.content.values.DiaryYear;
-import com.acsredux.core.content.values.FileContent;
-import com.acsredux.core.content.values.FileName;
-import com.acsredux.core.content.values.SectionIndex;
+import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.values.*;
@@ -109,13 +104,15 @@ public class WebUtil {
         new DiaryName(x.get("name"))
       );
       case UPLOAD_PHOTO -> {
-        FilePart f = x.getUploadedFiles().get(0);
+        MultipartFilePart f = x.getUploadedFile();
         yield new UploadPhoto(
           subject,
           ContentID.parse(x.get("contentID")),
           SectionIndex.parse(x.get("sectionIndex")),
           new FileName(f.filename()),
-          new FileContent(f.val())
+          new FileContent(f.val()),
+          ImageOrientation.of(x.get("imageOrientation")),
+          ImageDate.of(x.get("imageDate"))
         );
       }
     };

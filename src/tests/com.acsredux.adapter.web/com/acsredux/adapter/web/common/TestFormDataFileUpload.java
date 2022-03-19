@@ -78,12 +78,10 @@ class TestFormDataFileUpload {
     // verify
     assertNotNull(y);
     assertTrue(isFormUpload(x));
-    var y1 = y.getUploadedFiles();
+    var y1 = y.getUploadedFile();
     assertNotNull(y1);
-    assertEquals(1, y1.size());
-    var y2 = y1.get(0);
-    assertEquals("my-file.txt", y2.filename());
-    assertEquals("text/plain", y2.filetype());
-    assertArrayEquals("Hello World!".getBytes(), y2.val());
+    assertEquals("my-file.txt", y1.filename());
+    assertEquals("text/plain", y1.filetype());
+    assertArrayEquals("Hello World!".getBytes(), y1.val());
   }
 }

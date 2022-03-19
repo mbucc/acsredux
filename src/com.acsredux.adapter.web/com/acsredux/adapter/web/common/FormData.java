@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class FormData {
 
   static final String BOUNDARY_PREFIX = "--";
   private final Map<String, List<String>> data = new HashMap<>();
-  private List<FilePart> parts = new ArrayList<>();
+  private MultipartFilePart file;
 
   public FormData add(String key, String val) {
     if (!data.containsKey(key)) {
@@ -134,56 +135,34 @@ public class FormData {
     var lines = body.split("\\n");
 
     // Parse body into it's parts.
-    int i = 0;
     int j = 0;
-    List<MultiPart> ys = new ArrayList<>();
     StringBuilder sb = new StringBuilder();
-    i = readUpToAndIncluding(lines, j, "content-disposition:");
+    int i = readUpToAndIncluding(lines, j, "content-disposition:");
+    Consumer<byte[]> byteConsumer;
     while (i < lines.length) {
       j = readUpToAndIncluding(lines, i, boundary);
 
       if (lines[i].toLowerCase().contains("filename=")) {
-        //
-        //        The part can either be a file upload ...
-        //
         String filename = getHeaderParameter(lines[i], "filename");
         String name = getHeaderParameter(lines[i++], "name");
         String filetype = getContentTypeFromString(lines[i++]);
-        i++; //   blank line between content type and content
-        sb.setLength(0);
-        for (int k = i; k < j; k++) {
-          sb.append(lines[k]);
-          sb.append("\n");
-        }
-        y.parts.add(
-          new FilePart(
-            name,
-            filename,
-            filetype,
-            sb.toString().trim().getBytes(StandardCharsets.ISO_8859_1)
-          )
-        );
+        byteConsumer =
+          bytes -> y.file = new MultipartFilePart(name, filename, filetype, bytes);
       } else {
-        //
-        //        ... or a form field value.
-        //
         String name = getHeaderParameter(lines[i++], "name");
-        i++; //   blank line before value.
-
-        //        Assume a form field could have multiple lines.
-        sb.setLength(0);
-        for (int k = i; k < j; k++) {
-          sb.append(lines[k].trim());
-          sb.append(" ");
-        }
-        y.add(
-          name,
-          new String(
-            sb.toString().trim().getBytes(StandardCharsets.ISO_8859_1),
-            StandardCharsets.UTF_8
-          )
-        );
+        byteConsumer = bytes -> y.add(name, new String(bytes));
       }
+
+      //
+      //      Read and consume remaining content in this part
+      //
+      i++; //   blank line between content type and content
+      sb.setLength(0);
+      for (int k = i; k < j; k++) {
+        sb.append(lines[k]);
+        sb.append("\n");
+      }
+      byteConsumer.accept(sb.toString().trim().getBytes(StandardCharsets.ISO_8859_1));
 
       i = j + 1;
     }
@@ -278,7 +257,7 @@ public class FormData {
     return y;
   }
 
-  public List<FilePart> getUploadedFiles() {
-    return parts;
+  public MultipartFilePart getUploadedFile() {
+    return file;
   }
 }

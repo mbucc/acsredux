@@ -8,19 +8,7 @@ import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.PhotoDiaryCreated;
-import com.acsredux.core.content.values.AltText;
-import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.content.values.DiaryName;
-import com.acsredux.core.content.values.DiaryYear;
-import com.acsredux.core.content.values.FileContent;
-import com.acsredux.core.content.values.FileName;
-import com.acsredux.core.content.values.Image;
-import com.acsredux.core.content.values.ImageSource;
-import com.acsredux.core.content.values.PhotoID;
-import com.acsredux.core.content.values.PublishedDate;
-import com.acsredux.core.content.values.Section;
-import com.acsredux.core.content.values.SectionIndex;
-import com.acsredux.core.content.values.Title;
+import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.commands.VerifyEmail;
@@ -209,11 +197,14 @@ public class TestData {
   }
 
   public static final FileContent TEST_FILE_CONTENT = new FileContent(imgbytes);
+  public static final ImageDate TEST_IMAGE_DATE = ImageDate.of("2022-03-19");
   public static final UploadPhoto TEST_UPLOAD_PHOTO_COMMAND = new UploadPhoto(
     TEST_SUBJECT,
     TEST_CONTENT_ID,
     TEST_SECTION_INDEX,
     TEST_FILE_NAME,
-    TEST_FILE_CONTENT
+    TEST_FILE_CONTENT,
+    ImageOrientation.PORTRAIT,
+    TEST_IMAGE_DATE
   );
 }
