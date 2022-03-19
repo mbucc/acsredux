@@ -6,14 +6,17 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
 import com.sun.net.httpserver.HttpExchange;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
 public class BaseView {
 
+  public record MenuItem(String label, String href) {}
+
+  public final List<MenuItem> menuItems;
+
   public String pageTitle;
-  public final List<Map<String, String>> menuItems;
   public final String error;
   public final long principalID;
   public String principalName;
@@ -46,11 +49,17 @@ public class BaseView {
     this.alphaTestMemberLimit = x3.limitOnAlphaCustomers();
     this.analyticsScriptTag = x3.analyticsScriptTag();
 
-    this.menuItems = makeMenu();
+    this.menuItems = makeMenu(x1);
   }
 
-  private List<Map<String, String>> makeMenu() {
-    return List.of(Map.of("link", "/", "text", "home"));
+  private List<MenuItem> makeMenu(HttpExchange x1) {
+    var ys = new ArrayList<MenuItem>(2);
+    if (this.isLoggedIn) {
+      var p = (MemberHttpPrincipal) x1.getPrincipal();
+      ys.add(new MenuItem("dashboard", "/members/" + p.getID().val()));
+    }
+    ys.add(new MenuItem("home", "/"));
+    return ys;
   }
 
   public void setPageTitle(String title) {

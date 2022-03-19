@@ -2,7 +2,7 @@
 
 <p>{{firstName}} {{lastName}} has been a member since {{memberSince}}.</p>
 
-<h2>Articles</h2>
+<h2>Photo Diaries</h2>
 <ol>
 {{#articles}}
   <li><a href="/photo-diary/{{id}}">{{title}}</a></li>
@@ -10,6 +10,6 @@
 </ol>
 {{#isMyPage}}
 <a href="/photo-diary/create">Create a new photo diary.</a>
-{{/isMyPage}}k
+{{/isMyPage}}
 
 {{> ../tail}}
