@@ -1,5 +1,5 @@
 200
-Content-Length: 647
+Content-Length: 724
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -9,14 +9,16 @@ Content-type: text/html; charset= UTF-8
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>2022</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/w3.2022-03-18.css">
   </head>
-  <body>
-    <p>
-小川 治兵衛     (<a href="/members/logout">log out</a>)
-     <br /><a href="/">home</a>
-    </p>
+<body>
+<div class="w3-container">
+<p>
+小川 治兵衛 (<a href="/members/logout">log out</a>)
+ <br /><a href="/">home</a>
+</p>
 
-    <h1>2022</h1>
+<h1>2022</h1>
 
 
 
@@ -25,6 +27,7 @@ Content-type: text/html; charset= UTF-8
 
     <p><a href="/photo-diary/123/0/add-image"><button type="button">+ img</button></a>
 
+</div>
 <script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
 </body>
 </html>

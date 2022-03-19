@@ -8,6 +8,7 @@
 2022-02-18: diary: add text note (top-level and monthly)
 2023-03-18: diary: delete photos.
 2022-02-18: diary: add photo captions.
+2022-03-19: put back height/width limit on image, o/w on first upload will render huge.
 2022-03-18: Create lib.hooks for site-specific data.  Add member dashboard hook.
 
 2022-03-18: Parse ext data in JS and use it to create default file name.

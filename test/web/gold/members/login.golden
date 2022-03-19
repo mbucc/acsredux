@@ -1,5 +1,5 @@
 200
-Content-Length: 1183
+Content-Length: 1260
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -9,14 +9,16 @@ Content-type: text/html; charset= UTF-8
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/w3.2022-03-18.css">
   </head>
-  <body>
-    <p>
-     <a href="/members/login">log in</a>
-     <br /><a href="/">home</a>
-    </p>
+<body>
+<div class="w3-container">
+<p>
+ <a href="/members/login">log in</a>
+ <br /><a href="/">home</a>
+</p>
 
-    <h1>Login</h1>
+<h1>Login</h1>
 
 <p>
   We are in alpha testing mode, which means things may break. Bug reports (submitted
@@ -38,6 +40,7 @@ Content-type: text/html; charset= UTF-8
   <input type="hidden" name="command" value="login" />
   <input type="submit" value="Login" />
 </form>
+</div>
 <script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
 </body>
 </html>
