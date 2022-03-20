@@ -49,7 +49,7 @@ class TestStub {
     var now = new CreatedOn(Instant.now());
     stub.addMember(TEST_CREATE_MEMBER_CMD, TEST_MEMBER_STATUS, now);
     ContentID contentID = stub.createContent(TEST_CREATE_PHOTO_DIARY_COMMAND);
-    stub.addPhotoToDiary(contentID, TEST_SECTION_INDEX, TEST_IMAGE);
+    stub.addPhotoToDiary(now, contentID, TEST_SECTION_INDEX, TEST_IMAGE);
 
     // execute
     Content y = stub.getByID(contentID);

@@ -152,8 +152,11 @@ public class TestData {
 
   public static final ContentID TEST_CONTENT_ID = new ContentID(123L);
   public static final AltText TEST_ALT_TEXT = new AltText("img1");
+  public static final ImageDate TEST_PHOTO_TAKEN_ON = new ImageDate(Instant.now());
   public static final Image TEST_IMAGE = new Image(
     new ImageSource("/static/img1.png"),
+    ImageOrientation.PORTRAIT,
+    TEST_PHOTO_TAKEN_ON,
     TEST_ALT_TEXT
   );
   public static final PhotoID TEST_PHOTO_ID = new PhotoID(1000L);
@@ -197,7 +200,6 @@ public class TestData {
   }
 
   public static final FileContent TEST_FILE_CONTENT = new FileContent(imgbytes);
-  public static final ImageDate TEST_IMAGE_DATE = ImageDate.of("2022-03-19");
   public static final UploadPhoto TEST_UPLOAD_PHOTO_COMMAND = new UploadPhoto(
     TEST_SUBJECT,
     TEST_CONTENT_ID,
@@ -205,6 +207,6 @@ public class TestData {
     TEST_FILE_NAME,
     TEST_FILE_CONTENT,
     ImageOrientation.PORTRAIT,
-    TEST_IMAGE_DATE
+    TEST_PHOTO_TAKEN_ON
   );
 }

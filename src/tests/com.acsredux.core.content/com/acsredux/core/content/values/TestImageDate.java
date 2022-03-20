@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.ValidationException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +16,18 @@ class TestImageDate {
 
   LocalDate x1;
   LocalTime x2;
+  ImageDate expJustDate;
+  ImageDate exp;
+  ZoneId tz = ZoneId.of("US/Eastern");
+  ResourceBundle rb = ResourceBundle.getBundle("ContentErrorMessages");
 
   @BeforeEach
   void setup() {
-    x1 = LocalDate.now();
-    x2 = LocalTime.now();
+    var x = LocalDateTime.now();
+    x1 = x.toLocalDate();
+    x2 = x.toLocalTime();
+    expJustDate = new ImageDate(x1.atStartOfDay().atZone(tz).toInstant());
+    exp = new ImageDate(x.atZone(tz).toInstant());
   }
 
   private String fmt(LocalDate x1) {
@@ -39,22 +48,22 @@ class TestImageDate {
 
   @Test
   void testDateStringOnly() {
-    assertEquals(new ImageDate(x1, null), ImageDate.of(fmt(x1)));
+    assertEquals(expJustDate, ImageDate.of(fmt(x1), tz));
   }
 
   @Test
   void testDateAndTimeString() {
-    assertEquals(new ImageDate(x1, x2), ImageDate.of(fmt(x1, x2)));
+    assertEquals(exp, ImageDate.of(fmt(x1, x2), tz));
   }
 
   @Test
   void testNullRaisesValidationError() {
     ValidationException y = assertThrows(
       ValidationException.class,
-      () -> ImageDate.of(null)
+      () -> ImageDate.of(null, null)
     );
     assertEquals(
-      "Please enter an image date like 2022-02-28 or 2022-02-28T12:30.",
+      rb.getString("invalid_image_date"),
       y.getMessage()
     );
   }
@@ -63,10 +72,10 @@ class TestImageDate {
   void testJustTimeIsAnError() {
     ValidationException y = assertThrows(
       ValidationException.class,
-      () -> ImageDate.of(fmt(x2))
+      () -> ImageDate.of(fmt(x2), tz)
     );
     assertEquals(
-      "Please enter an image date like 2022-02-28 or 2022-02-28T12:30.",
+      rb.getString("invalid_image_date"),
       y.getMessage()
     );
   }
