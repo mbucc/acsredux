@@ -17,6 +17,8 @@ import com.github.mustachejava.MustacheFactory;
 import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
 
+import java.time.ZoneId;
+
 public class UploadHandler {
 
   private final SiteInfo siteInfo;
@@ -43,7 +45,7 @@ public class UploadHandler {
     var y = Result
       .ok(x2)
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
-      .map(UploadHandler::normalizeDates)
+      .map(x -> normalizeDates(x, ))
       .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
@@ -67,7 +69,7 @@ public class UploadHandler {
 
   // imageDateTime   = parsed by JS from image.
   // imageDatePicker = picker displayed if parse fails.
-  static FormData normalizeDates(FormData x) {
+  static FormData normalizeDates(FormData x, ZoneId tz) {
     String y = x.get("imageDateTime");
     String d2 = x.get("imageDatePicker");
     if (d2 != null && !d2.isBlank()) {

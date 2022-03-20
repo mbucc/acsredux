@@ -5,7 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.acsredux.adapter.web.common.FormData;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 public class TestUploadDates {
+
+  ZoneId tz = ZoneId.of("US/Pacific");
+
 
   @Test
   void testSunnyCase() {
@@ -15,10 +22,11 @@ public class TestUploadDates {
     x.add("imageDateTime", dt);
 
     // execute
-    UploadHandler.normalizeDates(x);
+    UploadHandler.normalizeDates(x, tz);
 
     // verify
-    assertEquals(dt, x.get("imageDate"));
+    long expected = LocalDateTime.parse(dt).atZone(tz).toEpochSecond();
+    assertEquals(String.valueOf(expected), x.get("imageDate"));
   }
 
   @Test
@@ -29,10 +37,11 @@ public class TestUploadDates {
     x.add("imageDatePicker", dt);
 
     // execute
-    UploadHandler.normalizeDates(x);
+    UploadHandler.normalizeDates(x, tz);
 
     // verify
-    assertEquals(dt, x.get("imageDate"));
+    long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();
+    assertEquals(String.valueOf(expected), x.get("imageDate"));
   }
 
   @Test
@@ -44,9 +53,10 @@ public class TestUploadDates {
     x.add("imageDateTime", "2022-02-28T12:30:00");
 
     // execute
-    UploadHandler.normalizeDates(x);
+    UploadHandler.normalizeDates(x, tz);
 
     // verify
-    assertEquals(dt, x.get("imageDate"));
+    long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();
+    assertEquals(String.valueOf(expected), x.get("imageDate"));
   }
 }
