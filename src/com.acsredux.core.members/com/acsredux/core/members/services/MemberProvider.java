@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public final class MemberProvider implements MemberService {
 
-  private final CreateHandler addMemberHandler;
+  private final CreateHandler createHandler;
   private final VerifyEmailHandler verifyEmailHandler;
   private final LoginHandler loginHandler;
   private final MemberReader reader;
@@ -36,7 +36,7 @@ public final class MemberProvider implements MemberService {
     InstantSource clock,
     MemberAdminReader adminReader
   ) {
-    addMemberHandler = new CreateHandler(r, adminReader, w, notifier, clock);
+    createHandler = new CreateHandler(r, adminReader, w, notifier, clock);
     verifyEmailHandler = new VerifyEmailHandler(r, w, clock);
     loginHandler = new LoginHandler(r, w, clock);
 
@@ -47,7 +47,7 @@ public final class MemberProvider implements MemberService {
   @Override
   public Event handle(BaseMemberCommand x) {
     return switch (x) {
-      case CreateMember x1 -> addMemberHandler.handle(x1);
+      case CreateMember x1 -> createHandler.handle(x1);
       case VerifyEmail x1 -> verifyEmailHandler.handle(x1);
       case LoginMember x1 -> loginHandler.handle(x1);
     };
