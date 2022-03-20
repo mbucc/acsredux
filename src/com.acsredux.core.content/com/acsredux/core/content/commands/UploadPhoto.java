@@ -12,7 +12,7 @@ public record UploadPhoto(
   FileName fileName,
   FileContent content,
   ImageOrientation orientation,
-  ImageDate date
+  ImageDate takenOn
 )
   implements BaseContentCommand {
   public UploadPhoto {
