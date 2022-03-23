@@ -1,12 +1,12 @@
 package com.acsredux.adapter.filesystem;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.Email;
 import com.acsredux.core.members.values.FirstName;
 import com.acsredux.core.members.values.HashedPassword;
 import com.acsredux.core.members.values.LastName;
 import com.acsredux.core.members.values.LoginTime;
-import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.MemberStatus;
 import com.acsredux.core.members.values.RegistrationDate;
 import com.acsredux.core.members.values.ZipCode;

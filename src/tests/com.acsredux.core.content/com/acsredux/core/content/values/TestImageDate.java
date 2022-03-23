@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.ValidationException;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,10 +60,7 @@ class TestImageDate {
       ValidationException.class,
       () -> ImageDate.of(null, null)
     );
-    assertEquals(
-      rb.getString("invalid_image_date"),
-      y.getMessage()
-    );
+    assertEquals(rb.getString("invalid_image_date"), y.getMessage());
   }
 
   @Test
@@ -74,9 +69,6 @@ class TestImageDate {
       ValidationException.class,
       () -> ImageDate.of(fmt(x2), tz)
     );
-    assertEquals(
-      rb.getString("invalid_image_date"),
-      y.getMessage()
-    );
+    assertEquals(rb.getString("invalid_image_date"), y.getMessage());
   }
 }

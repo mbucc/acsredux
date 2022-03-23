@@ -1,42 +1,34 @@
 package com.acsredux.lib.testutil;
 
+import static com.acsredux.core.content.values.ContentType.PHOTO;
+import static com.acsredux.core.content.values.ContentType.PHOTO_DIARY;
 import static com.acsredux.core.members.PasswordUtil.hashpw;
 
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.admin.values.SiteStatus;
+import com.acsredux.core.base.MemberID;
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
-import com.acsredux.core.content.events.PhotoDiaryCreated;
+import com.acsredux.core.content.entities.PhotoDiary;
+import com.acsredux.core.content.events.ContentCreated;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.commands.VerifyEmail;
 import com.acsredux.core.members.entities.Member;
-import com.acsredux.core.members.values.ClearTextPassword;
-import com.acsredux.core.members.values.Email;
-import com.acsredux.core.members.values.FirstName;
-import com.acsredux.core.members.values.HashedPassword;
-import com.acsredux.core.members.values.LastName;
-import com.acsredux.core.members.values.LoginTime;
-import com.acsredux.core.members.values.MemberID;
-import com.acsredux.core.members.values.MemberPrincipal;
-import com.acsredux.core.members.values.MemberStatus;
-import com.acsredux.core.members.values.RegistrationDate;
-import com.acsredux.core.members.values.SessionID;
-import com.acsredux.core.members.values.VerificationToken;
-import com.acsredux.core.members.values.ZipCode;
+import com.acsredux.core.members.values.*;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import javax.security.auth.Subject;
 
 public class TestData {
 
@@ -56,12 +48,7 @@ public class TestData {
 
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
   public static final Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
-  public static final Subject TEST_SUBJECT = new Subject(
-    true,
-    Set.of(TEST_PRINCIPAL),
-    Collections.emptySet(),
-    Collections.emptySet()
-  );
+  public static final Subject TEST_SUBJECT = new Subject(TEST_MEMBER_ID);
 
   public static final ClearTextPassword TEST_CLEAR_TEXT_PASSWORD = ClearTextPassword.of(
     "a3cDefg!"
@@ -150,9 +137,16 @@ public class TestData {
     "<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>"
   );
 
-  public static final ContentID TEST_CONTENT_ID = new ContentID(123L);
+  public static final ContentID TEST_DIARY_CONTENT_ID = new ContentID(123L);
+  public static final ContentID TEST_PHOTO_CONTENT_ID = new ContentID(124L);
+  public static final ContentID TEST_COMMENT_ID = new ContentID(125L);
+
+  public static final CreatedOn TEST_CREATED_ON = new CreatedOn(Instant.now());
+  public static final ImageDate TEST_PHOTO_TAKEN_ON = new ImageDate(
+    Instant.now().minus(15, ChronoUnit.DAYS)
+  );
+
   public static final AltText TEST_ALT_TEXT = new AltText("img1");
-  public static final ImageDate TEST_PHOTO_TAKEN_ON = new ImageDate(Instant.now());
   public static final Image TEST_IMAGE = new Image(
     new ImageSource("/static/img1.png"),
     ImageOrientation.PORTRAIT,
@@ -160,20 +154,52 @@ public class TestData {
     TEST_ALT_TEXT
   );
   public static final PhotoID TEST_PHOTO_ID = new PhotoID(1000L);
-  public static final Title TEST_SECTION_TITLE = new Title("A Test Section Title");
-  public static final Section TEST_SECTION = new Section(
-    TEST_SECTION_TITLE,
-    List.of(TEST_IMAGE)
-  );
   public static final DiaryYear TEST_DIARY_YEAR = new DiaryYear(2022);
   public static final DiaryName TEST_DIARY_NAME = null;
   public static final Title TEST_TITLE = new Title("" + TEST_DIARY_YEAR.val());
-  public static final Content TEST_PHOTO_DIARY = new Content(
-    TEST_CONTENT_ID,
+
+  public static final PublishedDate TEST_PUBLISHED_ON = new PublishedDate(Instant.now());
+
+  public static final Content TEST_PHOTO_DIARY_MAIN_CONTENT = new Content(
+    TEST_DIARY_CONTENT_ID,
+    null,
     TEST_MEMBER_ID,
     TEST_TITLE,
-    List.of(TEST_SECTION),
-    new PublishedDate(Instant.now())
+    TEST_CREATED_ON,
+    new FromDateTime(TEST_CREATED_ON.val()),
+    null,
+    PHOTO_DIARY,
+    BlobType.MARKDOWN,
+    new BlobBytes("Hello World".getBytes(StandardCharsets.UTF_8))
+  );
+  public static final Content TEST_PHOTO_CONTENT = new Content(
+    TEST_PHOTO_CONTENT_ID,
+    TEST_DIARY_CONTENT_ID,
+    TEST_MEMBER_ID,
+    TEST_TITLE,
+    TEST_CREATED_ON,
+    new FromDateTime(TEST_PHOTO_TAKEN_ON.val()),
+    new UptoDateTime(TEST_PHOTO_TAKEN_ON.val()),
+    PHOTO,
+    BlobType.IMAGE_LANDSCAPE_HREF,
+    new BlobBytes("/static/img/test.png".getBytes(StandardCharsets.UTF_8))
+  );
+  public static final Content TEST_COMMENT = new Content(
+    TEST_COMMENT_ID,
+    TEST_DIARY_CONTENT_ID,
+    TEST_MEMBER_ID,
+    TEST_TITLE,
+    TEST_CREATED_ON,
+    new FromDateTime(TEST_CREATED_ON.val()),
+    null,
+    PHOTO_DIARY,
+    BlobType.MARKDOWN,
+    new BlobBytes("Great!".getBytes(StandardCharsets.UTF_8))
+  );
+  public static final PhotoDiary TEST_PHOTO_DIARY = new PhotoDiary(
+    TEST_PHOTO_DIARY_MAIN_CONTENT,
+    Collections.singletonList(TEST_PHOTO_CONTENT),
+    Collections.singletonList(TEST_COMMENT)
   );
 
   public static final CreatePhotoDiary TEST_CREATE_PHOTO_DIARY_COMMAND = new CreatePhotoDiary(
@@ -181,13 +207,27 @@ public class TestData {
     TEST_DIARY_YEAR,
     TEST_DIARY_NAME
   );
-  public static final PhotoDiaryCreated TEST_PHOTO_DIARY_CREATED = new PhotoDiaryCreated(
-    TEST_CREATE_PHOTO_DIARY_COMMAND,
-    TEST_CONTENT_ID
+  public static final NewContent TEST_NEW_DIARY_CONTENT = new NewContent(
+    null,
+    TEST_SUBJECT.memberID(),
+    TEST_PHOTO_DIARY_MAIN_CONTENT.title(),
+    TEST_PHOTO_DIARY_MAIN_CONTENT.createdOn(),
+    new FromDateTime(TEST_PHOTO_DIARY_MAIN_CONTENT.createdOn().val()),
+    null,
+    TEST_PHOTO_DIARY_MAIN_CONTENT.contentType(),
+    TEST_PHOTO_DIARY_MAIN_CONTENT.blobType(),
+    TEST_PHOTO_DIARY_MAIN_CONTENT.content()
+  );
+  public static final ContentCreated TEST_PHOTO_DIARY_CREATED = new ContentCreated(
+    TEST_NEW_DIARY_CONTENT,
+    TEST_DIARY_CONTENT_ID
   );
 
   public static final SectionIndex TEST_SECTION_INDEX = new SectionIndex(0);
-  public static final FileName TEST_FILE_NAME = new FileName("t.png");
+  public static final FileName TEST_IMAGE_FILE_NAME = new FileName("t.png");
+  public static final FileName TEST_IMAGE_STD_FILE_NAME = new FileName("t.std.png");
+  public static final FileName TEST_IMAGE_ORIG_FILE_NAME = new FileName("t.orig.png");
+
   private static byte[] imgbytes;
 
   static {
@@ -199,14 +239,14 @@ public class TestData {
     }
   }
 
-  public static final FileContent TEST_FILE_CONTENT = new FileContent(imgbytes);
+  public static final BlobBytes TEST_IMAGE_BLOB = new BlobBytes(imgbytes);
   public static final UploadPhoto TEST_UPLOAD_PHOTO_COMMAND = new UploadPhoto(
     TEST_SUBJECT,
-    TEST_CONTENT_ID,
-    TEST_SECTION_INDEX,
-    TEST_FILE_NAME,
-    TEST_FILE_CONTENT,
+    TEST_DIARY_CONTENT_ID,
+    TEST_IMAGE_FILE_NAME,
+    TEST_IMAGE_BLOB,
     ImageOrientation.PORTRAIT,
-    TEST_PHOTO_TAKEN_ON
+    TEST_PHOTO_TAKEN_ON,
+    TEST_TIME_ZONE
   );
 }

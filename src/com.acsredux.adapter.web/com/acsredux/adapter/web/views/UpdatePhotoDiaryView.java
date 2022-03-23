@@ -4,16 +4,12 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.members.Util;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.content.ContentService;
-import com.acsredux.core.content.entities.Content;
-import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.Image;
 import com.acsredux.core.content.values.Paragraph;
 import com.acsredux.core.content.values.SectionElement;
 import com.sun.net.httpserver.HttpExchange;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UpdatePhotoDiaryView extends BaseView {
 
@@ -68,26 +64,27 @@ public class UpdatePhotoDiaryView extends BaseView {
   }
 
   public void lookupContentInfo(ContentService x) {
-    Content y = x.getByID(new ContentID(this.contentID));
-    this.memberID = y.author().val();
-    this.setPageTitle(y.title().val());
-    this.slug = Util.titleToSlug(y.title().val());
-    this.sections = new ArrayList<>();
-    for (int i = 0; i < y.sections().size(); i++) {
-      this.sections.add(
-          new SectionDTO(
-            y.sections().get(i).title().val(),
-            i,
-            y
-              .sections()
-              .get(i)
-              .content()
-              .stream()
-              .map(SectionDTO::toEl)
-              .collect(Collectors.toList())
-          )
-        );
-    }
+    throw new UnsupportedOperationException("implement me");
+    //    Content y = x.getByID(new ContentID(this.contentID));
+    //    this.memberID = y.author().val();
+    //    this.setPageTitle(y.title().val());
+    //    this.slug = Util.titleToSlug(y.title().val());
+    //    this.sections = new ArrayList<>();
+    //    for (int i = 0; i < y.sections().size(); i++) {
+    //      this.sections.add(
+    //          new SectionDTO(
+    //            y.sections().get(i).title().val(),
+    //            i,
+    //            y
+    //              .sections()
+    //              .get(i)
+    //              .content()
+    //              .stream()
+    //              .map(SectionDTO::toEl)
+    //              .collect(Collectors.toList())
+    //          )
+    //        );
+    //    }
   }
 
   public boolean isMyPage() {

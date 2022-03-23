@@ -2,6 +2,7 @@ package com.acsredux.core.members.services;
 
 import static com.acsredux.core.members.MemberService.ANONYMOUS_USERNAME;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.events.MemberAdded;

@@ -1,4 +1,4 @@
-package com.acsredux.core.members.values;
+package com.acsredux.core.base;
 
 import static com.acsredux.core.base.Util.req;
 

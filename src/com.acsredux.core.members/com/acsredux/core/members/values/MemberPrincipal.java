@@ -1,5 +1,6 @@
 package com.acsredux.core.members.values;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.entities.Member;
 import java.security.Principal;
 

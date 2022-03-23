@@ -5,23 +5,18 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.DashboardView;
 import com.acsredux.core.admin.values.SiteInfo;
+import com.acsredux.core.base.MemberID;
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.VerifyEmail;
-import com.acsredux.core.members.values.AnonymousPrincipal;
-import com.acsredux.core.members.values.MemberID;
-import com.acsredux.core.members.values.MemberPrincipal;
 import com.acsredux.core.members.values.VerificationToken;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 import de.perschon.resultflow.Result;
-import java.security.Principal;
-import java.util.Collections;
-import java.util.Set;
-import javax.security.auth.Subject;
 
 class DashboardHandler {
 
@@ -47,11 +42,10 @@ class DashboardHandler {
   }
 
   Subject subject(HttpPrincipal x) {
-    Principal y = new AnonymousPrincipal();
     if (x instanceof MemberHttpPrincipal x1) {
-      y = MemberPrincipal.of(x1.getMember());
+      return new Subject(x1.getMember().id());
     }
-    return new Subject(true, Set.of(y), Collections.emptySet(), Collections.emptySet());
+    return new Subject(null);
   }
 
   MemberID verifyToken(HttpPrincipal x1, MemberID x2, FormData x3) {

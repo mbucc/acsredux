@@ -1,11 +1,11 @@
 package com.acsredux.lib.testutil;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
-import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.SessionID;
 import java.util.Optional;
 

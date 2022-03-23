@@ -1,15 +1,16 @@
 package com.acsredux.core.content;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.entities.Content;
+import com.acsredux.core.content.entities.PhotoDiary;
 import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.members.values.MemberID;
 import java.util.List;
 
 public interface ContentService {
   // Queries
-  Content getByID(ContentID x);
+  PhotoDiary getPhotoDiaryByID(ContentID x);
   List<Content> findByMemberID(MemberID x);
 
   // Commands

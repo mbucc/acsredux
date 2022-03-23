@@ -1,18 +1,26 @@
 {{> ../head}}
 
+{{pageIntro}}
+
 {{#error}}
 <p style="color: red">{{{error}}}</p>
 {{/error}}
 
+{{#isMyPage}}
+<p><a href="/photo-diary/{{contentID}}/add-image"><button type="button">+ img</button></a>
+{{/isMyPage}}
+
 {{#sections}}
 <h2>{{title}}</h2>
-    {{#elements}}
-    <p>{{{html}}}
-    {{/elements}}
+{{#elements}}
+{{#isText}}
+<p>{{text}}</p>
+{{/isText}}
+{{#isImg}}
+<img src="{{src}}" alt="{{alt}}" title="{{title}}" acs-data="{{memberID}}" />
+{{/isImg}}
+{{/elements}}
 
-    {{#isMyPage}}
-    <p><a href="/photo-diary/{{contentID}}/{{sectionIndex}}/add-image"><button type="button">+ img</button></a>
-    {{/isMyPage}}
 {{/sections}}
 
 {{> ../tail}}

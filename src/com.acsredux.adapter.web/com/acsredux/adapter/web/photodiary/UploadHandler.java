@@ -4,6 +4,7 @@ import static com.acsredux.adapter.web.common.WebUtil.internalError;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.UploadPhotoView;
@@ -12,11 +13,11 @@ import com.acsredux.core.base.AuthenticationException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
+import com.acsredux.core.members.entities.Member;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.time.ZoneId;
 
 public class UploadHandler {
@@ -42,15 +43,16 @@ public class UploadHandler {
   }
 
   public void handlePostUpload(HttpExchange x1, FormData x2) {
+    Member m = ((MemberHttpPrincipal) x1.getPrincipal()).getMember();
     var y = Result
       .ok(x2)
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
-      .map(x -> normalizeDates(x, ))
+      .map(x -> normalizeDates(x, m.tz()))
       .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
     if (y.isOk()) {
-      var contentID = x2.get("contentID");
+      var contentID = x2.get("parent");
       var location = String.format("/photo-diary/%s", contentID);
       redirect(x1, location);
     } else {

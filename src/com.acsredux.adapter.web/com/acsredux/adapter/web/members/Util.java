@@ -2,8 +2,8 @@ package com.acsredux.adapter.web.members;
 
 import static com.acsredux.adapter.web.auth.CookieAuthenticator.COOKIE_FMT;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.MemberService;
-import com.acsredux.core.members.values.MemberID;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URI;

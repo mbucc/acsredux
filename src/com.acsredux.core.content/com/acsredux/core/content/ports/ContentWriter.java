@@ -1,11 +1,10 @@
 package com.acsredux.core.content.ports;
 
-import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.content.values.Image;
-import com.acsredux.core.content.values.SectionIndex;
+import com.acsredux.core.content.values.NewContent;
 
 public interface ContentWriter {
-  ContentID createContent(CreatePhotoDiary x);
-  void addPhotoToDiary(ContentID x1, SectionIndex x2, Image x3);
+  ContentID save(NewContent x);
+  void update(Content y);
 }

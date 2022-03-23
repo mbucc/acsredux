@@ -2,6 +2,7 @@ package com.acsredux.core.content;
 
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageReader;
 import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.content.services.ContentServiceProvider;
 import java.time.Clock;
@@ -17,8 +18,9 @@ public class ContentServiceFactory {
     ZoneId tz,
     ContentReader r,
     ContentWriter w,
+    ImageReader ir,
     ImageWriter iw
   ) {
-    return new ContentServiceProvider(Clock.system(tz), r, w, iw);
+    return new ContentServiceProvider(Clock.system(tz), r, w, ir, iw);
   }
 }

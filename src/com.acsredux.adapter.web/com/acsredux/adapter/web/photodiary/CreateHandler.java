@@ -10,7 +10,7 @@ import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
-import com.acsredux.core.content.events.PhotoDiaryCreated;
+import com.acsredux.core.content.events.ContentCreated;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
@@ -40,8 +40,8 @@ public class CreateHandler {
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle)
       .map(os -> os.get(0))
-      .map(PhotoDiaryCreated.class::cast)
-      .map(PhotoDiaryCreated::id)
+      .map(ContentCreated.class::cast)
+      .map(ContentCreated::id)
       .map(o -> String.format("/photo-diary/%d", o.val()))
       .mapWrap(o -> redirect(x1, o));
 

@@ -1,8 +1,8 @@
 package com.acsredux.core.members.entities;
 
 import com.acsredux.core.base.DateUtil;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.values.FirstName;
-import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.RegistrationDate;
 import java.time.ZoneId;
 

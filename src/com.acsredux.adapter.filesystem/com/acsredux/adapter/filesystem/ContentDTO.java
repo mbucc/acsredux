@@ -1,38 +1,51 @@
 package com.acsredux.adapter.filesystem;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.content.entities.Content;
-import com.acsredux.core.content.values.ContentID;
-import com.acsredux.core.content.values.PublishedDate;
-import com.acsredux.core.content.values.Title;
-import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.content.values.*;
+import com.acsredux.core.members.values.CreatedOn;
 import java.time.Instant;
-import java.util.List;
 
 public class ContentDTO {
 
   long id;
-  long author;
+  Long refersTo;
+  long createdBy;
   String title;
-  List<SectionDTO> sections;
-  long published;
+  long created;
+  long from;
+  Long upto;
+  String contentType;
+  String blobType;
+  String content;
 
   ContentDTO() {}
 
   ContentDTO(Content x) {
     this.id = x.id().val();
-    this.author = x.author().val();
+    this.refersTo = x.refersTo() == null ? null : x.refersTo().val();
+    this.createdBy = x.createdBy().val();
     this.title = x.title().val();
-    this.sections = x.sections().stream().map(SectionDTO::new).toList();
-    this.published = x.published().val().getEpochSecond();
+    this.created = x.createdOn().val().getEpochSecond();
+    this.from = x.from().val().getEpochSecond();
+    this.upto = x.upto() == null ? null : x.upto().val().getEpochSecond();
+    this.contentType = x.contentType().name();
+    this.blobType = x.blobType().name();
+    this.content = x.content().asString();
   }
 
   public Content asContent() {
     return new Content(
       new ContentID(id),
-      new MemberID(author),
+      this.refersTo == null ? null : new ContentID(this.refersTo),
+      new MemberID(createdBy),
       new Title(title),
-      sections.stream().map(SectionDTO::asSection).toList(),
-      new PublishedDate(Instant.ofEpochSecond(published))
+      new CreatedOn(Instant.ofEpochSecond(created)),
+      new FromDateTime(Instant.ofEpochSecond(from)),
+      upto == null ? null : new UptoDateTime(Instant.ofEpochSecond(from)),
+      ContentType.valueOf(contentType),
+      BlobType.valueOf(blobType),
+      BlobBytes.ofString(content)
     );
   }
 }

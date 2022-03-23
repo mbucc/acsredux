@@ -3,13 +3,13 @@ package com.acsredux.core.members.commands;
 import static com.acsredux.core.base.Util.die;
 import static com.acsredux.core.base.Util.req;
 
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.members.values.ClearTextPassword;
 import com.acsredux.core.members.values.Email;
 import com.acsredux.core.members.values.FirstName;
 import com.acsredux.core.members.values.LastName;
 import com.acsredux.core.members.values.ZipCode;
 import java.util.ResourceBundle;
-import javax.security.auth.Subject;
 
 public record CreateMember(
   Subject subject,

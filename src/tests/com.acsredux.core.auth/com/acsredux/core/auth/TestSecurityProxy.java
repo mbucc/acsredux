@@ -1,17 +1,18 @@
 package com.acsredux.core.auth;
 
+import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_SUBJECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.lib.testutil.MockMemberService;
 import com.acsredux.lib.testutil.TestData;
 import java.lang.reflect.Method;
 import java.util.List;
-import javax.security.auth.Subject;
 import org.junit.jupiter.api.Test;
 
 public class TestSecurityProxy {
@@ -59,7 +60,7 @@ public class TestSecurityProxy {
   void testDumpMethodSignatureWithNonNullArg() throws NoSuchMethodException {
     // setup
     Method m = TestProvider.class.getMethod("handle", Command.class);
-    Object[] args = new Object[] { new MockCommand(new Subject()) };
+    Object[] args = new Object[] { new MockCommand(new Subject(TEST_MEMBER_ID)) };
 
     // execute
     String y = SecurityProxy.dump(m, args);
@@ -94,7 +95,7 @@ public class TestSecurityProxy {
 
     // verify
     assertEquals(
-      "Subject: Principal: MemberPrincipal[mid=MemberID[val=123]] " +
+      "Subject[memberID=MemberID[val=123]] " +
       "denied access to " +
       "com.acsredux.core.members.MemberService.handle(CreateMember x1)",
       y.getMessage()

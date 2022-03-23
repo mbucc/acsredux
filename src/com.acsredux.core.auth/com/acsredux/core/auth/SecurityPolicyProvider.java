@@ -4,13 +4,13 @@ import com.acsredux.core.auth.values.Entitlement;
 import com.acsredux.core.auth.values.Guard;
 import com.acsredux.core.auth.values.SecurityPolicyDTO;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
-import com.acsredux.core.members.values.MemberPrincipal;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.security.auth.Subject;
 
 public class SecurityPolicyProvider implements SecurityPolicy {
 
@@ -34,7 +34,7 @@ public class SecurityPolicyProvider implements SecurityPolicy {
   }
 
   static boolean isLoggedIn(Subject x) {
-    return !x.getPrincipals(MemberPrincipal.class).isEmpty();
+    return Optional.ofNullable(x).map(Subject::memberID).isPresent();
   }
 
   static boolean isCreateArticle(Method x) {

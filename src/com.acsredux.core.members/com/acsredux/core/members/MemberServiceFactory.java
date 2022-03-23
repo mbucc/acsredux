@@ -4,7 +4,7 @@ import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
-import com.acsredux.core.members.services.MemberProvider;
+import com.acsredux.core.members.services.MemberServiceProvider;
 import java.time.Clock;
 import java.time.InstantSource;
 import java.time.ZoneId;
@@ -32,6 +32,6 @@ public final class MemberServiceFactory {
     MemberAdminReader adminReader,
     InstantSource clock
   ) {
-    return new MemberProvider(r, w, notifier, clock, adminReader);
+    return new MemberServiceProvider(r, w, notifier, clock, adminReader);
   }
 }

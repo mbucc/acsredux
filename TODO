@@ -1,5 +1,5 @@
 2022-03-18: Record a photo upload in the database.  Store orientation and date uploaded.
-2022-03-18: Parse ext data in JS and use for new (optional) photo date field
+2022-03-19: Caption each photo with the date.  Sort photo's by date in the section.
 
 2022-03-18: Fix last visit logic
     - call it last visit not last login
@@ -13,13 +13,18 @@
 2022-03-19: put back height/width limit on image, o/w on first upload will render huge.
 2022-03-18: Create lib.hooks for site-specific data.  Add member dashboard hook.
 
+2022-03-21: Take subject out of command.  Command comes from UI, subject is loaded by security framework.
+
+2022-03-21: Make /bin scripts executable as part of deploy.
+
+2022-03-21: Add large image, link to it from diary (/members/2/photos/3).  Allow comments.
+
+2022-03-21: Allow anybody to mark a photo as inappropriate.  Does not have to be logged in.
 
 2022-03-18: define site admins and set isAdmin to true
 2022-03-18: un-stub token generation in filesystem adapter.
 
-
-
-2022-03-11: Use apache for static files?
+2022-03-11: Use apache for static files.
 2022-02-28: login with invalid email shows "not found" instead of error.
 2022-02-28: login with invalid password renders internal server error.
 
@@ -30,7 +35,6 @@
 
 2022-02-25: If no cookie when validating token, user needs to change browser settings.
 2022-02-25: Expire email validation tokens (add expiration to admin data).
-
 
 2022-02-18: add policy to token acceptance?
 2022-02-07: If user clicks token link after deleting cookie, add link to login page.

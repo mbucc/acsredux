@@ -4,7 +4,7 @@ import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.content.ContentService;
-import com.acsredux.core.content.entities.Content;
+import com.acsredux.core.content.entities.PhotoDiary;
 import com.acsredux.core.content.values.ContentID;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URI;
@@ -30,10 +30,10 @@ public class UploadPhotoView extends BaseView {
   }
 
   public UploadPhotoView lookupContentInfo(ContentService x) {
-    Content y = x.getByID(new ContentID(this.contentID));
-    String sectionTitle = y.sections().get(this.sectionIndex).title().val();
-    String title = String.format("Upload a photo to %s", sectionTitle);
-    this.diaryName = y.title().val();
+    PhotoDiary y = x.getPhotoDiaryByID(new ContentID(this.contentID));
+    //String title = String.format("Upload a photo to %s", sectionTitle);
+    String title = "fixme";
+    this.diaryName = y.content().title().val();
     this.setPageTitle(title);
     return this;
   }

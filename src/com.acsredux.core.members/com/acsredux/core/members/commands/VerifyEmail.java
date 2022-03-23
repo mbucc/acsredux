@@ -2,9 +2,9 @@ package com.acsredux.core.members.commands;
 
 import static com.acsredux.core.base.Util.req;
 
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.members.values.VerificationToken;
 import java.util.ResourceBundle;
-import javax.security.auth.Subject;
 
 /**
  * A VerifyEmail command is submitted when a member clicks the

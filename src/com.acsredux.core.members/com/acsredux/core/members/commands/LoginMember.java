@@ -2,10 +2,10 @@ package com.acsredux.core.members.commands;
 
 import static com.acsredux.core.base.Util.req;
 
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.members.values.ClearTextPassword;
 import com.acsredux.core.members.values.Email;
 import java.util.ResourceBundle;
-import javax.security.auth.Subject;
 
 public record LoginMember(Subject subject, Email email, ClearTextPassword password)
   implements BaseMemberCommand {

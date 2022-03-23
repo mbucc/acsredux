@@ -8,12 +8,12 @@ import static com.acsredux.lib.testutil.TestData.TEST_MEMBER_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_SESSION_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_VERIFICATION_TOKEN;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.values.Email;
 import com.acsredux.core.members.values.FirstName;
 import com.acsredux.core.members.values.LastName;
-import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.SessionID;
 import com.acsredux.core.members.values.VerificationToken;
 import java.util.ArrayList;

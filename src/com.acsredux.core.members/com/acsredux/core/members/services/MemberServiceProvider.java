@@ -1,6 +1,7 @@
 package com.acsredux.core.members.services;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.commands.CreateMember;
@@ -11,14 +12,13 @@ import com.acsredux.core.members.ports.MemberAdminReader;
 import com.acsredux.core.members.ports.MemberNotifier;
 import com.acsredux.core.members.ports.MemberReader;
 import com.acsredux.core.members.ports.MemberWriter;
-import com.acsredux.core.members.values.MemberID;
 import com.acsredux.core.members.values.SessionID;
 import java.security.SecureRandom;
 import java.time.InstantSource;
 import java.util.Base64;
 import java.util.Optional;
 
-public final class MemberProvider implements MemberService {
+public final class MemberServiceProvider implements MemberService {
 
   private final CreateHandler createHandler;
   private final VerifyEmailHandler verifyEmailHandler;
@@ -29,7 +29,7 @@ public final class MemberProvider implements MemberService {
   // from /dev/random (or /dev/urandom) in Linux.
   private final SecureRandom secureRandom = new SecureRandom();
 
-  public MemberProvider(
+  public MemberServiceProvider(
     MemberReader r,
     MemberWriter w,
     MemberNotifier notifier,

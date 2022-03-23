@@ -1,5 +1,6 @@
 package com.acsredux.core.members.ports;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;

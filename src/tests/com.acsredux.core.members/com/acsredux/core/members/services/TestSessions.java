@@ -18,7 +18,7 @@ class TestSessions {
   void setup() {
     MemberReader reader = (MemberReader) MockProxy.of(new MockMemberReader());
     MemberWriter writer = (MemberWriter) MockProxy.of(new MockMemberWriter());
-    this.service = new MemberProvider(reader, writer, null, null, null);
+    this.service = new MemberServiceProvider(reader, writer, null, null, null);
   }
 
   @Test

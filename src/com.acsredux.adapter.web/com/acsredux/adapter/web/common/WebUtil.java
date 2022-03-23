@@ -3,12 +3,15 @@ package com.acsredux.adapter.web.common;
 import static java.io.OutputStream.nullOutputStream;
 
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
+import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.commands.LoginMember;
+import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
 import com.sun.net.httpserver.Headers;
@@ -20,15 +23,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
-import javax.security.auth.Subject;
 
 public class WebUtil {
 
@@ -77,12 +78,8 @@ public class WebUtil {
         "invalid command " + x.get("command") + " in form data " + x
       );
     }
-    Subject subject = new Subject(
-      true,
-      Set.of(principal.asMemberPrincipal()),
-      Collections.emptySet(),
-      Collections.emptySet()
-    );
+    Subject subject = new Subject(principal.memberID());
+
     return switch (cmd) {
       case CREATE -> new CreateMember(
         subject,
@@ -105,14 +102,15 @@ public class WebUtil {
       );
       case UPLOAD_PHOTO -> {
         MultipartFilePart f = x.getUploadedFile();
+        Member m = ((MemberHttpPrincipal) principal).getMember();
         yield new UploadPhoto(
           subject,
-          ContentID.parse(x.get("contentID")),
-          SectionIndex.parse(x.get("sectionIndex")),
+          ContentID.parse(x.get("parent")),
           new FileName(f.filename()),
-          new FileContent(f.val()),
+          new BlobBytes(f.val()),
           ImageOrientation.of(x.get("imageOrientation")),
-          ImageDate.of(x.get("imageDate"))
+          new ImageDate(Instant.ofEpochSecond(Long.parseLong(x.get("imageDate")))),
+          m.tz()
         );
       }
     };

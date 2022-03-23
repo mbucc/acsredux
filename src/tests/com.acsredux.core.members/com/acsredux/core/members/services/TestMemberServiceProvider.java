@@ -11,7 +11,7 @@ import com.acsredux.lib.testutil.MockProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestMemberProvider {
+class TestMemberServiceProvider {
 
   private MemberService service;
   private MemberReader reader;
@@ -20,7 +20,7 @@ class TestMemberProvider {
   void setup() {
     reader = (MemberReader) MockProxy.of(new MockMemberReader());
     MemberWriter writer = (MemberWriter) MockProxy.of(new MockMemberWriter());
-    this.service = new MemberProvider(reader, writer, null, null, null);
+    this.service = new MemberServiceProvider(reader, writer, null, null, null);
   }
 
   @Test

@@ -2,6 +2,7 @@ package com.acsredux.adapter.mailgun;
 
 import static com.acsredux.lib.testutil.TestData.*;
 
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.commands.CreateMember;
 import com.acsredux.core.members.events.MemberAdded;
 import com.acsredux.core.members.ports.MemberNotifier;

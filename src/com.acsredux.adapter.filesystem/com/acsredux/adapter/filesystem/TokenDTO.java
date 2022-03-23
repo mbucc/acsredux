@@ -1,6 +1,6 @@
 package com.acsredux.adapter.filesystem;
 
-import com.acsredux.core.members.values.MemberID;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.values.VerificationToken;
 import java.util.Map;
 

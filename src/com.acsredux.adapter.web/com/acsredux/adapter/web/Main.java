@@ -20,6 +20,7 @@ import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.ContentServiceFactory;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
+import com.acsredux.core.content.ports.ImageReader;
 import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.members.MemberService;
 import com.acsredux.core.members.MemberServiceFactory;
@@ -72,6 +73,7 @@ public class Main {
     AdminReader ar = stub;
     ContentReader cr = stub;
     ContentWriter cw = stub;
+    ImageReader ir = stub;
     ImageWriter iw = stub;
 
     if ("Y".equals(getString(Variable.IS_PRODUCTION, System.getenv()))) {
@@ -85,7 +87,6 @@ public class Main {
       ar = fs;
       cr = fs;
       cw = fs;
-      iw = fs;
     }
 
     //
@@ -108,7 +109,7 @@ public class Main {
       policy
     );
     ContentService contentService = SecurityProxy.of(
-      ContentServiceFactory.getArticleService(tz, cr, cw, iw),
+      ContentServiceFactory.getArticleService(tz, cr, cw, ir, iw),
       policy
     );
 

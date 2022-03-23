@@ -1,7 +1,7 @@
 package com.acsredux.core.auth;
 
+import com.acsredux.core.base.Subject;
 import java.lang.reflect.Method;
-import javax.security.auth.Subject;
 
 public interface SecurityPolicy {
   boolean isAllowed(Method m, Object[] args);

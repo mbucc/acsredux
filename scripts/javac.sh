@@ -13,7 +13,8 @@ ${JAVAC} \
 
 rval=$?
 
-awk '/ warning: \[preview] patterns/{getline;getline;next} 1' < compile.out
+awk '/ warning: \[preview] patterns/ {getline;getline;next} 1' < compile.out \
+  | grep -v "Note:"
 
 rm -f compile.out
 

@@ -137,10 +137,8 @@ manualtest: compiletests
 
 .PHONY: compiletests
 compiletests: compile resources testlib/com.acsredux.testlib.jar
-	${JAVAC} \
-		-d testclasses \
-		-cp "lib/*:testlib/*:$$(echo classes/*|tr ' ' :)" \
-		$$(find src -name '*.java'|egrep '(/Test|/Mock|/ManualTest)')
+	JAVAC="${JAVAC}" ./scripts/javac-tests.sh
+
 
 
 testlib/com.acsredux.testlib.jar: \

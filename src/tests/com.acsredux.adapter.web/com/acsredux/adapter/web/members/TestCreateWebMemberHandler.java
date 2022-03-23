@@ -4,8 +4,8 @@ import static com.acsredux.lib.testutil.TestData.TEST_SITE_INFO;
 import static com.acsredux.lib.testutil.TestData.projectRoot;
 
 import com.acsredux.adapter.web.MockHttpExchange;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.events.MemberAdded;
-import com.acsredux.core.members.values.*;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;

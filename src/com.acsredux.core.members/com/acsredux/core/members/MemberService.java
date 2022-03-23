@@ -1,6 +1,7 @@
 package com.acsredux.core.members;
 
 import com.acsredux.core.base.Event;
+import com.acsredux.core.base.MemberID;
 import com.acsredux.core.members.commands.BaseMemberCommand;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.entities.PublicMember;
