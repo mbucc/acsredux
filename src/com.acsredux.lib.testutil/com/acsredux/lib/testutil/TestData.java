@@ -200,7 +200,7 @@ public class TestData {
     TEST_DIARY_YEAR,
     TEST_DIARY_NAME
   );
-  public static final NewContent TEST_NEW_DIARY_CONTENT = new NewContent(
+  public static final NewContent TEST_NEW_CONTENT_DIARY = new NewContent(
     null,
     TEST_SUBJECT.memberID(),
     TEST_PHOTO_DIARY_CONTENT.title(),
@@ -212,7 +212,7 @@ public class TestData {
     TEST_PHOTO_DIARY_CONTENT.content()
   );
   public static final ContentCreated TEST_PHOTO_DIARY_CREATED = new ContentCreated(
-    TEST_NEW_DIARY_CONTENT,
+    TEST_NEW_CONTENT_DIARY,
     TEST_DIARY_CONTENT_ID
   );
 

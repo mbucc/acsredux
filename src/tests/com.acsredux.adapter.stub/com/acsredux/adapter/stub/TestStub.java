@@ -10,7 +10,6 @@ import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.members.values.CreatedOn;
 import com.acsredux.core.members.values.MemberStatus;
 import java.time.Instant;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TestStub {
@@ -38,19 +37,30 @@ class TestStub {
     assertTrue(member.isPresent());
   }
 
-  @Disabled("FIX ME")
   @Test
-  void testAddImage() {
+  void testAddContent() {
     // setup
     var stub = new Stub();
     var now = new CreatedOn(Instant.now());
     stub.addMember(TEST_CREATE_MEMBER_CMD, TEST_MEMBER_STATUS, now);
-    ContentID contentID = stub.save(TEST_NEW_DIARY_CONTENT);
-    //stub.addPhotoToDiary(now, contentID, TEST_SECTION_INDEX, TEST_IMAGE);
+    ContentID diaryID = stub.save(TEST_NEW_CONTENT_DIARY);
 
     // execute
-    Content y = stub.getByID(contentID);
+    Content y = stub.getByID(diaryID);
+
     // verify
-    //assertEquals(2, ys.size());
+    Content exp = new Content(
+      new ContentID(1L),
+      TEST_PHOTO_DIARY_CONTENT.refersTo(),
+      TEST_PHOTO_DIARY_CONTENT.createdBy(),
+      TEST_PHOTO_DIARY_CONTENT.title(),
+      TEST_PHOTO_DIARY_CONTENT.createdOn(),
+      TEST_PHOTO_DIARY_CONTENT.from(),
+      TEST_PHOTO_DIARY_CONTENT.upto(),
+      TEST_PHOTO_DIARY_CONTENT.contentType(),
+      TEST_PHOTO_DIARY_CONTENT.blobType(),
+      TEST_PHOTO_DIARY_CONTENT.content()
+    );
+    assertEquals(exp, y);
   }
 }
