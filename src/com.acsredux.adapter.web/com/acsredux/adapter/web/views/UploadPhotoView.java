@@ -31,7 +31,7 @@ public class UploadPhotoView extends BaseView {
 
   public UploadPhotoView lookupContentInfo(ContentService x) {
     Content y = x.getByID(new ContentID(this.contentID));
-    String title = String.format("Upload a photo to %s", y.title());
+    String title = String.format("Upload a photo to %s", y.title().val());
     this.diaryName = y.title().val();
     this.setPageTitle(title);
     return this;
