@@ -8,7 +8,6 @@ import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
-import com.acsredux.core.content.entities.PhotoDiary;
 import com.acsredux.core.content.events.ContentCreated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
@@ -91,19 +90,8 @@ public class ContentServiceProvider implements ContentService {
   }
 
   @Override
-  public PhotoDiary getPhotoDiaryByID(ContentID x) {
-    List<Content> children = reader.findByRefersToID(x).stream().toList();
-    return new PhotoDiary(
-      reader.getByID(x),
-      children
-        .stream()
-        .filter(o ->
-          o.contentType().equals(ContentType.PHOTO) ||
-          o.contentType().equals(ContentType.DIARY_ENTRY)
-        )
-        .toList(),
-      children.stream().filter(o -> o.contentType().equals(ContentType.COMMENT)).toList()
-    );
+  public Content getByID(ContentID x) {
+    return reader.getByID(x);
   }
 
   @Override

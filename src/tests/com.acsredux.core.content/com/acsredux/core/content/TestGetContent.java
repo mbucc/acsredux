@@ -19,7 +19,6 @@ import java.time.Instant;
 import java.time.InstantSource;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TestGetContent {
@@ -43,13 +42,12 @@ class TestGetContent {
   }
 
   @Test
-  @Disabled("refactoring content")
   void testGetContent() {
     // execute
-    var y = svc.getPhotoDiaryByID(TEST_DIARY_CONTENT_ID);
+    var y = svc.getByID(TEST_DIARY_CONTENT_ID);
 
     // verify
-    assertEquals(TEST_PHOTO_DIARY_MAIN_CONTENT, y);
+    assertEquals(TEST_PHOTO_DIARY_CONTENT, y);
     MockProxy
       .toProxy(r)
       .assertCallCount(1)

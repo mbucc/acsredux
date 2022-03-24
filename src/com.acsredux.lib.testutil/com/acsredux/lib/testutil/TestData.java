@@ -11,7 +11,6 @@ import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
-import com.acsredux.core.content.entities.PhotoDiary;
 import com.acsredux.core.content.events.ContentCreated;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
@@ -28,7 +27,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 
 public class TestData {
 
@@ -160,7 +158,7 @@ public class TestData {
 
   public static final PublishedDate TEST_PUBLISHED_ON = new PublishedDate(Instant.now());
 
-  public static final Content TEST_PHOTO_DIARY_MAIN_CONTENT = new Content(
+  public static final Content TEST_PHOTO_DIARY_CONTENT = new Content(
     TEST_DIARY_CONTENT_ID,
     null,
     TEST_MEMBER_ID,
@@ -196,11 +194,6 @@ public class TestData {
     BlobType.MARKDOWN,
     new BlobBytes("Great!".getBytes(StandardCharsets.UTF_8))
   );
-  public static final PhotoDiary TEST_PHOTO_DIARY = new PhotoDiary(
-    TEST_PHOTO_DIARY_MAIN_CONTENT,
-    Collections.singletonList(TEST_PHOTO_CONTENT),
-    Collections.singletonList(TEST_COMMENT)
-  );
 
   public static final CreatePhotoDiary TEST_CREATE_PHOTO_DIARY_COMMAND = new CreatePhotoDiary(
     TEST_SUBJECT,
@@ -210,13 +203,13 @@ public class TestData {
   public static final NewContent TEST_NEW_DIARY_CONTENT = new NewContent(
     null,
     TEST_SUBJECT.memberID(),
-    TEST_PHOTO_DIARY_MAIN_CONTENT.title(),
-    TEST_PHOTO_DIARY_MAIN_CONTENT.createdOn(),
-    new FromDateTime(TEST_PHOTO_DIARY_MAIN_CONTENT.createdOn().val()),
+    TEST_PHOTO_DIARY_CONTENT.title(),
+    TEST_PHOTO_DIARY_CONTENT.createdOn(),
+    new FromDateTime(TEST_PHOTO_DIARY_CONTENT.createdOn().val()),
     null,
-    TEST_PHOTO_DIARY_MAIN_CONTENT.contentType(),
-    TEST_PHOTO_DIARY_MAIN_CONTENT.blobType(),
-    TEST_PHOTO_DIARY_MAIN_CONTENT.content()
+    TEST_PHOTO_DIARY_CONTENT.contentType(),
+    TEST_PHOTO_DIARY_CONTENT.blobType(),
+    TEST_PHOTO_DIARY_CONTENT.content()
   );
   public static final ContentCreated TEST_PHOTO_DIARY_CREATED = new ContentCreated(
     TEST_NEW_DIARY_CONTENT,
