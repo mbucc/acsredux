@@ -1,5 +1,5 @@
 200
-Content-Length: 768
+Content-Length: 958
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -23,10 +23,46 @@ Content-type: text/html; charset= UTF-8
 
 
 
-<h2>A Test Section Title</h2>
-    <p><img src="/static/img1.png" alt="img1">
 
-    <p><a href="/photo-diary/123/0/add-image"><button type="button">+ img</button></a>
+
+<p><a href="/photo-diary/123/add-image"><button type="button">+ img</button></a>
+
+<h2>Jan</h2>
+
+
+<h2>Feb</h2>
+
+
+<h2>Mar</h2>
+
+<img src="/static/img/test.png" alt="2022-03-10" title="2022-03-10" data-contentID="124" />
+<h2>Apr</h2>
+
+
+<h2>May</h2>
+
+
+<h2>Jun</h2>
+
+
+<h2>Jul</h2>
+
+
+<h2>Aug</h2>
+
+
+<h2>Sep</h2>
+
+
+<h2>Oct</h2>
+
+
+<h2>Nov</h2>
+
+
+<h2>Dec</h2>
+
+
 
 </div>
 <script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>

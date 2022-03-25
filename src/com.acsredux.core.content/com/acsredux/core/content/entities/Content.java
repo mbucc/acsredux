@@ -3,6 +3,7 @@ package com.acsredux.core.content.entities;
 import com.acsredux.core.base.MemberID;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.values.CreatedOn;
+import java.util.Comparator;
 
 public record Content(
   ContentID id,
@@ -17,4 +18,8 @@ public record Content(
   ContentType contentType,
   BlobType blobType,
   BlobBytes content
-) {}
+) {
+  public static Comparator<Content> byFrom = Comparator.comparingLong(o ->
+    o.from().val().getEpochSecond()
+  );
+}

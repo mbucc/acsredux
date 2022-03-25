@@ -12,13 +12,12 @@
 
 {{#sections}}
 <h2>{{title}}</h2>
+
 {{#elements}}
-{{#isText}}
-<p>{{text}}</p>
-{{/isText}}
-{{#isImg}}
-<img src="{{src}}" alt="{{alt}}" title="{{title}}" acs-data="{{memberID}}" />
-{{/isImg}}
+{{#text}}
+<p>{{text}}</p>{{/text}}
+{{^text}}
+<img src="{{src}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{contentID}}" />{{/text}}
 {{/elements}}
 
 {{/sections}}

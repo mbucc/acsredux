@@ -1,6 +1,8 @@
 2022-03-18: Record a photo upload in the database.  Store orientation and date uploaded.
 2022-03-19: Caption each photo with the date.  Sort photo's by date in the section.
 
+2022-03-24: See why Lou's images did not resize.
+2022-03-24: When I visit page from goat counter it says "log in".  But I am logged in.
 2022-03-18: Fix last visit logic
     - call it last visit not last login
     - only update if it is a new day

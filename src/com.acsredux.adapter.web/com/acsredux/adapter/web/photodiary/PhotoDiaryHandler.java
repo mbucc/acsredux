@@ -4,6 +4,7 @@ import com.acsredux.adapter.web.common.BaseHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.content.ContentService;
+import com.acsredux.core.members.MemberService;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import java.io.File;
@@ -18,7 +19,8 @@ public class PhotoDiaryHandler extends BaseHandler {
   public PhotoDiaryHandler(
     String templateRoot,
     ContentService contentService,
-    AdminService adminService
+    AdminService adminService,
+    MemberService memberService
   ) {
     File f = new File(templateRoot);
     if (!f.exists()) {
@@ -30,7 +32,7 @@ public class PhotoDiaryHandler extends BaseHandler {
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.createHandler = new CreateHandler(mf, contentService, siteInfo);
-    this.updateHandler = new UpdateHandler(mf, contentService, siteInfo);
+    this.updateHandler = new UpdateHandler(mf, contentService, siteInfo, memberService);
     this.uploadHandler = new UploadHandler(mf, contentService, siteInfo);
   }
 

@@ -137,7 +137,7 @@ public class Main {
       ),
       new Pair(
         "/photo-diary",
-        new PhotoDiaryHandler(templateRoot, contentService, adminService)
+        new PhotoDiaryHandler(templateRoot, contentService, adminService, memberService)
       ),
       new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
     };

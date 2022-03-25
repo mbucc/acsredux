@@ -9,6 +9,7 @@ import com.acsredux.adapter.web.MockHttpExchange;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockContentService;
+import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,17 +18,20 @@ class TestCreateHandler {
   PhotoDiaryHandler handler;
   MockAdminService mockAdminService;
   MockContentService mockArticleService;
+  MockMemberService mockMemberService;
 
   @BeforeEach
   void setup() {
     this.mockAdminService = new MockAdminService();
     this.mockArticleService = new MockContentService();
     this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
+    this.mockMemberService = new MockMemberService();
     this.handler =
       new PhotoDiaryHandler(
         projectRoot() + "/web/template",
         this.mockArticleService,
-        this.mockAdminService
+        this.mockAdminService,
+        this.mockMemberService
       );
   }
 

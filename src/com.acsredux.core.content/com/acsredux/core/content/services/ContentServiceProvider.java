@@ -23,49 +23,6 @@ import java.util.*;
 
 public class ContentServiceProvider implements ContentService {
 
-  public static final String DIARY_FMT =
-    """
-        # %s
-        
-        ## Jan
-        
-        ## Feb
-        
-        ## Mar
-        
-        ## Apr
-        
-        ## May
-        
-        ## Jun
-        
-        ## Jul
-        
-        ## Aug
-        
-        ## Sep
-        
-        ## Oct
-        
-        ## Nov
-        
-        ## Dev""";
-
-  //  private final List<String> months = List.of(
-  //    "Jan",
-  //    "Feb",
-  //    "Mar",
-  //    "Apr",
-  //    "May",
-  //    "Jun",
-  //    "Jul",
-  //    "Aug",
-  //    "Sep",
-  //    "Oct",
-  //    "Nov",
-  //    "Dec"
-  //  );
-
   final ContentReader reader;
   final ContentWriter writer;
   final ImageWriter iwriter;
@@ -105,6 +62,11 @@ public class ContentServiceProvider implements ContentService {
       case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
       case UploadPhoto x1 -> handleUploadPhoto(x1);
     };
+  }
+
+  @Override
+  public List<Content> findChildrenOfID(ContentID x) {
+    return reader.findChildrenOfID(x);
   }
 
   private List<Event> handleUploadPhoto(UploadPhoto x) {

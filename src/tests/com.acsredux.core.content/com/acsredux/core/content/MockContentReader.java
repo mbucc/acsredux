@@ -22,7 +22,7 @@ public class MockContentReader implements ContentReader {
   }
 
   @Override
-  public List<Content> findByRefersToID(ContentID x) {
+  public List<Content> findChildrenOfID(ContentID x) {
     return List.of(TEST_COMMENT);
   }
 }

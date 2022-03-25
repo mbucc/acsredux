@@ -355,7 +355,7 @@ public final class FileSystem
   }
 
   @Override
-  public List<Content> findByRefersToID(ContentID x) {
+  public List<Content> findChildrenOfID(ContentID x) {
     throw new UnsupportedOperationException("implement me");
   }
 

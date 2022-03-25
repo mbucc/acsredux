@@ -8,5 +8,5 @@ import java.util.List;
 public interface ContentReader {
   Content getByID(ContentID x);
   List<Content> findByMemberID(MemberID x);
-  List<Content> findByRefersToID(ContentID x);
+  List<Content> findChildrenOfID(ContentID x);
 }

@@ -14,4 +14,6 @@ public interface ContentService {
 
   // Commands
   List<Event> handle(BaseContentCommand x);
+
+  List<Content> findChildrenOfID(ContentID x);
 }

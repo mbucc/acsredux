@@ -26,4 +26,9 @@ public class MockContentService implements ContentService {
   public List<Event> handle(BaseContentCommand x) {
     return List.of(TEST_PHOTO_DIARY_CREATED);
   }
+
+  @Override
+  public List<Content> findChildrenOfID(ContentID x) {
+    return List.of(TEST_PHOTO_CONTENT);
+  }
 }
