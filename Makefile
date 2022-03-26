@@ -201,5 +201,5 @@ clean:
 	rm -rf tmp
 	find ./test -name '*.actual' | xargs rm
 	rm -f compile.out
-	rm -rf ./web/template/static
+	rm -rf ./web/static/members
 	rm -f members.json sessions.json tokens.json content.json
