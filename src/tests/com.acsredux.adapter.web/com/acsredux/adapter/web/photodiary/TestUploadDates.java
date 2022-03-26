@@ -6,7 +6,6 @@ import com.acsredux.adapter.web.common.FormData;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TestUploadDates {
@@ -14,7 +13,6 @@ public class TestUploadDates {
   ZoneId tz = ZoneId.of("US/Pacific");
 
   @Test
-  @Disabled("refactoring content")
   void testSunnyCase() {
     // setup
     FormData x = new FormData();
@@ -30,7 +28,6 @@ public class TestUploadDates {
   }
 
   @Test
-  @Disabled("refactoring content")
   void testDatePickerUsed() {
     // setup
     FormData x = new FormData();
@@ -46,7 +43,6 @@ public class TestUploadDates {
   }
 
   @Test
-  @Disabled("refactoring content")
   void testIfBothLoadedUsePickerValue() {
     // setup
     FormData x = new FormData();

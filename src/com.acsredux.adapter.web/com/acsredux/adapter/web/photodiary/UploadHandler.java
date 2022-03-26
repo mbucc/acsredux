@@ -18,6 +18,8 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class UploadHandler {
@@ -77,7 +79,13 @@ public class UploadHandler {
     if (d2 != null && !d2.isBlank()) {
       y = d2;
     }
-    x.add("imageDate", y);
+    final long epochSeconds;
+    if (y.length() == "2022-03-26".length()) {
+      epochSeconds = LocalDate.parse(y).atStartOfDay().atZone(tz).toEpochSecond();
+    } else {
+      epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
+    }
+    x.add("imageDate", String.valueOf(epochSeconds));
     return x;
   }
 
