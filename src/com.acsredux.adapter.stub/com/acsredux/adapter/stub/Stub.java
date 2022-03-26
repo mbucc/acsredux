@@ -256,7 +256,7 @@ public final class Stub
 
   @Override
   public List<Content> findChildrenOfID(ContentID x) {
-    throw new UnsupportedOperationException("implement me");
+    return content.stream().filter(o -> o.refersTo() == x).collect(Collectors.toList());
   }
 
   // ---------------------------------------------------------------------------
