@@ -36,6 +36,9 @@ public class TestData {
     return cwd.contains("acsredux/src/") ? "../../" : ".";
   }
 
+  // Use a constant date so dates in test HTML are deterministic.
+  public static final Instant TEST_NOW = Instant.now();
+
   public static final Email TEST_EMAIL = new Email("test@example.com");
   public static final FirstName TEST_FIRST_NAME = new FirstName("小川");
   public static final LastName TEST_LAST_NAME = new LastName("治兵衛");
@@ -63,7 +66,7 @@ public class TestData {
     Instant.ofEpochSecond(1642250459)
   );
   public static final ZoneId TEST_TIME_ZONE = ZoneId.of("US/Eastern");
-  public static final LoginTime TEST_LOGIN_TIME = new LoginTime(Instant.now());
+  public static final LoginTime TEST_LOGIN_TIME = new LoginTime(TEST_NOW);
   public static final LoginTime TEST_SECOND_LOGIN_TIME = null;
   public static final Member TEST_MEMBER = new Member(
     TEST_MEMBER_ID,
@@ -139,9 +142,9 @@ public class TestData {
   public static final ContentID TEST_PHOTO_CONTENT_ID = new ContentID(124L);
   public static final ContentID TEST_COMMENT_ID = new ContentID(125L);
 
-  public static final CreatedOn TEST_CREATED_ON = new CreatedOn(Instant.now());
+  public static final CreatedOn TEST_CREATED_ON = new CreatedOn(TEST_NOW);
   public static final ImageDate TEST_PHOTO_TAKEN_ON = new ImageDate(
-    Instant.now().minus(15, ChronoUnit.DAYS)
+    TEST_NOW.minus(15, ChronoUnit.DAYS)
   );
 
   public static final AltText TEST_ALT_TEXT = new AltText("img1");
@@ -156,7 +159,7 @@ public class TestData {
   public static final DiaryName TEST_DIARY_NAME = null;
   public static final Title TEST_TITLE = new Title("" + TEST_DIARY_YEAR.val());
 
-  public static final PublishedDate TEST_PUBLISHED_ON = new PublishedDate(Instant.now());
+  public static final PublishedDate TEST_PUBLISHED_ON = new PublishedDate(TEST_NOW);
 
   public static final Content TEST_PHOTO_DIARY_CONTENT = new Content(
     TEST_DIARY_CONTENT_ID,
