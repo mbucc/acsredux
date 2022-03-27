@@ -8,12 +8,16 @@ import com.acsredux.core.content.values.ContentID;
 import java.util.List;
 
 public interface ContentService {
-  // Queries
-  Content getByID(ContentID x);
-  List<Content> findByMemberID(MemberID x);
-
   // Commands
   List<Event> handle(BaseContentCommand x);
 
+  // Queries
+  Content getByID(ContentID x);
+  List<Content> findByMemberID(MemberID x);
   List<Content> findChildrenOfID(ContentID x);
+
+  // Queries with a default implementation.
+  default List<Content> findTopLevelContentByMemberID(MemberID x) {
+    return findByMemberID(x).stream().filter(o -> o.refersTo() == null).toList();
+  }
 }
