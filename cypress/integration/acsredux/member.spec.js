@@ -39,7 +39,7 @@ describe('ACS Redux tests', () => {
   it('can add a photo', () => {
     cy.loginMember1();
       cy.get('li > a').click()
-      cy.get('#addimg').click()
+      cy.get('#add-img').click()
       cy.get('#picker').selectFile('cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg')
       cy.get(':nth-child(2) > input').click()
 
@@ -48,7 +48,7 @@ describe('ACS Redux tests', () => {
 
       // And the image should actually load.
       // "naturalWidth" and "naturalHeight" are set when the image loads
-      cy.get('[alt="10138-80-prospect-business-hours-medium"]')
+      cy.get('[alt="1998-02-09"]')
       .should('be.visible')
       .and(($img) => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)

@@ -22,6 +22,8 @@ import com.sun.net.httpserver.HttpExchange;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class UploadHandler {
 
@@ -82,11 +84,17 @@ public class UploadHandler {
     if (d2 != null && !d2.isBlank()) {
       y = d2;
     }
-    final long epochSeconds;
+    long epochSeconds;
     if (y.length() == "2022-03-26".length()) {
       epochSeconds = LocalDate.parse(y).atStartOfDay().atZone(tz).toEpochSecond();
     } else {
-      epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
+      try {
+        epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
+      } catch (DateTimeParseException e) {
+        // 1998:02:09 06:49:00
+        var exifFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
+        epochSeconds = LocalDateTime.parse(y, exifFormat).atZone(tz).toEpochSecond();
+      }
     }
     x.add("imageDate", String.valueOf(epochSeconds));
     return x;

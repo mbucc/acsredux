@@ -36,6 +36,9 @@ picker.onchange = evt => {
                 if (tags.hasOwnProperty('CreateDate')) {
                     var x = document.getElementById("imageDateTime");
                     x.value = tags['CreateDate'].description;
+                } else if (tags.hasOwnProperty('DateTimeDigitized')) {
+                    var x = document.getElementById("imageDateTime");
+                    x.value = tags['DateTimeDigitized'].description;
                 } else {
                     var x = document.getElementById("imageDatePicker");
                     x.style.display = "block";
