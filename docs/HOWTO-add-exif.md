@@ -70,10 +70,10 @@ I think this recipe adds profile data not exif data.
 https://stackoverflow.com/a/230480/1789168.
 
 
-cat > t    
-2#55#Date Created="2000-01-01 12:00" 
-^D
-mogrify -profile 8BIMTEXT:t $FN
+    cat > t    
+    2#55#Date Created="2000-01-01 12:00" 
+    ^D
+    mogrify -profile 8BIMTEXT:t $FN
 
 
 The spec for the tags used in the text.txt file is
