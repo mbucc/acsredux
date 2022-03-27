@@ -1,6 +1,7 @@
 package com.acsredux.adapter.web.photodiary;
 
 import static com.acsredux.adapter.web.common.WebUtil.internalError;
+import static com.acsredux.adapter.web.common.WebUtil.pathToID;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
@@ -24,6 +25,7 @@ import java.time.ZoneId;
 
 public class UploadHandler {
 
+  public static final String ADD_IMAGE_URL = "/photo-diary/\\d+/add-image";
   private final SiteInfo siteInfo;
   private final Mustache template;
   private final ContentService contentService;
@@ -49,7 +51,8 @@ public class UploadHandler {
     var y = Result
       .ok(x2)
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
-      .map(x -> normalizeDates(x, m.tz()))
+      .map(o -> normalizeDates(o, m.tz()))
+      .map(o -> o.add("parent", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
@@ -93,14 +96,14 @@ public class UploadHandler {
   public boolean isGetUpload(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/photo-diary/\\d+/\\d+/add-image")
+      x.getRequestURI().getPath().matches(ADD_IMAGE_URL)
     );
   }
 
   public static boolean isPostUpload(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("POST") &&
-      x.getRequestURI().getPath().matches("/photo-diary/\\d+/\\d+/add-image")
+      x.getRequestURI().getPath().matches(ADD_IMAGE_URL)
     );
   }
 }

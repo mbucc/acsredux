@@ -32,7 +32,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class Stub
   implements
@@ -247,16 +246,12 @@ public final class Stub
 
   @Override
   public List<Content> findByMemberID(MemberID x) {
-    return content
-      .stream()
-      .filter(o -> o.refersTo() == null)
-      .filter(o -> o.createdBy().equals(x))
-      .collect(Collectors.toList());
+    return content.stream().filter(o -> Objects.equals(x, o.createdBy())).toList();
   }
 
   @Override
   public List<Content> findChildrenOfID(ContentID x) {
-    return content.stream().filter(o -> o.refersTo() == x).collect(Collectors.toList());
+    return content.stream().filter(o -> Objects.equals(x, o.refersTo())).toList();
   }
 
   // ---------------------------------------------------------------------------

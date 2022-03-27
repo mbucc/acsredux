@@ -156,16 +156,20 @@ public class WebUtil {
     return buf.toString();
   }
 
-  public static long parseLongFromURIPathComponent(URI x, int i) {
+  public static long pathToID(HttpExchange x, int idx) {
+    return pathToID(x.getRequestURI(), idx);
+  }
+
+  public static long pathToID(URI x, int idx) {
     var xs = x.toString().split("/");
-    if (xs.length < i + 1) {
+    if (xs.length < idx + 1) {
       throw new IllegalStateException("invalid URI " + x);
     }
     try {
-      return Long.parseLong(xs[i]);
+      return Long.parseLong(xs[idx]);
     } catch (Exception e) {
       String fmt = "can't parse long from path component %d in %s";
-      throw new IllegalStateException(String.format(fmt, i, x));
+      throw new IllegalStateException(String.format(fmt, idx, x));
     }
   }
 

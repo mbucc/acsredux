@@ -39,8 +39,12 @@ picker.onchange = evt => {
                 } else {
                     var x = document.getElementById("imageDatePicker");
                     x.style.display = "block";
+                    x.required = true;
                     x = document.getElementById("imageDatePickerLabel");
                     x.style.display = "block";
+                    alert("We could not extract a date from the image.  " +
+                      "We've added a date picker to the form, " +
+                      "please use it to enter the date the picture was taken.")
                 }
             }).catch(function (error) {
                 console.log("error");

@@ -58,10 +58,13 @@ public class ContentServiceProvider implements ContentService {
 
   @Override
   public List<Event> handle(BaseContentCommand x) {
-    return switch (x) {
-      case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
-      case UploadPhoto x1 -> handleUploadPhoto(x1);
-    };
+    var ys =
+      switch (x) {
+        case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
+        case UploadPhoto x1 -> handleUploadPhoto(x1);
+      };
+    logEvents(ys);
+    return ys;
   }
 
   @Override
@@ -107,6 +110,10 @@ public class ContentServiceProvider implements ContentService {
     ys.add(new ContentCreated(newImage, newImageID));
 
     return ys;
+  }
+
+  private void logEvents(List<Event> ys) {
+    System.out.println(ys);
   }
 
   static Path calculatePlaceholderImagePath(FileName x) {

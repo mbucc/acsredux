@@ -34,10 +34,12 @@ public class UpdatePhotoDiaryView extends BaseView {
   }
 
   private static Map<String, Object> asMap(Content x, ZoneId tz) {
+    // TODO: DRY up all the URL paths.
+    String srcfmt = "/static/members/%d/%s";
     return switch (x.contentType()) {
       case PHOTO -> Map.of(
         "src",
-        x.content().asString(),
+        String.format(srcfmt, x.createdBy().val(), x.content().asString()),
         "alt",
         x.from().asString(tz),
         "contentID",
@@ -57,12 +59,12 @@ public class UpdatePhotoDiaryView extends BaseView {
     this.slug = Util.titleToSlug(y.title().val());
 
     this.sections = new ArrayList<>();
-    List<Content> elements = x1.findChildrenOfID(cid);
+    List<Content> children = x1.findChildrenOfID(cid);
     for (Month m : Month.values()) {
       this.sections.add(
           new SectionDTO(
             m.getDisplayName(SHORT_STANDALONE, Locale.getDefault()),
-            elements
+            children
               .stream()
               .filter(o -> o.from().getMonthValue(tz) == m)
               .filter(o ->
@@ -79,5 +81,49 @@ public class UpdatePhotoDiaryView extends BaseView {
 
   public boolean isMyPage() {
     return Objects.equals(memberID, principalID);
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "UpdatePhotoDiaryView{" +
+      "menuItems=" +
+      menuItems +
+      ", pageTitle='" +
+      pageTitle +
+      '\'' +
+      ", error='" +
+      error +
+      '\'' +
+      ", principalID=" +
+      principalID +
+      ", principalName='" +
+      principalName +
+      '\'' +
+      ", isLoggedIn=" +
+      isLoggedIn +
+      ", isAdmin=" +
+      isAdmin +
+      ", isInAlphaTesting=" +
+      isInAlphaTesting +
+      ", suggestionBoxURL='" +
+      suggestionBoxURL +
+      '\'' +
+      ", alphaTestMemberLimit=" +
+      alphaTestMemberLimit +
+      ", analyticsScriptTag='" +
+      analyticsScriptTag +
+      '\'' +
+      ", contentID=" +
+      contentID +
+      ", memberID=" +
+      memberID +
+      ", slug='" +
+      slug +
+      '\'' +
+      ", sections=" +
+      sections +
+      '}'
+    );
   }
 }

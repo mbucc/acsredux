@@ -37,7 +37,7 @@ class TestUploadHandler {
   @Test
   void testGet() {
     // setup
-    var mock = new MockHttpExchange("/photo-diary/123/0/add-image", "GET");
+    var mock = new MockHttpExchange("/photo-diary/123/add-image", "GET");
     mock.setPrincipal(TEST_HTTP_PRINCIPAL);
 
     // execute

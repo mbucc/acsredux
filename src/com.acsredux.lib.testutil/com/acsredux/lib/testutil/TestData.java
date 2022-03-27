@@ -183,7 +183,7 @@ public class TestData {
     new UptoDateTime(TEST_PHOTO_TAKEN_ON.val()),
     PHOTO,
     BlobType.IMAGE_LANDSCAPE_HREF,
-    new BlobBytes("/static/img/test.png".getBytes(StandardCharsets.UTF_8))
+    new BlobBytes("test.png".getBytes(StandardCharsets.UTF_8))
   );
   public static final Content TEST_COMMENT = new Content(
     TEST_COMMENT_ID,

@@ -39,7 +39,7 @@ describe('ACS Redux tests', () => {
   it('can add a photo', () => {
     cy.loginMember1();
       cy.get('li > a').click()
-      cy.get(':nth-child(4) > a > button').click()
+      cy.get('#addimg').click()
       cy.get('#picker').selectFile('cypress/fixtures/10138-80-prospect-business-hours-medium.jpeg')
       cy.get(':nth-child(2) > input').click()
 
