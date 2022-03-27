@@ -13,8 +13,8 @@ import java.util.List;
 public class PhotoDiaryHandler extends BaseHandler {
 
   private final CreateHandler createHandler;
-  private final UpdateHandler updateHandler;
-  private final UploadHandler uploadHandler;
+  private final ViewHandler updateHandler;
+  private final UploadPhotoHandler uploadHandler;
 
   public PhotoDiaryHandler(
     String templateRoot,
@@ -32,8 +32,8 @@ public class PhotoDiaryHandler extends BaseHandler {
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.createHandler = new CreateHandler(mf, contentService, siteInfo);
-    this.updateHandler = new UpdateHandler(mf, contentService, siteInfo, memberService);
-    this.uploadHandler = new UploadHandler(mf, contentService, siteInfo);
+    this.updateHandler = new ViewHandler(mf, contentService, siteInfo, memberService);
+    this.uploadHandler = new UploadPhotoHandler(mf, contentService, siteInfo);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class PhotoDiaryHandler extends BaseHandler {
       new Route(createHandler::isPostCreate, createHandler::handlePostCreate),
       new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate),
       new Route(uploadHandler::isGetUpload, uploadHandler::handleGetUpload),
-      new Route(UploadHandler::isPostUpload, uploadHandler::handlePostUpload)
+      new Route(UploadPhotoHandler::isPostUpload, uploadHandler::handlePostUpload)
     );
   }
 }

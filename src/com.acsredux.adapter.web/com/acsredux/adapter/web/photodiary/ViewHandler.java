@@ -10,14 +10,14 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
 
-public class UpdateHandler {
+public class ViewHandler {
 
   private final SiteInfo siteInfo;
   private final Mustache template;
   private final ContentService contentService;
   private final MemberService memberService;
 
-  UpdateHandler(
+  ViewHandler(
     MustacheFactory mf,
     ContentService contentService,
     SiteInfo x2,
@@ -25,7 +25,7 @@ public class UpdateHandler {
   ) {
     this.siteInfo = x2;
     this.contentService = contentService;
-    this.template = mf.compile("photo-diary/update.html");
+    this.template = mf.compile("photo-diary/view.html");
     this.memberService = memberService;
   }
 

@@ -25,14 +25,14 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class UploadHandler {
+public class UploadPhotoHandler {
 
   public static final String ADD_IMAGE_URL = "/photo-diary/\\d+/add-image";
   private final SiteInfo siteInfo;
   private final Mustache template;
   private final ContentService contentService;
 
-  public UploadHandler(MustacheFactory mf, ContentService x1, SiteInfo x2) {
+  public UploadPhotoHandler(MustacheFactory mf, ContentService x1, SiteInfo x2) {
     this.contentService = x1;
     this.siteInfo = x2;
     this.template = mf.compile("photo-diary/upload.html");
