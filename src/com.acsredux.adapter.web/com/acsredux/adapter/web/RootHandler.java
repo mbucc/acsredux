@@ -30,7 +30,17 @@ class RootHandler extends BaseHandler {
 
   @Override
   public List<Route> getRoutes() {
-    return Collections.singletonList(new Route(x -> true, this::renderIndex));
+    return Collections.singletonList(new Route(this::isRootPage, this::renderIndex));
+  }
+
+  boolean isRootPage(HttpExchange x) {
+    return (
+      x.getRequestMethod().equalsIgnoreCase("GET") &&
+      (
+        x.getRequestURI().getPath().matches("/") ||
+        x.getRequestURI().getPath().toLowerCase().matches("/index.html")
+      )
+    );
   }
 
   class RootView extends BaseView {
