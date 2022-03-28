@@ -100,7 +100,7 @@ public class UploadPhotoHandler {
     return x;
   }
 
-  // /photo-diary/123/0/add-image
+  // /photo-diary/123/add-image
   public boolean isGetUpload(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
