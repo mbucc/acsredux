@@ -41,22 +41,26 @@ public abstract class BaseHandler implements HttpHandler {
 
   @Override
   public void handle(HttpExchange x) {
-    for (Route y : getRoutes()) {
-      final boolean isMatch;
-      try {
-        isMatch = y.matcher.test(x);
-      } catch (Exception e) {
-        internalError(x, e);
-        return;
-      }
+    try {
+      for (Route y : getRoutes()) {
+        final boolean isMatch;
+        try {
+          isMatch = y.matcher.test(x);
+        } catch (Exception e) {
+          internalError(x, e);
+          return;
+        }
 
-      if (isMatch) {
-        exceptionCatcher(() -> y.handler.accept(x, FormData.of(x)), x);
-        return;
+        if (isMatch) {
+          exceptionCatcher(() -> y.handler.accept(x, FormData.of(x)), x);
+          return;
+        }
       }
+      // Note: any exception thrown here is not be printed by
+      // com.sun.net.httpserver.HttpServer.
+      notFound(x);
+    } finally {
+      x.close();
     }
-    // Note: any exception thrown here is not be printed by
-    // com.sun.net.httpserver.HttpServer.
-    notFound(x);
   }
 }
