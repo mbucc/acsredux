@@ -1,0 +1,29 @@
+
+
+<div id="1">
+  <p>div 1</p>
+</div>
+
+<div id="2">
+  <p id="2p">div 2</p>
+</div>
+
+<a href="javascript:rmdiv('2')">delete &uarr;</a>
+
+<script>
+  function rmdiv(id) {
+    let y = document.getElementById(id);
+    y.style.border = "solid red";
+    //
+    setTimeout(function(){
+      console.log("start");
+      if (confirm("Delete the selected image?")) {
+        // do nothing.
+      }
+      y.style.border = "initial";
+      document.getElementById(id + "p").innerText = "Nope.";
+
+      console.log("done");
+    },10);
+  }
+</script>

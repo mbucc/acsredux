@@ -1,0 +1,29 @@
+
+
+<div id="1">
+  <p>div 1</p>
+</div>
+
+<div id="2">
+  <p id="2p">div 2</p>
+</div>
+
+<a href="javascript:rmdiv('2')">delete &uarr;</a>
+
+<script>
+  function rmdiv(id) {
+    let y = document.getElementById(id);
+    y.style.border = "solid red";
+    //
+    setTimeout(function(){
+      console.log("start");
+      let start = new Date();
+      let waitInSeconds = 3;
+      let end = new Date(start.valueOf() + waitInSeconds * 1000);
+      do {start = new Date();} while (end-start > 0);
+      y.style.border = "initial";
+      document.getElementById(id + "p").innerText = "Yup.";
+      console.log("done");
+    },10);
+  }
+</script>

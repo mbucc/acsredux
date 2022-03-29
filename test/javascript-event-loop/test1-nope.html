@@ -1,0 +1,22 @@
+
+
+<div id="1">
+  <p>div 1</p>
+</div>
+
+<div id="2">
+  <p id="2p">div 2</p>
+</div>
+
+<a href="javascript:rmdiv('2')">delete &uarr;</a>
+
+<script>
+  function rmdiv(id) {
+    let y = document.getElementById(id);
+    y.style.border = "solid red";
+    if (confirm("Is border red?")) {
+    }
+    y.style.border = "initial";
+    document.getElementById(id + "p").innerText = "Nope.";
+  }
+</script>
