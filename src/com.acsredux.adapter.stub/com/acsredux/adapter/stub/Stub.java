@@ -51,25 +51,6 @@ public final class Stub
   private final List<Content> content = new ArrayList<>();
   private DocumentRoot documentRoot = new DocumentRoot(".");
 
-  public Stub() {
-    members.add(
-      new Member(
-        new MemberID(1L),
-        new Email("admin@example.com"),
-        new FirstName("Bill"),
-        new LastName("Russel"),
-        new ZipCode("02134"),
-        MemberStatus.ACTIVE,
-        hashpw(new ClearTextPassword("aabb33DD#".toCharArray())),
-        new RegistrationDate(Instant.now()),
-        ZoneId.of("US/Eastern"),
-        LoginTime.of(Instant.now()),
-        LoginTime.of(null),
-        true
-      )
-    );
-  }
-
   public void setDocumentRoot(String x) {
     this.documentRoot = new DocumentRoot(x);
   }
@@ -111,7 +92,7 @@ public final class Stub
       .map(Member::id)
       .mapToLong(MemberID::val)
       .max()
-      .orElse(1);
+      .orElse(0);
     MemberID newID = new MemberID(maxID + 1);
     members.add(
       new Member(
