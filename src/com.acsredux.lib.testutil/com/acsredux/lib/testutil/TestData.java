@@ -37,7 +37,7 @@ public class TestData {
   }
 
   // Use a constant date so dates in test HTML are deterministic.
-  public static final Instant TEST_NOW = Instant.now();
+  public static final Instant TEST_NOW = Instant.parse("2022-04-01T10:26:05Z");
 
   public static final Email TEST_EMAIL = new Email("test@example.com");
   public static final FirstName TEST_FIRST_NAME = new FirstName("小川");
