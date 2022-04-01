@@ -32,7 +32,7 @@ class TestStub {
     );
 
     // verify
-    assertEquals(2L, newMemberID.val());
+    assertEquals(1L, newMemberID.val());
     member = stub.findByID(newMemberID);
     assertTrue(member.isPresent());
   }
