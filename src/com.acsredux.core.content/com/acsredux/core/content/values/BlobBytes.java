@@ -22,7 +22,6 @@ public record BlobBytes(byte[] val) {
       ResourceBundle rb = ResourceBundle.getBundle("ContentErrorMessages");
       throw new ValidationException(rb.getString("file_content_required"));
     }
-
     if (val.length > MAX_FILE_SIZE_IN_BYTES) {
       ResourceBundle rb = ResourceBundle.getBundle("ContentErrorMessages");
       throw new ValidationException(

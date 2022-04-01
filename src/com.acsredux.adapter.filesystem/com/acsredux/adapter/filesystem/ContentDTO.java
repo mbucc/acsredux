@@ -22,16 +22,20 @@ public class ContentDTO {
   ContentDTO() {}
 
   ContentDTO(Content x) {
-    this.id = x.id().val();
-    this.refersTo = x.refersTo() == null ? null : x.refersTo().val();
-    this.createdBy = x.createdBy().val();
-    this.title = x.title().val();
-    this.created = x.createdOn().val().getEpochSecond();
-    this.from = x.from().val().getEpochSecond();
-    this.upto = x.upto() == null ? null : x.upto().val().getEpochSecond();
-    this.contentType = x.contentType().name();
-    this.blobType = x.blobType().name();
-    this.content = x.content().asString();
+    try {
+      this.id = x.id().val();
+      this.refersTo = x.refersTo() == null ? null : x.refersTo().val();
+      this.createdBy = x.createdBy().val();
+      this.title = x.title().val();
+      this.created = x.createdOn().val().getEpochSecond();
+      this.from = x.from().val().getEpochSecond();
+      this.upto = x.upto() == null ? null : x.upto().val().getEpochSecond();
+      this.contentType = x.contentType().name();
+      this.blobType = x.blobType().name();
+      this.content = x.content() == null ? null : x.content().asString();
+    } catch (Exception e) {
+      throw new IllegalStateException("error converting to DTO: " + x);
+    }
   }
 
   public Content asContent() {
