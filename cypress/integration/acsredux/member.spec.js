@@ -34,6 +34,7 @@ describe('ACS Redux tests', () => {
     cy.get('[href="/photo-diary/create"]').click()
     cy.get('#year').type('2022')
     cy.get('#name').type(`back yard{enter}`)
+    cy.location('pathname').should('eq', '/photo-diary/1')
   })
 
   it('can add a photo', () => {
@@ -78,6 +79,12 @@ describe('ACS Redux tests', () => {
   it('can delete a photo', () => {
     cy.loginMember1();
     cy.get('li > a').click()
+    // The image should be there.
+    cy.get('[alt="1998-02-09"]')
+      .should('be.visible')
+      .and(($img) => {
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
     cy.location('pathname').should('eq', '/photo-diary/1')
     cy.get('[alt="1998-02-09"]')
       .should('be.visible')
