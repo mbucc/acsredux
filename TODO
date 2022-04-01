@@ -1,4 +1,3 @@
-2023-03-18: diary: delete photos.
 2022-02-18: diary: add text note (top-level and monthly)
 2022-03-24: When I visit page from goat counter it says "log in".  But I am logged in.
 2022-03-18: Fix last visit logic
@@ -9,6 +8,7 @@
 2022-03-18: add "changes since" section to dashboard
 2022-02-18: diary: add photo captions.
 2022-03-18: Create lib.hooks for site-specific data.  Add member dashboard hook.
+2022-04-01: Sessions are never deleted from DB (should save termination date).
 
 2022-03-21: Take subject out of command.  Command comes from UI, subject is loaded by security framework.
 
