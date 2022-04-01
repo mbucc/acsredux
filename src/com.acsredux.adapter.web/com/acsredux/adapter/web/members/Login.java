@@ -4,7 +4,6 @@ import static com.acsredux.adapter.web.members.Util.addCookie;
 import static com.acsredux.adapter.web.members.Util.createSession;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
-import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.LoginView;
@@ -39,7 +38,7 @@ class Login {
   void handlePostLogin(HttpExchange x1, FormData x2) {
     Result<String> result = Result
       .ok(x2)
-      .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
+      .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseMemberCommand.class::cast)
       .map(memberService::handle)
       .map(MemberLoggedIn.class::cast)

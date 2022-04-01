@@ -3,7 +3,7 @@ package com.acsredux.core.members.services;
 import static com.acsredux.lib.testutil.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.events.MemberLoggedIn;
 import com.acsredux.core.members.ports.MemberReader;
@@ -59,8 +59,8 @@ class TestLoginHandler {
       new ClearTextPassword("aaaabbbb".toCharArray())
     );
     // execute
-    AuthenticationException y = assertThrows(
-      AuthenticationException.class,
+    NotAuthorizedException y = assertThrows(
+      NotAuthorizedException.class,
       () -> service.handle(cmd)
     );
 

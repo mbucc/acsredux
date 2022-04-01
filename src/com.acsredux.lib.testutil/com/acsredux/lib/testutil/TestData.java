@@ -9,6 +9,7 @@ import com.acsredux.core.admin.values.SiteStatus;
 import com.acsredux.core.base.MemberID;
 import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.DeleteContent;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ContentCreated;
@@ -173,6 +174,9 @@ public class TestData {
     BlobType.MARKDOWN,
     new BlobBytes("Hello World".getBytes(StandardCharsets.UTF_8))
   );
+  public static final FileName TEST_IMAGE_FILE_NAME = new FileName("t.png");
+  public static final FileName TEST_IMAGE_STD_FILE_NAME = new FileName("t.std.png");
+  public static final FileName TEST_IMAGE_ORIG_FILE_NAME = new FileName("t.orig.png");
   public static final Content TEST_PHOTO_CONTENT = new Content(
     TEST_PHOTO_CONTENT_ID,
     TEST_DIARY_CONTENT_ID,
@@ -183,7 +187,7 @@ public class TestData {
     new UptoDateTime(TEST_PHOTO_TAKEN_ON.val()),
     PHOTO,
     BlobType.IMAGE_LANDSCAPE_HREF,
-    new BlobBytes("test.png".getBytes(StandardCharsets.UTF_8))
+    new BlobBytes(TEST_IMAGE_STD_FILE_NAME.val().getBytes(StandardCharsets.UTF_8))
   );
   public static final Content TEST_COMMENT = new Content(
     TEST_COMMENT_ID,
@@ -220,9 +224,6 @@ public class TestData {
   );
 
   public static final SectionIndex TEST_SECTION_INDEX = new SectionIndex(0);
-  public static final FileName TEST_IMAGE_FILE_NAME = new FileName("t.png");
-  public static final FileName TEST_IMAGE_STD_FILE_NAME = new FileName("t.std.png");
-  public static final FileName TEST_IMAGE_ORIG_FILE_NAME = new FileName("t.orig.png");
 
   private static byte[] imgbytes;
 
@@ -244,5 +245,9 @@ public class TestData {
     ImageOrientation.PORTRAIT,
     TEST_PHOTO_TAKEN_ON,
     TEST_TIME_ZONE
+  );
+  public static final DeleteContent TEST_DELETE_CONTENT_COMMAND = new DeleteContent(
+    TEST_SUBJECT,
+    TEST_PHOTO_CONTENT_ID
   );
 }

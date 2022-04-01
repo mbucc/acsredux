@@ -42,7 +42,7 @@ public class UpdatePhotoDiaryView extends BaseView {
         String.format(srcfmt, x.createdBy().val(), x.content().asString()),
         "alt",
         x.from().asString(tz),
-        "contentID",
+        "photoContentID",
         x.id().val()
       );
       case DIARY_ENTRY -> Map.of("text", x.content().asString());

@@ -5,6 +5,7 @@ import static java.io.OutputStream.nullOutputStream;
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
@@ -16,6 +17,7 @@ import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpPrincipal;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -69,7 +71,23 @@ public class WebUtil {
     return new String(xs, StandardCharsets.UTF_8);
   }
 
-  public static Command form2cmd(ACSHttpPrincipal principal, FormData x) {
+  public static Member asMember(HttpPrincipal x) {
+    if (x instanceof MemberHttpPrincipal x1) {
+      return x1.getMember();
+    } else {
+      return null;
+    }
+  }
+
+  public static Subject asSubject(HttpPrincipal x) {
+    if (x instanceof ACSHttpPrincipal x1) {
+      return new Subject(x1.memberID());
+    } else {
+      return new Subject(null);
+    }
+  }
+
+  public static Command form2cmd(HttpPrincipal principal, FormData x) {
     final FormCommand cmd;
     try {
       cmd = FormCommand.valueOf(x.get("command").toUpperCase());
@@ -78,7 +96,7 @@ public class WebUtil {
         "invalid command " + x.get("command") + " in form data " + x
       );
     }
-    Subject subject = new Subject(principal.memberID());
+    Subject subject = asSubject(principal);
 
     return switch (cmd) {
       case CREATE -> new CreateMember(
@@ -102,7 +120,7 @@ public class WebUtil {
       );
       case UPLOAD_PHOTO -> {
         MultipartFilePart f = x.getUploadedFile();
-        Member m = ((MemberHttpPrincipal) principal).getMember();
+        Member m = asMember(principal);
         yield new UploadPhoto(
           subject,
           ContentID.parse(x.get("parent")),
@@ -223,29 +241,16 @@ public class WebUtil {
       );
   }
 
-  private static void setPlainTextResponse(HttpExchange x) {
-    Headers ys = x.getResponseHeaders();
-    ys.set("Content-type", "text/plain; charset= UTF-8");
-  }
-
-  private static void writeBody(HttpExchange x, byte[] body, int status)
-    throws IOException {
-    x.sendResponseHeaders(status, body.length);
-    OutputStream os = x.getResponseBody();
-    os.write(body);
-  }
-
   public static void notFound(HttpExchange x) {
-    byte[] body = "Not found.".getBytes();
-    int status = 404;
-    try {
-      setPlainTextResponse(x);
-      writeBody(x, body, status);
-    } catch (IOException e) {
-      // Not much we can do at this point.
-      System.err.println("error sending 404");
-      e.printStackTrace(System.err);
-    }
+    returnPlainText(x, 404, "Not found".getBytes());
+  }
+
+  public static void ok(HttpExchange x) {
+    returnPlainText(x, 200, "OK".getBytes());
+  }
+
+  public static void notAuthorized(HttpExchange x1, NotAuthorizedException x2) {
+    returnPlainText(x1, 401, "Not Authorized".getBytes(), x2, System.err);
   }
 
   public static void internalError(HttpExchange x1, Exception x2) {
@@ -253,24 +258,36 @@ public class WebUtil {
   }
 
   public static void internalError(HttpExchange x1, Exception x2, PrintStream x3) {
-    byte[] body = "Internal error.".getBytes();
-    int status = 500;
+    returnPlainText(x1, 500, "Internal error".getBytes(), x2, x3);
+  }
+
+  public static void clientError(HttpExchange x1, String message) {
+    returnPlainText(x1, 400, message.getBytes(), null, System.err);
+  }
+
+  static void returnPlainText(
+    HttpExchange hex,
+    int status,
+    byte[] body,
+    Exception ex,
+    PrintStream err
+  ) {
     try {
-      setPlainTextResponse(x1);
-      writeBody(x1, body, status);
+      Headers ys = hex.getResponseHeaders();
+      ys.set("Content-type", "text/plain; charset=UTF-8");
+      hex.sendResponseHeaders(status, body.length);
+      OutputStream os = hex.getResponseBody();
+      os.write(body);
     } catch (Exception e1) {
-      System.err.printf("error sending 500: %s%n", e1.getMessage());
+      err.printf("error sending %d: %s%n", status, e1.getMessage());
     } finally {
-      x2.printStackTrace(x3);
+      if (status > 299 && ex != null) {
+        ex.printStackTrace(err);
+      }
     }
   }
 
-  public static void clientError(HttpExchange x1, int status, String message) {
-    try {
-      setPlainTextResponse(x1);
-      writeBody(x1, message.getBytes(), status);
-    } catch (Exception e1) {
-      System.err.printf("error sending client error: %s%n", e1.getMessage());
-    }
+  static void returnPlainText(HttpExchange hex, int status, byte[] body) {
+    returnPlainText(hex, status, body, null, System.err);
   }
 }

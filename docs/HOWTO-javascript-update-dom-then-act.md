@@ -3,6 +3,10 @@ Update DOM with JavaScript and then take an action in the same function
 
 April 1, 2022
 
+> I could not get this technique to work consistently.
+>
+> Instead, I'll make it visually clear which image is associated with the delete link.
+
 What: When someone clicks the "delete image" button, highlight the 
 image before displaying a confirm dialog.
 

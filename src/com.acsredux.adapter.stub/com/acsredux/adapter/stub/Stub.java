@@ -291,6 +291,11 @@ public final class Stub
     throw new UnsupportedOperationException("implement");
   }
 
+  @Override
+  public void delete(ContentID x) {
+    content.remove(x);
+  }
+
   // ---------------------------------------------------------------------------
   //
   //       I M A G E    W R I T E R
@@ -300,13 +305,26 @@ public final class Stub
   @Override
   public void save(MemberID x1, BlobBytes x2, FileName x3) {
     try {
-      ImageSource imgsrc = src(x1, x3);
-      Path path = Paths.get(this.documentRoot.val(), imgsrc.val());
+      Path path = getImagePath(x1, x3);
       makeParentDir(path);
       Files.write(path, x2.val());
     } catch (Exception e) {
       throw new IllegalStateException("can't write to fn", e);
     }
+  }
+
+  @Override
+  public void delete(MemberID x1, FileName x2) {
+    try {
+      Files.delete(getImagePath(x1, x2));
+    } catch (Exception e) {
+      throw new IllegalStateException("can't delete " + getImagePath(x1, x2), e);
+    }
+  }
+
+  private Path getImagePath(MemberID x1, FileName x2) {
+    ImageSource imgsrc = src(x1, x2);
+    return Paths.get(this.documentRoot.val(), imgsrc.val());
   }
 
   private void makeParentDir(Path path) {

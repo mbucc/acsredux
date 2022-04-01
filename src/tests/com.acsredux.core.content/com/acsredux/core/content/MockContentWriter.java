@@ -16,4 +16,7 @@ public class MockContentWriter implements ContentWriter {
 
   @Override
   public void update(Content y) {}
+
+  @Override
+  public void delete(ContentID x) {}
 }

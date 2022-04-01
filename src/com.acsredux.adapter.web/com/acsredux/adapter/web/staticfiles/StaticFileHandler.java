@@ -135,7 +135,7 @@ public class StaticFileHandler implements HttpHandler {
   }
 
   private void reportPathTraversal(HttpExchange x) {
-    clientError(x, 400, "Path traversal attempt detected");
+    clientError(x, "Path traversal attempt detected");
   }
 
   private static String getExt(String path) {

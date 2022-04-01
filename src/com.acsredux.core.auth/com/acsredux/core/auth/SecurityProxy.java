@@ -1,7 +1,7 @@
 package com.acsredux.core.auth;
 
 import com.acsredux.core.admin.AdminService;
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
@@ -59,7 +59,7 @@ public class SecurityProxy implements InvocationHandler {
       }
       switch (e.getCause()) {
         case NotFoundException e2 -> throw e2;
-        case AuthenticationException e2 -> throw e2;
+        case NotAuthorizedException e2 -> throw e2;
         case ValidationException e2 -> throw e2;
         default -> throw new RuntimeException(e);
       }

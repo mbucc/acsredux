@@ -178,6 +178,9 @@ fmt:
 	if [ "$(SKIP_FMT)" = "N" ]; then \
 		npx prettier --print-width 90 --write src ; \
 	fi
+	if [ "$(SKIP_FMT)" = "N" ]; then \
+		npx prettier --print-width 90 --write web/static/js/upload.js web/static/js/deleteImage.js ; \
+	fi
 
 .PHONY: javadoc
 javadoc:
@@ -202,4 +205,4 @@ clean:
 	find ./test -name '*.actual' | xargs rm
 	rm -f compile.out
 	rm -rf ./web/static/members
-	rm -f members.json sessions.json tokens.json content.json
+	rm -f content.json members.json sessions.json tokens.json

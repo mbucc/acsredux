@@ -1,6 +1,8 @@
 package com.acsredux.core.content;
 
 import static com.acsredux.lib.testutil.TestData.TEST_COMMENT;
+import static com.acsredux.lib.testutil.TestData.TEST_PHOTO_CONTENT;
+import static com.acsredux.lib.testutil.TestData.TEST_PHOTO_CONTENT_ID;
 import static com.acsredux.lib.testutil.TestData.TEST_PHOTO_DIARY_CONTENT;
 
 import com.acsredux.core.base.MemberID;
@@ -13,7 +15,11 @@ public class MockContentReader implements ContentReader {
 
   @Override
   public Content getByID(ContentID x) {
-    return TEST_PHOTO_DIARY_CONTENT;
+    if (x.equals(TEST_PHOTO_CONTENT_ID)) {
+      return TEST_PHOTO_CONTENT;
+    } else {
+      return TEST_PHOTO_DIARY_CONTENT;
+    }
   }
 
   @Override

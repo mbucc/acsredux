@@ -17,9 +17,16 @@
 {{#text}}
 <p>{{text}}</p>{{/text}}
 {{^text}}
-<img src="{{src}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{contentID}}" />{{/text}}
+<div id="imgdiv-{{photoContentID}}">
+<img src="{{src}}" id="{{photoContentID}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{photoContentID}}" />
+<br>
+<a id="deleteButton-{{photoContentID}}" href="javascript:deleteImage('{{photoContentID}}')">delete &uarr;</a>
+</div>
+{{/text}}
 {{/elements}}
 
 {{/sections}}
+
+<script src="/static/js/deleteImage.js"></script>
 
 {{> ../tail}}

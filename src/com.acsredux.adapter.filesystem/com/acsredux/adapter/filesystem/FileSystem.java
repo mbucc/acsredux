@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -356,7 +357,11 @@ public final class FileSystem
 
   @Override
   public List<Content> findChildrenOfID(ContentID x) {
-    throw new UnsupportedOperationException("implement me");
+    return content
+      .values()
+      .stream()
+      .filter(o -> Objects.equals(x, o.refersTo()))
+      .toList();
   }
 
   // ---------------------------------------------------------------------------
@@ -396,5 +401,10 @@ public final class FileSystem
   @Override
   public synchronized void update(Content x) {
     throw new UnsupportedOperationException("implement");
+  }
+
+  @Override
+  public synchronized void delete(ContentID x) {
+    content.remove(x);
   }
 }

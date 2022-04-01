@@ -4,13 +4,12 @@ import static com.acsredux.adapter.web.common.WebUtil.internalError;
 import static com.acsredux.adapter.web.common.WebUtil.pathToID;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
-import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.UploadPhotoView;
 import com.acsredux.core.admin.values.SiteInfo;
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
@@ -55,7 +54,7 @@ public class UploadPhotoHandler {
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
       .map(o -> normalizeDates(o, m.tz()))
       .map(o -> o.add("parent", "" + pathToID(x1, 2)))
-      .map(o -> WebUtil.form2cmd(ACSHttpPrincipal.of(x1.getPrincipal()), o))
+      .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
     if (y.isOk()) {
@@ -67,7 +66,7 @@ public class UploadPhotoHandler {
       if (e instanceof ValidationException e1) {
         x2.add("error", e1.getMessage());
         handleGetUpload(x1, x2);
-      } else if (e instanceof AuthenticationException e1) {
+      } else if (e instanceof NotAuthorizedException e1) {
         x2.add("error", e1.getMessage());
         handleGetUpload(x1, x2);
       } else {

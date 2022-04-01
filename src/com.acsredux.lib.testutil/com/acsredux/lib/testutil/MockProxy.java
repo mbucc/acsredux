@@ -3,7 +3,7 @@ package com.acsredux.lib.testutil;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.NotFoundException;
 import com.acsredux.core.base.ValidationException;
 import java.lang.reflect.InvocationHandler;
@@ -54,7 +54,7 @@ public class MockProxy implements InvocationHandler {
     this.calls.add(new MethodCall(m, args));
     try {
       return m.invoke(obj, args);
-    } catch (NotFoundException | AuthenticationException | ValidationException e) {
+    } catch (NotFoundException | NotAuthorizedException | ValidationException e) {
       throw e;
     } catch (Exception e) {
       Throwable cause = e.getCause();
@@ -63,7 +63,7 @@ public class MockProxy implements InvocationHandler {
       }
       switch (cause) {
         case NotFoundException e2 -> throw e2;
-        case AuthenticationException e2 -> throw e2;
+        case NotAuthorizedException e2 -> throw e2;
         case ValidationException e2 -> throw e2;
         default -> throw new RuntimeException(e);
       }

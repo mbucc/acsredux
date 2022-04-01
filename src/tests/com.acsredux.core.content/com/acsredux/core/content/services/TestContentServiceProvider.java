@@ -1,10 +1,9 @@
 package com.acsredux.core.content.services;
 
-import static com.acsredux.core.content.values.ContentType.PHOTO_DIARY;
 import static com.acsredux.lib.testutil.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.MockContentReader;
@@ -56,12 +55,7 @@ public class TestContentServiceProvider {
   void testValidateUniqueTitleByMember() {
     var y = assertThrows(
       ValidationException.class,
-      () ->
-        service.validateUniqueTitleForMemberAndContentType(
-          TEST_MEMBER_ID,
-          PHOTO_DIARY,
-          TEST_TITLE
-        )
+      () -> service.validateUniqueTitleForPhotoDiary(TEST_MEMBER_ID, TEST_TITLE)
     );
     assertEquals(rb.getString("title_exists"), y.getMessage());
   }
@@ -70,7 +64,7 @@ public class TestContentServiceProvider {
   void testValidateMemberLoggedIn() {
     var x = new CreatePhotoDiary(new Subject(null), TEST_DIARY_YEAR, null);
     var y = assertThrows(
-      AuthenticationException.class,
+      NotAuthorizedException.class,
       () -> service.validateMemberLoggedIn(x)
     );
     assertEquals(rb.getString("not_logged_in"), y.getMessage());

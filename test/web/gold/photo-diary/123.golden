@@ -1,5 +1,5 @@
 200
-Content-Length: 979
+Content-Length: 1155
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -35,7 +35,12 @@ Content-type: text/html; charset= UTF-8
 
 <h2>Mar</h2>
 
-<img src="/static/members/123/test.png" alt="2022-03-12" title="2022-03-12" data-contentID="124" />
+<div id="imgdiv-124">
+<img src="/static/members/123/t.std.png" id="124" alt="2022-03-17" title="2022-03-17" data-contentID="124" />
+<br>
+<a id="deleteButton-124" href="javascript:deleteImage('124')">delete &uarr;</a>
+</div>
+
 <h2>Apr</h2>
 
 
@@ -63,6 +68,8 @@ Content-type: text/html; charset= UTF-8
 <h2>Dec</h2>
 
 
+
+<script src="/static/js/deleteImage.js"></script>
 
 </div>
 <script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>

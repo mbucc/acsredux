@@ -1,14 +1,14 @@
 package com.acsredux.core.content.services;
 
-import static com.acsredux.core.content.values.ContentType.PHOTO_DIARY;
-
 import com.acsredux.core.base.*;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.DeleteContent;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ContentCreated;
+import com.acsredux.core.content.events.ContentDeleted;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
 import com.acsredux.core.content.ports.ImageReader;
@@ -23,6 +23,8 @@ import java.util.*;
 
 public class ContentServiceProvider implements ContentService {
 
+  public static final String STD_IMAGE = "std";
+  public static final String ORIGINAL_IMAGE = "orig";
   final ContentReader reader;
   final ContentWriter writer;
   final ImageWriter iwriter;
@@ -62,9 +64,23 @@ public class ContentServiceProvider implements ContentService {
       switch (x) {
         case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
         case UploadPhoto x1 -> handleUploadPhoto(x1);
+        case DeleteContent x1 -> handleDeleteContent(x1);
       };
     logEvents(ys);
     return ys;
+  }
+
+  private List<Event> handleDeleteContent(DeleteContent cmd) {
+    MemberID mid = validateMemberLoggedIn(cmd);
+    Content c = validateContentOwnedByMember(cmd.contentID(), mid);
+    FileName std = new FileName(c.content().asString());
+    iwriter.delete(mid, std);
+    FileName orig = new FileName(
+      std.val().replace("." + STD_IMAGE + ".", "." + ORIGINAL_IMAGE + ".")
+    );
+    iwriter.delete(mid, orig);
+    writer.delete(cmd.contentID());
+    return List.of(new ContentDeleted(cmd));
   }
 
   @Override
@@ -81,8 +97,8 @@ public class ContentServiceProvider implements ContentService {
     List<Event> ys = new ArrayList<>();
 
     // Save the full-size image to disk as "orig".
-    FileName orig = x.fileName().insertSuffix("orig");
-    FileName std = x.fileName().insertSuffix("std");
+    FileName orig = x.fileName().insertSuffix(ORIGINAL_IMAGE);
+    FileName std = x.fileName().insertSuffix(STD_IMAGE);
 
     // Copy a "resizing now ..." a placeholder image as "std".
     // A cronjob will overwrite the placeholder with a resized version.
@@ -126,21 +142,16 @@ public class ContentServiceProvider implements ContentService {
     return Paths.get(y);
   }
 
-  private Content insertPhoto(UploadPhoto x) {
-    throw new UnsupportedOperationException("implement me");
-  }
-
-  private List<Event> handleCreatePhotoDiary(CreatePhotoDiary x) {
-    MemberID mid = validateMemberLoggedIn(x);
-    validateUniqueTitleForMemberAndContentType(mid, PHOTO_DIARY, x.title());
-
+  private List<Event> handleCreatePhotoDiary(CreatePhotoDiary cmd) {
+    MemberID mid = validateMemberLoggedIn(cmd);
+    validateUniqueTitleForPhotoDiary(mid, cmd.title());
     CreatedOn now = new CreatedOn(this.clock.instant());
 
     // Add diary.
-    NewContent y1 = new NewContent(
+    NewContent x = new NewContent(
       null,
-      x.subject().memberID(),
-      x.title(),
+      cmd.subject().memberID(),
+      cmd.title(),
       now,
       new FromDateTime(now.val()),
       null,
@@ -148,8 +159,8 @@ public class ContentServiceProvider implements ContentService {
       BlobType.MARKDOWN,
       null
     );
-    ContentID diaryID = writer.save(y1);
-    Event y = new ContentCreated(y1, diaryID);
+    ContentID diaryID = writer.save(x);
+    Event y = new ContentCreated(x, diaryID);
 
     return Collections.singletonList(y);
   }
@@ -159,22 +170,23 @@ public class ContentServiceProvider implements ContentService {
       .ofNullable(x)
       .map(Command::subject)
       .map(Subject::memberID)
-      .orElseThrow(() -> new AuthenticationException(rb.getString("not_logged_in")));
+      .orElseThrow(() -> new NotAuthorizedException(rb.getString("not_logged_in")));
   }
 
-  private void validateContentOwnedByMember(ContentID x1, MemberID x2) {
+  private Content validateContentOwnedByMember(ContentID x1, MemberID x2) {
     Content y = reader.getByID(x1);
     if (!y.createdBy().equals(x2)) {
-      throw new AuthenticationException(rb.getString("not_content_owner"));
+      throw new NotAuthorizedException(rb.getString("not_content_owner"));
     }
+    return y;
   }
 
-  void validateUniqueTitleForMemberAndContentType(MemberID x1, ContentType x2, Title x3) {
+  void validateUniqueTitleForPhotoDiary(MemberID x1, Title x2) {
     Optional<Content> doc = reader
       .findByMemberID(x1)
       .stream()
-      .filter(o -> o.title().equals(x3))
-      .filter(o -> o.contentType().equals(x2))
+      .filter(o -> o.title().equals(x2))
+      .filter(o -> o.contentType().equals(ContentType.PHOTO_DIARY))
       .findFirst();
     if (doc.isPresent()) {
       throw new ValidationException(rb.getString("title_exists"));

@@ -11,4 +11,6 @@ public interface ImageWriter {
   default ImageSource src(MemberID x1, FileName x2) {
     return new ImageSource(String.format("/static/members/%d/%s", x1.val(), x2.val()));
   }
+
+  void delete(MemberID mid, FileName std);
 }

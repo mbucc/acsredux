@@ -6,5 +6,6 @@ import com.acsredux.core.content.values.NewContent;
 
 public interface ContentWriter {
   ContentID save(NewContent x);
-  void update(Content y);
+  void update(Content x);
+  void delete(ContentID x);
 }

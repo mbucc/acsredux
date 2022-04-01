@@ -25,7 +25,7 @@ describe('ACS Redux tests', () => {
 
   it('can verify email', () => {
     cy.loginMember1();
-    cy.visit('/members/2?token=token2')
+    cy.visit('/members/1?token=token2')
     cy.getCookie('session_id').should('exist')
   })
 
@@ -62,7 +62,7 @@ describe('ACS Redux tests', () => {
 
   it('member 2 does not see a create diary link on member 1 dashboard', () => {
     cy.loginMember2()
-    cy.visit('/members/2')
+    cy.visit('/members/1')
     cy.contains('2022: back yard')
     cy.contains('Create a photo diary').should('not.exist')
   })
@@ -71,6 +71,22 @@ describe('ACS Redux tests', () => {
     cy.loginMember2()
     cy.visit('/photo-diary/1')
     cy.contains('+ img').should('not.exist')
+  })
+
+
+
+  it('can delete a photo', () => {
+    cy.loginMember1();
+    cy.get('li > a').click()
+    cy.location('pathname').should('eq', '/photo-diary/1')
+    cy.get('[alt="1998-02-09"]')
+      .should('be.visible')
+      .and(($img) => {
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
+    cy.get('#deleteButton-2').click()
+    cy.on('window:confirm', () => true)
+    cy.get('[alt="1998-02-09"]').should('not.exist')
   })
 
 

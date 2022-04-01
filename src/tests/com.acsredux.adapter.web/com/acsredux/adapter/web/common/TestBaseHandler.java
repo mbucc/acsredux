@@ -20,10 +20,10 @@ class TestBaseHandler {
   public static final String NOT_FOUND_RESPONSE =
     """
     404
-    Content-Length: 10
-    Content-type: text/plain; charset= UTF-8
+    Content-Length: 9
+    Content-type: text/plain; charset=UTF-8
           
-    Not found.""";
+    Not found""";
 
   static class TestHandler extends BaseHandler {
 
@@ -47,7 +47,7 @@ class TestBaseHandler {
   }
 
   private void setResponse(HttpExchange x1, byte[] body) {
-    x1.getResponseHeaders().set("Content-type", "text/plain; charset= UTF-8");
+    x1.getResponseHeaders().set("Content-type", "text/plain; charset=UTF-8");
     try {
       x1.sendResponseHeaders(200, body.length);
       x1.getResponseBody().write(body);
@@ -103,7 +103,7 @@ class TestBaseHandler {
       """
       200
       Content-Length: 11
-      Content-type: text/plain; charset= UTF-8
+      Content-type: text/plain; charset=UTF-8
       
       Hello World""";
     assertEquals(expected, mock.actual());
@@ -123,7 +123,7 @@ class TestBaseHandler {
       """
       200
       Content-Length: 75
-      Content-type: text/plain; charset= UTF-8
+      Content-type: text/plain; charset=UTF-8
       
       Form values posted:
       <FormData: firstname=foo, principalName=Anonymous User>""";
@@ -158,10 +158,10 @@ class TestBaseHandler {
     String expected =
       """
       500
-      Content-Length: 15
-      Content-type: text/plain; charset= UTF-8
+      Content-Length: 14
+      Content-type: text/plain; charset=UTF-8
       
-      Internal error.""";
+      Internal error""";
     assertEquals(expected, mock.actual());
   }
 }

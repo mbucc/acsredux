@@ -2,7 +2,7 @@ package com.acsredux.core.members.services;
 
 import static com.acsredux.core.members.PasswordUtil.checkpw;
 
-import com.acsredux.core.base.AuthenticationException;
+import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.events.MemberLoggedIn;
@@ -32,7 +32,7 @@ public class LoginHandler {
 
   Member validatePassword(LoginMember x1, Member x2) {
     if (!checkpw(x1.password(), x2.password())) {
-      throw new AuthenticationException("Invalid password");
+      throw new NotAuthorizedException("Invalid password");
     }
     return x2;
   }

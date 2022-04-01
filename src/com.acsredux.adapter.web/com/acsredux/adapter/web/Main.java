@@ -6,6 +6,7 @@ import static java.lang.System.Logger.Level.INFO;
 import com.acsredux.adapter.filesystem.FileSystem;
 import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
+import com.acsredux.adapter.web.content.ContentHandler;
 import com.acsredux.adapter.web.members.MembersHandler;
 import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
 import com.acsredux.adapter.web.staticfiles.StaticFileHandler;
@@ -140,6 +141,7 @@ public class Main {
         new PhotoDiaryHandler(templateRoot, contentService, adminService, memberService)
       ),
       new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
+      new Pair("/images", new ContentHandler(contentService)),
     };
     CookieAuthenticator auth = new CookieAuthenticator(memberService);
     for (Pair p : pairs) {
