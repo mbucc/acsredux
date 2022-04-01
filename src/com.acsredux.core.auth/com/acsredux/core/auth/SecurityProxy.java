@@ -7,6 +7,7 @@ import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.members.MemberService;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -53,15 +54,21 @@ public class SecurityProxy implements InvocationHandler {
       }
     } catch (SecurityPolicyException e) {
       throw e;
-    } catch (Exception e) {
-      if (e.getCause() == null) {
-        throw new RuntimeException(e);
-      }
+    } catch (InvocationTargetException e) {
       switch (e.getCause()) {
+        case null -> throw new RuntimeException(e);
         case NotFoundException e2 -> throw e2;
         case NotAuthorizedException e2 -> throw e2;
         case ValidationException e2 -> throw e2;
-        default -> throw new RuntimeException(e);
+        case RuntimeException e2 -> throw e2;
+        default -> throw new RuntimeException(e.getCause());
+      }
+    } catch (Exception e) {
+      // Invoke technically can throw a bunch of other exceptions.
+      if (e instanceof RuntimeException e1) {
+        throw e1;
+      } else {
+        throw new RuntimeException(e);
       }
     }
   }
