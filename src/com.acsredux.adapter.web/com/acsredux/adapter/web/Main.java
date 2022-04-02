@@ -8,7 +8,7 @@ import com.acsredux.adapter.stub.Stub;
 import com.acsredux.adapter.web.auth.CookieAuthenticator;
 import com.acsredux.adapter.web.content.ContentHandler;
 import com.acsredux.adapter.web.members.MembersHandler;
-import com.acsredux.adapter.web.photodiary.PhotoDiaryHandler;
+import com.acsredux.adapter.web.photodiary.MainHandler;
 import com.acsredux.adapter.web.staticfiles.StaticFileHandler;
 import com.acsredux.core.admin.AdminService;
 import com.acsredux.core.admin.AdminServiceFactory;
@@ -138,7 +138,7 @@ public class Main {
       ),
       new Pair(
         "/photo-diary",
-        new PhotoDiaryHandler(templateRoot, contentService, adminService, memberService)
+        new MainHandler(templateRoot, contentService, adminService, memberService)
       ),
       new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
       new Pair("/images", new ContentHandler(contentService)),

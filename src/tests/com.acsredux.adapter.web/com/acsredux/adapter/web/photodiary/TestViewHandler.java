@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class TestViewHandler {
 
-  PhotoDiaryHandler handler;
+  MainHandler handler;
   MockAdminService mockAdminService;
   MockContentService mockContentService;
   MockMemberService mockMemberService;
@@ -26,7 +26,7 @@ class TestViewHandler {
     this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
     this.mockMemberService = new MockMemberService();
     this.handler =
-      new PhotoDiaryHandler(
+      new MainHandler(
         projectRoot() + "/web/template",
         this.mockContentService,
         this.mockAdminService,

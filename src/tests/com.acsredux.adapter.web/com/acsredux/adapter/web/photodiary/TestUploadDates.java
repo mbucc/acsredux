@@ -20,7 +20,7 @@ public class TestUploadDates {
     x.add("imageDateTime", dt);
 
     // execute
-    UploadPhotoHandler.normalizeDates(x, tz);
+    PhotoHandler.normalizeDates(x, tz);
 
     // verify
     long expected = LocalDateTime.parse(dt).atZone(tz).toEpochSecond();
@@ -35,7 +35,7 @@ public class TestUploadDates {
     x.add("imageDatePicker", dt);
 
     // execute
-    UploadPhotoHandler.normalizeDates(x, tz);
+    PhotoHandler.normalizeDates(x, tz);
 
     // verify
     long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();
@@ -51,7 +51,7 @@ public class TestUploadDates {
     x.add("imageDateTime", "2022-02-28T12:30:00");
 
     // execute
-    UploadPhotoHandler.normalizeDates(x, tz);
+    PhotoHandler.normalizeDates(x, tz);
 
     // verify
     long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();

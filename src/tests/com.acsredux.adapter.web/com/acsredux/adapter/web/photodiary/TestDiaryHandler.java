@@ -13,9 +13,9 @@ import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestCreateHandler {
+class TestDiaryHandler {
 
-  PhotoDiaryHandler handler;
+  MainHandler handler;
   MockAdminService mockAdminService;
   MockContentService mockArticleService;
   MockMemberService mockMemberService;
@@ -27,7 +27,7 @@ class TestCreateHandler {
     this.mockAdminService.setSiteInfo(TEST_SITE_INFO);
     this.mockMemberService = new MockMemberService();
     this.handler =
-      new PhotoDiaryHandler(
+      new MainHandler(
         projectRoot() + "/web/template",
         this.mockArticleService,
         this.mockAdminService,

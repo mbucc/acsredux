@@ -10,13 +10,12 @@ import com.github.mustachejava.MustacheFactory;
 import java.io.File;
 import java.util.List;
 
-public class PhotoDiaryHandler extends BaseHandler {
+public class MainHandler extends BaseHandler {
 
-  private final CreateHandler createHandler;
-  private final ViewHandler updateHandler;
-  private final UploadPhotoHandler uploadHandler;
+  private final DiaryHandler diaryHandler;
+  private final PhotoHandler photoHandler;
 
-  public PhotoDiaryHandler(
+  public MainHandler(
     String templateRoot,
     ContentService contentService,
     AdminService adminService,
@@ -31,19 +30,18 @@ public class PhotoDiaryHandler extends BaseHandler {
     }
     MustacheFactory mf = new DefaultMustacheFactory(f);
     SiteInfo siteInfo = adminService.getSiteInfo();
-    this.createHandler = new CreateHandler(mf, contentService, siteInfo);
-    this.updateHandler = new ViewHandler(mf, contentService, siteInfo, memberService);
-    this.uploadHandler = new UploadPhotoHandler(mf, contentService, siteInfo);
+    this.diaryHandler = new DiaryHandler(mf, contentService, memberService, siteInfo);
+    this.photoHandler = new PhotoHandler(mf, contentService, siteInfo);
   }
 
   @Override
   protected List<Route> getRoutes() {
     return List.of(
-      new Route(createHandler::isGetCreate, createHandler::handleGetCreate),
-      new Route(createHandler::isPostCreate, createHandler::handlePostCreate),
-      new Route(updateHandler::isGetUpdate, updateHandler::handleGetUpdate),
-      new Route(uploadHandler::isGetUpload, uploadHandler::handleGetUpload),
-      new Route(UploadPhotoHandler::isPostUpload, uploadHandler::handlePostUpload)
+      new Route(diaryHandler::isEditDiary, diaryHandler::handleEditDiary),
+      new Route(diaryHandler::isSaveDiary, diaryHandler::handleSaveDiary),
+      new Route(diaryHandler::isViewDiary, diaryHandler::handleViewDiary),
+      new Route(photoHandler::isEditPhoto, photoHandler::handleEditPhoto),
+      new Route(photoHandler::isSavePhoto, photoHandler::handleSavePhoto)
     );
   }
 }
