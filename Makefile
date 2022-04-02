@@ -205,4 +205,8 @@ clean:
 	find ./test -name '*.actual' | xargs rm
 	rm -f compile.out
 	rm -rf ./web/static/members
+
+
+.PHONY: cleanddata
+cleandata:
 	rm -f content.json members.json sessions.json tokens.json
