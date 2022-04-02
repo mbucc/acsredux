@@ -3,11 +3,12 @@ package com.acsredux.adapter.web.photodiary;
 import static com.acsredux.adapter.web.common.WebUtil.internalError;
 import static com.acsredux.adapter.web.common.WebUtil.pathToID;
 import static com.acsredux.adapter.web.members.Util.redirect;
+import static com.acsredux.adapter.web.photodiary.PhotoHandler.normalizeDates;
 
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
-import com.acsredux.adapter.web.views.UploadPhotoView;
+import com.acsredux.adapter.web.views.EditNoteView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.ValidationException;
@@ -18,28 +19,23 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
-public class UploadPhotoHandler {
+public class NoteHandler {
 
-  public static final String ADD_IMAGE_URL = "/photo-diary/\\d+/add-image";
+  public static final String NOTE_URL = "/photo-diary/\\d+/add-note";
   private final SiteInfo siteInfo;
   private final Mustache template;
   private final ContentService contentService;
 
-  public UploadPhotoHandler(MustacheFactory mf, ContentService x1, SiteInfo x2) {
+  public NoteHandler(MustacheFactory mf, ContentService x1, SiteInfo x2) {
     this.contentService = x1;
     this.siteInfo = x2;
-    this.template = mf.compile("photo-diary/upload.html");
+    this.template = mf.compile("photo-diary/edit_note.html");
   }
 
-  public void handleGetUpload(HttpExchange x1, FormData x2) {
+  public void handleEditNote(HttpExchange x1, FormData x2) {
     var y = Result
-      .ok(new UploadPhotoView(x1, x2, siteInfo))
+      .ok(new EditNoteView(x1, x2, siteInfo))
       .map(o -> o.lookupContentInfo(contentService))
       .map(o -> WebUtil.renderForm(template, x1, o));
     if (y.isErr()) {
@@ -47,7 +43,7 @@ public class UploadPhotoHandler {
     }
   }
 
-  public void handlePostUpload(HttpExchange x1, FormData x2) {
+  public void handleSaveNote(HttpExchange x1, FormData x2) {
     Member m = ((MemberHttpPrincipal) x1.getPrincipal()).getMember();
     var y = Result
       .ok(x2)
@@ -65,52 +61,28 @@ public class UploadPhotoHandler {
       Exception e = y.getException();
       if (e instanceof ValidationException e1) {
         x2.add("error", e1.getMessage());
-        handleGetUpload(x1, x2);
+        handleEditNote(x1, x2);
       } else if (e instanceof NotAuthorizedException e1) {
         x2.add("error", e1.getMessage());
-        handleGetUpload(x1, x2);
+        handleEditNote(x1, x2);
       } else {
         internalError(x1, e);
       }
     }
   }
 
-  // imageDateTime   = parsed by JS from image.
-  // imageDatePicker = picker displayed if parse fails.
-  static FormData normalizeDates(FormData x, ZoneId tz) {
-    String y = x.get("imageDateTime");
-    String d2 = x.get("imageDatePicker");
-    if (d2 != null && !d2.isBlank()) {
-      y = d2;
-    }
-    long epochSeconds;
-    if (y.length() == "2022-03-26".length()) {
-      epochSeconds = LocalDate.parse(y).atStartOfDay().atZone(tz).toEpochSecond();
-    } else {
-      try {
-        epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
-      } catch (DateTimeParseException e) {
-        // 1998:02:09 06:49:00
-        var exifFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-        epochSeconds = LocalDateTime.parse(y, exifFormat).atZone(tz).toEpochSecond();
-      }
-    }
-    x.add("imageDate", String.valueOf(epochSeconds));
-    return x;
-  }
-
-  // /photo-diary/123/add-image
-  public boolean isGetUpload(HttpExchange x) {
+  // /photo-diary/123/add-note
+  public boolean isEditNote(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches(ADD_IMAGE_URL)
+      x.getRequestURI().getPath().matches(NOTE_URL)
     );
   }
 
-  public static boolean isPostUpload(HttpExchange x) {
+  public static boolean isSaveNote(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("POST") &&
-      x.getRequestURI().getPath().matches(ADD_IMAGE_URL)
+      x.getRequestURI().getPath().matches(NOTE_URL)
     );
   }
 }
