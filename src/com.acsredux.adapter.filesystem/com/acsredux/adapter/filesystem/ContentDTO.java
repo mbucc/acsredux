@@ -49,7 +49,7 @@ public class ContentDTO {
       upto == null ? null : new UptoDateTime(Instant.ofEpochSecond(from)),
       ContentType.valueOf(contentType),
       BlobType.valueOf(blobType),
-      BlobBytes.ofString(content)
+      content == null ? null : BlobBytes.ofString(content)
     );
   }
 }
