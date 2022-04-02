@@ -7,7 +7,6 @@ import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.values.ContentID;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.net.URI;
 
 public class EditNoteView extends BaseView {

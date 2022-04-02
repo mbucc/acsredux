@@ -1,5 +1,5 @@
 200
-Content-Length: 1155
+Content-Length: 1249
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -26,6 +26,7 @@ Content-type: text/html; charset= UTF-8
 
 
 <p><a href="/photo-diary/123/add-image"><button id="add-img" type="button">+ img</button></a>
+<p><a href="/photo-diary/123/add-note"><button id="add-txt" type="button">+ note</button></a>
 
 <h2>Jan</h2>
 
