@@ -7,7 +7,7 @@ import static com.acsredux.adapter.web.members.Util.redirect;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
-import com.acsredux.adapter.web.views.UploadPhotoView;
+import com.acsredux.adapter.web.views.EditPhotoView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.ValidationException;
@@ -39,7 +39,7 @@ public class PhotoHandler {
 
   public void handleEditPhoto(HttpExchange x1, FormData x2) {
     var y = Result
-      .ok(new UploadPhotoView(x1, x2, siteInfo))
+      .ok(new EditPhotoView(x1, x2, siteInfo))
       .map(o -> o.lookupContentInfo(contentService))
       .map(o -> WebUtil.renderForm(template, x1, o));
     if (y.isErr()) {

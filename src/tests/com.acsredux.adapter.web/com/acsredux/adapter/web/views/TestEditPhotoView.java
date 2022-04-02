@@ -1,13 +1,13 @@
 package com.acsredux.adapter.web.views;
 
-import static com.acsredux.adapter.web.views.UploadPhotoView.uriToContentID;
+import static com.acsredux.adapter.web.views.EditPhotoView.uriToContentID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;
 
-public class TestUploadPhotoView {
+public class TestEditPhotoView {
 
   @Test
   void testUriToContentID() throws URISyntaxException {

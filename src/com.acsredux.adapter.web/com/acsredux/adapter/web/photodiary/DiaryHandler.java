@@ -4,8 +4,8 @@ import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
-import com.acsredux.adapter.web.views.CreatePhotoDiaryView;
-import com.acsredux.adapter.web.views.UpdatePhotoDiaryView;
+import com.acsredux.adapter.web.views.EditDiaryView;
+import com.acsredux.adapter.web.views.ViewDiaryView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
@@ -34,13 +34,13 @@ public class DiaryHandler {
   }
 
   void handleViewDiary(HttpExchange x1, FormData x2) {
-    UpdatePhotoDiaryView view = new UpdatePhotoDiaryView(x1, x2, siteInfo);
+    ViewDiaryView view = new ViewDiaryView(x1, x2, siteInfo);
     view.lookupContentInfo(contentService, memberService);
     WebUtil.renderForm(viewTemplate, x1, view);
   }
 
   void handleEditDiary(HttpExchange x1, FormData x2) {
-    CreatePhotoDiaryView view = new CreatePhotoDiaryView(x1, x2, siteInfo);
+    EditDiaryView view = new EditDiaryView(x1, x2, siteInfo);
     WebUtil.renderForm(editTemplate, x1, view);
   }
 

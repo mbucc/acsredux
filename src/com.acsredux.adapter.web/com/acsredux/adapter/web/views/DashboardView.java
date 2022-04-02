@@ -22,7 +22,7 @@ public class DashboardView extends BaseView {
   int memberCount;
   boolean isWaitingOnEmailVerification;
   boolean isEmailVerified;
-  List<ArticleView> articles;
+  List<ContentSummaryView> articles;
 
   public DashboardView(HttpExchange x1, FormData x2, SiteInfo x3, String title) {
     super(x1, x2, x3, title);
@@ -54,7 +54,7 @@ public class DashboardView extends BaseView {
       x
         .findTopLevelContentByMemberID(new MemberID(this.memberID))
         .stream()
-        .map(ArticleView::of)
+        .map(ContentSummaryView::of)
         .collect(Collectors.toList());
     return this;
   }
