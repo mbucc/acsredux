@@ -1,0 +1,16 @@
+{{> head}}
+
+{{#isLoggedIn}}
+<p><a href="/members/{{principalID}}">Dashboard</a></p>
+{{/isLoggedIn}} {{^isLoggedIn}}
+<p><a href="/members/create">Become a member</a></p>
+{{/isLoggedIn}}
+
+<p>
+  You tried to do something that requires JavaScript on our site.
+  If you would like to enable JavaScript, you can find instructions
+  for different browsers at this site:
+  <a href="https://enablejavascript.co">enablejavascript.co</a>.
+</p>
+
+{{> tail}}

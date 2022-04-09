@@ -4,6 +4,7 @@ import static java.io.OutputStream.nullOutputStream;
 
 import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
+import com.acsredux.adapter.web.views.BaseView;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
@@ -15,6 +16,7 @@ import com.acsredux.core.members.commands.LoginMember;
 import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
@@ -289,5 +291,23 @@ public class WebUtil {
 
   static void returnPlainText(HttpExchange hex, int status, byte[] body) {
     returnPlainText(hex, status, body, null, System.err);
+  }
+
+  public static void renderTemplate(
+    MustacheFactory factory,
+    String templateName,
+    BaseView view,
+    HttpExchange x1
+  ) {
+    Mustache m = factory.compile(templateName);
+    Writer writer = new StringWriter();
+    try {
+      m.execute(writer, view).flush();
+    } catch (Exception e) {
+      String fmt = "error rendering template %s with data: %s";
+      throw new IllegalStateException(String.format(fmt, templateName, view), e);
+    }
+    byte[] body = writer.toString().getBytes();
+    writeResponse(x1, body);
   }
 }
