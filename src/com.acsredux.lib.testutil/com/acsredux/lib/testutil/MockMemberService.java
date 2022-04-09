@@ -13,7 +13,6 @@ public class MockMemberService implements MemberService {
 
   private Event event;
   private Member member;
-  private String anonymousUsername = "Test Anonymous User";
 
   @Override
   public Event handle(BaseMemberCommand x) {
@@ -27,10 +26,14 @@ public class MockMemberService implements MemberService {
 
   @Override
   public Member getByID(MemberID x) {
-    if (this.member == null) {
+    if (this.member == null || x == null) {
       throw new NotFoundException("no member with id " + x);
     }
-    return this.member;
+    if (this.member.id().equals(x)) {
+      return this.member;
+    } else {
+      throw new NotFoundException("no member with id " + x);
+    }
   }
 
   @Override
@@ -41,10 +44,6 @@ public class MockMemberService implements MemberService {
   @Override
   public Optional<Member> findBySessionID(SessionID x) {
     return Optional.ofNullable(this.member);
-  }
-
-  public void setAnonymousUsername(String x) {
-    anonymousUsername = x;
   }
 
   public void setMember(Member x) {
