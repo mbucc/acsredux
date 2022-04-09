@@ -19,22 +19,23 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class ViewDiaryView extends BaseView {
+public class DiaryView extends BaseView {
 
   final long contentID;
   long memberID;
   String slug;
+  boolean hasPageText = false;
   List<SectionDTO> sections;
 
   record SectionDTO(String title, List<Map<String, Object>> elements) {}
 
-  public ViewDiaryView(HttpExchange x1, FormData x2, SiteInfo x3) {
+  public DiaryView(HttpExchange x1, FormData x2, SiteInfo x3) {
     super(x1, x2, x3);
     this.contentID = Util.uriToLong(x1.getRequestURI());
   }
 
   private static Map<String, Object> asMap(Content x, ZoneId tz) {
-    // TODO: DRY up all the URL paths.
+    // TODO: DRY up the URL paths.
     String srcfmt = "/static/members/%d/%s";
     return switch (x.contentType()) {
       case PHOTO -> Map.of(

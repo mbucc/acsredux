@@ -45,9 +45,6 @@ class TestMemberServiceUsage {
 
   @Test
   void testAnonymousUsernameComesFromMemberService() {
-    // setup
-    mockMemberService.setAnonymousUsername("foobar");
-
     // execute
     Authenticator.Result y = cookieAuthenticator.authenticate(mockHttpExchange);
 

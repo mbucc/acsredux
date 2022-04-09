@@ -4,8 +4,8 @@ import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
+import com.acsredux.adapter.web.views.DiaryView;
 import com.acsredux.adapter.web.views.EditDiaryView;
-import com.acsredux.adapter.web.views.ViewDiaryView;
 import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
@@ -24,6 +24,7 @@ public class DiaryHandler {
   private final SiteInfo siteInfo;
   private final Mustache editTemplate;
   private final Mustache viewTemplate;
+  private final Mustache viewTemplateMine;
 
   DiaryHandler(MustacheFactory mf, ContentService x1, MemberService x2, SiteInfo x3) {
     this.contentService = x1;
@@ -31,12 +32,17 @@ public class DiaryHandler {
     this.siteInfo = x3;
     this.editTemplate = mf.compile("photo-diary/create.html");
     this.viewTemplate = mf.compile("photo-diary/view.html");
+    this.viewTemplateMine = mf.compile("photo-diary/view_by_editor.html");
   }
 
   void handleViewDiary(HttpExchange x1, FormData x2) {
-    ViewDiaryView view = new ViewDiaryView(x1, x2, siteInfo);
+    DiaryView view = new DiaryView(x1, x2, siteInfo);
     view.lookupContentInfo(contentService, memberService);
-    WebUtil.renderForm(viewTemplate, x1, view);
+    Mustache t = viewTemplate;
+    if (view.isMyPage()) {
+      t = viewTemplateMine;
+    }
+    WebUtil.renderForm(t, x1, view);
   }
 
   void handleEditDiary(HttpExchange x1, FormData x2) {

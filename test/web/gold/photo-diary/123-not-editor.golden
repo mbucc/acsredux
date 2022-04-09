@@ -1,0 +1,72 @@
+200
+Content-Length: 919
+Content-type: text/html; charset= UTF-8
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2022</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/w3.2022-03-18.css">
+  </head>
+<body>
+<div class="w3-container">
+<p>
+Bill Walton (<a href="/members/logout">log out</a>)
+ <br /><a href="/members/345">dashboard</a>
+ <br /><a href="/">home</a>
+</p>
+
+<h1>2022</h1>
+
+
+
+
+
+<h2>Jan</h2>
+
+
+<h2>Feb</h2>
+
+
+<h2>Mar</h2>
+
+<div id="imgdiv-124">
+<img src="/static/members/123/t.std.png" id="124" alt="2022-03-17" title="2022-03-17" data-contentID="124" />
+</div>
+
+<h2>Apr</h2>
+
+
+<h2>May</h2>
+
+
+<h2>Jun</h2>
+
+
+<h2>Jul</h2>
+
+
+<h2>Aug</h2>
+
+
+<h2>Sep</h2>
+
+
+<h2>Oct</h2>
+
+
+<h2>Nov</h2>
+
+
+<h2>Dec</h2>
+
+
+
+</div>
+<script data-goatcounter='https://mysite.goatcounter.com/count' async src='//example.com/count.js'></script>
+</body>
+</html>
+

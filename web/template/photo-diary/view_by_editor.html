@@ -6,6 +6,8 @@
 <p style="color: red">{{{error}}}</p>
 {{/error}}
 
+<p><a href="/photo-diary/{{contentID}}/add-image"><button id="add-img" type="button">+ img</button></a>
+
 {{#sections}}
 <h2>{{title}}</h2>
 
@@ -15,10 +17,14 @@
 {{^text}}
 <div id="imgdiv-{{photoContentID}}">
 <img src="{{src}}" id="{{photoContentID}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{photoContentID}}" />
+<br>
+<a id="deleteButton-{{photoContentID}}" href="javascript:deleteImage('{{photoContentID}}')">delete &uarr;</a>
 </div>
 {{/text}}
 {{/elements}}
 
 {{/sections}}
+
+<script src="/static/js/deleteImage.js"></script>
 
 {{> ../tail}}

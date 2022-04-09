@@ -41,14 +41,15 @@ public class TestData {
   public static final Instant TEST_NOW = Instant.parse("2022-04-01T10:26:05Z");
 
   public static final Email TEST_EMAIL = new Email("test@example.com");
+  public static final Email TEST_EMAIL2 = new Email("test2@example.com");
   public static final FirstName TEST_FIRST_NAME = new FirstName("小川");
   public static final LastName TEST_LAST_NAME = new LastName("治兵衛");
 
-  public static final Email TEST_EMAIL2 = new Email("test2@example.com");
   public static final FirstName TEST_FIRST_NAME2 = new FirstName("Bill");
   public static final LastName TEST_LAST_NAME2 = new LastName("Walton");
 
   public static final MemberID TEST_MEMBER_ID = new MemberID(123L);
+  public static final MemberID TEST_MEMBER2_ID = new MemberID(345L);
   public static final Principal TEST_PRINCIPAL = new MemberPrincipal(TEST_MEMBER_ID);
   public static final Subject TEST_SUBJECT = new Subject(TEST_MEMBER_ID);
 
@@ -59,6 +60,7 @@ public class TestData {
     "test token"
   );
   public static final ZipCode TEST_ZIP_CODE = new ZipCode("02134");
+  public static final ZipCode TEST_ZIP_CODE2 = new ZipCode("44106");
   public static final MemberStatus TEST_MEMBER_STATUS = MemberStatus.ACTIVE;
   public static final HashedPassword TEST_HASHED_PASSWORD = hashpw(
     TEST_CLEAR_TEXT_PASSWORD
@@ -75,6 +77,20 @@ public class TestData {
     TEST_FIRST_NAME,
     TEST_LAST_NAME,
     TEST_ZIP_CODE,
+    TEST_MEMBER_STATUS,
+    TEST_HASHED_PASSWORD,
+    TEST_REGISTRATION_DATE,
+    TEST_TIME_ZONE,
+    TEST_LOGIN_TIME,
+    TEST_SECOND_LOGIN_TIME,
+    false
+  );
+  public static final Member TEST_MEMBER2 = new Member(
+    TEST_MEMBER2_ID,
+    TEST_EMAIL2,
+    TEST_FIRST_NAME2,
+    TEST_LAST_NAME2,
+    TEST_ZIP_CODE2,
     TEST_MEMBER_STATUS,
     TEST_HASHED_PASSWORD,
     TEST_REGISTRATION_DATE,
