@@ -63,67 +63,70 @@ public class StaticFileHandler implements HttpHandler {
 
   @Override
   public void handle(HttpExchange x) {
-    String method = x.getRequestMethod();
-
-    if (!("HEAD".equals(method) || "GET".equals(method))) {
-      internalError(x, new IllegalArgumentException("Unsupported HTTP method"));
-      return;
-    }
-
-    String wholeUrlPath = x.getRequestURI().getPath();
-    if (wholeUrlPath.endsWith("/")) {
-      internalError(x, new IllegalArgumentException("Directory listing not supported"));
-      return;
-    }
-    if (!wholeUrlPath.startsWith(urlPrefix)) {
-      internalError(
-        x,
-        new RuntimeException("Path is not in prefix - incorrect routing?")
-      );
-      return;
-    }
-    String urlPath = wholeUrlPath.substring(urlPrefix.length());
-
-    File f = new File(filesystemRoot, urlPath);
-    File canonicalFile;
     try {
-      canonicalFile = f.getCanonicalFile();
-    } catch (IOException e) {
-      // This may be more benign (i.e. not an attack, just a 403),
-      // but we don't want the attacker to be able to discern the difference.
-      reportPathTraversal(x);
-      return;
-    }
+      String method = x.getRequestMethod();
 
-    String canonicalPath = canonicalFile.getPath();
-    if (!canonicalPath.startsWith(filesystemRoot)) {
-      reportPathTraversal(x);
-      return;
-    }
-
-    FileInputStream fis;
-    try {
-      fis = new FileInputStream(canonicalFile);
-    } catch (FileNotFoundException e) {
-      notFound(x);
-      return;
-    }
-
-    String mimeType = lookupMime(urlPath);
-    x.getResponseHeaders().set("Content-Type", mimeType);
-    try {
-      if ("GET".equals(method)) {
-        x.sendResponseHeaders(200, canonicalFile.length());
-        OutputStream os = x.getResponseBody();
-        copyStream(fis, os);
-        os.close();
-      } else {
-        x.sendResponseHeaders(200, -1);
+      if (!("HEAD".equals(method) || "GET".equals(method))) {
+        internalError(x, new IllegalArgumentException("Unsupported HTTP method"));
+        return;
       }
-    } catch (Exception e) {
-      internalError(x, e);
+
+      String wholeUrlPath = x.getRequestURI().getPath();
+      if (wholeUrlPath.endsWith("/")) {
+        internalError(x, new IllegalArgumentException("Directory listing not supported"));
+        return;
+      }
+      if (!wholeUrlPath.startsWith(urlPrefix)) {
+        internalError(
+          x,
+          new RuntimeException("Path is not in prefix - incorrect routing?")
+        );
+        return;
+      }
+      String urlPath = wholeUrlPath.substring(urlPrefix.length());
+
+      File f = new File(filesystemRoot, urlPath);
+      File canonicalFile;
+      try {
+        canonicalFile = f.getCanonicalFile();
+      } catch (IOException e) {
+        // This may be more benign (i.e. not an attack, just a 403),
+        // but we don't want the attacker to be able to discern the difference.
+        reportPathTraversal(x);
+        return;
+      }
+
+      String canonicalPath = canonicalFile.getPath();
+      if (!canonicalPath.startsWith(filesystemRoot)) {
+        reportPathTraversal(x);
+        return;
+      }
+
+      FileInputStream fis;
+      try {
+        fis = new FileInputStream(canonicalFile);
+      } catch (FileNotFoundException e) {
+        notFound(x);
+        return;
+      }
+
+      String mimeType = lookupMime(urlPath);
+      x.getResponseHeaders().set("Content-Type", mimeType);
+      try {
+        if ("GET".equals(method)) {
+          x.sendResponseHeaders(200, canonicalFile.length());
+          OutputStream os = x.getResponseBody();
+          copyStream(fis, os);
+          os.close();
+        } else {
+          x.sendResponseHeaders(200, -1);
+        }
+      } catch (Exception e) {
+        internalError(x, e);
+      }
+    } finally {
+      x.close();
     }
-    x.close();
   }
 
   private void copyStream(InputStream is, OutputStream os) throws IOException {
