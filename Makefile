@@ -190,11 +190,9 @@ checkstyle: fmt
 fmt:
 	if [ "$(SKIP_FMT)" = "N" ]; then \
 		npx prettier --print-width 90 --write src ; \
-	fi
-	if [ "$(SKIP_FMT)" = "N" ]; then \
 		npx prettier --print-width 90 --write web/static/js/upload.js web/static/js/deleteImage.js ; \
+		elm-format --yes src-elm ; \
 	fi
-	elm-format --yes src-elm
 
 .PHONY: javadoc
 javadoc:
