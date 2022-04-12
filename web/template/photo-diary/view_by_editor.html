@@ -8,6 +8,15 @@
 
 <p><a href="/photo-diary/{{contentID}}/add-image"><button id="add-img" type="button">+ img</button></a>
 
+<div id="add-text-1"></div>
+<script src="/static/js/elm_edit_text.js"></script>
+<script>
+  var app = Elm.EditText.init({
+    node: document.getElementById("add-text-1")
+  });
+</script>
+
+
 {{#sections}}
 <h2>{{title}}</h2>
 

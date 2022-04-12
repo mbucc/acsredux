@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/testclasses" />
       <excludeFolder url="file://$MODULE_DIR$/mlib" />
       <excludeFolder url="file://$MODULE_DIR$/web/static" />
+      <excludePattern pattern="elm-stuff" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -88,6 +88,19 @@ classes/%.json: src/%.json
 compile: checkstyle
 	JAVAC="${JAVAC}" ./scripts/javac.sh
 
+###########################################################################
+#
+#
+#		elm
+#
+#
+###########################################################################
+
+.PHONY: elm
+elm: web/static/js/elm_edit_text.js
+
+web/static/js/elm_edit_text.js: src-elm/EditText.elm
+	elm make $? --output $@
 
 
 
@@ -181,6 +194,7 @@ fmt:
 	if [ "$(SKIP_FMT)" = "N" ]; then \
 		npx prettier --print-width 90 --write web/static/js/upload.js web/static/js/deleteImage.js ; \
 	fi
+	elm-format --yes src-elm
 
 .PHONY: javadoc
 javadoc:

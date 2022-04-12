@@ -4,9 +4,11 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <excludePattern pattern="elm-stuff" />
     </content>
     <content url="file://$MODULE_DIR$/../tests/com.acsredux.adapter.web">
       <sourceFolder url="file://$MODULE_DIR$/../tests/com.acsredux.adapter.web" isTestSource="true" />
+      <excludePattern pattern="elm-stuff" />
     </content>
     <orderEntry type="library" scope="TEST" name="testlib" level="project" />
     <orderEntry type="library" name="mustache-0.9.10" level="project" />
