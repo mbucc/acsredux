@@ -189,9 +189,7 @@ view model =
         div [] [ editButton ]
 
     else
-        div []
-            [ p [] [ text model.content ]
-            , editButton ]
+        div [] [ p [] [ text model.content ] , editButton ]
 
 editButton :  Html Msg
 editButton =
