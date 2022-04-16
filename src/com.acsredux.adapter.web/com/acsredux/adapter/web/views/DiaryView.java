@@ -24,7 +24,6 @@ public class DiaryView extends BaseView {
   final long contentID;
   long memberID;
   String slug;
-  boolean hasPageText = false;
   List<SectionDTO> sections;
 
   record SectionDTO(String title, List<Map<String, Object>> elements) {}
