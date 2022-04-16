@@ -70,7 +70,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SaveRequest (Ok _) ->
-            ( reset { model | content = model.newContent }
+            ( clearFlags { model | content = model.newContent }
             , Cmd.none
             )
 
@@ -85,13 +85,13 @@ update msg model =
                             "Please try again, there was some error in the network."
 
                         Http.BadStatus x ->
-                            reportBug ("E1: " ++ String.fromInt x)
+                            displayBug ("E1: " ++ String.fromInt x)
 
                         Http.BadUrl x ->
-                            reportBug ("E2: " ++ x)
+                            displayBug ("E2: " ++ x)
 
                         Http.BadBody x ->
-                            reportBug ("E3: " ++ x)
+                            displayBug ("E3: " ++ x)
             in
             ( { model | isSaving = False, isEditing = True, errorMessage = errMsg }
             , Cmd.none
@@ -113,18 +113,21 @@ update msg model =
             )
 
         Cancel ->
-            ( reset model
+            ( clearFlags model
             , Cmd.none
             )
 
 
-reportBug : String -> String
-reportBug x =
-    "Rats, you hit a bug!  Please take a screen shot and send it to us so we can fix it (" ++ x ++ ")."
+displayBug : String -> String
+displayBug x =
+    "Rats, you hit a bug!  "
+        ++ "Please take a screen shot and send it to us so we can fix it ("
+        ++ x
+        ++ ")."
 
 
-reset : Model -> Model
-reset model =
+clearFlags : Model -> Model
+clearFlags model =
     { model
         | isEditing = False
         , newContent = ""
@@ -191,11 +194,15 @@ view model =
 
     else if String.isEmpty model.content then
         div []
-            [ button [ onClick Edit ] [ text "add summary text for the entire year" ]
+            [ button
+                [ onClick Edit ]
+                [ text "add summary text for the entire year" ]
             ]
 
     else
         div []
             [ p [] [ text model.content ]
-            , button [ onClick Edit ] [ text "edit summary text for the entire year" ]
+            , button
+                [ onClick Edit ]
+                [ text "edit summary text for the entire year" ]
             ]
