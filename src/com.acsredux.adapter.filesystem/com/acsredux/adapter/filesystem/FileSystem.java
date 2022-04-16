@@ -20,9 +20,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -89,10 +93,17 @@ public final class FileSystem
     }
   }
 
+  private void rename(String from, String to) throws IOException {
+    Path x = Paths.get(from);
+    Files.move(x, x.resolveSibling(to), StandardCopyOption.REPLACE_EXISTING);
+  }
+
   private void writeMembersToJSON() {
-    try (FileWriter writer = new FileWriter(MEMBERS_JSON_FILE)) {
+    String tmp = MEMBERS_JSON_FILE + ".tmp";
+    try (FileWriter writer = new FileWriter(tmp)) {
       List<MemberDTO> ys = this.members.stream().map(MemberDTO::new).toList();
       gson.toJson(ys, writer);
+      rename(tmp, MEMBERS_JSON_FILE);
     } catch (Exception e) {
       throw new IllegalStateException("can't write '" + MEMBERS_JSON_FILE + "'", e);
     }
@@ -115,9 +126,11 @@ public final class FileSystem
   }
 
   private void writeTokensToJSON() {
-    try (FileWriter writer = new FileWriter(TOKENS_JSON_FILE)) {
+    String tmp = TOKENS_JSON_FILE + ".tmp";
+    try (FileWriter writer = new FileWriter(tmp)) {
       List<TokenDTO> ys = this.tokens.entrySet().stream().map(TokenDTO::new).toList();
       gson.toJson(ys, writer);
+      rename(tmp, TOKENS_JSON_FILE);
     } catch (Exception e) {
       throw new IllegalStateException("can't write '" + TOKENS_JSON_FILE + "'", e);
     }
@@ -140,10 +153,12 @@ public final class FileSystem
   }
 
   private void writeSessionsToJSON() {
+    String tmp = SESSION_JSON_FILE + ".tmp";
     try (FileWriter writer = new FileWriter(SESSION_JSON_FILE)) {
       List<SessionDTO> ys =
         this.sessions.entrySet().stream().map(SessionDTO::new).toList();
       gson.toJson(ys, writer);
+      rename(tmp, SESSION_JSON_FILE);
     } catch (Exception e) {
       throw new IllegalStateException("can't write '" + SESSION_JSON_FILE + "'", e);
     }
@@ -167,9 +182,11 @@ public final class FileSystem
   }
 
   private void writeContentToJSON() {
-    try (FileWriter writer = new FileWriter(CONTENT_JSON_FILE)) {
+    String tmp = CONTENT_JSON_FILE + ".tmp";
+    try (FileWriter writer = new FileWriter(CONTENT_JSON_FILE + ".tmp")) {
       List<ContentDTO> ys = this.content.values().stream().map(ContentDTO::new).toList();
       gson.toJson(ys, writer);
+      rename(tmp, CONTENT_JSON_FILE);
     } catch (Exception e) {
       throw new IllegalStateException("can't write '" + CONTENT_JSON_FILE + "'", e);
     }
