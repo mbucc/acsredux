@@ -28,15 +28,10 @@ jars: \
 	mlib/compiler-0.9.10.jar \
 	mlib/result-flow-3.1.0.jar \
 	mlib/Either.java.jar \
-	mlib/gson-2.9.0.jar
+	mlib/gson-2.9.0.jar \
+	mlib/commonmark-0.18.2.jar
 
-mlib/compiler-0.9.10.jar: lib/compiler-0.9.10.jar
-	cp $? $@
-mlib/result-flow-3.1.0.jar: lib/result-flow-3.1.0.jar
-	cp $? $@
-mlib/Either.java.jar: lib/Either.java.jar
-	cp $? $@
-mlib/gson-2.9.0.jar: lib/gson-2.9.0.jar
+mlib/%.jar: lib/%.jar
 	cp $? $@
 
 mlib/com.acsredux.adapter.web@1.jar: compile resources
