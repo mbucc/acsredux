@@ -5333,6 +5333,14 @@ var $author$project$EditText$subscriptions = function (_v0) {
 var $author$project$EditText$SaveRequest = function (a) {
 	return {$: 'SaveRequest', a: a};
 };
+var $author$project$EditText$clearFlags = function (model) {
+	return _Utils_update(
+		model,
+		{errorMessage: '', isEditing: false, isSaving: false, newContent: ''});
+};
+var $author$project$EditText$displayBug = function (x) {
+	return 'Rats, you hit a bug!  ' + ('Please take a screen shot and send it to us so we can fix it (' + (x + ').'));
+};
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
 		return {$: 'BadStatus_', a: a, b: b};
@@ -6108,25 +6116,8 @@ var $elm$http$Http$request = function (r) {
 			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
 };
 var $elm$http$Http$stringBody = _Http_pair;
-var $author$project$EditText$postText = function (model) {
-	return $elm$http$Http$request(
-		{
-			body: A2($elm$http$Http$stringBody, 'text/plain', model.newContent),
-			expect: $elm$http$Http$expectString($author$project$EditText$SaveRequest),
-			headers: _List_Nil,
-			method: 'POST',
-			timeout: $elm$core$Maybe$Nothing,
-			tracker: $elm$core$Maybe$Nothing,
-			url: '/dummyURL'
-		});
-};
-var $author$project$EditText$reportBug = function (x) {
-	return 'Rats, you hit a bug!  Please take a screen shot and send it to us so we can fix it (' + (x + ').');
-};
-var $author$project$EditText$reset = function (model) {
-	return _Utils_update(
-		model,
-		{errorMessage: '', isEditing: false, isSaving: false, newContent: ''});
+var $author$project$EditText$tryAgain = function (x) {
+	return 'Please try again, ' + x;
 };
 var $author$project$EditText$update = F2(
 	function (msg, model) {
@@ -6134,28 +6125,29 @@ var $author$project$EditText$update = F2(
 			case 'SaveRequest':
 				if (msg.a.$ === 'Ok') {
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{content: model.newContent, errorMessage: '', isSaving: false}),
+						$author$project$EditText$clearFlags(
+							_Utils_update(
+								model,
+								{content: model.newContent})),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var err = msg.a.a;
 					var errMsg = function () {
 						switch (err.$) {
 							case 'Timeout':
-								return 'Please try again, the server took to long to respond.';
+								return $author$project$EditText$tryAgain('the server took to long to respond.');
 							case 'NetworkError':
-								return 'Please try again, there was some error in the network.';
+								return $author$project$EditText$tryAgain('there was some error in the network.');
 							case 'BadStatus':
 								var x = err.a;
-								return $author$project$EditText$reportBug(
+								return $author$project$EditText$displayBug(
 									'E1: ' + $elm$core$String$fromInt(x));
 							case 'BadUrl':
 								var x = err.a;
-								return $author$project$EditText$reportBug('E2: ' + x);
+								return $author$project$EditText$displayBug('E2: ' + x);
 							default:
 								var x = err.a;
-								return $author$project$EditText$reportBug('E3: ' + x);
+								return $author$project$EditText$displayBug('E3: ' + x);
 						}
 					}();
 					return _Utils_Tuple2(
@@ -6182,10 +6174,19 @@ var $author$project$EditText$update = F2(
 					_Utils_update(
 						model,
 						{isEditing: false, isSaving: true}),
-					$author$project$EditText$postText(model));
+					$elm$http$Http$request(
+						{
+							body: A2($elm$http$Http$stringBody, 'text/plain', model.newContent),
+							expect: $elm$http$Http$expectString($author$project$EditText$SaveRequest),
+							headers: _List_Nil,
+							method: 'POST',
+							timeout: $elm$core$Maybe$Nothing,
+							tracker: $elm$core$Maybe$Nothing,
+							url: '/dummyURL'
+						}));
 			default:
 				return _Utils_Tuple2(
-					$author$project$EditText$reset(model),
+					$author$project$EditText$clearFlags(model),
 					$elm$core$Platform$Cmd$none);
 		}
 	});

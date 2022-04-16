@@ -31,8 +31,8 @@ main =
 type alias Model =
     { content : String
     , isEditing : Bool
-    , newContent : String
     , isSaving : Bool
+    , newContent : String
     , errorMessage : String
     }
 
@@ -41,8 +41,8 @@ initialModel : Model
 initialModel =
     { content = ""
     , isEditing = False
-    , newContent = ""
     , isSaving = False
+    , newContent = ""
     , errorMessage = ""
     }
 
