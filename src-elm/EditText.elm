@@ -177,40 +177,30 @@ subscriptions _ =
 view : Model -> Html Msg
 view model =
     if model.isSaving then
-        div []
-            [ textarea [ disabled True ] [ text model.newContent ]
-            , button [ disabled True ] [ text "save" ]
-            , button [ disabled True ] [ text "cancel" ]
-            , text "Saving ..."
-            ]
+        div [] ((editBox model) ++ [ text "Saving ..." ])
 
     else if model.isEditing then
         if String.isEmpty model.errorMessage then
-            div []
-                [ textarea [ onInput Change ] [ text model.newContent ]
-                , button [ onClick Save ] [ text "save" ]
-                , button [ onClick Cancel ] [ text "cancel" ]
-                ]
-
+            div [] (editBox model)
         else
-            div []
-                [ textarea [ onInput Change ] [ text model.newContent ]
-                , button [ onClick Save ] [ text "save" ]
-                , button [ onClick Cancel ] [ text "cancel" ]
-                , p [] [ text model.errorMessage ]
-                ]
+            div [] ((editBox model) ++ [ p [] [ text model.errorMessage ] ])
 
     else if String.isEmpty model.content then
-        div []
-            [ button
-                [ onClick Edit ]
-                [ text "add summary text for the entire year" ]
-            ]
+        div [] [ editButton ]
 
     else
         div []
             [ p [] [ text model.content ]
-            , button
-                [ onClick Edit ]
-                [ text "edit summary text for the entire year" ]
-            ]
+            , editButton ]
+
+editButton :  Html Msg
+editButton =
+  button
+    [ onClick Edit ]
+    [ text "edit summary text for the entire year" ]
+
+editBox : Model -> List (Html Msg)
+editBox model =
+  [ textarea [ onInput Change ] [ text model.newContent ]
+  , button [ onClick Save ] [ text "save" ]
+  , button [ onClick Cancel ] [ text "cancel" ] ]

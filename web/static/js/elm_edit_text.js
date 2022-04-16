@@ -6190,23 +6190,13 @@ var $author$project$EditText$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$EditText$Cancel = {$: 'Cancel'};
 var $author$project$EditText$Change = function (a) {
 	return {$: 'Change', a: a};
 };
-var $author$project$EditText$Edit = {$: 'Edit'};
 var $author$project$EditText$Save = {$: 'Save'};
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
-	});
-var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6257,140 +6247,87 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
+var $author$project$EditText$editBox = function (model) {
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$textarea,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onInput($author$project$EditText$Change)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(model.newContent)
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick($author$project$EditText$Save)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('save')
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick($author$project$EditText$Cancel)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('cancel')
+				]))
+		]);
+};
+var $author$project$EditText$Edit = {$: 'Edit'};
+var $author$project$EditText$editButton = A2(
+	$elm$html$Html$button,
+	_List_fromArray(
+		[
+			$elm$html$Html$Events$onClick($author$project$EditText$Edit)
+		]),
+	_List_fromArray(
+		[
+			$elm$html$Html$text('edit summary text for the entire year')
+		]));
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$EditText$view = function (model) {
 	return model.isSaving ? A2(
 		$elm$html$Html$div,
 		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$textarea,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$disabled(true)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(model.newContent)
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$disabled(true)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('save')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$disabled(true)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('cancel')
-					])),
-				$elm$html$Html$text('Saving ...')
-			])) : (model.isEditing ? ($elm$core$String$isEmpty(model.errorMessage) ? A2(
+		_Utils_ap(
+			$author$project$EditText$editBox(model),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Saving ...')
+				]))) : (model.isEditing ? ($elm$core$String$isEmpty(model.errorMessage) ? A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		$author$project$EditText$editBox(model)) : A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_Utils_ap(
+			$author$project$EditText$editBox(model),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(model.errorMessage)
+						]))
+				])))) : ($elm$core$String$isEmpty(model.content) ? A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$textarea,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onInput($author$project$EditText$Change)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(model.newContent)
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Save)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('save')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Cancel)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('cancel')
-					]))
-			])) : A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$textarea,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onInput($author$project$EditText$Change)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(model.newContent)
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Save)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('save')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Cancel)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('cancel')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(model.errorMessage)
-					]))
-			]))) : ($elm$core$String$isEmpty(model.content) ? A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Edit)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('add summary text for the entire year')
-					]))
-			])) : A2(
+			[$author$project$EditText$editButton])) : A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
@@ -6402,16 +6339,7 @@ var $author$project$EditText$view = function (model) {
 					[
 						$elm$html$Html$text(model.content)
 					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$EditText$Edit)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('edit summary text for the entire year')
-					]))
+				$author$project$EditText$editButton
 			]))));
 };
 var $author$project$EditText$main = $elm$browser$Browser$element(
