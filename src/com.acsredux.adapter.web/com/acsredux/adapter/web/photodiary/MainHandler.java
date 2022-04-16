@@ -44,7 +44,8 @@ public class MainHandler extends BaseHandler {
       new Route(diaryHandler::isViewDiary, diaryHandler::handleViewDiary),
       new Route(photoHandler::isEditPhoto, photoHandler::handleEditPhoto),
       new Route(photoHandler::isSavePhoto, photoHandler::handleSavePhoto),
-      new Route(noteHandler::isEditNote, noteHandler::handleEditNote)
+      new Route(noteHandler::isEditNote, noteHandler::handleEditNote),
+      new Route(noteHandler::isSaveNote, noteHandler::handleSaveNote)
     );
   }
 }

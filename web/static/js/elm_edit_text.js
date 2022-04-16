@@ -5319,12 +5319,17 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$EditText$initialModel = {content: '', errorMessage: '', isEditing: false, isSaving: false, newContent: ''};
+var $author$project$EditText$initialModel = function (id) {
+	return {content: '', errorMessage: '', isEditing: false, isSaving: false, newContent: '', photoDiaryID: id};
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$EditText$init = function (_v0) {
-	return _Utils_Tuple2($author$project$EditText$initialModel, $elm$core$Platform$Cmd$none);
+var $author$project$EditText$init = function (diaryID) {
+	return _Utils_Tuple2(
+		$author$project$EditText$initialModel(diaryID),
+		$elm$core$Platform$Cmd$none);
 };
+var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$EditText$subscriptions = function (_v0) {
@@ -5947,6 +5952,9 @@ var $elm$http$Http$expectString = function (toMsg) {
 		toMsg,
 		$elm$http$Http$resolve($elm$core$Result$Ok));
 };
+var $author$project$EditText$postURL = function (diaryID) {
+	return '/photo-diary/' + ($elm$core$String$fromInt(diaryID) + '/add-note');
+};
 var $elm$http$Http$Request = function (a) {
 	return {$: 'Request', a: a};
 };
@@ -6182,7 +6190,7 @@ var $author$project$EditText$update = F2(
 							method: 'POST',
 							timeout: $elm$core$Maybe$Nothing,
 							tracker: $elm$core$Maybe$Nothing,
-							url: '/dummyURL'
+							url: $author$project$EditText$postURL(model.photoDiaryID)
 						}));
 			default:
 				return _Utils_Tuple2(
@@ -6344,5 +6352,4 @@ var $author$project$EditText$view = function (model) {
 };
 var $author$project$EditText$main = $elm$browser$Browser$element(
 	{init: $author$project$EditText$init, subscriptions: $author$project$EditText$subscriptions, update: $author$project$EditText$update, view: $author$project$EditText$view});
-_Platform_export({'EditText':{'init':$author$project$EditText$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
+_Platform_export({'EditText':{'init':$author$project$EditText$main($elm$json$Json$Decode$int)(0)}});}(this));

@@ -4,4 +4,4 @@ import com.acsredux.core.base.Command;
 
 public sealed interface BaseContentCommand
   extends Command
-  permits CreatePhotoDiary, DeleteContent, UploadPhoto {}
+  permits AddNote, CreatePhotoDiary, DeleteContent, UploadPhoto {}

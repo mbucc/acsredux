@@ -2,6 +2,7 @@ package com.acsredux.core.content.services;
 
 import com.acsredux.core.base.*;
 import com.acsredux.core.content.ContentService;
+import com.acsredux.core.content.commands.AddNote;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.DeleteContent;
@@ -65,9 +66,27 @@ public class ContentServiceProvider implements ContentService {
         case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
         case UploadPhoto x1 -> handleUploadPhoto(x1);
         case DeleteContent x1 -> handleDeleteContent(x1);
+        case AddNote x1 -> handleAddNote(x1);
       };
     logEvents(ys);
     return ys;
+  }
+
+  private List<Event> handleAddNote(AddNote cmd) {
+    MemberID mid = validateMemberLoggedIn(cmd);
+    CreatedOn now = new CreatedOn(this.clock.instant());
+    NewContent x = new NewContent(
+      cmd.parentID(),
+      mid,
+      null,
+      now,
+      new FromDateTime(now.val()),
+      null,
+      ContentType.DIARY_ENTRY,
+      BlobType.MARKDOWN,
+      cmd.note()
+    );
+    return Collections.singletonList(new ContentCreated(x, writer.save(x)));
   }
 
   private List<Event> handleDeleteContent(DeleteContent cmd) {

@@ -26,7 +26,7 @@ public class ContentDTO {
       this.id = x.id().val();
       this.refersTo = x.refersTo() == null ? null : x.refersTo().val();
       this.createdBy = x.createdBy().val();
-      this.title = x.title().val();
+      this.title = x.title() == null ? null : x.title().val();
       this.created = x.createdOn().val().getEpochSecond();
       this.from = x.from().val().getEpochSecond();
       this.upto = x.upto() == null ? null : x.upto().val().getEpochSecond();
@@ -43,7 +43,7 @@ public class ContentDTO {
       new ContentID(id),
       this.refersTo == null ? null : new ContentID(this.refersTo),
       new MemberID(createdBy),
-      new Title(title),
+      title == null ? null : new Title(title),
       new CreatedOn(Instant.ofEpochSecond(created)),
       new FromDateTime(Instant.ofEpochSecond(from)),
       upto == null ? null : new UptoDateTime(Instant.ofEpochSecond(from)),

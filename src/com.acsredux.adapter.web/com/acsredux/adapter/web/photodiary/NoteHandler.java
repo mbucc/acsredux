@@ -3,7 +3,6 @@ package com.acsredux.adapter.web.photodiary;
 import static com.acsredux.adapter.web.common.WebUtil.internalError;
 import static com.acsredux.adapter.web.common.WebUtil.pathToID;
 import static com.acsredux.adapter.web.members.Util.redirect;
-import static com.acsredux.adapter.web.photodiary.PhotoHandler.normalizeDates;
 
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.common.FormData;
@@ -47,8 +46,7 @@ public class NoteHandler {
     Member m = ((MemberHttpPrincipal) x1.getPrincipal()).getMember();
     var y = Result
       .ok(x2)
-      .map(o -> o.add("command", "UPLOAD_PHOTO"))
-      .map(o -> normalizeDates(o, m.tz()))
+      .map(o -> o.add("command", "ADD_NOTE"))
       .map(o -> o.add("parent", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
@@ -79,7 +77,7 @@ public class NoteHandler {
     );
   }
 
-  public static boolean isSaveNote(HttpExchange x) {
+  public boolean isSaveNote(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("POST") &&
       x.getRequestURI().getPath().matches(NOTE_URL)

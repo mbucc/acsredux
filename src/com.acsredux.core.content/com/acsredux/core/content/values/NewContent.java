@@ -19,7 +19,9 @@ public record NewContent(
 ) {
   public NewContent {
     die(createdBy, "null createdBy");
-    die(title, "null title");
+    if (contentType == ContentType.PHOTO_DIARY) {
+      die(title, "null title");
+    }
     die(createdOn, "null createdOn");
     die(contentType, "null contentType");
     die(blobType, "null blobType");

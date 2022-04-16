@@ -8,6 +8,7 @@ import com.acsredux.adapter.web.views.BaseView;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
+import com.acsredux.core.content.commands.AddNote;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.values.*;
@@ -133,6 +134,11 @@ public class WebUtil {
           m.tz()
         );
       }
+      case ADD_NOTE -> new AddNote(
+        subject,
+        ContentID.parse(x.get("parent")),
+        new BlobBytes(x.get("body").getBytes(StandardCharsets.UTF_8))
+      );
     };
   }
 
@@ -222,11 +228,7 @@ public class WebUtil {
       .map(o -> o.get(CONTENT_TYPE))
       .filter(o -> !o.isEmpty())
       .map(o -> o.get(0))
-      .orElseThrow(() ->
-        new NoSuchElementException(
-          "no " + CONTENT_TYPE + " header in:\n" + dumpRequest(x)
-        )
-      );
+      .orElse("");
   }
 
   static String getHeaderParameter(String header, String parameterName) {

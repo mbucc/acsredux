@@ -7,6 +7,7 @@ import static com.acsredux.adapter.web.common.WebUtil.getContentTypeFromString;
 import static com.acsredux.adapter.web.common.WebUtil.getHeaderParameter;
 import static com.acsredux.lib.testutil.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -123,22 +124,16 @@ class TestWebUtil {
   }
 
   @Test
-  void testGetContentTypeFail() {
+  void testGetContentTypeReturnsEmptyStringIfNoContentType() {
     // setup
     var x = new MockHttpExchange("/");
     x.getRequestHeaders().remove(CONTENT_TYPE);
 
     // execute
-    var y = assertThrows(NoSuchElementException.class, () -> getContentType(x));
+    var y = assertDoesNotThrow(() -> getContentType(x));
 
     // verify
-    var expected =
-      """
-      no Content-type header in:
-      GET /
-            
-      No HTTP headers""";
-    assertEquals(expected, y.getMessage());
+    assertEquals("", y);
   }
 
   @Test

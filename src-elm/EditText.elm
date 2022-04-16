@@ -2,7 +2,6 @@ module EditText exposing (main)
 
 import Browser
 import Html exposing (Html, button, div, p, text, textarea)
-import Html.Attributes exposing (disabled)
 import Html.Events exposing (onClick, onInput)
 import Http
 
@@ -29,7 +28,8 @@ main =
 
 
 type alias Model =
-    { content : String
+    { photoDiaryID : Int
+    , content : String
     , isEditing : Bool
     , isSaving : Bool
     , newContent : String
@@ -37,9 +37,10 @@ type alias Model =
     }
 
 
-initialModel : Model
-initialModel =
-    { content = ""
+initialModel : Int -> Model
+initialModel id =
+    { photoDiaryID = id
+    , content = ""
     , isEditing = False
     , isSaving = False
     , newContent = ""
@@ -47,9 +48,9 @@ initialModel =
     }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( initialModel, Cmd.none )
+init : Int -> ( Model, Cmd Msg )
+init diaryID =
+    ( initialModel diaryID, Cmd.none )
 
 
 
@@ -120,7 +121,7 @@ update msg model =
             , Http.request
                 { method = "POST"
                 , headers = []
-                , url = "/dummyURL"
+                , url = postURL model.photoDiaryID
                 , body = Http.stringBody "text/plain" model.newContent
                 , expect = Http.expectString SaveRequest
                 , timeout = Nothing
@@ -157,6 +158,11 @@ clearFlags model =
     }
 
 
+postURL : Int -> String
+postURL diaryID =
+    "/photo-diary/" ++ String.fromInt diaryID ++ "/add-note"
+
+
 
 --
 --              SUBSCRIPTIONS
@@ -177,28 +183,32 @@ subscriptions _ =
 view : Model -> Html Msg
 view model =
     if model.isSaving then
-        div [] ((editBox model) ++ [ text "Saving ..." ])
+        div [] (editBox model ++ [ text "Saving ..." ])
 
     else if model.isEditing then
         if String.isEmpty model.errorMessage then
             div [] (editBox model)
+
         else
-            div [] ((editBox model) ++ [ p [] [ text model.errorMessage ] ])
+            div [] (editBox model ++ [ p [] [ text model.errorMessage ] ])
 
     else if String.isEmpty model.content then
         div [] [ editButton ]
 
     else
-        div [] [ p [] [ text model.content ] , editButton ]
+        div [] [ p [] [ text model.content ], editButton ]
 
-editButton :  Html Msg
+
+editButton : Html Msg
 editButton =
-  button
-    [ onClick Edit ]
-    [ text "edit summary text for the entire year" ]
+    button
+        [ onClick Edit ]
+        [ text "edit summary text for the entire year" ]
+
 
 editBox : Model -> List (Html Msg)
 editBox model =
-  [ textarea [ onInput Change ] [ text model.newContent ]
-  , button [ onClick Save ] [ text "save" ]
-  , button [ onClick Cancel ] [ text "cancel" ] ]
+    [ textarea [ onInput Change ] [ text model.newContent ]
+    , button [ onClick Save ] [ text "save" ]
+    , button [ onClick Cancel ] [ text "cancel" ]
+    ]

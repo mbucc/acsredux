@@ -240,7 +240,15 @@ public class FormData {
     } else {
       y =
         switch (x.getRequestMethod()) {
-          case "PUT", "PATCH", "POST" -> parseFormData(x);
+          case "PUT", "PATCH", "POST" -> {
+            if (WebUtil.getContentType(x).startsWith("text/")) {
+              var o = new FormData();
+              o.add("body", new String(readRequestBody(x)));
+              yield o;
+            } else {
+              yield parseFormData(x);
+            }
+          }
           case "GET" -> {
             WebUtil.drainRequestBody(x);
             yield parseFormDataFromQueryString(x);
