@@ -70,7 +70,8 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SaveRequest (Ok _) ->
-            ( clearFlags { model | content = model.newContent }
+            ( clearFlags
+                { model | content = model.newContent }
             , Cmd.none
             )
 
@@ -79,10 +80,10 @@ update msg model =
                 errMsg =
                     case err of
                         Http.Timeout ->
-                            "Please try again, the server took to long to respond."
+                            tryAgain "the server took to long to respond."
 
                         Http.NetworkError ->
-                            "Please try again, there was some error in the network."
+                            tryAgain "there was some error in the network."
 
                         Http.BadStatus x ->
                             displayBug ("E1: " ++ String.fromInt x)
@@ -93,12 +94,19 @@ update msg model =
                         Http.BadBody x ->
                             displayBug ("E3: " ++ x)
             in
-            ( { model | isSaving = False, isEditing = True, errorMessage = errMsg }
+            ( { model
+                | isSaving = False
+                , isEditing = True
+                , errorMessage = errMsg
+              }
             , Cmd.none
             )
 
         Edit ->
-            ( { model | isEditing = True, newContent = model.content }
+            ( { model
+                | isEditing = True
+                , newContent = model.content
+              }
             , Cmd.none
             )
 
@@ -124,6 +132,11 @@ update msg model =
             ( clearFlags model
             , Cmd.none
             )
+
+
+tryAgain : String -> String
+tryAgain x =
+    "Please try again, " ++ x
 
 
 displayBug : String -> String
