@@ -33,7 +33,7 @@ public class MainHandler extends BaseHandler {
     SiteInfo siteInfo = adminService.getSiteInfo();
     this.diaryHandler = new DiaryHandler(mf, contentService, memberService, siteInfo);
     this.photoHandler = new PhotoHandler(mf, contentService, siteInfo);
-    this.noteHandler = new NoteHandler(mf, contentService, siteInfo);
+    this.noteHandler = new NoteHandler(contentService);
   }
 
   @Override
@@ -44,7 +44,6 @@ public class MainHandler extends BaseHandler {
       new Route(diaryHandler::isViewDiary, diaryHandler::handleViewDiary),
       new Route(photoHandler::isEditPhoto, photoHandler::handleEditPhoto),
       new Route(photoHandler::isSavePhoto, photoHandler::handleSavePhoto),
-      new Route(noteHandler::isEditNote, noteHandler::handleEditNote),
       new Route(noteHandler::isSaveNote, noteHandler::handleSaveNote)
     );
   }
