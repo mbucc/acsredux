@@ -109,7 +109,15 @@ update msg model =
 
         Save ->
             ( { model | isEditing = False, isSaving = True }
-            , postText model
+            , Http.request
+                { method = "POST"
+                , headers = []
+                , url = "/dummyURL"
+                , body = Http.stringBody "text/plain" model.newContent
+                , expect = Http.expectString SaveRequest
+                , timeout = Nothing
+                , tracker = Nothing
+                }
             )
 
         Cancel ->
@@ -134,19 +142,6 @@ clearFlags model =
         , errorMessage = ""
         , isSaving = False
     }
-
-
-postText : Model -> Cmd Msg
-postText model =
-    Http.request
-        { method = "POST"
-        , headers = []
-        , url = "/dummyURL"
-        , body = Http.stringBody "text/plain" model.newContent
-        , expect = Http.expectString SaveRequest
-        , timeout = Nothing
-        , tracker = Nothing
-        }
 
 
 
