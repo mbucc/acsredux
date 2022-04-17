@@ -3,7 +3,9 @@ module EditText exposing (main)
 import Browser
 import Html exposing (Html, button, div, p, text, textarea)
 import Html.Events exposing (onClick, onInput)
-import Http
+import Http exposing (Expect, Response, expectStringResponse)
+import Markdown.Option exposing (..)
+import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
 
 
 
@@ -29,10 +31,10 @@ main =
 
 type alias Model =
     { photoDiaryID : Int
-    , content : String
+    , markdown : String
     , isEditing : Bool
     , isSaving : Bool
-    , newContent : String
+    , newMarkdown : String
     , errorMessage : String
     }
 
@@ -40,10 +42,10 @@ type alias Model =
 initialModel : Int -> Model
 initialModel id =
     { photoDiaryID = id
-    , content = ""
+    , markdown = ""
     , isEditing = False
     , isSaving = False
-    , newContent = ""
+    , newMarkdown = ""
     , errorMessage = ""
     }
 
@@ -64,15 +66,27 @@ type Msg
     | Save
     | Cancel
     | Change String
-    | SaveRequest (Result Http.Error String)
+    | SaveRequest (Result MyHttpError String)
+    | MarkdownMsg Markdown.Render.MarkdownMsg
+
+
+type alias ValidationError =
+    String
+
+
+type MyHttpError
+    = BadUrl String
+    | Timeout
+    | NetworkError
+    | BadStatus Int (Maybe ValidationError)
+    | BadBody String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SaveRequest (Ok _) ->
-            ( clearFlags
-                { model | content = model.newContent }
+            ( clearFlags { model | markdown = model.newMarkdown }
             , Cmd.none
             )
 
@@ -80,19 +94,22 @@ update msg model =
             let
                 errMsg =
                     case err of
-                        Http.Timeout ->
+                        Timeout ->
                             tryAgain "the server took to long to respond."
 
-                        Http.NetworkError ->
+                        NetworkError ->
                             tryAgain "there was some error in the network."
 
-                        Http.BadStatus x ->
+                        BadStatus x Nothing ->
                             displayBug ("E1: " ++ String.fromInt x)
 
-                        Http.BadUrl x ->
+                        BadStatus _ (Just validationError) ->
+                            validationError
+
+                        BadUrl x ->
                             displayBug ("E2: " ++ x)
 
-                        Http.BadBody x ->
+                        BadBody x ->
                             displayBug ("E3: " ++ x)
             in
             ( { model
@@ -106,26 +123,22 @@ update msg model =
         Edit ->
             ( { model
                 | isEditing = True
-                , newContent = model.content
+                , newMarkdown = model.markdown
               }
             , Cmd.none
             )
 
         Change x ->
-            ( { model | newContent = x }
+            ( { model | newMarkdown = x }
             , Cmd.none
             )
 
         Save ->
             ( { model | isEditing = False, isSaving = True }
-            , Http.request
-                { method = "POST"
-                , headers = []
-                , url = postURL model.photoDiaryID
-                , body = Http.stringBody "text/plain" model.newContent
-                , expect = Http.expectString SaveRequest
-                , timeout = Nothing
-                , tracker = Nothing
+            , Http.post
+                { url = postURL model.photoDiaryID
+                , body = Http.stringBody "text/plain" model.newMarkdown
+                , expect = expectStringResponse SaveRequest parseResponse
                 }
             )
 
@@ -133,6 +146,34 @@ update msg model =
             ( clearFlags model
             , Cmd.none
             )
+
+        MarkdownMsg _ ->
+            ( model, Cmd.none )
+
+
+parseResponse :
+    Response String
+    -> Result MyHttpError String
+parseResponse serverHTTPResponse =
+    case serverHTTPResponse of
+        Http.BadUrl_ url ->
+            Err (BadUrl url)
+
+        Http.Timeout_ ->
+            Err Timeout
+
+        Http.NetworkError_ ->
+            Err NetworkError
+
+        Http.BadStatus_ metadata body ->
+            if metadata.statusCode == 400 then
+                Err (BadStatus metadata.statusCode (Just body))
+
+            else
+                Err (BadStatus metadata.statusCode Nothing)
+
+        Http.GoodStatus_ _ body ->
+            Ok body
 
 
 tryAgain : String -> String
@@ -152,7 +193,7 @@ clearFlags : Model -> Model
 clearFlags model =
     { model
         | isEditing = False
-        , newContent = ""
+        , newMarkdown = ""
         , errorMessage = ""
         , isSaving = False
     }
@@ -192,11 +233,19 @@ view model =
         else
             div [] (editBox model ++ [ p [] [ text model.errorMessage ] ])
 
-    else if String.isEmpty model.content then
+    else if String.isEmpty model.markdown then
         div [] [ editButton ]
 
     else
-        div [] [ p [] [ text model.content ], editButton ]
+        div
+            []
+            [ p
+                []
+                [ Markdown.Render.toHtml Extended model.markdown
+                    |> Html.map MarkdownMsg
+                ]
+            , editButton
+            ]
 
 
 editButton : Html Msg
@@ -208,7 +257,7 @@ editButton =
 
 editBox : Model -> List (Html Msg)
 editBox model =
-    [ textarea [ onInput Change ] [ text model.newContent ]
+    [ textarea [ onInput Change ] [ text model.newMarkdown ]
     , button [ onClick Save ] [ text "save" ]
     , button [ onClick Cancel ] [ text "cancel" ]
     ]

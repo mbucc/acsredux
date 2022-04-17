@@ -35,10 +35,15 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 public class WebUtil {
 
   public static final String CONTENT_TYPE = "Content-type";
+
+  static Parser parser = Parser.builder().build();
 
   private WebUtil() {
     throw new UnsupportedOperationException("static only");
@@ -253,6 +258,10 @@ public class WebUtil {
     returnPlainText(x, 200, "OK".getBytes());
   }
 
+  public static void created(HttpExchange x, byte[] body) {
+    returnPlainText(x, 201, body);
+  }
+
   public static void notAuthorized(HttpExchange x1, NotAuthorizedException x2) {
     returnPlainText(x1, 401, "Not Authorized".getBytes(), x2, System.err);
   }
@@ -291,8 +300,8 @@ public class WebUtil {
     }
   }
 
-  static void returnPlainText(HttpExchange hex, int status, byte[] body) {
-    returnPlainText(hex, status, body, null, System.err);
+  static void returnPlainText(HttpExchange x, int status, byte[] body) {
+    returnPlainText(x, status, body, null, System.err);
   }
 
   public static void renderTemplate(
@@ -311,5 +320,13 @@ public class WebUtil {
     }
     byte[] body = writer.toString().getBytes();
     writeResponse(x1, body);
+  }
+
+  public static String renderMarkdown(String x) {
+    // parse is thread-safe
+    Node document = parser.parse(x);
+    // This looks thread-safe, but leave here as should be super-fast.
+    HtmlRenderer renderer = HtmlRenderer.builder().build();
+    return renderer.render(document);
   }
 }

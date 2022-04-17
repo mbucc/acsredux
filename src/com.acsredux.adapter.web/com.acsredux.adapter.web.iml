@@ -24,5 +24,6 @@
     <orderEntry type="module" module-name="com.acsredux.lib.env" />
     <orderEntry type="module" module-name="com.acsredux.adapter.mailgun" />
     <orderEntry type="module" module-name="com.acsredux.adapter.filesystem" />
+    <orderEntry type="library" name="commonmark-0.18.2" level="project" />
   </component>
 </module>

@@ -11,6 +11,7 @@ module com.acsredux.adapter.web {
   requires com.acsredux.lib.env;
   requires com.acsredux.adapter.mailgun;
   requires com.acsredux.adapter.filesystem;
+  requires org.commonmark;
 
   exports com.acsredux.adapter.web ;
   opens com.acsredux.adapter.web to com.github.mustachejava;

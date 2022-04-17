@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web.views;
 
+import static com.acsredux.adapter.web.common.WebUtil.renderMarkdown;
 import static java.time.format.TextStyle.SHORT_STANDALONE;
 
 import com.acsredux.adapter.web.common.FormData;
@@ -45,7 +46,7 @@ public class DiaryView extends BaseView {
         "photoContentID",
         x.id().val()
       );
-      case DIARY_ENTRY -> Map.of("text", x.content().asString());
+      case DIARY_ENTRY -> Map.of("text", renderMarkdown(x.content().asString()));
       default -> throw new IllegalStateException("unexpected type: " + x.contentType());
     };
   }

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="commonmark-0.18.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commonmark-0.18.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/commonmark-0.18.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
