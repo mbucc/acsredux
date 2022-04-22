@@ -24,13 +24,13 @@
 {{#elements}}
 {{#text}}
 {{{text}}}{{/text}}
-{{^text}}
+{{#photoContentID}}
 <div id="imgdiv-{{photoContentID}}">
 <img src="{{src}}" id="{{photoContentID}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{photoContentID}}" />
 <br>
 <a id="deleteButton-{{photoContentID}}" href="javascript:deleteImage('{{photoContentID}}')">delete &uarr;</a>
 </div>
-{{/text}}
+{{/photoContentID}}
 {{/elements}}
 
 {{/sections}}
