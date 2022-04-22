@@ -10,12 +10,15 @@ import com.acsredux.core.admin.values.SiteInfo;
 import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.ContentService;
 import com.acsredux.core.content.commands.BaseContentCommand;
+import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ContentCreated;
 import com.acsredux.core.members.MemberService;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.sun.net.httpserver.HttpExchange;
 import de.perschon.resultflow.Result;
+import java.time.ZoneId;
+import java.util.List;
 
 public class DiaryHandler {
 
@@ -37,12 +40,20 @@ public class DiaryHandler {
 
   void handleViewDiary(HttpExchange x1, FormData x2) {
     DiaryView view = new DiaryView(x1, x2, siteInfo);
-    view.lookupContentInfo(contentService, memberService);
+    getDiaryContent(view);
     Mustache t = viewTemplate;
     if (view.isMyPage()) {
       t = viewTemplateMine;
     }
     WebUtil.renderForm(t, x1, view);
+  }
+
+  private void getDiaryContent(DiaryView view) {
+    Content y = contentService.getByID(view.contentID());
+    view.addDiaryInfo(y);
+    ZoneId tz = memberService.getByID(y.createdBy()).tz();
+    List<Content> children = contentService.findChildrenOfID(y.id());
+    view.setSections(DiaryView.buildSections(children, tz));
   }
 
   void handleEditDiary(HttpExchange x1, FormData x2) {

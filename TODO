@@ -1,4 +1,6 @@
-2022-02-18: diary: add text note (top-level and monthly)
+2022-04-20: define summary for photo diary
+2022-04-20: update existing note rather than creating a new one each time.
+2022-04-20: allow people to subscribe to other gardens
 2022-03-24: When I visit page from goat counter it says "log in".  But I am logged in.
 2022-03-18: Fix last visit logic
     - call it last visit not last login
@@ -14,7 +16,8 @@
 
 2022-03-21: Make /bin scripts executable as part of deploy.
 
-2022-03-21: Add large image, link to it from diary (/members/2/photos/3).  Allow comments.
+2022-03-21: Let user see high-res version of every image (/members/2/photos/3).
+2022-03-21: Allow comments on large imagaes.
 
 2022-03-21: Allow anybody to mark a photo as inappropriate.  Does not have to be logged in.
 

@@ -8,11 +8,11 @@
 
 <p><a href="/photo-diary/{{contentID}}/add-image"><button id="add-img" type="button">+ img</button></a>
 
-<div id="add-text-1"></div>
+<div id="diary-summary"></div>
 <script src="/static/js/elm_edit_text.js"></script>
 <script>
-  var app = Elm.EditText.init({
-    node: document.getElementById("add-text-1"),
+  const app = Elm.EditText.init({
+    node: document.getElementById("diary-summary"),
     flags: {{contentID}}
   });
 </script>
@@ -21,7 +21,7 @@
 {{#sections}}
 <h2>{{title}}</h2>
 
-{{#elements}}
+{{#entries}}
 {{#text}}
 {{{text}}}{{/text}}
 {{#photoContentID}}
@@ -31,7 +31,7 @@
 <a id="deleteButton-{{photoContentID}}" href="javascript:deleteImage('{{photoContentID}}')">delete &uarr;</a>
 </div>
 {{/photoContentID}}
-{{/elements}}
+{{/entries}}
 
 {{/sections}}
 

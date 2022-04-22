@@ -139,11 +139,14 @@ public class WebUtil {
           m.tz()
         );
       }
-      case ADD_NOTE -> new AddNote(
-        subject,
-        ContentID.parse(x.get("parent")),
-        new BlobBytes(x.get("body").getBytes(StandardCharsets.UTF_8))
-      );
+      case ADD_NOTE -> {
+        String body = x.get("body").trim();
+        yield new AddNote(
+          subject,
+          ContentID.parse(x.get("parent")),
+          body.isEmpty() ? null : new BlobBytes(body.getBytes(StandardCharsets.UTF_8))
+        );
+      }
     };
   }
 
