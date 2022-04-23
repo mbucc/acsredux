@@ -8,8 +8,9 @@ import com.acsredux.adapter.web.views.BaseView;
 import com.acsredux.core.base.Command;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
-import com.acsredux.core.content.commands.AddNote;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
+import com.acsredux.core.content.commands.SaveNote;
+import com.acsredux.core.content.commands.SaveNoteText;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.commands.CreateMember;
@@ -141,13 +142,20 @@ public class WebUtil {
           m.tz()
         );
       }
-      case ADD_NOTE -> new AddNote(
+      case SAVE_NOTE -> new SaveNote(
         subject,
         ContentID.parse(x.get("parent")),
         new FromDateTime(
           Instant.ofEpochSecond(Long.parseLong(x.get("entryFromEpochSeconds")))
         ),
         x.get("text").isEmpty()
+          ? null
+          : new BlobBytes(x.get("text").getBytes(StandardCharsets.UTF_8))
+      );
+      case SAVE_NOTE_TEXT -> new SaveNoteText(
+        subject,
+        ContentID.parse(x.get("noteID")),
+        x.get("text") == null || x.get("text").isEmpty()
           ? null
           : new BlobBytes(x.get("text").getBytes(StandardCharsets.UTF_8))
       );
@@ -194,20 +202,22 @@ public class WebUtil {
     return buf.toString();
   }
 
-  public static long pathToID(HttpExchange x, int idx) {
-    return pathToID(x.getRequestURI(), idx);
+  // The index (second argument) is zero-based.
+  public static long pathToID(HttpExchange x, int i) {
+    return pathToID(x.getRequestURI(), i);
   }
 
-  public static long pathToID(URI x, int idx) {
+  // The index (second argument) is zero-based.
+  public static long pathToID(URI x, int i) {
     var xs = x.toString().split("/");
-    if (xs.length < idx + 1) {
+    if (xs.length < i + 1) {
       throw new IllegalStateException("invalid URI " + x);
     }
     try {
-      return Long.parseLong(xs[idx]);
+      return Long.parseLong(xs[i]);
     } catch (Exception e) {
       String fmt = "can't parse long from path component %d in %s";
-      throw new IllegalStateException(String.format(fmt, idx, x));
+      throw new IllegalStateException(String.format(fmt, i, x));
     }
   }
 

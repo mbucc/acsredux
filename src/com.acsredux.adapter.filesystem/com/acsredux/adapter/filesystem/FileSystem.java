@@ -93,7 +93,7 @@ public final class FileSystem
     }
   }
 
-  private void rename(String from, String to) throws IOException {
+  static void rename(String from, String to) throws IOException {
     Path x = Paths.get(from);
     Files.move(x, x.resolveSibling(to), StandardCopyOption.REPLACE_EXISTING);
   }
@@ -183,7 +183,7 @@ public final class FileSystem
 
   private void writeContentToJSON() {
     String tmp = CONTENT_JSON_FILE + ".tmp";
-    try (FileWriter writer = new FileWriter(CONTENT_JSON_FILE + ".tmp")) {
+    try (FileWriter writer = new FileWriter(tmp)) {
       List<ContentDTO> ys = this.content.values().stream().map(ContentDTO::new).toList();
       gson.toJson(ys, writer);
       rename(tmp, CONTENT_JSON_FILE);
@@ -417,7 +417,7 @@ public final class FileSystem
 
   @Override
   public synchronized void update(Content x) {
-    throw new UnsupportedOperationException("implement");
+    content.put(x.id(), x);
   }
 
   @Override

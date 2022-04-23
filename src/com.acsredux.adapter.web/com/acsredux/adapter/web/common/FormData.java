@@ -37,7 +37,7 @@ public class FormData {
       y = d2;
     }
     if (y == null || y.isBlank()) {
-      throw new IllegalStateException("no entry from date in: " + this);
+      throw new IllegalStateException("expected and entryDate field in " + this);
     }
     long epochSeconds;
     if (y.length() == "2022-03-26".length()) {
@@ -52,6 +52,11 @@ public class FormData {
       }
     }
     this.add("entryFromEpochSeconds", String.valueOf(epochSeconds));
+    return this;
+  }
+
+  public FormData addCommand(FormCommand cmd) {
+    this.add("command", cmd.name());
     return this;
   }
 

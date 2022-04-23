@@ -22,4 +22,19 @@ public record Content(
   public static Comparator<Content> byFrom = Comparator.comparingLong(o ->
     o.from().val().getEpochSecond()
   );
+
+  public Content withText(BlobBytes content) {
+    return new Content(
+      this.id,
+      this.refersTo,
+      this.createdBy,
+      this.title,
+      this.createdOn,
+      this.from,
+      this.upto,
+      this.contentType,
+      this.blobType,
+      content
+    );
+  }
 }

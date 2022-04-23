@@ -2,20 +2,23 @@ package com.acsredux.core.content.services;
 
 import com.acsredux.core.base.*;
 import com.acsredux.core.content.ContentService;
-import com.acsredux.core.content.commands.AddNote;
 import com.acsredux.core.content.commands.BaseContentCommand;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.DeleteContent;
+import com.acsredux.core.content.commands.SaveNote;
+import com.acsredux.core.content.commands.SaveNoteText;
 import com.acsredux.core.content.commands.UploadPhoto;
 import com.acsredux.core.content.entities.Content;
 import com.acsredux.core.content.events.ContentCreated;
 import com.acsredux.core.content.events.ContentDeleted;
+import com.acsredux.core.content.events.ContentTextUpdated;
 import com.acsredux.core.content.ports.ContentReader;
 import com.acsredux.core.content.ports.ContentWriter;
 import com.acsredux.core.content.ports.ImageReader;
 import com.acsredux.core.content.ports.ImageWriter;
 import com.acsredux.core.content.values.*;
 import com.acsredux.core.members.values.CreatedOn;
+import com.acsredux.core.members.values.UpdatedOn;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,13 +69,28 @@ public class ContentServiceProvider implements ContentService {
         case CreatePhotoDiary x1 -> handleCreatePhotoDiary(x1);
         case UploadPhoto x1 -> handleUploadPhoto(x1);
         case DeleteContent x1 -> handleDeleteContent(x1);
-        case AddNote x1 -> handleAddNote(x1);
+        case SaveNote x1 -> handleSaveNote(x1);
+        case SaveNoteText x1 -> handleSaveNoteText(x1);
       };
     logEvents(ys);
     return ys;
   }
 
-  private List<Event> handleAddNote(AddNote cmd) {
+  private List<Event> handleSaveNoteText(SaveNoteText cmd) {
+    MemberID mid = validateMemberLoggedIn(cmd);
+    var now = new UpdatedOn(this.clock.instant());
+    Content c = reader.getByID(cmd.id());
+    // TODO: Move security to proxy.
+    // Note: The idea of separating out this security logic feels very unnatural.
+    if (!c.createdBy().equals(mid)) {
+      throw new NotAuthorizedException("You don't have permission to edit this note.");
+    }
+    Event y = new ContentTextUpdated(cmd, mid, now);
+    writer.update(c.withText(cmd.text()));
+    return Collections.singletonList(y);
+  }
+
+  private List<Event> handleSaveNote(SaveNote cmd) {
     MemberID mid = validateMemberLoggedIn(cmd);
     CreatedOn now = new CreatedOn(this.clock.instant());
     NewContent x = new NewContent(

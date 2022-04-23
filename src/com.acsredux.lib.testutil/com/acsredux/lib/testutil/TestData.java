@@ -234,6 +234,22 @@ public class TestData {
     TEST_PHOTO_DIARY_CONTENT.blobType(),
     TEST_PHOTO_DIARY_CONTENT.content()
   );
+
+  public static final Content newContentDiaryWithID(ContentID id) {
+    return new Content(
+      id,
+      TEST_NEW_CONTENT_DIARY.refersTo(),
+      TEST_NEW_CONTENT_DIARY.createdBy(),
+      TEST_NEW_CONTENT_DIARY.title(),
+      TEST_NEW_CONTENT_DIARY.createdOn(),
+      TEST_NEW_CONTENT_DIARY.from(),
+      TEST_NEW_CONTENT_DIARY.upto(),
+      TEST_NEW_CONTENT_DIARY.contentType(),
+      TEST_NEW_CONTENT_DIARY.blobType(),
+      TEST_NEW_CONTENT_DIARY.content()
+    );
+  }
+
   public static final ContentCreated TEST_PHOTO_DIARY_CREATED = new ContentCreated(
     TEST_NEW_CONTENT_DIARY,
     TEST_DIARY_CONTENT_ID

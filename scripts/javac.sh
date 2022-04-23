@@ -8,7 +8,7 @@ ${JAVAC} \
 		-Xlint \
 		-Xlint:-requires-automatic \
 		--module-source-path src \
-		$(find src -name '*.java'|egrep -v '(/Test|/Mock|/ManualTest)') \
+		$(find src -name '*.java'|egrep -v '(/Test|/Mock|/ManualTest|Test\.java)') \
 		> compile.out 2>&1
 
 rval=$?

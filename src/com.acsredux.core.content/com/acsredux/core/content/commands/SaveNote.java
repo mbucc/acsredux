@@ -8,14 +8,14 @@ import com.acsredux.core.content.values.ContentID;
 import com.acsredux.core.content.values.FromDateTime;
 import java.util.ResourceBundle;
 
-public record AddNote(
+public record SaveNote(
   Subject subject,
   ContentID parentID,
   FromDateTime from,
   BlobBytes note
 )
   implements BaseContentCommand {
-  public AddNote {
+  public SaveNote {
     var rb = ResourceBundle.getBundle("ContentErrorMessages");
     die(subject, "null subject");
     die(from, "null from date/time");

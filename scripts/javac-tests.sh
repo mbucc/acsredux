@@ -5,7 +5,7 @@
 ${JAVAC} \
 		-d testclasses \
 		-cp "lib/*:testlib/*:$(echo classes/*|tr ' ' :)" \
-		$(find src -name '*.java'|egrep '(/Test|/Mock|/ManualTest)') \
+		$(find src -name '*.java'|egrep '(/Test|/Mock|/ManualTest|Test\.java)') \
 		> compile.out 2>&1
 
 rval=$?

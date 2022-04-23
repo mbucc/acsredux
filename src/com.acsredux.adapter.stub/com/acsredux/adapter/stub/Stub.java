@@ -268,8 +268,9 @@ public final class Stub
   }
 
   @Override
-  public void update(Content y) {
-    throw new UnsupportedOperationException("implement");
+  public void update(Content x) {
+    delete(x.id());
+    content.add(x);
   }
 
   @Override

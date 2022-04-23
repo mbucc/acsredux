@@ -264,6 +264,9 @@ public class MockHttpExchange extends HttpExchange {
     if (this.requestMethod.equals("POST")) {
       y += ".post";
     }
+    if (this.requestMethod.equals("PUT")) {
+      y += ".put";
+    }
     if (!this.goldenSuffix.isBlank()) {
       y += "-" + this.goldenSuffix;
     }

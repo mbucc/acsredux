@@ -5,6 +5,7 @@ import static com.acsredux.adapter.web.common.WebUtil.pathToID;
 import static com.acsredux.adapter.web.members.Util.redirect;
 
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
+import com.acsredux.adapter.web.common.FormCommand;
 import com.acsredux.adapter.web.common.FormData;
 import com.acsredux.adapter.web.common.WebUtil;
 import com.acsredux.adapter.web.views.EditPhotoView;
@@ -46,7 +47,7 @@ public class PhotoHandler {
     Member m = ((MemberHttpPrincipal) x1.getPrincipal()).getMember();
     var y = Result
       .ok(x2)
-      .map(o -> o.add("command", "UPLOAD_PHOTO"))
+      .map(o -> o.addCommand(FormCommand.UPLOAD_PHOTO))
       .map(o -> o.normalizeDates(m.tz()))
       .map(o -> o.add("parent", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))

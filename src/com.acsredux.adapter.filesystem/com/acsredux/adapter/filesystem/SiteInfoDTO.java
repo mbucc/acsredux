@@ -17,8 +17,6 @@ public class SiteInfoDTO {
 
   public SiteInfo asSiteInfo() {
     try {
-      String x =
-        "<script data-goatcounter='https://gardendiary.goatcounter.com/count' async src='//gc.zgo.at/count.js'></script>";
       return new SiteInfo(
         SiteStatus.ALPHA,
         25,

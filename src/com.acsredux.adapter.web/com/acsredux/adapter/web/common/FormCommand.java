@@ -5,5 +5,6 @@ public enum FormCommand {
   LOGIN,
   CREATE_PHOTO_DIARY,
   UPLOAD_PHOTO,
-  ADD_NOTE,
+  SAVE_NOTE,
+  SAVE_NOTE_TEXT,
 }
