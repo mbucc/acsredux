@@ -154,7 +154,7 @@ public final class FileSystem
 
   private void writeSessionsToJSON() {
     String tmp = SESSION_JSON_FILE + ".tmp";
-    try (FileWriter writer = new FileWriter(SESSION_JSON_FILE)) {
+    try (FileWriter writer = new FileWriter(tmp)) {
       List<SessionDTO> ys =
         this.sessions.entrySet().stream().map(SessionDTO::new).toList();
       gson.toJson(ys, writer);
