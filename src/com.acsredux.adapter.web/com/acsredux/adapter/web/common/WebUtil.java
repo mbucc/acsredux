@@ -135,18 +135,22 @@ public class WebUtil {
           new FileName(f.filename()),
           new BlobBytes(f.val()),
           ImageOrientation.of(x.get("imageOrientation")),
-          new ImageDate(Instant.ofEpochSecond(Long.parseLong(x.get("imageDate")))),
+          new ImageDate(
+            Instant.ofEpochSecond(Long.parseLong(x.get("entryFromEpochSeconds")))
+          ),
           m.tz()
         );
       }
-      case ADD_NOTE -> {
-        String body = x.get("body").trim();
-        yield new AddNote(
-          subject,
-          ContentID.parse(x.get("parent")),
-          body.isEmpty() ? null : new BlobBytes(body.getBytes(StandardCharsets.UTF_8))
-        );
-      }
+      case ADD_NOTE -> new AddNote(
+        subject,
+        ContentID.parse(x.get("parent")),
+        new FromDateTime(
+          Instant.ofEpochSecond(Long.parseLong(x.get("entryFromEpochSeconds")))
+        ),
+        x.get("text").isEmpty()
+          ? null
+          : new BlobBytes(x.get("text").getBytes(StandardCharsets.UTF_8))
+      );
     };
   }
 

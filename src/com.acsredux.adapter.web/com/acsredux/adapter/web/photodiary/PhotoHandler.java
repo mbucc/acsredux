@@ -18,11 +18,6 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.spencerwi.either.Result;
 import com.sun.net.httpserver.HttpExchange;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class PhotoHandler {
 
@@ -52,7 +47,7 @@ public class PhotoHandler {
     var y = Result
       .ok(x2)
       .map(o -> o.add("command", "UPLOAD_PHOTO"))
-      .map(o -> normalizeDates(o, m.tz()))
+      .map(o -> o.normalizeDates(m.tz()))
       .map(o -> o.add("parent", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
@@ -73,30 +68,6 @@ public class PhotoHandler {
         internalError(x1, e);
       }
     }
-  }
-
-  // imageDateTime   = parsed by JS from image.
-  // imageDatePicker = picker displayed if parse fails.
-  static FormData normalizeDates(FormData x, ZoneId tz) {
-    String y = x.get("imageDateTime");
-    String d2 = x.get("imageDatePicker");
-    if (d2 != null && !d2.isBlank()) {
-      y = d2;
-    }
-    long epochSeconds;
-    if (y.length() == "2022-03-26".length()) {
-      epochSeconds = LocalDate.parse(y).atStartOfDay().atZone(tz).toEpochSecond();
-    } else {
-      try {
-        epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
-      } catch (DateTimeParseException e) {
-        // 1998:02:09 06:49:00
-        var exifFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-        epochSeconds = LocalDateTime.parse(y, exifFormat).atZone(tz).toEpochSecond();
-      }
-    }
-    x.add("imageDate", String.valueOf(epochSeconds));
-    return x;
   }
 
   // /photo-diary/123/add-image

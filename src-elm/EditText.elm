@@ -201,7 +201,7 @@ clearFlags model =
 
 postURL : Int -> String
 postURL diaryID =
-    "/photo-diary/" ++ String.fromInt diaryID ++ "/add-note"
+    "/photo-diary/" ++ String.fromInt diaryID ++ "/notes"
 
 
 

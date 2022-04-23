@@ -17,14 +17,14 @@ public class TestUploadDates {
     // setup
     FormData x = new FormData();
     String dt = "2022-02-28T12:30:00";
-    x.add("imageDateTime", dt);
+    x.add("entryDate", dt);
 
     // execute
-    PhotoHandler.normalizeDates(x, tz);
+    x.normalizeDates(tz);
 
     // verify
     long expected = LocalDateTime.parse(dt).atZone(tz).toEpochSecond();
-    assertEquals(String.valueOf(expected), x.get("imageDate"));
+    assertEquals(String.valueOf(expected), x.get("entryFromEpochSeconds"));
   }
 
   @Test
@@ -35,11 +35,11 @@ public class TestUploadDates {
     x.add("imageDatePicker", dt);
 
     // execute
-    PhotoHandler.normalizeDates(x, tz);
+    x.normalizeDates(tz);
 
     // verify
     long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();
-    assertEquals(String.valueOf(expected), x.get("imageDate"));
+    assertEquals(String.valueOf(expected), x.get("entryFromEpochSeconds"));
   }
 
   @Test
@@ -48,13 +48,13 @@ public class TestUploadDates {
     FormData x = new FormData();
     String dt = "2022-03-28";
     x.add("imageDatePicker", dt);
-    x.add("imageDateTime", "2022-02-28T12:30:00");
+    x.add("entryDate", "2022-02-28T12:30:00");
 
     // execute
-    PhotoHandler.normalizeDates(x, tz);
+    x.normalizeDates(tz);
 
     // verify
     long expected = LocalDate.parse(dt).atStartOfDay().atZone(tz).toEpochSecond();
-    assertEquals(String.valueOf(expected), x.get("imageDate"));
+    assertEquals(String.valueOf(expected), x.get("entryFromEpochSeconds"));
   }
 }

@@ -1,5 +1,5 @@
 200
-Content-Length: 1548
+Content-Length: 1540
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -32,7 +32,7 @@ Content-type: text/html; charset= UTF-8
 <input type="date" name="imageDatePicker" id="imageDatePicker" style="display:none;" /><br>
 <input type="hidden" name="contentID" value="123">
 <input type="hidden" id="imageOrientation" name="imageOrientation" value=""><br>
-<input type="hidden" id="imageDateTime" name="imageDateTime" value=""><br>
+<input type="hidden" id="entryDate" name="entryDate" value=""><br>
 
 <p><input type="submit" name="submit" value="Upload image to your 2022 diary" />
 

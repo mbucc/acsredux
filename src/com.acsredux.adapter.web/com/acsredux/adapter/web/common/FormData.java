@@ -11,6 +11,11 @@ import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +27,33 @@ public class FormData {
   static final String BOUNDARY_PREFIX = "--";
   private final Map<String, List<String>> data = new HashMap<>();
   private MultipartFilePart file;
+
+  // entryDate   = parsed by JS from image.
+  // imageDatePicker = picker displayed if parse fails.
+  public FormData normalizeDates(ZoneId tz) {
+    String y = this.get("entryDate");
+    String d2 = this.get("imageDatePicker");
+    if (d2 != null && !d2.isBlank()) {
+      y = d2;
+    }
+    if (y == null || y.isBlank()) {
+      throw new IllegalStateException("no entry from date in: " + this);
+    }
+    long epochSeconds;
+    if (y.length() == "2022-03-26".length()) {
+      epochSeconds = LocalDate.parse(y).atStartOfDay().atZone(tz).toEpochSecond();
+    } else {
+      try {
+        epochSeconds = LocalDateTime.parse(y).atZone(tz).toEpochSecond();
+      } catch (DateTimeParseException e) {
+        // 1998:02:09 06:49:00
+        var exifFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
+        epochSeconds = LocalDateTime.parse(y, exifFormat).atZone(tz).toEpochSecond();
+      }
+    }
+    this.add("entryFromEpochSeconds", String.valueOf(epochSeconds));
+    return this;
+  }
 
   public FormData add(String key, String val) {
     if (!data.containsKey(key)) {
