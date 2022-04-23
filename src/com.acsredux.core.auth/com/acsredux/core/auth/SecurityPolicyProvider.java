@@ -26,6 +26,7 @@ public class SecurityPolicyProvider implements SecurityPolicy {
         .collect(Collectors.toList());
   }
 
+  // TODO: Unstub this method and build from Entitlement.
   private static Guard toGuard(Entitlement entitlement) {
     return new Guard(
       SecurityPolicyProvider::isCreateArticle,
