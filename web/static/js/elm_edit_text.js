@@ -6446,8 +6446,8 @@ var $elm$http$Http$post = function (r) {
 var $author$project$EditText$postURL = function (diaryID) {
 	return '/photo-diary/' + ($elm$core$String$fromInt(diaryID) + '/notes');
 };
-var $author$project$EditText$putContentTextURL = function (noteID) {
-	return '/content/' + ($elm$core$String$fromInt(noteID) + '/text');
+var $author$project$EditText$putContentTextURL = function (contentID) {
+	return '/content/' + ($elm$core$String$fromInt(contentID) + '/body');
 };
 var $elm$http$Http$stringBody = _Http_pair;
 var $author$project$EditText$tryAgain = function (x) {
@@ -6569,6 +6569,28 @@ var $author$project$EditText$SaveNote = function (a) {
 	return {$: 'SaveNote', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$core$String$trim = _String_trim;
+var $author$project$EditText$elementID = function (x) {
+	switch (x.$) {
+		case 'NoteID':
+			var id = x.a;
+			return $elm$core$String$fromInt(id);
+		case 'DiaryIdAndDay':
+			var month = x.b;
+			return $elm$core$String$trim(month);
+		default:
+			return 'invalid';
+	}
+};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6628,7 +6650,9 @@ var $author$project$EditText$editBox = function (model) {
 			$elm$html$Html$textarea,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onInput($author$project$EditText$Change)
+					$elm$html$Html$Events$onInput($author$project$EditText$Change),
+					$elm$html$Html$Attributes$id(
+					'textarea-' + $author$project$EditText$elementID(model.contentID))
 				]),
 			_List_fromArray(
 				[
@@ -6639,7 +6663,9 @@ var $author$project$EditText$editBox = function (model) {
 			_List_fromArray(
 				[
 					$elm$html$Html$Events$onClick(
-					$author$project$EditText$SaveNote(model.contentID))
+					$author$project$EditText$SaveNote(model.contentID)),
+					$elm$html$Html$Attributes$id(
+					'save-' + $author$project$EditText$elementID(model.contentID))
 				]),
 			_List_fromArray(
 				[
@@ -6649,7 +6675,9 @@ var $author$project$EditText$editBox = function (model) {
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$EditText$Cancel)
+					$elm$html$Html$Events$onClick($author$project$EditText$Cancel),
+					$elm$html$Html$Attributes$id(
+					'cancel-' + $author$project$EditText$elementID(model.contentID))
 				]),
 			_List_fromArray(
 				[
@@ -6658,16 +6686,20 @@ var $author$project$EditText$editBox = function (model) {
 		]);
 };
 var $author$project$EditText$Edit = {$: 'Edit'};
-var $author$project$EditText$editButton = A2(
-	$elm$html$Html$button,
-	_List_fromArray(
-		[
-			$elm$html$Html$Events$onClick($author$project$EditText$Edit)
-		]),
-	_List_fromArray(
-		[
-			$elm$html$Html$text('Add a diary entry.')
-		]));
+var $author$project$EditText$editButton = function (contentID) {
+	return A2(
+		$elm$html$Html$button,
+		_List_fromArray(
+			[
+				$elm$html$Html$Events$onClick($author$project$EditText$Edit),
+				$elm$html$Html$Attributes$id(
+				'edit-' + $author$project$EditText$elementID(contentID))
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text('Add a diary entry.')
+			]));
+};
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$html$Html$p = _VirtualDom_node('p');
@@ -6675,15 +6707,6 @@ var $zwilias$elm_rosetree$Tree$children = function (_v0) {
 	var c = _v0.b;
 	return c;
 };
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $jxxcarlson$elm_markdown$Markdown$Render$masterId = $elm$html$Html$Attributes$id('__RENDERED_TEXT__');
 var $jxxcarlson$elm_markdown$Markdown$Render$IDClicked = function (a) {
 	return {$: 'IDClicked', a: a};
@@ -6742,7 +6765,6 @@ var $jxxcarlson$elm_markdown$Markdown$Render$mathText = F2(
 				]),
 			_List_Nil);
 	});
-var $elm$core$String$trim = _String_trim;
 var $jxxcarlson$elm_markdown$Markdown$Render$displayMathText = function (str) {
 	var str2 = $elm$core$String$trim(str);
 	return A2(
@@ -19603,7 +19625,9 @@ var $author$project$EditText$view = function (model) {
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
-			[$author$project$EditText$editButton])) : A2(
+			[
+				$author$project$EditText$editButton(model.contentID)
+			])) : A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
@@ -19618,7 +19642,7 @@ var $author$project$EditText$view = function (model) {
 						$author$project$EditText$MarkdownMsg,
 						A2($jxxcarlson$elm_markdown$Markdown$Render$toHtml, $jxxcarlson$elm_markdown$Markdown$Option$Extended, model.markdown))
 					])),
-				$author$project$EditText$editButton
+				$author$project$EditText$editButton(model.contentID)
 			]))));
 };
 var $author$project$EditText$main = $elm$browser$Browser$element(

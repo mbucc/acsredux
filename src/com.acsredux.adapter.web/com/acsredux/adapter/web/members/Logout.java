@@ -11,7 +11,7 @@ class Logout {
   boolean isGetLogout(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/members/logout")
+      x.getRequestURI().getPath().matches(MembersHandler.ROOT + "/logout")
     );
   }
 

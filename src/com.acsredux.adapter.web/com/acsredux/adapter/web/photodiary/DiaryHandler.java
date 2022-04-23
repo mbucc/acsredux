@@ -70,7 +70,7 @@ public class DiaryHandler {
       .map(os -> os.get(0))
       .map(ContentCreated.class::cast)
       .map(ContentCreated::id)
-      .map(o -> String.format("/photo-diary/%d", o.val()))
+      .map(o -> String.format(MainHandler.ROOT + "/%d", o.val()))
       .mapWrap(o -> redirect(x1, o));
 
     if (result.isErr()) {
@@ -87,21 +87,21 @@ public class DiaryHandler {
   public boolean isEditDiary(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/photo-diary/create")
+      x.getRequestURI().getPath().matches(MainHandler.ROOT + "/create")
     );
   }
 
   public boolean isSaveDiary(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("POST") &&
-      x.getRequestURI().getPath().matches("/photo-diary/create")
+      x.getRequestURI().getPath().matches(MainHandler.ROOT + "/create")
     );
   }
 
   public boolean isViewDiary(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/photo-diary/\\d+$")
+      x.getRequestURI().getPath().matches(MainHandler.ROOT + "/\\d+$")
     );
   }
 }

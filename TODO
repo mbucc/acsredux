@@ -1,14 +1,29 @@
-2022-04-20: define summary for photo diary
-2022-04-20: update existing note rather than creating a new one each time.
-2022-04-20: allow people to subscribe to other gardens
-2022-03-24: When I visit page from goat counter it says "log in".  But I am logged in.
+2022-04-23: Add summary note for each month.
+2022-04-23: Fix CSS styling to avoid double-dot in Elm markdown renderer
+2022-04-23: Write data conversion and then deploy new note logic.
+2022-04-23: Move PUT /content/1/body handler from Note to Content.
+2022-04-23: Make existing DELETE /image/1 endpoint more general.
+2022-04-23: Update proxy to log all events
+	remove logging from existing command handlers
+	determine if a method is a command handler, like this?
+		1. define a base interface for a command handler
+		2. does the proxy implement that base interface
+		3. does method name from base interface match this method
+2022-04-23: Decouple BaseCommand from ContentCommand
+	do previous task
+	use instance of to lift to ContentCommand interface
+	use switch to dispatch to a specific handler
+	simplify web handler code for put and posts
+
+2022-04-20: allow people to subscribe to other garden updates
 2022-03-18: Fix last visit logic
     - call it last visit not last login
     - only update if it is a new day
     - add a visit counter
     - display on dashboard (in the private section).
-2022-03-18: add "changes since" section to dashboard
+2022-03-24: When I visit page from goat counter it says "log in".  But I am logged in.
 2022-02-18: diary: add photo captions.
+
 2022-03-18: Create lib.hooks for site-specific data.  Add member dashboard hook.
 2022-04-01: Sessions are never deleted from DB (should save termination date).
 

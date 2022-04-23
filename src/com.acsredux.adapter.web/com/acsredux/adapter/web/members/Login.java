@@ -46,7 +46,7 @@ class Login {
       .map(Member::id)
       .map(o -> createSession(o, memberService))
       .map(o -> addCookie(x1, siteInfo.cookieMaxAge().toSeconds(), o))
-      .mapWrap(o -> redirect(x1, "/members/" + o.mid().val()));
+      .mapWrap(o -> redirect(x1, MembersHandler.ROOT + "/" + o.mid().val()));
 
     if (result.isErr()) {
       RuntimeException e = result.getError();
@@ -62,14 +62,14 @@ class Login {
   boolean isGetLogin(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/members/login")
+      x.getRequestURI().getPath().matches(MembersHandler.ROOT + "/login")
     );
   }
 
   boolean isPostLogin(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("POST") &&
-      x.getRequestURI().getPath().matches("/members/login")
+      x.getRequestURI().getPath().matches(MembersHandler.ROOT + "/login")
     );
   }
 }

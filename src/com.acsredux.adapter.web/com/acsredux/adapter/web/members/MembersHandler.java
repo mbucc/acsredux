@@ -12,6 +12,8 @@ import java.util.List;
 
 public class MembersHandler extends BaseHandler {
 
+  public static final String ROOT = "/members";
+
   private final Login loginHandler;
   private final CreateHandler createHandler;
   private final Logout logoutHandler;

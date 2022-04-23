@@ -50,17 +50,4 @@ class TestNoteHandler {
     // verify
     mock.goldTest();
   }
-
-  @Test
-  void testPut() {
-    // setup
-    var mock = new MockHttpExchange("/content/4321/body", "PUT", "abc123def");
-    mock.setPrincipal(TEST_HTTP_PRINCIPAL);
-
-    // execute
-    this.handler.handle(mock);
-
-    // verify
-    mock.goldTest();
-  }
 }

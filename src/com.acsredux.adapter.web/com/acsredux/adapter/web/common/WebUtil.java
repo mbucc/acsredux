@@ -6,8 +6,10 @@ import com.acsredux.adapter.web.auth.ACSHttpPrincipal;
 import com.acsredux.adapter.web.auth.MemberHttpPrincipal;
 import com.acsredux.adapter.web.views.BaseView;
 import com.acsredux.core.base.Command;
+import com.acsredux.core.base.Event;
 import com.acsredux.core.base.NotAuthorizedException;
 import com.acsredux.core.base.Subject;
+import com.acsredux.core.base.ValidationException;
 import com.acsredux.core.content.commands.CreatePhotoDiary;
 import com.acsredux.core.content.commands.SaveNote;
 import com.acsredux.core.content.commands.SaveNoteText;
@@ -19,6 +21,7 @@ import com.acsredux.core.members.entities.Member;
 import com.acsredux.core.members.values.*;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import com.spencerwi.either.Result;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
@@ -43,6 +46,7 @@ import org.commonmark.renderer.html.HtmlRenderer;
 public class WebUtil {
 
   public static final String CONTENT_TYPE = "Content-type";
+  public static final String BODY_KEY = "body";
 
   static Parser parser = Parser.builder().build();
 
@@ -155,9 +159,9 @@ public class WebUtil {
       case SAVE_NOTE_TEXT -> new SaveNoteText(
         subject,
         ContentID.parse(x.get("noteID")),
-        x.get("body") == null || x.get("body").isEmpty()
+        x.get(BODY_KEY) == null || x.get(BODY_KEY).isEmpty()
           ? null
-          : new BlobBytes(x.get("text").getBytes(StandardCharsets.UTF_8))
+          : new BlobBytes(x.get(BODY_KEY).getBytes(StandardCharsets.UTF_8))
       );
     };
   }
@@ -345,5 +349,17 @@ public class WebUtil {
     // This looks thread-safe, but leave here as should be super-fast.
     HtmlRenderer renderer = HtmlRenderer.builder().build();
     return renderer.render(document);
+  }
+
+  public static void handleError(HttpExchange x1, Result<List<Event>> y) {
+    System.out.println("y.getException() = " + y.getException());
+    Exception e = y.getException();
+    if (e instanceof ValidationException e1) {
+      clientError(x1, e1.getMessage());
+    } else if (e instanceof NotAuthorizedException e1) {
+      notAuthorized(x1, e1);
+    } else {
+      internalError(x1, e);
+    }
   }
 }

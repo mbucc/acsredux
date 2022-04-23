@@ -16,6 +16,8 @@ import java.util.List;
 
 class RootHandler extends BaseHandler {
 
+  public static final String ROOT = "/";
+
   private final MustacheFactory mf;
   private final AdminService adminService;
 
@@ -48,8 +50,8 @@ class RootHandler extends BaseHandler {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
       (
-        x.getRequestURI().getPath().matches("/") ||
-        x.getRequestURI().getPath().toLowerCase().matches("/index.html")
+        x.getRequestURI().getPath().matches(ROOT) ||
+        x.getRequestURI().getPath().toLowerCase().matches(ROOT + "index.html")
       )
     );
   }
@@ -57,7 +59,11 @@ class RootHandler extends BaseHandler {
   boolean isPleaseEnable(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().toLowerCase().matches("/please-enable-javascript.html")
+      x
+        .getRequestURI()
+        .getPath()
+        .toLowerCase()
+        .matches(ROOT + "please-enable-javascript.html")
     );
   }
 }

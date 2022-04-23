@@ -22,7 +22,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class PhotoHandler {
 
-  public static final String ADD_IMAGE_URL = "/photo-diary/\\d+/add-image";
+  public static final String ADD_IMAGE_URL = MainHandler.ROOT + "/\\d+/add-image";
   private final SiteInfo siteInfo;
   private final Mustache template;
   private final ContentService contentService;
@@ -55,7 +55,7 @@ public class PhotoHandler {
       .map(contentService::handle);
     if (y.isOk()) {
       var contentID = x2.get("diaryID");
-      var location = String.format("/photo-diary/%s", contentID);
+      var location = String.format(MainHandler.ROOT + "/%s", contentID);
       redirect(x1, location);
     } else {
       Exception e = y.getException();

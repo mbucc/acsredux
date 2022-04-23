@@ -66,14 +66,14 @@ class DashboardHandler {
   boolean isGetDashboard(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/members/\\d+$")
+      x.getRequestURI().getPath().matches(MembersHandler.ROOT + "/\\d+$")
     );
   }
 
   boolean isGetDashboardWithVerificationToken(HttpExchange x) {
     return (
       x.getRequestMethod().equalsIgnoreCase("GET") &&
-      x.getRequestURI().getPath().matches("/members/\\d+?token=")
+      x.getRequestURI().getPath().matches(MembersHandler.ROOT + "/\\d+?token=")
     );
   }
 }

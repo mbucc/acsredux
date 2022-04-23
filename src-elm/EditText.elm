@@ -2,6 +2,7 @@ module EditText exposing (main)
 
 import Browser
 import Html exposing (Html, button, div, p, text, textarea)
+import Html.Attributes exposing (id)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (Expect, Response, expectStringResponse)
 import Markdown.Option exposing (..)
@@ -44,6 +45,19 @@ type ContentID
     = NoteID Int
     | DiaryIdAndDay Int String
     | Invalid
+
+
+elementID : ContentID -> String
+elementID x =
+    case x of
+        NoteID id ->
+            String.fromInt id
+
+        DiaryIdAndDay _ month ->
+            String.trim month
+
+        Invalid ->
+            "invalid"
 
 
 initContentID : ( Maybe Int, Maybe String ) -> ContentID
@@ -257,8 +271,8 @@ postURL diaryID =
 
 
 putContentTextURL : Int -> String
-putContentTextURL noteID =
-    "/content/" ++ String.fromInt noteID ++ "/text"
+putContentTextURL contentID =
+    "/content/" ++ String.fromInt contentID ++ "/body"
 
 
 
@@ -291,7 +305,7 @@ view model =
             div [] (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
 
     else if String.isEmpty model.markdown then
-        div [] [ editButton ]
+        div [] [ editButton model.contentID ]
 
     else
         div
@@ -301,20 +315,34 @@ view model =
                 [ Markdown.Render.toHtml Extended model.markdown
                     |> Html.map MarkdownMsg
                 ]
-            , editButton
+            , editButton model.contentID
             ]
 
 
-editButton : Html Msg
-editButton =
+editButton : ContentID -> Html Msg
+editButton contentID =
     button
-        [ onClick Edit ]
+        [ onClick Edit
+        , id ("edit-" ++ elementID contentID)
+        ]
         [ text "Add a diary entry." ]
 
 
 editBox : Model -> List (Html Msg)
 editBox model =
-    [ textarea [ onInput Change ] [ text model.newMarkdown ]
-    , button [ onClick (SaveNote model.contentID) ] [ text "save" ]
-    , button [ onClick Cancel ] [ text "cancel" ]
+    [ textarea
+        [ onInput Change
+        , id ("textarea-" ++ elementID model.contentID)
+        ]
+        [ text model.newMarkdown ]
+    , button
+        [ onClick (SaveNote model.contentID)
+        , id ("save-" ++ elementID model.contentID)
+        ]
+        [ text "save" ]
+    , button
+        [ onClick Cancel
+        , id ("cancel-" ++ elementID model.contentID)
+        ]
+        [ text "cancel" ]
     ]

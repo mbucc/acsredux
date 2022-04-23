@@ -12,6 +12,8 @@ import java.util.List;
 
 public class MainHandler extends BaseHandler {
 
+  public static final String ROOT = "/photo-diary";
+
   private final DiaryHandler diaryHandler;
   private final PhotoHandler photoHandler;
   private final NoteHandler noteHandler;
@@ -44,8 +46,7 @@ public class MainHandler extends BaseHandler {
       new Route(diaryHandler::isViewDiary, diaryHandler::handleViewDiary),
       new Route(photoHandler::isEditPhoto, photoHandler::handleEditPhoto),
       new Route(photoHandler::isSavePhoto, photoHandler::handleSavePhoto),
-      new Route(noteHandler::isSaveNote, noteHandler::handleSaveNote),
-      new Route(noteHandler::isSaveNoteText, noteHandler::handleSaveNoteText)
+      new Route(noteHandler::isSaveNote, noteHandler::handleSaveNote)
     );
   }
 }

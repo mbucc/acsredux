@@ -1,5 +1,6 @@
 package com.acsredux.adapter.web.common;
 
+import static com.acsredux.adapter.web.common.WebUtil.BODY_KEY;
 import static com.acsredux.adapter.web.common.WebUtil.CONTENT_TYPE;
 import static com.acsredux.adapter.web.common.WebUtil.getContentType;
 import static com.acsredux.adapter.web.common.WebUtil.getContentTypeFromString;
@@ -280,7 +281,7 @@ public class FormData {
           case "PUT", "PATCH", "POST" -> {
             if (WebUtil.getContentType(x).startsWith("text/")) {
               var o = new FormData();
-              o.add("body", new String(readRequestBody(x)));
+              o.add(BODY_KEY, new String(readRequestBody(x)));
               yield o;
             } else {
               yield parseFormData(x);

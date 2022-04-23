@@ -131,17 +131,17 @@ public class Main {
     String templateRoot = xs.documentRoot + "/template";
     record Pair(String path, HttpHandler handler) {}
     Pair[] pairs = new Pair[] {
-      new Pair("/", new RootHandler(templateRoot, adminService)),
+      new Pair(RootHandler.ROOT, new RootHandler(templateRoot, adminService)),
       new Pair(
-        "/members",
+        MembersHandler.ROOT,
         new MembersHandler(templateRoot, memberService, adminService, contentService)
       ),
       new Pair(
-        "/photo-diary",
+        MainHandler.ROOT,
         new MainHandler(templateRoot, contentService, adminService, memberService)
       ),
       new Pair("/static", new StaticFileHandler("/static", xs.documentRoot + "/static")),
-      new Pair("/images", new ContentHandler(contentService)),
+      new Pair(ContentHandler.ROOT, new ContentHandler(contentService)),
     };
     CookieAuthenticator auth = new CookieAuthenticator(memberService);
     for (Pair p : pairs) {
