@@ -1,5 +1,5 @@
 200
-Content-Length: 1540
+Content-Length: 1538
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ Content-type: text/html; charset= UTF-8
 <input type="file" name="picker" id="picker" accept="image/*" required autofocus/>
 <label for="imageDatePicker" style="display:none;" id="imageDatePickerLabel">Date photo taken:</label>
 <input type="date" name="imageDatePicker" id="imageDatePicker" style="display:none;" /><br>
-<input type="hidden" name="contentID" value="123">
+<input type="hidden" name="diaryID" value="123">
 <input type="hidden" id="imageOrientation" name="imageOrientation" value=""><br>
 <input type="hidden" id="entryDate" name="entryDate" value=""><br>
 

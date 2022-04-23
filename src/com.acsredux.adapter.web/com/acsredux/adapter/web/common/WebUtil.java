@@ -132,7 +132,7 @@ public class WebUtil {
         Member m = asMember(principal);
         yield new UploadPhoto(
           subject,
-          ContentID.parse(x.get("parent")),
+          ContentID.parse(x.get("diaryID")),
           new FileName(f.filename()),
           new BlobBytes(f.val()),
           ImageOrientation.of(x.get("imageOrientation")),
@@ -144,7 +144,7 @@ public class WebUtil {
       }
       case SAVE_NOTE -> new SaveNote(
         subject,
-        ContentID.parse(x.get("parent")),
+        ContentID.parse(x.get("diaryID")),
         new FromDateTime(
           Instant.ofEpochSecond(Long.parseLong(x.get("entryFromEpochSeconds")))
         ),
@@ -155,7 +155,7 @@ public class WebUtil {
       case SAVE_NOTE_TEXT -> new SaveNoteText(
         subject,
         ContentID.parse(x.get("noteID")),
-        x.get("text") == null || x.get("text").isEmpty()
+        x.get("body") == null || x.get("body").isEmpty()
           ? null
           : new BlobBytes(x.get("text").getBytes(StandardCharsets.UTF_8))
       );

@@ -80,271 +80,6 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
 console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
-// EQUALITY
-
-function _Utils_eq(x, y)
-{
-	for (
-		var pair, stack = [], isEqual = _Utils_eqHelp(x, y, 0, stack);
-		isEqual && (pair = stack.pop());
-		isEqual = _Utils_eqHelp(pair.a, pair.b, 0, stack)
-		)
-	{}
-
-	return isEqual;
-}
-
-function _Utils_eqHelp(x, y, depth, stack)
-{
-	if (x === y)
-	{
-		return true;
-	}
-
-	if (typeof x !== 'object' || x === null || y === null)
-	{
-		typeof x === 'function' && _Debug_crash(5);
-		return false;
-	}
-
-	if (depth > 100)
-	{
-		stack.push(_Utils_Tuple2(x,y));
-		return true;
-	}
-
-	/**/
-	if (x.$ === 'Set_elm_builtin')
-	{
-		x = $elm$core$Set$toList(x);
-		y = $elm$core$Set$toList(y);
-	}
-	if (x.$ === 'RBNode_elm_builtin' || x.$ === 'RBEmpty_elm_builtin')
-	{
-		x = $elm$core$Dict$toList(x);
-		y = $elm$core$Dict$toList(y);
-	}
-	//*/
-
-	/**_UNUSED/
-	if (x.$ < 0)
-	{
-		x = $elm$core$Dict$toList(x);
-		y = $elm$core$Dict$toList(y);
-	}
-	//*/
-
-	for (var key in x)
-	{
-		if (!_Utils_eqHelp(x[key], y[key], depth + 1, stack))
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-var _Utils_equal = F2(_Utils_eq);
-var _Utils_notEqual = F2(function(a, b) { return !_Utils_eq(a,b); });
-
-
-
-// COMPARISONS
-
-// Code in Generate/JavaScript.hs, Basics.js, and List.js depends on
-// the particular integer values assigned to LT, EQ, and GT.
-
-function _Utils_cmp(x, y, ord)
-{
-	if (typeof x !== 'object')
-	{
-		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
-	}
-
-	/**/
-	if (x instanceof String)
-	{
-		var a = x.valueOf();
-		var b = y.valueOf();
-		return a === b ? 0 : a < b ? -1 : 1;
-	}
-	//*/
-
-	/**_UNUSED/
-	if (typeof x.$ === 'undefined')
-	//*/
-	/**/
-	if (x.$[0] === '#')
-	//*/
-	{
-		return (ord = _Utils_cmp(x.a, y.a))
-			? ord
-			: (ord = _Utils_cmp(x.b, y.b))
-				? ord
-				: _Utils_cmp(x.c, y.c);
-	}
-
-	// traverse conses until end of a list or a mismatch
-	for (; x.b && y.b && !(ord = _Utils_cmp(x.a, y.a)); x = x.b, y = y.b) {} // WHILE_CONSES
-	return ord || (x.b ? /*GT*/ 1 : y.b ? /*LT*/ -1 : /*EQ*/ 0);
-}
-
-var _Utils_lt = F2(function(a, b) { return _Utils_cmp(a, b) < 0; });
-var _Utils_le = F2(function(a, b) { return _Utils_cmp(a, b) < 1; });
-var _Utils_gt = F2(function(a, b) { return _Utils_cmp(a, b) > 0; });
-var _Utils_ge = F2(function(a, b) { return _Utils_cmp(a, b) >= 0; });
-
-var _Utils_compare = F2(function(x, y)
-{
-	var n = _Utils_cmp(x, y);
-	return n < 0 ? $elm$core$Basics$LT : n ? $elm$core$Basics$GT : $elm$core$Basics$EQ;
-});
-
-
-// COMMON VALUES
-
-var _Utils_Tuple0_UNUSED = 0;
-var _Utils_Tuple0 = { $: '#0' };
-
-function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
-
-function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
-
-function _Utils_chr_UNUSED(c) { return c; }
-function _Utils_chr(c) { return new String(c); }
-
-
-// RECORDS
-
-function _Utils_update(oldRecord, updatedFields)
-{
-	var newRecord = {};
-
-	for (var key in oldRecord)
-	{
-		newRecord[key] = oldRecord[key];
-	}
-
-	for (var key in updatedFields)
-	{
-		newRecord[key] = updatedFields[key];
-	}
-
-	return newRecord;
-}
-
-
-// APPEND
-
-var _Utils_append = F2(_Utils_ap);
-
-function _Utils_ap(xs, ys)
-{
-	// append Strings
-	if (typeof xs === 'string')
-	{
-		return xs + ys;
-	}
-
-	// append Lists
-	if (!xs.b)
-	{
-		return ys;
-	}
-	var root = _List_Cons(xs.a, ys);
-	xs = xs.b
-	for (var curr = root; xs.b; xs = xs.b) // WHILE_CONS
-	{
-		curr = curr.b = _List_Cons(xs.a, ys);
-	}
-	return root;
-}
-
-
-
-var _List_Nil_UNUSED = { $: 0 };
-var _List_Nil = { $: '[]' };
-
-function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
-
-
-var _List_cons = F2(_List_Cons);
-
-function _List_fromArray(arr)
-{
-	var out = _List_Nil;
-	for (var i = arr.length; i--; )
-	{
-		out = _List_Cons(arr[i], out);
-	}
-	return out;
-}
-
-function _List_toArray(xs)
-{
-	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
-	{
-		out.push(xs.a);
-	}
-	return out;
-}
-
-var _List_map2 = F3(function(f, xs, ys)
-{
-	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
-	{
-		arr.push(A2(f, xs.a, ys.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map3 = F4(function(f, xs, ys, zs)
-{
-	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A3(f, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map4 = F5(function(f, ws, xs, ys, zs)
-{
-	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
-{
-	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_sortBy = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		return _Utils_cmp(f(a), f(b));
-	}));
-});
-
-var _List_sortWith = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		var ord = A2(f, a, b);
-		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
-	}));
-});
-
-
-
 var _JsArray_empty = [];
 
 function _JsArray_singleton(value)
@@ -790,6 +525,271 @@ function _Debug_regionToString(region)
 	}
 	return 'on lines ' + region.start.line + ' through ' + region.end.line;
 }
+
+
+
+// EQUALITY
+
+function _Utils_eq(x, y)
+{
+	for (
+		var pair, stack = [], isEqual = _Utils_eqHelp(x, y, 0, stack);
+		isEqual && (pair = stack.pop());
+		isEqual = _Utils_eqHelp(pair.a, pair.b, 0, stack)
+		)
+	{}
+
+	return isEqual;
+}
+
+function _Utils_eqHelp(x, y, depth, stack)
+{
+	if (x === y)
+	{
+		return true;
+	}
+
+	if (typeof x !== 'object' || x === null || y === null)
+	{
+		typeof x === 'function' && _Debug_crash(5);
+		return false;
+	}
+
+	if (depth > 100)
+	{
+		stack.push(_Utils_Tuple2(x,y));
+		return true;
+	}
+
+	/**/
+	if (x.$ === 'Set_elm_builtin')
+	{
+		x = $elm$core$Set$toList(x);
+		y = $elm$core$Set$toList(y);
+	}
+	if (x.$ === 'RBNode_elm_builtin' || x.$ === 'RBEmpty_elm_builtin')
+	{
+		x = $elm$core$Dict$toList(x);
+		y = $elm$core$Dict$toList(y);
+	}
+	//*/
+
+	/**_UNUSED/
+	if (x.$ < 0)
+	{
+		x = $elm$core$Dict$toList(x);
+		y = $elm$core$Dict$toList(y);
+	}
+	//*/
+
+	for (var key in x)
+	{
+		if (!_Utils_eqHelp(x[key], y[key], depth + 1, stack))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+var _Utils_equal = F2(_Utils_eq);
+var _Utils_notEqual = F2(function(a, b) { return !_Utils_eq(a,b); });
+
+
+
+// COMPARISONS
+
+// Code in Generate/JavaScript.hs, Basics.js, and List.js depends on
+// the particular integer values assigned to LT, EQ, and GT.
+
+function _Utils_cmp(x, y, ord)
+{
+	if (typeof x !== 'object')
+	{
+		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
+	}
+
+	/**/
+	if (x instanceof String)
+	{
+		var a = x.valueOf();
+		var b = y.valueOf();
+		return a === b ? 0 : a < b ? -1 : 1;
+	}
+	//*/
+
+	/**_UNUSED/
+	if (typeof x.$ === 'undefined')
+	//*/
+	/**/
+	if (x.$[0] === '#')
+	//*/
+	{
+		return (ord = _Utils_cmp(x.a, y.a))
+			? ord
+			: (ord = _Utils_cmp(x.b, y.b))
+				? ord
+				: _Utils_cmp(x.c, y.c);
+	}
+
+	// traverse conses until end of a list or a mismatch
+	for (; x.b && y.b && !(ord = _Utils_cmp(x.a, y.a)); x = x.b, y = y.b) {} // WHILE_CONSES
+	return ord || (x.b ? /*GT*/ 1 : y.b ? /*LT*/ -1 : /*EQ*/ 0);
+}
+
+var _Utils_lt = F2(function(a, b) { return _Utils_cmp(a, b) < 0; });
+var _Utils_le = F2(function(a, b) { return _Utils_cmp(a, b) < 1; });
+var _Utils_gt = F2(function(a, b) { return _Utils_cmp(a, b) > 0; });
+var _Utils_ge = F2(function(a, b) { return _Utils_cmp(a, b) >= 0; });
+
+var _Utils_compare = F2(function(x, y)
+{
+	var n = _Utils_cmp(x, y);
+	return n < 0 ? $elm$core$Basics$LT : n ? $elm$core$Basics$GT : $elm$core$Basics$EQ;
+});
+
+
+// COMMON VALUES
+
+var _Utils_Tuple0_UNUSED = 0;
+var _Utils_Tuple0 = { $: '#0' };
+
+function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
+
+function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+
+function _Utils_chr_UNUSED(c) { return c; }
+function _Utils_chr(c) { return new String(c); }
+
+
+// RECORDS
+
+function _Utils_update(oldRecord, updatedFields)
+{
+	var newRecord = {};
+
+	for (var key in oldRecord)
+	{
+		newRecord[key] = oldRecord[key];
+	}
+
+	for (var key in updatedFields)
+	{
+		newRecord[key] = updatedFields[key];
+	}
+
+	return newRecord;
+}
+
+
+// APPEND
+
+var _Utils_append = F2(_Utils_ap);
+
+function _Utils_ap(xs, ys)
+{
+	// append Strings
+	if (typeof xs === 'string')
+	{
+		return xs + ys;
+	}
+
+	// append Lists
+	if (!xs.b)
+	{
+		return ys;
+	}
+	var root = _List_Cons(xs.a, ys);
+	xs = xs.b
+	for (var curr = root; xs.b; xs = xs.b) // WHILE_CONS
+	{
+		curr = curr.b = _List_Cons(xs.a, ys);
+	}
+	return root;
+}
+
+
+
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
+
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
+
+
+var _List_cons = F2(_List_Cons);
+
+function _List_fromArray(arr)
+{
+	var out = _List_Nil;
+	for (var i = arr.length; i--; )
+	{
+		out = _List_Cons(arr[i], out);
+	}
+	return out;
+}
+
+function _List_toArray(xs)
+{
+	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
+	{
+		out.push(xs.a);
+	}
+	return out;
+}
+
+var _List_map2 = F3(function(f, xs, ys)
+{
+	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
+	{
+		arr.push(A2(f, xs.a, ys.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map3 = F4(function(f, xs, ys, zs)
+{
+	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A3(f, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map4 = F5(function(f, ws, xs, ys, zs)
+{
+	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
+{
+	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_sortBy = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		return _Utils_cmp(f(a), f(b));
+	}));
+});
+
+var _List_sortWith = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		var ord = A2(f, a, b);
+		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
+	}));
+});
 
 
 
@@ -4532,6 +4532,23 @@ function _Http_track(router, xhr, tracker)
 	});
 }
 
+function _Url_percentEncode(string)
+{
+	return encodeURIComponent(string);
+}
+
+function _Url_percentDecode(string)
+{
+	try
+	{
+		return $elm$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch (e)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
+}
+
 
 
 // STRINGS
@@ -4798,10 +4815,35 @@ var _Bitwise_shiftRightZfBy = F2(function(offset, a)
 {
 	return a >>> offset;
 });
-var $elm$core$Basics$EQ = {$: 'EQ'};
-var $elm$core$Basics$GT = {$: 'GT'};
-var $elm$core$Basics$LT = {$: 'LT'};
+var $elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
+};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$List$cons = _List_cons;
+var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
+var $elm$core$Array$foldr = F3(
+	function (func, baseCase, _v0) {
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var helper = F2(
+			function (node, acc) {
+				if (node.$ === 'SubTree') {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
+				} else {
+					var values = node.a;
+					return A3($elm$core$Elm$JsArray$foldr, func, acc, values);
+				}
+			});
+		return A3(
+			$elm$core$Elm$JsArray$foldr,
+			helper,
+			A3($elm$core$Elm$JsArray$foldr, func, baseCase, tail),
+			tree);
+	});
+var $elm$core$Array$toList = function (array) {
+	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
+};
 var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
@@ -4854,30 +4896,9 @@ var $elm$core$Set$toList = function (_v0) {
 	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
-var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
-var $elm$core$Array$foldr = F3(
-	function (func, baseCase, _v0) {
-		var tree = _v0.c;
-		var tail = _v0.d;
-		var helper = F2(
-			function (node, acc) {
-				if (node.$ === 'SubTree') {
-					var subTree = node.a;
-					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
-				} else {
-					var values = node.a;
-					return A3($elm$core$Elm$JsArray$foldr, func, acc, values);
-				}
-			});
-		return A3(
-			$elm$core$Elm$JsArray$foldr,
-			helper,
-			A3($elm$core$Elm$JsArray$foldr, func, baseCase, tail),
-			tree);
-	});
-var $elm$core$Array$toList = function (array) {
-	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
-};
+var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$GT = {$: 'GT'};
+var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4901,10 +4922,6 @@ var $elm$json$Json$Decode$OneOf = function (a) {
 };
 var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
-var $elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
-};
-var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -5273,6 +5290,7 @@ var $elm$core$Result$isOk = function (result) {
 		return false;
 	}
 };
+var $elm$json$Json$Decode$andThen = _Json_andThen;
 var $elm$json$Json$Decode$map = _Json_map1;
 var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5587,17 +5605,67 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$EditText$initialModel = function (id) {
-	return {errorMessage: '', isEditing: false, isSaving: false, markdown: '', newMarkdown: '', photoDiaryID: id};
+var $elm$json$Json$Decode$index = _Json_decodeIndex;
+var $author$project$EditText$DiaryIdAndDay = F2(
+	function (a, b) {
+		return {$: 'DiaryIdAndDay', a: a, b: b};
+	});
+var $author$project$EditText$Invalid = {$: 'Invalid'};
+var $author$project$EditText$NoteID = function (a) {
+	return {$: 'NoteID', a: a};
+};
+var $author$project$EditText$initContentID = function (_v0) {
+	var id = _v0.a;
+	var date = _v0.b;
+	var _v1 = _Utils_Tuple2(id, date);
+	if (_v1.a.$ === 'Just') {
+		if (_v1.b.$ === 'Nothing') {
+			var x = _v1.a.a;
+			var _v2 = _v1.b;
+			return $author$project$EditText$NoteID(x);
+		} else {
+			var x1 = _v1.a.a;
+			var x2 = _v1.b.a;
+			return A2($author$project$EditText$DiaryIdAndDay, x1, x2);
+		}
+	} else {
+		if (_v1.b.$ === 'Just') {
+			var _v3 = _v1.a;
+			return $author$project$EditText$Invalid;
+		} else {
+			var _v4 = _v1.a;
+			var _v5 = _v1.b;
+			return $author$project$EditText$Invalid;
+		}
+	}
+};
+var $author$project$EditText$initialModel = function (_v0) {
+	var id = _v0.a;
+	var dateString = _v0.b;
+	return {
+		contentID: $author$project$EditText$initContentID(
+			_Utils_Tuple2(id, dateString)),
+		isEditing: false,
+		isSaving: false,
+		markdown: '',
+		newMarkdown: '',
+		saveErrorMessage: ''
+	};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$EditText$init = function (diaryID) {
+var $author$project$EditText$init = function (_v0) {
+	var id = _v0.a;
+	var dateAsString = _v0.b;
 	return _Utils_Tuple2(
-		$author$project$EditText$initialModel(diaryID),
+		$author$project$EditText$initialModel(
+			_Utils_Tuple2(id, dateAsString)),
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Decode$null = _Json_decodeNull;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
+var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$EditText$subscriptions = function (_v0) {
@@ -5609,7 +5677,7 @@ var $author$project$EditText$SaveRequest = function (a) {
 var $author$project$EditText$clearFlags = function (model) {
 	return _Utils_update(
 		model,
-		{errorMessage: '', isEditing: false, isSaving: false, newMarkdown: ''});
+		{isEditing: false, isSaving: false, newMarkdown: '', saveErrorMessage: ''});
 };
 var $author$project$EditText$displayBug = function (x) {
 	return 'Rats, you hit a bug!  ' + ('Please take a screen shot and send it to us so we can fix it (' + (x + ').'));
@@ -6202,6 +6270,7 @@ var $author$project$EditText$parseResponse = function (serverHTTPResponse) {
 			return $elm$core$Result$Ok(body);
 	}
 };
+var $elm$url$Url$percentEncode = _Url_percentEncode;
 var $elm$http$Http$Request = function (a) {
 	return {$: 'Request', a: a};
 };
@@ -6375,7 +6444,10 @@ var $elm$http$Http$post = function (r) {
 		{body: r.body, expect: r.expect, headers: _List_Nil, method: 'POST', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
 var $author$project$EditText$postURL = function (diaryID) {
-	return '/photo-diary/' + ($elm$core$String$fromInt(diaryID) + '/add-note');
+	return '/photo-diary/' + ($elm$core$String$fromInt(diaryID) + '/notes');
+};
+var $author$project$EditText$putContentTextURL = function (noteID) {
+	return '/content/' + ($elm$core$String$fromInt(noteID) + '/text');
 };
 var $elm$http$Http$stringBody = _Http_pair;
 var $author$project$EditText$tryAgain = function (x) {
@@ -6421,7 +6493,7 @@ var $author$project$EditText$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{errorMessage: errMsg, isEditing: true, isSaving: false}),
+							{isEditing: true, isSaving: false, saveErrorMessage: errMsg}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 'Edit':
@@ -6437,17 +6509,45 @@ var $author$project$EditText$update = F2(
 						model,
 						{newMarkdown: x}),
 					$elm$core$Platform$Cmd$none);
-			case 'Save':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{isEditing: false, isSaving: true}),
-					$elm$http$Http$post(
-						{
-							body: A2($elm$http$Http$stringBody, 'text/plain', model.newMarkdown),
-							expect: A2($elm$http$Http$expectStringResponse, $author$project$EditText$SaveRequest, $author$project$EditText$parseResponse),
-							url: $author$project$EditText$postURL(model.photoDiaryID)
-						}));
+			case 'SaveNote':
+				switch (msg.a.$) {
+					case 'Invalid':
+						var _v3 = msg.a;
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					case 'NoteID':
+						var noteID = msg.a.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{isEditing: false, isSaving: true}),
+							$elm$http$Http$request(
+								{
+									body: A2($elm$http$Http$stringBody, 'text/plain', model.newMarkdown),
+									expect: A2($elm$http$Http$expectStringResponse, $author$project$EditText$SaveRequest, $author$project$EditText$parseResponse),
+									headers: _List_Nil,
+									method: 'PUT',
+									timeout: $elm$core$Maybe$Nothing,
+									tracker: $elm$core$Maybe$Nothing,
+									url: $author$project$EditText$putContentTextURL(noteID)
+								}));
+					default:
+						var _v4 = msg.a;
+						var diaryID = _v4.a;
+						var dateString = _v4.b;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{isEditing: false, isSaving: true}),
+							$elm$http$Http$post(
+								{
+									body: A2(
+										$elm$http$Http$stringBody,
+										'application/x-www-form-urlencoded',
+										'entryDate=' + ($elm$url$Url$percentEncode(dateString) + ('&text=' + $elm$url$Url$percentEncode(model.newMarkdown)))),
+									expect: A2($elm$http$Http$expectStringResponse, $author$project$EditText$SaveRequest, $author$project$EditText$parseResponse),
+									url: $author$project$EditText$postURL(diaryID)
+								}));
+				}
 			case 'Cancel':
 				return _Utils_Tuple2(
 					$author$project$EditText$clearFlags(model),
@@ -6465,7 +6565,9 @@ var $author$project$EditText$Cancel = {$: 'Cancel'};
 var $author$project$EditText$Change = function (a) {
 	return {$: 'Change', a: a};
 };
-var $author$project$EditText$Save = {$: 'Save'};
+var $author$project$EditText$SaveNote = function (a) {
+	return {$: 'SaveNote', a: a};
+};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -6502,7 +6604,6 @@ var $elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
 		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
 	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$html$Html$Events$targetValue = A2(
 	$elm$json$Json$Decode$at,
 	_List_fromArray(
@@ -6537,7 +6638,8 @@ var $author$project$EditText$editBox = function (model) {
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$EditText$Save)
+					$elm$html$Html$Events$onClick(
+					$author$project$EditText$SaveNote(model.contentID))
 				]),
 			_List_fromArray(
 				[
@@ -6564,7 +6666,7 @@ var $author$project$EditText$editButton = A2(
 		]),
 	_List_fromArray(
 		[
-			$elm$html$Html$text('edit summary text for the entire year')
+			$elm$html$Html$text('Add a diary entry.')
 		]));
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
@@ -19467,15 +19569,20 @@ var $jxxcarlson$elm_markdown$Markdown$Render$toHtml = F2(
 			A3($jxxcarlson$elm_markdown$Markdown$Parse$toMDBlockTree, 0, option, str));
 	});
 var $author$project$EditText$view = function (model) {
-	return model.isSaving ? A2(
+	return _Utils_eq(model.contentID, $author$project$EditText$Invalid) ? A2(
 		$elm$html$Html$div,
 		_List_Nil,
-		_Utils_ap(
-			$author$project$EditText$editBox(model),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Saving ...')
-				]))) : (model.isEditing ? ($elm$core$String$isEmpty(model.errorMessage) ? A2(
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$EditText$displayBug('E4: ' + 'No ID for this diary entry.'))
+					]))
+			])) : (model.isEditing ? ($elm$core$String$isEmpty(model.saveErrorMessage) ? A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		$author$project$EditText$editBox(model)) : A2(
@@ -19490,7 +19597,7 @@ var $author$project$EditText$view = function (model) {
 					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$text(model.errorMessage)
+							$elm$html$Html$text(model.saveErrorMessage)
 						]))
 				])))) : ($elm$core$String$isEmpty(model.markdown) ? A2(
 		$elm$html$Html$div,
@@ -19516,4 +19623,32 @@ var $author$project$EditText$view = function (model) {
 };
 var $author$project$EditText$main = $elm$browser$Browser$element(
 	{init: $author$project$EditText$init, subscriptions: $author$project$EditText$subscriptions, update: $author$project$EditText$update, view: $author$project$EditText$view});
-_Platform_export({'EditText':{'init':$author$project$EditText$main($elm$json$Json$Decode$int)(0)}});}(this));
+_Platform_export({'EditText':{'init':$author$project$EditText$main(
+	A2(
+		$elm$json$Json$Decode$andThen,
+		function (_v0) {
+			return A2(
+				$elm$json$Json$Decode$andThen,
+				function (_v1) {
+					return $elm$json$Json$Decode$succeed(
+						_Utils_Tuple2(_v0, _v1));
+				},
+				A2(
+					$elm$json$Json$Decode$index,
+					1,
+					$elm$json$Json$Decode$oneOf(
+						_List_fromArray(
+							[
+								$elm$json$Json$Decode$null($elm$core$Maybe$Nothing),
+								A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, $elm$json$Json$Decode$string)
+							]))));
+		},
+		A2(
+			$elm$json$Json$Decode$index,
+			0,
+			$elm$json$Json$Decode$oneOf(
+				_List_fromArray(
+					[
+						$elm$json$Json$Decode$null($elm$core$Maybe$Nothing),
+						A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, $elm$json$Json$Decode$int)
+					])))))(0)}});}(this));

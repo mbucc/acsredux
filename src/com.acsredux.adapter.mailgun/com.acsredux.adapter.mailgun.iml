@@ -3,7 +3,7 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <excludePattern pattern="elm-stuff" />
     </content>
     <content url="file://$MODULE_DIR$/../tests/com.acsredux.adapter.mailgun">
@@ -15,6 +15,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="com.acsredux.core.members" exported="" />
-    <orderEntry type="module" module-name="com.acsredux.lib.env" />
+    <orderEntry type="module" module-name="com.acsredux.lib.env" exported="" />
   </component>
 </module>

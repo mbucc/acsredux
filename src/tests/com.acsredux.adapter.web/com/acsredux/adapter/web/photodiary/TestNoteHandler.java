@@ -54,11 +54,7 @@ class TestNoteHandler {
   @Test
   void testPut() {
     // setup
-    var mock = new MockHttpExchange(
-      "/photo-diary/123/notes/4321/text",
-      "PUT",
-      "abc123def"
-    );
+    var mock = new MockHttpExchange("/content/4321/body", "PUT", "abc123def");
     mock.setPrincipal(TEST_HTTP_PRINCIPAL);
 
     // execute

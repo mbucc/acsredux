@@ -49,12 +49,12 @@ public class PhotoHandler {
       .ok(x2)
       .map(o -> o.addCommand(FormCommand.UPLOAD_PHOTO))
       .map(o -> o.normalizeDates(m.tz()))
-      .map(o -> o.add("parent", "" + pathToID(x1, 2)))
+      .map(o -> o.add("diaryID", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
     if (y.isOk()) {
-      var contentID = x2.get("parent");
+      var contentID = x2.get("diaryID");
       var location = String.format("/photo-diary/%s", contentID);
       redirect(x1, location);
     } else {

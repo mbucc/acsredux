@@ -12,7 +12,6 @@ import com.acsredux.lib.testutil.MockAdminService;
 import com.acsredux.lib.testutil.MockContentService;
 import com.acsredux.lib.testutil.MockMemberService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TestViewHandler {
@@ -38,7 +37,6 @@ class TestViewHandler {
   }
 
   @Test
-  @Disabled("work in progress ...")
   void testGetWhenEditor() {
     // setup
     var mock = new MockHttpExchange("/photo-diary/123", "GET");

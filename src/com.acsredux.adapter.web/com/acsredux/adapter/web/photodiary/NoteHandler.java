@@ -26,7 +26,7 @@ import java.util.List;
 public class NoteHandler {
 
   public static final String NOTE_URL = "/photo-diary/\\d+/notes";
-  public static final String NOTE_TEXT_URL = "/photo-diary/\\d+/notes/\\d+/text";
+  public static final String NOTE_TEXT_URL = "/content/\\d+/body";
   private final ContentService contentService;
 
   public NoteHandler(ContentService x1) {
@@ -39,7 +39,7 @@ public class NoteHandler {
       .ok(x2)
       .map(o -> o.addCommand(FormCommand.SAVE_NOTE))
       .map(o -> o.normalizeDates(m.tz()))
-      .map(o -> o.add("parent", "" + pathToID(x1, 2)))
+      .map(o -> o.add("diaryID", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);
@@ -61,7 +61,7 @@ public class NoteHandler {
     var y = Result
       .ok(x2)
       .map(o -> o.addCommand(FormCommand.SAVE_NOTE_TEXT))
-      .map(o -> o.add("noteID", "" + pathToID(x1, 4)))
+      .map(o -> o.add("noteID", "" + pathToID(x1, 2)))
       .map(o -> WebUtil.form2cmd(x1.getPrincipal(), o))
       .map(BaseContentCommand.class::cast)
       .map(contentService::handle);

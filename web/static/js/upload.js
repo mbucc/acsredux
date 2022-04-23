@@ -33,10 +33,10 @@ picker.onchange = (evt) => {
         //      -- ref: https://exiftool.org/forum/index.php?topic=10283.0
         //
         if (tags.hasOwnProperty("CreateDate")) {
-          var x = document.getElementById("imageDateTime");
+          var x = document.getElementById("entryDate");
           x.value = tags["CreateDate"].description;
         } else if (tags.hasOwnProperty("DateTimeDigitized")) {
-          var x = document.getElementById("imageDateTime");
+          var x = document.getElementById("entryDate");
           x.value = tags["DateTimeDigitized"].description;
         } else {
           var x = document.getElementById("imageDatePicker");

@@ -6,6 +6,7 @@ import Html.Events exposing (onClick, onInput)
 import Http exposing (Expect, Response, expectStringResponse)
 import Markdown.Option exposing (..)
 import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
+import Url exposing (percentEncode)
 
 
 
@@ -30,29 +31,55 @@ main =
 
 
 type alias Model =
-    { photoDiaryID : Int
+    { contentID : ContentID
     , markdown : String
     , isEditing : Bool
     , isSaving : Bool
     , newMarkdown : String
-    , errorMessage : String
+    , saveErrorMessage : String
     }
 
 
-initialModel : Int -> Model
-initialModel id =
-    { photoDiaryID = id
+type ContentID
+    = NoteID Int
+    | DiaryIdAndDay Int String
+    | Invalid
+
+
+initContentID : ( Maybe Int, Maybe String ) -> ContentID
+initContentID ( id, date ) =
+    case ( id, date ) of
+        ( Just x, Nothing ) ->
+            NoteID x
+
+        ( Just x1, Just x2 ) ->
+            DiaryIdAndDay x1 x2
+
+        ( Nothing, Just _ ) ->
+            Invalid
+
+        ( Nothing, Nothing ) ->
+            Invalid
+
+
+
+-- Flags come in as arguments to init.
+
+
+init : ( Maybe Int, Maybe String ) -> ( Model, Cmd Msg )
+init ( id, dateAsString ) =
+    ( initialModel ( id, dateAsString ), Cmd.none )
+
+
+initialModel : ( Maybe Int, Maybe String ) -> Model
+initialModel ( id, dateString ) =
+    { contentID = initContentID ( id, dateString )
     , markdown = ""
     , isEditing = False
     , isSaving = False
     , newMarkdown = ""
-    , errorMessage = ""
+    , saveErrorMessage = ""
     }
-
-
-init : Int -> ( Model, Cmd Msg )
-init diaryID =
-    ( initialModel diaryID, Cmd.none )
 
 
 
@@ -63,7 +90,7 @@ init diaryID =
 
 type Msg
     = Edit
-    | Save
+    | SaveNote ContentID
     | Cancel
     | Change String
     | SaveRequest (Result MyHttpError String)
@@ -115,7 +142,7 @@ update msg model =
             ( { model
                 | isSaving = False
                 , isEditing = True
-                , errorMessage = errMsg
+                , saveErrorMessage = errMsg
               }
             , Cmd.none
             )
@@ -133,11 +160,36 @@ update msg model =
             , Cmd.none
             )
 
-        Save ->
+        SaveNote Invalid ->
+            ( model, Cmd.none )
+
+        -- We are updating an existing note.
+        SaveNote (NoteID noteID) ->
+            ( { model | isEditing = False, isSaving = True }
+            , Http.request
+                { method = "PUT"
+                , headers = []
+                , url = putContentTextURL noteID
+                , body = Http.stringBody "text/plain" model.newMarkdown
+                , expect = expectStringResponse SaveRequest parseResponse
+                , timeout = Nothing
+                , tracker = Nothing
+                }
+            )
+
+        -- We are adding a new node.
+        SaveNote (DiaryIdAndDay diaryID dateString) ->
             ( { model | isEditing = False, isSaving = True }
             , Http.post
-                { url = postURL model.photoDiaryID
-                , body = Http.stringBody "text/plain" model.newMarkdown
+                { url = postURL diaryID
+                , body =
+                    Http.stringBody
+                        "application/x-www-form-urlencoded"
+                        ("entryDate="
+                            ++ percentEncode dateString
+                            ++ "&text="
+                            ++ percentEncode model.newMarkdown
+                        )
                 , expect = expectStringResponse SaveRequest parseResponse
                 }
             )
@@ -194,7 +246,7 @@ clearFlags model =
     { model
         | isEditing = False
         , newMarkdown = ""
-        , errorMessage = ""
+        , saveErrorMessage = ""
         , isSaving = False
     }
 
@@ -202,6 +254,11 @@ clearFlags model =
 postURL : Int -> String
 postURL diaryID =
     "/photo-diary/" ++ String.fromInt diaryID ++ "/notes"
+
+
+putContentTextURL : Int -> String
+putContentTextURL noteID =
+    "/content/" ++ String.fromInt noteID ++ "/text"
 
 
 
@@ -223,15 +280,15 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
-    if model.isSaving then
-        div [] (editBox model ++ [ text "Saving ..." ])
+    if model.contentID == Invalid then
+        div [] [ p [] [ text (displayBug ("E4: " ++ "No ID for this diary entry.")) ] ]
 
     else if model.isEditing then
-        if String.isEmpty model.errorMessage then
+        if String.isEmpty model.saveErrorMessage then
             div [] (editBox model)
 
         else
-            div [] (editBox model ++ [ p [] [ text model.errorMessage ] ])
+            div [] (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
 
     else if String.isEmpty model.markdown then
         div [] [ editButton ]
@@ -252,12 +309,12 @@ editButton : Html Msg
 editButton =
     button
         [ onClick Edit ]
-        [ text "edit summary text for the entire year" ]
+        [ text "Add a diary entry." ]
 
 
 editBox : Model -> List (Html Msg)
 editBox model =
     [ textarea [ onInput Change ] [ text model.newMarkdown ]
-    , button [ onClick Save ] [ text "save" ]
+    , button [ onClick (SaveNote model.contentID) ] [ text "save" ]
     , button [ onClick Cancel ] [ text "cancel" ]
     ]

@@ -1,5 +1,5 @@
 200
-Content-Length: 919
+Content-Length: 898
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ Bill Walton (<a href="/members/logout">log out</a>)
 <h2>Mar</h2>
 
 <div id="imgdiv-124">
-<img src="/static/members/123/t.std.png" id="124" alt="2022-03-17" title="2022-03-17" data-contentID="124" />
+<img src="/static/members/123/t.std.png" id="124" alt="2022-03-17" title="2022-03-17" />
 </div>
 
 <h2>Apr</h2>

@@ -6,14 +6,14 @@
 <p style="color: red">{{{error}}}</p>
 {{/error}}
 
-<p><a href="/photo-diary/{{contentID}}/add-image"><button id="add-img" type="button">+ img</button></a>
+<p><a href="/photo-diary/{{diaryID}}/add-image"><button id="add-img" type="button">+ img</button></a>
 
 <div id="diary-summary"></div>
 <script src="/static/js/elm_edit_text.js"></script>
 <script>
   const app = Elm.EditText.init({
     node: document.getElementById("diary-summary"),
-    flags: {{contentID}}
+    flags: [{{ diaryID }}, null]
   });
 </script>
 
@@ -24,13 +24,13 @@
 {{#entries}}
 {{#text}}
 {{{text}}}{{/text}}
-{{#photoContentID}}
-<div id="imgdiv-{{photoContentID}}">
-<img src="{{src}}" id="{{photoContentID}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{photoContentID}}" />
+{{#photoID}}
+<div id="imgdiv-{{photoID}}">
+<img src="{{src}}" id="{{photoID}}" alt="{{alt}}" title="{{alt}}" data-contentID="{{diaryID}}" />
 <br>
-<a id="deleteButton-{{photoContentID}}" href="javascript:deleteImage('{{photoContentID}}')">delete &uarr;</a>
+<a id="deleteButton-{{photoID}}" href="javascript:deleteImage('{{photoID}}')">delete &uarr;</a>
 </div>
-{{/photoContentID}}
+{{/photoID}}
 {{/entries}}
 
 {{/sections}}

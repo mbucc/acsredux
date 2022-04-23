@@ -8,6 +8,7 @@
     </content>
     <content url="file://$MODULE_DIR$/../tests/com.acsredux.adapter.filesystem">
       <sourceFolder url="file://$MODULE_DIR$/../tests/com.acsredux.adapter.filesystem" isTestSource="true" />
+      <excludePattern pattern="elm-stuff" />
     </content>
     <orderEntry type="library" scope="TEST" name="testlib" level="project" />
     <orderEntry type="module" module-name="com.acsredux.lib.testutil" scope="TEST" />

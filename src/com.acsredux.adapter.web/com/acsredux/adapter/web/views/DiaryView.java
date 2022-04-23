@@ -25,8 +25,8 @@ public class DiaryView extends BaseView {
   public static final String NOTE = "note";
   public static final String PHOTO_ENTRY = "photo";
   public static final String ENTRY_TYPE = "type";
-  final long contentID;
-  long memberID;
+  final long diaryID;
+  long authorID;
   String slug;
   List<SectionDTO> sections;
 
@@ -41,69 +41,25 @@ public class DiaryView extends BaseView {
 
   public DiaryView(HttpExchange x1, FormData x2, SiteInfo x3) {
     super(x1, x2, x3);
-    this.contentID = Util.uriToLong(x1.getRequestURI());
+    this.diaryID = Util.uriToLong(x1.getRequestURI());
   }
 
   public void addDiaryInfo(Content y) {
-    this.memberID = y.createdBy().val();
+    this.authorID = y.createdBy().val();
     this.setPageTitle(y.title().val());
     this.slug = Util.titleToSlug(y.title().val());
   }
 
   public boolean isMyPage() {
-    return Objects.equals(memberID, principalID);
+    return Objects.equals(authorID, principalID);
   }
 
   public ContentID contentID() {
-    return new ContentID(this.contentID);
+    return new ContentID(this.diaryID);
   }
 
   public void setSections(List<SectionDTO> xs) {
     this.sections = new ArrayList<>(xs);
-  }
-
-  @Override
-  public String toString() {
-    return (
-      "UpdatePhotoDiaryView{" +
-      "menuItems=" +
-      menuItems +
-      ", pageTitle='" +
-      pageTitle +
-      '\'' +
-      ", error='" +
-      error +
-      '\'' +
-      ", principalID=" +
-      principalID +
-      ", principalName='" +
-      principalName +
-      '\'' +
-      ", isLoggedIn=" +
-      isLoggedIn +
-      ", isAdmin=" +
-      isAdmin +
-      ", isInAlphaTesting=" +
-      isInAlphaTesting +
-      ", suggestionBoxURL='" +
-      suggestionBoxURL +
-      '\'' +
-      ", alphaTestMemberLimit=" +
-      alphaTestMemberLimit +
-      ", analyticsScriptTag='" +
-      analyticsScriptTag +
-      '\'' +
-      ", contentID=" +
-      contentID +
-      ", memberID=" +
-      memberID +
-      ", slug='" +
-      slug +
-      '\'' +
-      ", sections=" +
-      sections +
-      '}'
-    );
   }
 
   private static Map<String, Object> asMap(Content x, ZoneId tz) {
@@ -123,7 +79,7 @@ public class DiaryView extends BaseView {
       String.format("/static/members/%d/%s", x.createdBy().val(), x.content().asString()),
       "alt",
       x.from().asString(tz),
-      "photoContentID",
+      "photoID",
       x.id().val()
     );
   }
