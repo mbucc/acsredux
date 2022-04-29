@@ -1,5 +1,7 @@
 2022-04-23: Add summary note for each month.
-2022-04-23: Fix CSS styling to avoid double-dot in Elm markdown renderer
+2022-04-23: Fix CSS styling to avoid double-dot in Elm markdown renderer.
+            Try https://github.com/dillonkearns/elm-markdown
+            They have a really nice WYSIWIG example and we can use TailWind.
 2022-04-23: Write data conversion and then deploy new note logic.
 2022-04-23: Move PUT /content/1/body handler from Note to Content.
 2022-04-23: Make existing DELETE /image/1 endpoint more general.

@@ -1,5 +1,5 @@
 200
-Content-Length: 1374
+Content-Length: 1379
 Content-type: text/html; charset= UTF-8
 
 <!DOCTYPE html>
@@ -27,12 +27,12 @@ Content-type: text/html; charset= UTF-8
 
 <p><a href="/photo-diary/123/add-image"><button id="add-img" type="button">+ img</button></a>
 
-<div id="diary-summary"></div>
+<div id="div-123"></div>
 <script src="/static/js/elm_edit_text.js"></script>
 <script>
   const app = Elm.EditText.init({
-    node: document.getElementById("diary-summary"),
-    flags: [123, null]
+    node: document.getElementById("div-123"),
+    flags: [ 123, null, "Hello World" ]
   });
 </script>
 

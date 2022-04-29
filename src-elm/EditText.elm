@@ -7,6 +7,7 @@ import Html.Events exposing (onClick, onInput)
 import Http exposing (Expect, Response, expectStringResponse)
 import Markdown.Option exposing (..)
 import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
+import Maybe exposing (withDefault)
 import Url exposing (percentEncode)
 
 
@@ -80,15 +81,15 @@ initContentID ( id, date ) =
 -- Flags come in as arguments to init.
 
 
-init : ( Maybe Int, Maybe String ) -> ( Model, Cmd Msg )
-init ( id, dateAsString ) =
-    ( initialModel ( id, dateAsString ), Cmd.none )
+init : ( Maybe Int, Maybe String, Maybe String ) -> ( Model, Cmd Msg )
+init ( id, dateAsString, body ) =
+    ( initialModel ( id, dateAsString, body ), Cmd.none )
 
 
-initialModel : ( Maybe Int, Maybe String ) -> Model
-initialModel ( id, dateString ) =
+initialModel : ( Maybe Int, Maybe String, Maybe String ) -> Model
+initialModel ( id, dateString, body ) =
     { contentID = initContentID ( id, dateString )
-    , markdown = ""
+    , markdown = withDefault "" body
     , isEditing = False
     , isSaving = False
     , newMarkdown = ""
@@ -309,7 +310,7 @@ view model =
 
     else
         div
-            []
+            [ id ("div-" ++ elementID model.contentID) ]
             [ p
                 []
                 [ Markdown.Render.toHtml Extended model.markdown

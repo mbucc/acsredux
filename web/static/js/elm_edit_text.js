@@ -5639,15 +5639,25 @@ var $author$project$EditText$initContentID = function (_v0) {
 		}
 	}
 };
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var $author$project$EditText$initialModel = function (_v0) {
 	var id = _v0.a;
 	var dateString = _v0.b;
+	var body = _v0.c;
 	return {
 		contentID: $author$project$EditText$initContentID(
 			_Utils_Tuple2(id, dateString)),
 		isEditing: false,
 		isSaving: false,
-		markdown: '',
+		markdown: A2($elm$core$Maybe$withDefault, '', body),
 		newMarkdown: '',
 		saveErrorMessage: ''
 	};
@@ -5657,9 +5667,10 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$EditText$init = function (_v0) {
 	var id = _v0.a;
 	var dateAsString = _v0.b;
+	var body = _v0.c;
 	return _Utils_Tuple2(
 		$author$project$EditText$initialModel(
-			_Utils_Tuple2(id, dateAsString)),
+			_Utils_Tuple3(id, dateAsString, body)),
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
@@ -11877,15 +11888,6 @@ var $elm$regex$Regex$Match = F4(
 var $elm$regex$Regex$contains = _Regex_contains;
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$never = _Regex_never;
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Language$Sql$keywordPattern = A2(
 	$elm$core$Maybe$withDefault,
 	$elm$regex$Regex$never,
@@ -19629,7 +19631,11 @@ var $author$project$EditText$view = function (model) {
 				$author$project$EditText$editButton(model.contentID)
 			])) : A2(
 		$elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$id(
+				'div-' + $author$project$EditText$elementID(model.contentID))
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -19654,8 +19660,21 @@ _Platform_export({'EditText':{'init':$author$project$EditText$main(
 			return A2(
 				$elm$json$Json$Decode$andThen,
 				function (_v1) {
-					return $elm$json$Json$Decode$succeed(
-						_Utils_Tuple2(_v0, _v1));
+					return A2(
+						$elm$json$Json$Decode$andThen,
+						function (_v2) {
+							return $elm$json$Json$Decode$succeed(
+								_Utils_Tuple3(_v0, _v1, _v2));
+						},
+						A2(
+							$elm$json$Json$Decode$index,
+							2,
+							$elm$json$Json$Decode$oneOf(
+								_List_fromArray(
+									[
+										$elm$json$Json$Decode$null($elm$core$Maybe$Nothing),
+										A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, $elm$json$Json$Decode$string)
+									]))));
 				},
 				A2(
 					$elm$json$Json$Decode$index,

@@ -12,7 +12,7 @@ function deleteImage(contentID) {
 
   if (confirm("Please confirm you want to delete this image by clicking OK.")) {
     let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", "/images/" + contentID);
+    xhr.open("DELETE", "/content/" + contentID);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         console.log(xhr.status);
