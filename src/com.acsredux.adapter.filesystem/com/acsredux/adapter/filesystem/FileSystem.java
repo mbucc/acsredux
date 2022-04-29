@@ -408,7 +408,7 @@ public final class FileSystem
         x.upto(),
         x.contentType(),
         x.blobType(),
-        x.content()
+        x.body()
       )
     );
     writeContentToJSON();

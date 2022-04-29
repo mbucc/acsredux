@@ -5,6 +5,7 @@ import static com.acsredux.adapter.filesystem.FileSystem.rename;
 import static com.acsredux.lib.testutil.TestData.TEST_NEW_CONTENT_DIARY;
 import static com.acsredux.lib.testutil.TestData.newContentDiaryWithID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acsredux.core.content.values.BlobBytes;
 import com.acsredux.core.content.values.ContentID;
@@ -55,12 +56,25 @@ class TestFileSystem {
     FileSystem fs = new FileSystem();
     ContentID newID = fs.save(TEST_NEW_CONTENT_DIARY);
     BlobBytes newText = new BlobBytes("abc123".getBytes(StandardCharsets.UTF_8));
-    var x = newContentDiaryWithID(newID).withText(newText);
+    var x = newContentDiaryWithID(newID).withBody(newText);
 
     // execute
     fs.update(x);
 
     // verify
-    assertEquals(newText, fs.getByID(newID).content());
+    assertEquals(newText, fs.getByID(newID).body());
+  }
+
+  @Test
+  void testDelete() {
+    // setup
+    FileSystem fs = new FileSystem();
+    ContentID newID = fs.save(TEST_NEW_CONTENT_DIARY);
+
+    // execute
+    fs.delete(newID);
+
+    // verify
+    assertTrue(fs.findByID(newID).isEmpty());
   }
 }

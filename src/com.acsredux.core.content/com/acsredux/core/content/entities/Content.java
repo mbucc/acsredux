@@ -17,13 +17,13 @@ public record Content(
 
   ContentType contentType,
   BlobType blobType,
-  BlobBytes content
+  BlobBytes body
 ) {
   public static Comparator<Content> byFrom = Comparator.comparingLong(o ->
     o.from().val().getEpochSecond()
   );
 
-  public Content withText(BlobBytes content) {
+  public Content withBody(BlobBytes body) {
     return new Content(
       this.id,
       this.refersTo,
@@ -34,7 +34,7 @@ public record Content(
       this.upto,
       this.contentType,
       this.blobType,
-      content
+      body
     );
   }
 }

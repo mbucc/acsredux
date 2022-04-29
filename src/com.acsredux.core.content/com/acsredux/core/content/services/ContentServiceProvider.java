@@ -80,13 +80,12 @@ public class ContentServiceProvider implements ContentService {
     MemberID mid = validateMemberLoggedIn(cmd);
     var now = new UpdatedOn(this.clock.instant());
     Content c = reader.getByID(cmd.id());
-    // TODO: Move security to proxy.
-    // Note: The idea of separating out this security logic feels very unnatural.
+    // TODO: Move security to proxy.  Craziness!
     if (!c.createdBy().equals(mid)) {
       throw new NotAuthorizedException("You don't have permission to edit this note.");
     }
     Event y = new ContentTextUpdated(cmd, mid, now);
-    writer.update(c.withText(cmd.text()));
+    writer.update(c.withBody(cmd.text()));
     return Collections.singletonList(y);
   }
 
@@ -102,7 +101,7 @@ public class ContentServiceProvider implements ContentService {
       null,
       ContentType.DIARY_ENTRY,
       BlobType.MARKDOWN,
-      cmd.note()
+      cmd.body()
     );
     return Collections.singletonList(new ContentCreated(x, writer.save(x)));
   }
@@ -110,7 +109,7 @@ public class ContentServiceProvider implements ContentService {
   private List<Event> handleDeleteContent(DeleteContent cmd) {
     MemberID mid = validateMemberLoggedIn(cmd);
     Content c = validateContentOwnedByMember(cmd.contentID(), mid);
-    FileName std = new FileName(c.content().asString());
+    FileName std = new FileName(c.body().asString());
     iwriter.delete(mid, std);
     FileName orig = new FileName(
       std.val().replace("." + STD_IMAGE + ".", "." + ORIGINAL_IMAGE + ".")

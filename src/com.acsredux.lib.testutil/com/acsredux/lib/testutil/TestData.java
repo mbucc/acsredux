@@ -232,7 +232,7 @@ public class TestData {
     null,
     TEST_PHOTO_DIARY_CONTENT.contentType(),
     TEST_PHOTO_DIARY_CONTENT.blobType(),
-    TEST_PHOTO_DIARY_CONTENT.content()
+    TEST_PHOTO_DIARY_CONTENT.body()
   );
 
   public static final Content newContentDiaryWithID(ContentID id) {
@@ -246,7 +246,7 @@ public class TestData {
       TEST_NEW_CONTENT_DIARY.upto(),
       TEST_NEW_CONTENT_DIARY.contentType(),
       TEST_NEW_CONTENT_DIARY.blobType(),
-      TEST_NEW_CONTENT_DIARY.content()
+      TEST_NEW_CONTENT_DIARY.body()
     );
   }
 

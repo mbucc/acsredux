@@ -26,6 +26,7 @@ public class DiaryView extends BaseView {
   public static final String PHOTO_ENTRY = "photo";
   public static final String ENTRY_TYPE = "type";
   final long diaryID;
+  String body;
   long authorID;
   String slug;
   List<SectionDTO> sections;
@@ -48,6 +49,7 @@ public class DiaryView extends BaseView {
     this.authorID = y.createdBy().val();
     this.setPageTitle(y.title().val());
     this.slug = Util.titleToSlug(y.title().val());
+    this.body = y.body() == null ? "" : y.body().asString();
   }
 
   public boolean isMyPage() {
@@ -65,7 +67,7 @@ public class DiaryView extends BaseView {
   private static Map<String, Object> asMap(Content x, ZoneId tz) {
     return switch (x.contentType()) {
       case PHOTO -> asPhotoMap(x, tz);
-      case DIARY_ENTRY -> asNoteMap(x.content());
+      case DIARY_ENTRY -> asNoteMap(x.body());
       default -> throw new IllegalStateException("unexpected type: " + x.contentType());
     };
   }
@@ -76,7 +78,7 @@ public class DiaryView extends BaseView {
       PHOTO_ENTRY,
       "src",
       // TODO: DRY up the URL paths.
-      String.format("/static/members/%d/%s", x.createdBy().val(), x.content().asString()),
+      String.format("/static/members/%d/%s", x.createdBy().val(), x.body().asString()),
       "alt",
       x.from().asString(tz),
       "photoID",

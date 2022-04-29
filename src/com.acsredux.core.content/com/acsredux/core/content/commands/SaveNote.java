@@ -12,7 +12,7 @@ public record SaveNote(
   Subject subject,
   ContentID parentID,
   FromDateTime from,
-  BlobBytes note
+  BlobBytes body
 )
   implements BaseContentCommand {
   public SaveNote {

@@ -15,7 +15,7 @@ public record NewContent(
   UptoDateTime upto,
   ContentType contentType,
   BlobType blobType,
-  BlobBytes content
+  BlobBytes body
 ) {
   public NewContent {
     die(createdBy, "null createdBy");
@@ -26,7 +26,7 @@ public record NewContent(
     die(contentType, "null contentType");
     die(blobType, "null blobType");
     from = from == null ? new FromDateTime(createdOn.val()) : from;
-    content = content == null ? null : new BlobBytes(content.val().clone());
+    body = body == null ? null : new BlobBytes(body.val().clone());
   }
 
   @Override
@@ -43,7 +43,7 @@ public record NewContent(
       Objects.equals(upto, that.upto) &&
       contentType == that.contentType &&
       blobType == that.blobType &&
-      Objects.equals(content, that.content)
+      Objects.equals(body, that.body)
     );
   }
 
@@ -58,7 +58,7 @@ public record NewContent(
       upto,
       contentType,
       blobType,
-      content
+      body
     );
   }
 }

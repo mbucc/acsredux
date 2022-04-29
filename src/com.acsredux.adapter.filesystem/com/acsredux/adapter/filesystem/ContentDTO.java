@@ -17,7 +17,7 @@ public class ContentDTO {
   Long upto;
   String contentType;
   String blobType;
-  String content;
+  String body;
 
   ContentDTO() {}
 
@@ -32,7 +32,7 @@ public class ContentDTO {
       this.upto = x.upto() == null ? null : x.upto().val().getEpochSecond();
       this.contentType = x.contentType().name();
       this.blobType = x.blobType().name();
-      this.content = x.content() == null ? null : x.content().asString();
+      this.body = x.body() == null ? null : x.body().asString();
     } catch (Exception e) {
       throw new IllegalStateException("error converting to DTO: " + x);
     }
@@ -49,7 +49,7 @@ public class ContentDTO {
       upto == null ? null : new UptoDateTime(Instant.ofEpochSecond(from)),
       ContentType.valueOf(contentType),
       BlobType.valueOf(blobType),
-      content == null ? null : BlobBytes.ofString(content)
+      body == null ? null : BlobBytes.ofString(body)
     );
   }
 }

@@ -221,8 +221,7 @@ public final class Stub
       .stream()
       .filter(o -> o.id().equals(x))
       .findFirst()
-      .orElseThrow(() -> new NotFoundException("No photo diary found with ID " + x.val())
-      );
+      .orElseThrow(() -> new NotFoundException("No content found with ID " + x.val()));
   }
 
   @Override
@@ -261,7 +260,7 @@ public final class Stub
         x.upto(),
         x.contentType(),
         x.blobType(),
-        x.content()
+        x.body()
       )
     );
     return contentID;
@@ -275,7 +274,12 @@ public final class Stub
 
   @Override
   public void delete(ContentID x) {
-    content.remove(x);
+    for (Content y : content) {
+      if (y.id().equals(x)) {
+        content.remove(y);
+        return;
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
