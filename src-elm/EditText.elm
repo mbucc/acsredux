@@ -5,8 +5,8 @@ import Html exposing (Html, button, div, p, text, textarea)
 import Html.Attributes exposing (id)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (Expect, Response, expectStringResponse)
-import Markdown.Option exposing (..)
-import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
+import Markdown.Parser as Markdown
+import Markdown.Renderer
 import Maybe exposing (withDefault)
 import Url exposing (percentEncode)
 
@@ -109,7 +109,6 @@ type Msg
     | Cancel
     | Change String
     | SaveRequest (Result MyHttpError String)
-    | MarkdownMsg Markdown.Render.MarkdownMsg
 
 
 type alias ValidationError =
@@ -214,9 +213,6 @@ update msg model =
             , Cmd.none
             )
 
-        MarkdownMsg _ ->
-            ( model, Cmd.none )
-
 
 parseResponse :
     Response String
@@ -306,27 +302,49 @@ view model =
             div [] (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
 
     else if String.isEmpty model.markdown then
-        div [] [ editButton model.contentID ]
+        div [] [ editButton model ]
 
     else
         div
             [ id ("div-" ++ elementID model.contentID) ]
             [ p
                 []
-                [ Markdown.Render.toHtml Extended model.markdown
-                    |> Html.map MarkdownMsg
+                [ case
+                    model.markdown
+                        |> Markdown.parse
+                        |> Result.mapError deadEndsToString
+                        |> Result.andThen (\ast -> Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer ast)
+                  of
+                    Ok rendered ->
+                        div [] rendered
+
+                    Err errors ->
+                        text errors
                 ]
-            , editButton model.contentID
+            , editButton model
             ]
 
 
-editButton : ContentID -> Html Msg
-editButton contentID =
+deadEndsToString deadEnds =
+    deadEnds
+        |> List.map Markdown.deadEndToString
+        |> String.join "\n"
+
+
+editButton : Model -> Html Msg
+editButton model =
     button
         [ onClick Edit
-        , id ("edit-" ++ elementID contentID)
+        , id ("edit-" ++ elementID model.contentID)
         ]
-        [ text "Add a diary entry." ]
+        [ text
+            (if String.isEmpty model.markdown then
+                "Add a diary entry."
+
+             else
+                "Edit"
+            )
+        ]
 
 
 editBox : Model -> List (Html Msg)
