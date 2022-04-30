@@ -5639,6 +5639,11 @@ var $author$project$EditText$initContentID = function (_v0) {
 		}
 	}
 };
+var $author$project$EditText$InitError = {$: 'InitError'};
+var $author$project$EditText$Viewing = {$: 'Viewing'};
+var $author$project$EditText$initState = function (id) {
+	return _Utils_eq(id, $author$project$EditText$Invalid) ? $author$project$EditText$InitError : $author$project$EditText$Viewing;
+};
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (maybe.$ === 'Just') {
@@ -5648,18 +5653,18 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var $author$project$EditText$initialModel = function (_v0) {
+var $author$project$EditText$initModel = function (_v0) {
 	var id = _v0.a;
 	var dateString = _v0.b;
 	var body = _v0.c;
+	var cid = $author$project$EditText$initContentID(
+		_Utils_Tuple2(id, dateString));
 	return {
-		contentID: $author$project$EditText$initContentID(
-			_Utils_Tuple2(id, dateString)),
-		isEditing: false,
-		isSaving: false,
+		contentID: cid,
 		markdown: A2($elm$core$Maybe$withDefault, '', body),
 		newMarkdown: '',
-		saveErrorMessage: ''
+		saveErrorMessage: '',
+		state: $author$project$EditText$initState(cid)
 	};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -5669,7 +5674,7 @@ var $author$project$EditText$init = function (_v0) {
 	var dateAsString = _v0.b;
 	var body = _v0.c;
 	return _Utils_Tuple2(
-		$author$project$EditText$initialModel(
+		$author$project$EditText$initModel(
 			_Utils_Tuple3(id, dateAsString, body)),
 		$elm$core$Platform$Cmd$none);
 };
@@ -5682,10 +5687,13 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$EditText$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$EditText$Editing = {$: 'Editing'};
 var $author$project$EditText$NoOp = {$: 'NoOp'};
+var $author$project$EditText$SaveError = {$: 'SaveError'};
 var $author$project$EditText$SaveRequest = function (a) {
 	return {$: 'SaveRequest', a: a};
 };
+var $author$project$EditText$Saving = {$: 'Saving'};
 var $elm$core$Basics$composeL = F3(
 	function (g, f, x) {
 		return g(
@@ -5710,11 +5718,6 @@ var $elm$core$Task$attempt = F2(
 							$elm$core$Result$Ok),
 						task))));
 	});
-var $author$project$EditText$clearFlags = function (model) {
-	return _Utils_update(
-		model,
-		{isEditing: false, isSaving: false, newMarkdown: '', saveErrorMessage: ''});
-};
 var $author$project$EditText$displayBug = function (x) {
 	return 'Rats, you hit a bug!  ' + ('Please take a screen shot and send it to us so we can fix it (' + (x + ').'));
 };
@@ -6509,10 +6512,9 @@ var $author$project$EditText$update = F2(
 			case 'SaveRequest':
 				if (msg.a.$ === 'Ok') {
 					return _Utils_Tuple2(
-						$author$project$EditText$clearFlags(
-							_Utils_update(
-								model,
-								{markdown: model.newMarkdown})),
+						_Utils_update(
+							model,
+							{markdown: model.newMarkdown, state: $author$project$EditText$Viewing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var err = msg.a.a;
@@ -6543,14 +6545,14 @@ var $author$project$EditText$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{isEditing: true, isSaving: false, saveErrorMessage: errMsg}),
+							{saveErrorMessage: errMsg, state: $author$project$EditText$SaveError}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 'Edit':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{isEditing: true, newMarkdown: model.markdown}),
+						{newMarkdown: model.markdown, state: $author$project$EditText$Editing}),
 					A2(
 						$elm$core$Task$attempt,
 						function (_v3) {
@@ -6577,7 +6579,7 @@ var $author$project$EditText$update = F2(
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{isEditing: false, isSaving: true}),
+								{saveErrorMessage: '', state: $author$project$EditText$Saving}),
 							$elm$http$Http$request(
 								{
 									body: A2($elm$http$Http$stringBody, 'text/plain', model.newMarkdown),
@@ -6595,7 +6597,7 @@ var $author$project$EditText$update = F2(
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{isEditing: false, isSaving: true}),
+								{saveErrorMessage: '', state: $author$project$EditText$Saving}),
 							$elm$http$Http$post(
 								{
 									body: A2(
@@ -6608,7 +6610,9 @@ var $author$project$EditText$update = F2(
 				}
 			default:
 				return _Utils_Tuple2(
-					$author$project$EditText$clearFlags(model),
+					_Utils_update(
+						model,
+						{newMarkdown: '', state: $author$project$EditText$Viewing}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -15619,77 +15623,86 @@ var $dillonkearns$elm_markdown$Markdown$Renderer$render = F2(
 			A2($dillonkearns$elm_markdown$Markdown$Renderer$renderHelper, renderer, ast));
 	});
 var $author$project$EditText$view = function (model) {
-	return _Utils_eq(model.contentID, $author$project$EditText$Invalid) ? A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$p,
+	var _v0 = model.state;
+	switch (_v0.$) {
+		case 'InitError':
+			return A2(
+				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(
-						$author$project$EditText$displayBug('E4: ' + 'No ID for this diary entry.'))
-					]))
-			])) : (model.isEditing ? ($elm$core$String$isEmpty(model.saveErrorMessage) ? A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		$author$project$EditText$editBox(model)) : A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_Utils_ap(
-			$author$project$EditText$editBox(model),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$EditText$displayBug('E4: ' + 'No ID for this diary entry.'))
+							]))
+					]));
+		case 'Editing':
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				$author$project$EditText$editBox(model));
+		case 'Saving':
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				$author$project$EditText$editBox(model));
+		case 'SaveError':
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_Utils_ap(
+					$author$project$EditText$editBox(model),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(model.saveErrorMessage)
-						]))
-				])))) : ($elm$core$String$isEmpty(model.markdown) ? A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				$author$project$EditText$editButton(model)
-			])) : A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$id(
-				'div-' + $author$project$EditText$elementID(model.contentID))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(model.saveErrorMessage)
+								]))
+						])));
+		default:
+			return A2(
+				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						function () {
-						var _v0 = A2(
-							$elm$core$Result$andThen,
-							function (ast) {
-								return A2($dillonkearns$elm_markdown$Markdown$Renderer$render, $dillonkearns$elm_markdown$Markdown$Renderer$defaultHtmlRenderer, ast);
-							},
-							A2(
-								$elm$core$Result$mapError,
-								$author$project$EditText$deadEndsToString,
-								$dillonkearns$elm_markdown$Markdown$Parser$parse(model.markdown)));
-						if (_v0.$ === 'Ok') {
-							var rendered = _v0.a;
-							return A2($elm$html$Html$div, _List_Nil, rendered);
-						} else {
-							var errors = _v0.a;
-							return $elm$html$Html$text(errors);
-						}
-					}()
-					])),
-				$author$project$EditText$editButton(model)
-			]))));
+						$elm$html$Html$Attributes$id(
+						'div-' + $author$project$EditText$elementID(model.contentID))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								function () {
+								var _v1 = A2(
+									$elm$core$Result$andThen,
+									function (ast) {
+										return A2($dillonkearns$elm_markdown$Markdown$Renderer$render, $dillonkearns$elm_markdown$Markdown$Renderer$defaultHtmlRenderer, ast);
+									},
+									A2(
+										$elm$core$Result$mapError,
+										$author$project$EditText$deadEndsToString,
+										$dillonkearns$elm_markdown$Markdown$Parser$parse(model.markdown)));
+								if (_v1.$ === 'Ok') {
+									var rendered = _v1.a;
+									return A2($elm$html$Html$div, _List_Nil, rendered);
+								} else {
+									var errors = _v1.a;
+									return $elm$html$Html$text(errors);
+								}
+							}()
+							])),
+						$author$project$EditText$editButton(model)
+					]));
+	}
 };
 var $author$project$EditText$main = $elm$browser$Browser$element(
 	{init: $author$project$EditText$init, subscriptions: $author$project$EditText$subscriptions, update: $author$project$EditText$update, view: $author$project$EditText$view});

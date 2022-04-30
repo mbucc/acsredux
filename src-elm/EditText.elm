@@ -37,11 +37,18 @@ main =
 type alias Model =
     { contentID : ContentID
     , markdown : String
-    , isEditing : Bool
-    , isSaving : Bool
+    , state : ControlState
     , newMarkdown : String
     , saveErrorMessage : String
     }
+
+
+type ControlState
+    = Viewing
+    | Editing
+    | Saving
+    | SaveError
+    | InitError
 
 
 type ContentID
@@ -50,17 +57,27 @@ type ContentID
     | Invalid
 
 
-elementID : ContentID -> String
-elementID x =
-    case x of
-        NoteID id ->
-            String.fromInt id
 
-        DiaryIdAndDay _ month ->
-            String.trim month
+-- Flags come in as arguments to init.
 
-        Invalid ->
-            "invalid"
+
+init : ( Maybe Int, Maybe String, Maybe String ) -> ( Model, Cmd Msg )
+init ( id, dateAsString, body ) =
+    ( initModel ( id, dateAsString, body ), Cmd.none )
+
+
+initModel : ( Maybe Int, Maybe String, Maybe String ) -> Model
+initModel ( id, dateString, body ) =
+    let
+        cid =
+            initContentID ( id, dateString )
+    in
+    { contentID = cid
+    , markdown = withDefault "" body
+    , state = initState cid
+    , newMarkdown = ""
+    , saveErrorMessage = ""
+    }
 
 
 initContentID : ( Maybe Int, Maybe String ) -> ContentID
@@ -79,24 +96,13 @@ initContentID ( id, date ) =
             Invalid
 
 
+initState : ContentID -> ControlState
+initState id =
+    if id == Invalid then
+        InitError
 
--- Flags come in as arguments to init.
-
-
-init : ( Maybe Int, Maybe String, Maybe String ) -> ( Model, Cmd Msg )
-init ( id, dateAsString, body ) =
-    ( initialModel ( id, dateAsString, body ), Cmd.none )
-
-
-initialModel : ( Maybe Int, Maybe String, Maybe String ) -> Model
-initialModel ( id, dateString, body ) =
-    { contentID = initContentID ( id, dateString )
-    , markdown = withDefault "" body
-    , isEditing = False
-    , isSaving = False
-    , newMarkdown = ""
-    , saveErrorMessage = ""
-    }
+    else
+        Viewing
 
 
 
@@ -130,7 +136,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SaveRequest (Ok _) ->
-            ( clearFlags { model | markdown = model.newMarkdown }
+            ( { model | markdown = model.newMarkdown, state = Viewing }
             , Cmd.none
             )
 
@@ -156,17 +162,13 @@ update msg model =
                         BadBody x ->
                             displayBug ("E3: " ++ x)
             in
-            ( { model
-                | isSaving = False
-                , isEditing = True
-                , saveErrorMessage = errMsg
-              }
+            ( { model | state = SaveError, saveErrorMessage = errMsg }
             , Cmd.none
             )
 
         Edit ->
             ( { model
-                | isEditing = True
+                | state = Editing
                 , newMarkdown = model.markdown
               }
             , Task.attempt
@@ -187,7 +189,7 @@ update msg model =
 
         -- We are updating an existing note.
         SaveNote (NoteID noteID) ->
-            ( { model | isEditing = False, isSaving = True }
+            ( { model | state = Saving, saveErrorMessage = "" }
             , Http.request
                 { method = "PUT"
                 , headers = []
@@ -199,9 +201,9 @@ update msg model =
                 }
             )
 
-        -- We are adding a new node.
+        -- We are adding a new note for a month.
         SaveNote (DiaryIdAndDay diaryID dateString) ->
-            ( { model | isEditing = False, isSaving = True }
+            ( { model | state = Saving, saveErrorMessage = "" }
             , Http.post
                 { url = postURL diaryID
                 , body =
@@ -217,9 +219,7 @@ update msg model =
             )
 
         Cancel ->
-            ( clearFlags model
-            , Cmd.none
-            )
+            ( { model | state = Viewing, newMarkdown = "" }, Cmd.none )
 
 
 parseResponse :
@@ -260,16 +260,6 @@ displayBug x =
         ++ ")."
 
 
-clearFlags : Model -> Model
-clearFlags model =
-    { model
-        | isEditing = False
-        , newMarkdown = ""
-        , saveErrorMessage = ""
-        , isSaving = False
-    }
-
-
 postURL : Int -> String
 postURL diaryID =
     "/photo-diary/" ++ String.fromInt diaryID ++ "/notes"
@@ -299,38 +289,48 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
-    if model.contentID == Invalid then
-        div [] [ p [] [ text (displayBug ("E4: " ++ "No ID for this diary entry.")) ] ]
+    case model.state of
+        InitError ->
+            div []
+                [ p []
+                    [ text
+                        (displayBug ("E4: " ++ "No ID for this diary entry."))
+                    ]
+                ]
 
-    else if model.isEditing then
-        if String.isEmpty model.saveErrorMessage then
+        Editing ->
             div [] (editBox model)
 
-        else
+        Saving ->
+            div [] (editBox model)
+
+        SaveError ->
             div [] (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
 
-    else if String.isEmpty model.markdown then
-        div [] [ editButton model ]
+        Viewing ->
+            div
+                [ id ("div-" ++ elementID model.contentID) ]
+                [ p
+                    []
+                    [ case
+                        model.markdown
+                            |> Markdown.parse
+                            |> Result.mapError deadEndsToString
+                            |> Result.andThen
+                                (\ast ->
+                                    Markdown.Renderer.render
+                                        Markdown.Renderer.defaultHtmlRenderer
+                                        ast
+                                )
+                      of
+                        Ok rendered ->
+                            div [] rendered
 
-    else
-        div
-            [ id ("div-" ++ elementID model.contentID) ]
-            [ p
-                []
-                [ case
-                    model.markdown
-                        |> Markdown.parse
-                        |> Result.mapError deadEndsToString
-                        |> Result.andThen (\ast -> Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer ast)
-                  of
-                    Ok rendered ->
-                        div [] rendered
-
-                    Err errors ->
-                        text errors
+                        Err errors ->
+                            text errors
+                    ]
+                , editButton model
                 ]
-            , editButton model
-            ]
 
 
 deadEndsToString deadEnds =
@@ -373,3 +373,16 @@ editBox model =
         ]
         [ text "cancel" ]
     ]
+
+
+elementID : ContentID -> String
+elementID x =
+    case x of
+        NoteID id ->
+            String.fromInt id
+
+        DiaryIdAndDay _ month ->
+            String.trim month
+
+        Invalid ->
+            "invalid"
