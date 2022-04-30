@@ -1,6 +1,7 @@
 module EditText exposing (main)
 
 import Browser
+import Browser.Dom as Dom
 import Html exposing (Html, button, div, p, text, textarea)
 import Html.Attributes exposing (id)
 import Html.Events exposing (onClick, onInput)
@@ -8,6 +9,7 @@ import Http exposing (Expect, Response, expectStringResponse)
 import Markdown.Parser as Markdown
 import Markdown.Renderer
 import Maybe exposing (withDefault)
+import Task
 import Url exposing (percentEncode)
 
 
@@ -109,6 +111,7 @@ type Msg
     | Cancel
     | Change String
     | SaveRequest (Result MyHttpError String)
+    | NoOp
 
 
 type alias ValidationError =
@@ -166,8 +169,13 @@ update msg model =
                 | isEditing = True
                 , newMarkdown = model.markdown
               }
-            , Cmd.none
+            , Task.attempt
+                (\_ -> NoOp)
+                (Dom.focus ("textarea-" ++ elementID model.contentID))
             )
+
+        NoOp ->
+            ( model, Cmd.none )
 
         Change x ->
             ( { model | newMarkdown = x }

@@ -5682,9 +5682,34 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$EditText$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$EditText$NoOp = {$: 'NoOp'};
 var $author$project$EditText$SaveRequest = function (a) {
 	return {$: 'SaveRequest', a: a};
 };
+var $elm$core$Basics$composeL = F3(
+	function (g, f, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$Task$onError = _Scheduler_onError;
+var $elm$core$Task$attempt = F2(
+	function (resultToMessage, task) {
+		return $elm$core$Task$command(
+			$elm$core$Task$Perform(
+				A2(
+					$elm$core$Task$onError,
+					A2(
+						$elm$core$Basics$composeL,
+						A2($elm$core$Basics$composeL, $elm$core$Task$succeed, resultToMessage),
+						$elm$core$Result$Err),
+					A2(
+						$elm$core$Task$andThen,
+						A2(
+							$elm$core$Basics$composeL,
+							A2($elm$core$Basics$composeL, $elm$core$Task$succeed, resultToMessage),
+							$elm$core$Result$Ok),
+						task))));
+	});
 var $author$project$EditText$clearFlags = function (model) {
 	return _Utils_update(
 		model,
@@ -5692,6 +5717,19 @@ var $author$project$EditText$clearFlags = function (model) {
 };
 var $author$project$EditText$displayBug = function (x) {
 	return 'Rats, you hit a bug!  ' + ('Please take a screen shot and send it to us so we can fix it (' + (x + ').'));
+};
+var $elm$core$String$trim = _String_trim;
+var $author$project$EditText$elementID = function (x) {
+	switch (x.$) {
+		case 'NoteID':
+			var id = x.a;
+			return $elm$core$String$fromInt(id);
+		case 'DiaryIdAndDay':
+			var month = x.b;
+			return $elm$core$String$trim(month);
+		default:
+			return 'invalid';
+	}
 };
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -6248,6 +6286,7 @@ var $elm$http$Http$expectStringResponse = F2(
 			$elm$core$Basics$identity,
 			A2($elm$core$Basics$composeR, toResult, toMsg));
 	});
+var $elm$browser$Browser$Dom$focus = _Browser_call('focus');
 var $author$project$EditText$BadStatus = F2(
 	function (a, b) {
 		return {$: 'BadStatus', a: a, b: b};
@@ -6512,7 +6551,15 @@ var $author$project$EditText$update = F2(
 					_Utils_update(
 						model,
 						{isEditing: true, newMarkdown: model.markdown}),
-					$elm$core$Platform$Cmd$none);
+					A2(
+						$elm$core$Task$attempt,
+						function (_v3) {
+							return $author$project$EditText$NoOp;
+						},
+						$elm$browser$Browser$Dom$focus(
+							'textarea-' + $author$project$EditText$elementID(model.contentID))));
+			case 'NoOp':
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			case 'Change':
 				var x = msg.a;
 				return _Utils_Tuple2(
@@ -6523,7 +6570,7 @@ var $author$project$EditText$update = F2(
 			case 'SaveNote':
 				switch (msg.a.$) {
 					case 'Invalid':
-						var _v3 = msg.a;
+						var _v4 = msg.a;
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					case 'NoteID':
 						var noteID = msg.a.a;
@@ -6542,9 +6589,9 @@ var $author$project$EditText$update = F2(
 									url: $author$project$EditText$putContentTextURL(noteID)
 								}));
 					default:
-						var _v4 = msg.a;
-						var diaryID = _v4.a;
-						var dateString = _v4.b;
+						var _v5 = msg.a;
+						var diaryID = _v5.a;
+						var dateString = _v5.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
@@ -7063,19 +7110,6 @@ var $author$project$EditText$SaveNote = function (a) {
 	return {$: 'SaveNote', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$core$String$trim = _String_trim;
-var $author$project$EditText$elementID = function (x) {
-	switch (x.$) {
-		case 'NoteID':
-			var id = x.a;
-			return $elm$core$String$fromInt(id);
-		case 'DiaryIdAndDay':
-			var month = x.b;
-			return $elm$core$String$trim(month);
-		default:
-			return 'invalid';
-	}
-};
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -7681,11 +7715,6 @@ var $dillonkearns$elm_markdown$Markdown$Parser$blockQuoteStarts = _List_fromArra
 						$elm$parser$Parser$Expecting('   >')))
 				])))
 	]);
-var $elm$core$Basics$composeL = F3(
-	function (g, f, x) {
-		return g(
-			f(x));
-	});
 var $dillonkearns$elm_markdown$Whitespace$isLineEnd = function (_char) {
 	switch (_char.valueOf()) {
 		case '\n':
