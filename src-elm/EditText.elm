@@ -2,8 +2,8 @@ module EditText exposing (main)
 
 import Browser
 import Browser.Dom as Dom
-import Html exposing (Html, button, div, p, text, textarea)
-import Html.Attributes exposing (id)
+import Html exposing (Attribute, Html, button, div, p, text, textarea, br)
+import Html.Attributes as Attr exposing (id)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (Expect, Response, expectStringResponse)
 import Markdown.Parser as Markdown
@@ -51,9 +51,21 @@ type ControlState
     | InitError
 
 
+type alias DiaryID =
+    Int
+
+
+type alias NoteID =
+    Int
+
+
+type alias DateString =
+    String
+
+
 type ContentID
     = NoteID Int
-    | DiaryIdAndDay Int String
+    | DiaryIdAndDay DiaryID DateString
     | Invalid
 
 
@@ -115,7 +127,7 @@ type Msg
     = Edit
     | SaveNote ContentID
     | Cancel
-    | Change String
+    | ChangeMarkdownText String
     | SaveRequest (Result MyHttpError String)
     | NoOp
 
@@ -176,13 +188,16 @@ update msg model =
                 (Dom.focus ("textarea-" ++ elementID model.contentID))
             )
 
-        NoOp ->
-            ( model, Cmd.none )
+        Cancel ->
+            ( { model | state = Viewing, newMarkdown = "" }, Cmd.none )
 
-        Change x ->
+        ChangeMarkdownText x ->
             ( { model | newMarkdown = x }
             , Cmd.none
             )
+
+        NoOp ->
+            ( model, Cmd.none )
 
         SaveNote Invalid ->
             ( model, Cmd.none )
@@ -217,9 +232,6 @@ update msg model =
                 , expect = expectStringResponse SaveRequest parseResponse
                 }
             )
-
-        Cancel ->
-            ( { model | state = Viewing, newMarkdown = "" }, Cmd.none )
 
 
 parseResponse :
@@ -291,7 +303,7 @@ view : Model -> Html Msg
 view model =
     case model.state of
         InitError ->
-            div []
+            div (divAttrs model)
                 [ p []
                     [ text
                         (displayBug ("E4: " ++ "No ID for this diary entry."))
@@ -299,17 +311,18 @@ view model =
                 ]
 
         Editing ->
-            div [] (editBox model)
+            div (divAttrs model) (editBox model)
 
         Saving ->
-            div [] (editBox model)
+            div (divAttrs model) (editBox model)
 
         SaveError ->
-            div [] (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
+            div (divAttrs model)
+                (editBox model ++ [ p [] [ text model.saveErrorMessage ] ])
 
         Viewing ->
             div
-                [ id ("div-" ++ elementID model.contentID) ]
+                (divAttrs model)
                 [ p
                     []
                     [ case
@@ -339,6 +352,12 @@ deadEndsToString deadEnds =
         |> String.join "\n"
 
 
+divAttrs : Model -> List (Attribute msg)
+divAttrs model =
+    [ id ("div-" ++ elementID model.contentID)
+    , Attr.style "padding" "20px" ]
+
+
 editButton : Model -> Html Msg
 editButton model =
     button
@@ -358,10 +377,14 @@ editButton model =
 editBox : Model -> List (Html Msg)
 editBox model =
     [ textarea
-        [ onInput Change
+        [ onInput ChangeMarkdownText
         , id ("textarea-" ++ elementID model.contentID)
+        , Attr.style "width" "100%"
+        , Attr.style "height" "300px"
+        , Attr.style "font-size" "16px"
         ]
         [ text model.newMarkdown ]
+    , br [] []
     , button
         [ onClick (SaveNote model.contentID)
         , id ("save-" ++ elementID model.contentID)

@@ -6560,16 +6560,22 @@ var $author$project$EditText$update = F2(
 						},
 						$elm$browser$Browser$Dom$focus(
 							'textarea-' + $author$project$EditText$elementID(model.contentID))));
-			case 'NoOp':
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 'Change':
+			case 'Cancel':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{newMarkdown: '', state: $author$project$EditText$Viewing}),
+					$elm$core$Platform$Cmd$none);
+			case 'ChangeMarkdownText':
 				var x = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{newMarkdown: x}),
 					$elm$core$Platform$Cmd$none);
-			case 'SaveNote':
+			case 'NoOp':
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			default:
 				switch (msg.a.$) {
 					case 'Invalid':
 						var _v4 = msg.a;
@@ -6608,12 +6614,6 @@ var $author$project$EditText$update = F2(
 									url: $author$project$EditText$postURL(diaryID)
 								}));
 				}
-			default:
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{newMarkdown: '', state: $author$project$EditText$Viewing}),
-					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$core$Result$andThen = F2(
@@ -7106,15 +7106,25 @@ var $dillonkearns$elm_markdown$Markdown$Renderer$defaultHtmlRenderer = {
 	}
 };
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$EditText$divAttrs = function (model) {
+	return _List_fromArray(
+		[
+			$elm$html$Html$Attributes$id(
+			'div-' + $author$project$EditText$elementID(model.contentID)),
+			A2($elm$html$Html$Attributes$style, 'padding', '20px')
+		]);
+};
 var $author$project$EditText$Cancel = {$: 'Cancel'};
-var $author$project$EditText$Change = function (a) {
-	return {$: 'Change', a: a};
+var $author$project$EditText$ChangeMarkdownText = function (a) {
+	return {$: 'ChangeMarkdownText', a: a};
 };
 var $author$project$EditText$SaveNote = function (a) {
 	return {$: 'SaveNote', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -7172,14 +7182,18 @@ var $author$project$EditText$editBox = function (model) {
 			$elm$html$Html$textarea,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onInput($author$project$EditText$Change),
+					$elm$html$Html$Events$onInput($author$project$EditText$ChangeMarkdownText),
 					$elm$html$Html$Attributes$id(
-					'textarea-' + $author$project$EditText$elementID(model.contentID))
+					'textarea-' + $author$project$EditText$elementID(model.contentID)),
+					A2($elm$html$Html$Attributes$style, 'width', '100%'),
+					A2($elm$html$Html$Attributes$style, 'height', '300px'),
+					A2($elm$html$Html$Attributes$style, 'font-size', '16px')
 				]),
 			_List_fromArray(
 				[
 					$elm$html$Html$text(model.newMarkdown)
 				])),
+			A2($elm$html$Html$br, _List_Nil, _List_Nil),
 			A2(
 			$elm$html$Html$button,
 			_List_fromArray(
@@ -15628,7 +15642,7 @@ var $author$project$EditText$view = function (model) {
 		case 'InitError':
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				$author$project$EditText$divAttrs(model),
 				_List_fromArray(
 					[
 						A2(
@@ -15643,17 +15657,17 @@ var $author$project$EditText$view = function (model) {
 		case 'Editing':
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				$author$project$EditText$divAttrs(model),
 				$author$project$EditText$editBox(model));
 		case 'Saving':
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				$author$project$EditText$divAttrs(model),
 				$author$project$EditText$editBox(model));
 		case 'SaveError':
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				$author$project$EditText$divAttrs(model),
 				_Utils_ap(
 					$author$project$EditText$editBox(model),
 					_List_fromArray(
@@ -15669,11 +15683,7 @@ var $author$project$EditText$view = function (model) {
 		default:
 			return A2(
 				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$id(
-						'div-' + $author$project$EditText$elementID(model.contentID))
-					]),
+				$author$project$EditText$divAttrs(model),
 				_List_fromArray(
 					[
 						A2(
